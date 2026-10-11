@@ -1,0 +1,34 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### Test Results & Evidence ###
+test-output/
+allure-results/
+allure-report/
+.allure/
+reports/*.html
+evidence/screenshots/
+evidence/traces/
+evidence/failures/
+*.log
+
+### Environment & Secrets ###
+.env
+*.local
+credentials.json
+
+### IDE & OS ###
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+.DS_Store
+Thumbs.db
+
+### Playwright / Browser Cache ###
+.playwright/
+ms-playwright/
