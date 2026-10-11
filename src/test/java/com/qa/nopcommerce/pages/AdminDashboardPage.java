@@ -17,12 +17,12 @@ public class AdminDashboardPage extends BasePage {
 
     public AdminDashboardPage(Page page) {
         super(page);
-        this.dashboardHeader = page.locator(".content-header h1");
+        this.dashboardHeader = page.locator("h1:has-text('Dashboard'), .content-header h1, h1.float-left");
         this.logoutLink = page.locator("a[href*='logout']");
         this.catalogMenu = page.locator(".nav-sidebar a:has-text('Catalog')").first();
         this.salesMenu = page.locator(".nav-sidebar a:has-text('Sales')").first();
         this.customersMenu = page.locator(".nav-sidebar a:has-text('Customers')").first();
-        this.statCards = page.locator(".small-box");
+        this.statCards = page.locator(".small-box, .card");
     }
 
     public boolean isDashboardLoaded() {

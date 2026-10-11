@@ -25,10 +25,10 @@ public class AdminTest extends BaseTest {
     @Severity(SeverityLevel.BLOCKER)
     @Description("Verify nopCommerce administration login page renders email input, password input, and login button")
     public void testAdminLoginPageRendering() {
-        navigateTo("https://admin-demo.nopcommerce.com/login");
+        navigateTo("https://admin-demo.nopcommerce.com/admin/");
         AdminLoginPage adminLoginPage = new AdminLoginPage(getPage());
 
-        PlaywrightAssertions.assertThat(getPage()).hasTitle(Pattern.compile(".*Your store. Login.*"));
+        PlaywrightAssertions.assertThat(getPage()).hasTitle(Pattern.compile(".*(Your store|nopCommerce demo store)\\. Login.*"));
         PlaywrightAssertions.assertThat(adminLoginPage.getEmailInput()).isVisible();
         PlaywrightAssertions.assertThat(adminLoginPage.getPasswordInput()).isVisible();
     }
@@ -38,7 +38,7 @@ public class AdminTest extends BaseTest {
     @Severity(SeverityLevel.BLOCKER)
     @Description("Verify administration login succeeds with valid administrator credentials")
     public void testAdminLoginValidCredentials() {
-        navigateTo("https://admin-demo.nopcommerce.com/login");
+        navigateTo("https://admin-demo.nopcommerce.com/admin/");
         AdminLoginPage adminLoginPage = new AdminLoginPage(getPage());
 
         String email = ConfigReader.getAdminEmail();
@@ -53,7 +53,7 @@ public class AdminTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify administration login rejects invalid password with error message")
     public void testAdminLoginInvalidPassword() {
-        navigateTo("https://admin-demo.nopcommerce.com/login");
+        navigateTo("https://admin-demo.nopcommerce.com/admin/");
         AdminLoginPage adminLoginPage = new AdminLoginPage(getPage());
 
         adminLoginPage.login("admin@yourstore.com", "WrongAdminPass999!");
@@ -66,7 +66,7 @@ public class AdminTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify admin dashboard renders navigation sidebar and dashboard statistics cards")
     public void testAdminDashboardElements() {
-        navigateTo("https://admin-demo.nopcommerce.com/login");
+        navigateTo("https://admin-demo.nopcommerce.com/admin/");
         AdminLoginPage adminLoginPage = new AdminLoginPage(getPage());
         AdminDashboardPage dashboardPage = adminLoginPage.login("admin@yourstore.com", "admin");
 
