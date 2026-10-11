@@ -11,7 +11,7 @@
 
 To ensure end-to-end traceability across the STLC, every requirement follows a strict, non-divergent identifier structure:
 
-| Prefix | Functional Domain | Scope Summary |
+| `Prefix` | Functional Domain | Scope Summary |
 |---|---|---|
 | `REQ-AUTH` | Authentication & Authorization | Registration, login, logout, password recovery, session handling |
 | `REQ-CAT` | Catalog & Navigation | Categories, product details, search, filtering, sorting, comparison |
@@ -20,6 +20,7 @@ To ensure end-to-end traceability across the STLC, every requirement follows a s
 | `REQ-CUST` | Customer Account & Engagement | Profile details, address book, order history, product reviews, contact us |
 | `REQ-ADM` | Administrative Panel | Admin authentication, dashboard metrics, catalog viewing, order lookup |
 | `REQ-API` | HTTP Protocol & Endpoints | Route status codes, headers, anti-forgery validation, form POST payloads |
+| `REQ-DB` | Database Verification (MSSQL) | Entity persistence, order totals, cart state, inventory consistency |
 | `REQ-A11Y` | Accessibility Compliance | WCAG 2.1 Level AA automated rule compliance via axe-core |
 | `REQ-NFR` | Non-Functional Requirements | Performance benchmarks, cross-browser compatibility, automation stability |
 
@@ -123,6 +124,19 @@ To ensure end-to-end traceability across the STLC, every requirement follows a s
 | `REQ-API-003` | P2 | Anti-Forgery Token Issuance | The system shall include an ASP.NET anti-forgery cookie and hidden `__RequestVerificationToken` in HTML response payloads for state-changing forms (`/login`, `/register`). |
 | `REQ-API-004` | P2 | HTTP Form Submission Handling | The system shall process valid form POST requests with extracted verification tokens and cookies, returning appropriate HTTP redirect/success codes. |
 | `REQ-API-005` | P3 | Security Headers Presence | The system shall return standard security response headers (e.g., `X-Content-Type-Options: nosniff`) across web responses. |
+
+---
+
+### 2.8 Database Verification (`REQ-DB`)
+
+> **Architectural Note:** Direct backend validation is performed via read-only JDBC queries against Microsoft SQL Server 2022 to verify data persistence integrity resulting from UI interactions.
+
+| ID | Priority | Title | Description & Acceptance Criteria |
+|---|---|---|---|
+| `REQ-DB-001` | P1 | Customer Entity Persistence | Upon successful user registration via `/register`, the system shall persist a corresponding record in the `[Customer]` table with matching `Email`, `Active = 1`, and `Deleted = 0`. |
+| `REQ-DB-002` | P1 | Order & OrderItem Integrity | Upon completing order placement, the system shall persist an active record in `[Order]` with valid `OrderGuid`, matching `CustomerId`, and `OrderTotal`. At least one associated record must exist in `[OrderItem]` referencing the purchased `ProductId` and quantity. |
+| `REQ-DB-003` | P2 | Shopping Cart Item State Persistence | When a product is added or updated in the cart, the system shall persist a record in `[ShoppingCartItem]` reflecting the customer's ID, `ProductId`, selected `Quantity`, and `ShoppingCartTypeId = 1` (Shopping Cart). |
+| `REQ-DB-004` | P2 | Product Inventory & Stock Consistency | The system shall reflect stock quantity consistency in `[Product]` where `StockQuantity` matches the UI availability status, and inventory decrements appropriately when inventory tracking is enabled. |
 
 ---
 

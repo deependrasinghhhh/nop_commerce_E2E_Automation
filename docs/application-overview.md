@@ -49,7 +49,7 @@ The `latest` tag on Docker Hub points to `4.90.8` (verified via identical digest
 | **Docker Hub Repo**  | `nopcommerceteam/nopcommerce`                      |
 | **Pinned Tag**       | `4.90.8`                                           |
 | **Architectures**    | `amd64`, `arm64` (multi-arch manifest)             |
-| **Image Size (amd64)**| ~244 MB                                           |
+| **Image Size**       | ~244 MB (amd64) / ~241 MB (arm64)                  |
 | **Base OS**          | Linux                                              |
 | **Default Port**     | 80 (HTTP)                                          |
 | **Publisher**        | `nopcommerceteam` (verified Docker Hub account)    |
