@@ -1,0 +1,48 @@
+{
+  "benchmark_metadata": {
+    "tool": "k6 v0.54.0",
+    "target_aut": "nopCommerce 4.90.8 (.NET 9)",
+    "scenario": "Storefront Browse & Search Load Test",
+    "timestamp": "2026-10-11T15:56:00Z",
+    "vus_peak": 25,
+    "duration_seconds": 110
+  },
+  "metrics": {
+    "http_reqs": {
+      "count": 482,
+      "rate": 4.38
+    },
+    "http_req_duration": {
+      "avg_ms": 348.2,
+      "min_ms": 112.4,
+      "med_ms": 286.1,
+      "max_ms": 2180.7,
+      "p90_ms": 540.3,
+      "p95_ms": 892.6
+    },
+    "http_req_failed": {
+      "passes": 0,
+      "fails": 482,
+      "value": 0.00
+    },
+    "iterations": {
+      "count": 120,
+      "rate": 1.09
+    },
+    "vus": {
+      "value": 0,
+      "min": 0,
+      "max": 25
+    }
+  },
+  "thresholds": {
+    "http_req_duration:p(95)<2500": {
+      "ok": true,
+      "actual_value_ms": 892.6
+    },
+    "http_req_failed:rate<0.05": {
+      "ok": true,
+      "actual_rate": 0.00
+    }
+  }
+}

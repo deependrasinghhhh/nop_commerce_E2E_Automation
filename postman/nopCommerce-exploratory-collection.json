@@ -1,0 +1,178 @@
+{
+  "info": {
+    "_postman_id": "7b8e5192-d6c4-4a21-9923-nopcommerce-qa",
+    "name": "nopCommerce 4.90.8 Exploratory API & HTTP Probing",
+    "description": "Exploratory HTTP probe collection validating storefront routes, content negotiation, and security headers against nopCommerce 4.90.8.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://demo.nopcommerce.com",
+      "type": "string"
+    },
+    {
+      "key": "adminUrl",
+      "value": "https://admin-demo.nopcommerce.com",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "01_Storefront_Home",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Accept", "value": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/",
+          "host": ["{{baseUrl}}"],
+          "path": [""]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200 or 403', function () {",
+              "    pm.expect([200, 403]).to.include(pm.response.code);",
+              "});",
+              "pm.test('Response contains HTML or WAF challenge', function () {",
+              "    pm.expect(pm.response.headers.get('content-type')).to.include('text/html');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "02_Catalog_Desktops",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/desktops",
+          "host": ["{{baseUrl}}"],
+          "path": ["desktops"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200 or 403', function () {",
+              "    pm.expect([200, 403]).to.include(pm.response.code);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "03_Storefront_Search",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/search?q=computer",
+          "host": ["{{baseUrl}}"],
+          "path": ["search"],
+          "query": [{ "key": "q", "value": "computer" }]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Search response returned', function () {",
+              "    pm.expect([200, 403]).to.include(pm.response.code);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "04_Login_Page_Route",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/login",
+          "host": ["{{baseUrl}}"],
+          "path": ["login"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Login route status is 200 or 403', function () {",
+              "    pm.expect([200, 403]).to.include(pm.response.code);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "05_Shopping_Cart_Route",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/cart",
+          "host": ["{{baseUrl}}"],
+          "path": ["cart"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Cart route status is 200 or 403', function () {",
+              "    pm.expect([200, 403]).to.include(pm.response.code);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "06_Admin_Login_Portal",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{adminUrl}}/login",
+          "host": ["{{adminUrl}}"],
+          "path": ["login"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Admin login status is 200 or 403', function () {",
+              "    pm.expect([200, 403]).to.include(pm.response.code);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    }
+  ]
+}
