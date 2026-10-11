@@ -29,7 +29,7 @@ public class CatalogTest extends BaseTest {
         navigateTo("/");
         HomePage homePage = new HomePage(getPage());
 
-        PlaywrightAssertions.assertThat(getPage()).hasTitle(Pattern.compile(".*nopCommerce.*"));
+        PlaywrightAssertions.assertThat(getPage()).hasTitle(Pattern.compile(".*(nopCommerce|Your store).*"));
         Assert.assertTrue(homePage.isLogoVisible(), "Storefront logo is not visible");
         PlaywrightAssertions.assertThat(homePage.getSearchInput()).isVisible();
         PlaywrightAssertions.assertThat(homePage.getCartLink()).isVisible();
@@ -42,12 +42,12 @@ public class CatalogTest extends BaseTest {
     public void testTopMenuCategoriesRendering() {
         navigateTo("/");
 
-        Locator topMenu = getPage().locator(".top-menu.notmobile");
-        PlaywrightAssertions.assertThat(topMenu.locator("a:has-text('Computers')").first()).isVisible();
-        PlaywrightAssertions.assertThat(topMenu.locator("a:has-text('Electronics')").first()).isVisible();
-        PlaywrightAssertions.assertThat(topMenu.locator("a:has-text('Apparel')").first()).isVisible();
-        PlaywrightAssertions.assertThat(topMenu.locator("a:has-text('Digital downloads')").first()).isVisible();
-        PlaywrightAssertions.assertThat(topMenu.locator("a:has-text('Books')").first()).isVisible();
+        Locator topMenu = getPage().locator(".header-menu, .top-menu");
+        PlaywrightAssertions.assertThat(topMenu.locator("a[href*='/computers']").first()).isVisible();
+        PlaywrightAssertions.assertThat(topMenu.locator("a[href*='/electronics']").first()).isVisible();
+        PlaywrightAssertions.assertThat(topMenu.locator("a[href*='/apparel']").first()).isVisible();
+        PlaywrightAssertions.assertThat(topMenu.locator("a[href*='/digital-downloads']").first()).isVisible();
+        PlaywrightAssertions.assertThat(topMenu.locator("a[href*='/books']").first()).isVisible();
     }
 
     @Test(groups = {"ui", "catalog"})

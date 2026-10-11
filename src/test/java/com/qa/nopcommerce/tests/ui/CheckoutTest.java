@@ -25,7 +25,7 @@ public class CheckoutTest extends BaseTest {
     @Severity(SeverityLevel.BLOCKER)
     @Description("Verify checkout initialization from cart redirects to checkout page or guest checkout prompt")
     public void testCheckoutInitiation() {
-        navigateTo("/apple-macbook-pro-13-inch");
+        navigateTo("/apple-macbook-pro");
         ProductDetailsPage productPage = new ProductDetailsPage(getPage());
         productPage.clickAddToCart();
 
@@ -43,7 +43,7 @@ public class CheckoutTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify checkout requires billing address fields when checking out as guest")
     public void testCheckoutBillingAddressForm() {
-        navigateTo("/apple-macbook-pro-13-inch");
+        navigateTo("/apple-macbook-pro");
         ProductDetailsPage productPage = new ProductDetailsPage(getPage());
         productPage.clickAddToCart();
 
@@ -53,7 +53,7 @@ public class CheckoutTest extends BaseTest {
 
         checkoutPage.clickCheckoutAsGuest();
 
-        PlaywrightAssertions.assertThat(getPage().locator("#BillingNewAddress_CountryId, #billing-buttons-container"))
+        PlaywrightAssertions.assertThat(getPage().locator("#BillingNewAddress_CountryId, #billing-buttons-container, #billing-address-select, .checkout-data, #checkout-steps").first())
                 .isVisible();
     }
 

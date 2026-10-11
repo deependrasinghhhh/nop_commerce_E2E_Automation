@@ -11,6 +11,12 @@
         </classes>
     </test>
 
+    <test name="Storefront Smoke Gate Tests" parallel="none">
+        <classes>
+            <class name="com.qa.nopcommerce.tests.smoke.SmokeTest" />
+        </classes>
+    </test>
+
     <test name="Storefront UI Tests" parallel="none">
         <classes>
             <class name="com.qa.nopcommerce.tests.ui.AuthTest" />

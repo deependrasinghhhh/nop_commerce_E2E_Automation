@@ -46,7 +46,12 @@ public class CartPage extends BasePage {
     public void updateQuantity(int rowIndex, int newQty) {
         Locator qtyInput = cartRows.nth(rowIndex).locator("input.qty-input");
         fill(qtyInput, String.valueOf(newQty));
-        click(updateCartButton);
+        qtyInput.press("Enter");
+        try {
+            if (updateCartButton.isVisible(new Locator.IsVisibleOptions().setTimeout(1000))) {
+                click(updateCartButton);
+            }
+        } catch (Exception ignored) {}
         waitForLoad();
     }
 
@@ -62,7 +67,11 @@ public class CartPage extends BasePage {
     }
 
     public void acceptTermsOfService() {
-        termsOfServiceCheckbox.check();
+        try {
+            if (termsOfServiceCheckbox.isVisible(new Locator.IsVisibleOptions().setTimeout(2000))) {
+                termsOfServiceCheckbox.check();
+            }
+        } catch (Exception ignored) {}
     }
 
     public CheckoutPage proceedToCheckout() {

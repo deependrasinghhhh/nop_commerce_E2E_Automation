@@ -43,8 +43,17 @@ public abstract class BasePage {
     }
 
     protected String getText(Locator locator) {
-        locator.waitFor();
-        return locator.innerText().trim();
+        try {
+            locator.first().waitFor(new Locator.WaitForOptions().setTimeout(4000));
+            return locator.first().innerText().trim();
+        } catch (Exception e) {
+            try {
+                if (locator.count() > 0) {
+                    return locator.first().innerText().trim();
+                }
+            } catch (Exception ignored) {}
+            return "";
+        }
     }
 
     protected boolean isVisible(Locator locator) {

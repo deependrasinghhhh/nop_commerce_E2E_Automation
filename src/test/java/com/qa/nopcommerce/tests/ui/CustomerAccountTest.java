@@ -3,6 +3,7 @@ package com.qa.nopcommerce.tests.ui;
 import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import com.qa.nopcommerce.annotation.TestCase;
 import com.qa.nopcommerce.base.BaseTest;
+import com.qa.nopcommerce.config.ConfigReader;
 import com.qa.nopcommerce.pages.CustomerInfoPage;
 import com.qa.nopcommerce.pages.LoginPage;
 import io.qameta.allure.Description;
@@ -26,7 +27,7 @@ public class CustomerAccountTest extends BaseTest {
     public void testCustomerInfoPageRendering() {
         navigateTo("/login");
         LoginPage loginPage = new LoginPage(getPage());
-        loginPage.login("admin@yourstore.com", "admin");
+        loginPage.login(ConfigReader.getAdminEmail(), ConfigReader.getAdminPassword());
 
         navigateTo("/customer/info");
         CustomerInfoPage infoPage = new CustomerInfoPage(getPage());

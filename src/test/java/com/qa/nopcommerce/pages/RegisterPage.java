@@ -44,12 +44,12 @@ public class RegisterPage extends BasePage {
         this.resultMessage = page.locator(".result");
         this.continueButton = page.locator("a.register-continue-button");
 
-        this.firstNameError = page.locator("#FirstName-error");
-        this.lastNameError = page.locator("#LastName-error");
-        this.emailError = page.locator("#Email-error");
-        this.passwordError = page.locator("#Password-error");
-        this.confirmPasswordError = page.locator("#ConfirmPassword-error");
-        this.validationSummaryError = page.locator(".message-error.validation-summary-errors");
+        this.firstNameError = page.locator("#FirstName-error, span[data-valmsg-for='FirstName'], .field-validation-error[data-valmsg-for='FirstName']");
+        this.lastNameError = page.locator("#LastName-error, span[data-valmsg-for='LastName'], .field-validation-error[data-valmsg-for='LastName']");
+        this.emailError = page.locator("#Email-error, span[data-valmsg-for='Email'], .field-validation-error[data-valmsg-for='Email']");
+        this.passwordError = page.locator("#Password-error, span[data-valmsg-for='Password'], .field-validation-error[data-valmsg-for='Password']");
+        this.confirmPasswordError = page.locator("#ConfirmPassword-error, span[data-valmsg-for='ConfirmPassword'], .field-validation-error[data-valmsg-for='ConfirmPassword']");
+        this.validationSummaryError = page.locator(".message-error.validation-summary-errors, .message-error");
     }
 
     public void selectGender(String gender) {

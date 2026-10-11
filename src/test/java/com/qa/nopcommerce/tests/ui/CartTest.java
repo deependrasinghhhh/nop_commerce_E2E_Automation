@@ -25,7 +25,7 @@ public class CartTest extends BaseTest {
     @Severity(SeverityLevel.BLOCKER)
     @Description("Verify adding product to shopping cart from product details page")
     public void testAddProductToCart() {
-        navigateTo("/apple-macbook-pro-13-inch");
+        navigateTo("/apple-macbook-pro");
         ProductDetailsPage productPage = new ProductDetailsPage(getPage());
 
         productPage.clickAddToCart();
@@ -39,7 +39,7 @@ public class CartTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify shopping cart table renders product name, unit price, quantity, and total")
     public void testViewShoppingCart() {
-        navigateTo("/apple-macbook-pro-13-inch");
+        navigateTo("/apple-macbook-pro");
         ProductDetailsPage productPage = new ProductDetailsPage(getPage());
         productPage.clickAddToCart();
 
@@ -55,7 +55,7 @@ public class CartTest extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify updating line item quantity in shopping cart recalculates subtotal")
     public void testUpdateCartItemQuantity() {
-        navigateTo("/apple-macbook-pro-13-inch");
+        navigateTo("/apple-macbook-pro");
         ProductDetailsPage productPage = new ProductDetailsPage(getPage());
         productPage.clickAddToCart();
 
@@ -74,7 +74,7 @@ public class CartTest extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify removing item from cart updates cart count")
     public void testRemoveItemFromCart() {
-        navigateTo("/apple-macbook-pro-13-inch");
+        navigateTo("/apple-macbook-pro");
         ProductDetailsPage productPage = new ProductDetailsPage(getPage());
         productPage.clickAddToCart();
 
@@ -91,13 +91,17 @@ public class CartTest extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify applying invalid coupon code displays alert message")
     public void testApplyInvalidCouponCode() {
+        navigateTo("/apple-macbook-pro");
+        ProductDetailsPage productPage = new ProductDetailsPage(getPage());
+        productPage.clickAddToCart();
+
         navigateTo("/cart");
         CartPage cartPage = new CartPage(getPage());
 
-        cartPage.applyCouponCode("INVALID_DISCOUNT_CODE_999");
-        Locator message = getPage().locator(".message-failure, .coupon-box .message");
-        if (message.count() > 0) {
-            PlaywrightAssertions.assertThat(message.first()).isVisible();
+        if (cartPage.getCartItemCount() > 0) {
+            cartPage.applyCouponCode("INVALID_DISCOUNT_CODE_999");
+            Locator message = getPage().locator(".message-failure, .coupon-box .message, .message-error");
+            Assert.assertTrue(message.count() > 0, "Coupon message element should be present");
         }
     }
 }
