@@ -62,42 +62,48 @@ def scan_java_annotations():
 
 def parse_surefire_results():
     results = {} # method_name -> status (PASS, FAIL, SKIPPED)
-    if not os.path.exists(SUREFIRE_DIR):
-        return results
+    search_dirs = [
+        os.path.join(ROOT_DIR, "target", "surefire-reports"),
+        SUREFIRE_DIR
+    ]
+    for s_dir in search_dirs:
+        if not os.path.exists(s_dir):
+            continue
+        for root, _, files in os.walk(s_dir):
+            for file in files:
+                if file.startswith("TEST-") and file.endswith(".xml"):
+                    try:
+                        tree = ET.parse(os.path.join(root, file))
+                        suite = tree.getroot()
+                        for tc in suite.findall("testcase"):
+                            name = tc.get("name")
+                            status = "PASS"
+                            if tc.find("failure") is not None:
+                                status = "FAIL"
+                            elif tc.find("error") is not None:
+                                status = "ERROR"
+                            elif tc.find("skipped") is not None:
+                                status = "SKIPPED"
+                            results[name] = status
+                    except Exception:
+                        pass
 
-    for root, _, files in os.walk(SUREFIRE_DIR):
-        for file in files:
-            if file.startswith("TEST-") and file.endswith(".xml"):
-                tree = ET.parse(os.path.join(root, file))
-                suite = tree.getroot()
-                for tc in suite.findall("testcase"):
-                    name = tc.get("name")
-                    status = "PASS"
-                    if tc.find("failure") is not None:
-                        status = "FAIL"
-                    elif tc.find("error") is not None:
-                        status = "ERROR"
-                    elif tc.find("skipped") is not None:
-                        status = "SKIPPED"
-                    results[name] = status
-
-    # Also parse testng-results.xml if present
-    testng_results = os.path.join(SUREFIRE_DIR, "testng-results.xml")
-    if os.path.exists(testng_results):
-        try:
-            tree = ET.parse(testng_results)
-            root = tree.getroot()
-            for test_method in root.findall(".//test-method"):
-                name = test_method.get("name")
-                status = test_method.get("status") # PASS, FAIL, SKIP
-                if status == "PASS":
-                    results[name] = "PASS"
-                elif status == "FAIL":
-                    results[name] = "FAIL"
-                elif status == "SKIP":
-                    results[name] = "SKIPPED"
-        except Exception as e:
-            pass
+        testng_results = os.path.join(s_dir, "testng-results.xml")
+        if os.path.exists(testng_results):
+            try:
+                tree = ET.parse(testng_results)
+                root = tree.getroot()
+                for test_method in root.findall(".//test-method"):
+                    name = test_method.get("name")
+                    status = test_method.get("status") # PASS, FAIL, SKIP
+                    if status == "PASS":
+                        results[name] = "PASS"
+                    elif status == "FAIL":
+                        results[name] = "FAIL"
+                    elif status == "SKIP":
+                        results[name] = "SKIPPED"
+            except Exception:
+                pass
     return results
 
 def main():

@@ -35,7 +35,11 @@ jobs:
 
       - name: Execute API Integration Suite
         run: |
-          mvn clean test -DsuiteFile=src/test/resources/suites/api.xml
+          mvn clean test -DsuiteFile=src/test/resources/suites/api.xml \
+            -DbaseUrl=https://demo.nopcommerce.com \
+            -DadminUrl=https://admin-demo.nopcommerce.com/admin/ \
+            -Dheadless=true \
+            -DbrowserChannel=none
 
       - name: Run RTM Reconciliation Script
         if: always()

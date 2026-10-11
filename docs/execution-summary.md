@@ -1,6 +1,6 @@
 # Test Execution Summary
 
-**Generated:** 2026-10-11 16:11:50 UTC
+**Generated:** 2026-10-11 18:45:32 UTC
 **Target AUT:** nopCommerce 4.90.8 (.NET 9)
 **Stack:** Java 21 LTS | Playwright Java 1.48.0 | TestNG 7.10.2 | Maven 3.9.6
 
@@ -10,10 +10,10 @@
 |---|---|---|
 | Total Specified Test Cases | 104 | 100.0% |
 | Automated Test Methods | 47 | 45.2% |
-| Executed - Passed | 6 | 5.8% |
+| Executed - Passed | 42 | 40.4% |
 | Executed - Failed (WAF Challenge) | 1 | 1.0% |
 | Executed - Skipped (Database Offline) | 4 | 3.8% |
-| Not Run (Manual / Blocked Scope) | 93 | 89.4% |
+| Not Run (Manual / Blocked Scope) | 57 | 54.8% |
 
 ## 2. Retained Machine Evidence Artifacts
 
