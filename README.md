@@ -153,30 +153,48 @@ mvn clean test-compile
 
 ### 4.3 Run API Integration Test Suite (100% Pass)
 ```bash
-mvn test -DsuiteFile=src/test/resources/suites/api.xml
+# Using Maven Profile (Cross-platform: PowerShell, CMD, Bash)
+mvn test -Papi
+
+# Or using explicit suite path (Note: quotes required in Windows PowerShell)
+mvn test "-DsuiteFile=src/test/resources/suites/api.xml"
 ```
 
 ### 4.4 Run Database Verification Suite (Graceful Skipped on Offline DB)
 ```bash
-mvn test -DsuiteFile=src/test/resources/suites/db.xml
+mvn test -Pdb
 ```
 
-### 4.5 Run Smoke Test Gate
+### 4.5 Run Accessibility Scans (WCAG 2.1 AA)
 ```bash
-mvn test -DsuiteFile=src/test/resources/suites/smoke.xml
+mvn test -Pa11y
 ```
 
-### 4.6 Reconcile Requirements Traceability Matrix (RTM)
+### 4.6 Run Smoke Test Gate
+```bash
+mvn test -Psmoke
+```
+
+### 4.7 Run Full Regression Suite
+```bash
+# Headless mode (default in CI)
+mvn test -Pregression
+
+# Browser (Headed) mode
+mvn test -Pregression -Dheadless=false
+```
+
+### 4.8 Reconcile Requirements Traceability Matrix (RTM)
 ```bash
 python scripts/reconcile_rtm.py
 ```
 
-### 4.7 Run with Containerized Local AUT (Docker)
+### 4.9 Run with Containerized Local AUT (Docker)
 ```bash
 cd docker
 docker compose up -d
-# Run tests against local container
-mvn test -DsuiteFile=src/test/resources/suites/regression.xml -DbaseUrl=http://localhost:5000
+# Run tests against local container without Cloudflare Turnstile
+mvn test -Pregression -DbaseUrl=http://localhost:5000 -Dheadless=false
 docker compose down -v
 ```
 

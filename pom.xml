@@ -144,4 +144,46 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>smoke</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <suiteFile>src/test/resources/suites/smoke.xml</suiteFile>
+            </properties>
+        </profile>
+        <profile>
+            <id>regression</id>
+            <properties>
+                <suiteFile>src/test/resources/suites/regression.xml</suiteFile>
+            </properties>
+        </profile>
+        <profile>
+            <id>api</id>
+            <properties>
+                <suiteFile>src/test/resources/suites/api.xml</suiteFile>
+            </properties>
+        </profile>
+        <profile>
+            <id>ui</id>
+            <properties>
+                <suiteFile>src/test/resources/suites/ui.xml</suiteFile>
+            </properties>
+        </profile>
+        <profile>
+            <id>db</id>
+            <properties>
+                <suiteFile>src/test/resources/suites/db.xml</suiteFile>
+            </properties>
+        </profile>
+        <profile>
+            <id>a11y</id>
+            <properties>
+                <suiteFile>src/test/resources/suites/a11y.xml</suiteFile>
+            </properties>
+        </profile>
+    </profiles>
 </project>
