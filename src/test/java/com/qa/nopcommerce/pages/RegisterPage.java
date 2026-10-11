@@ -74,6 +74,7 @@ public class RegisterPage extends BasePage {
 
     public void clickRegisterButton() {
         click(registerButton);
+        handleCloudflareIfPresent();
     }
 
     public String getSuccessMessage() {
