@@ -37,21 +37,6 @@ public abstract class BaseTest {
         String targetUrl = path.startsWith("http") ? path : baseUrl + (path.startsWith("/") ? path : "/" + path);
         log.info("Navigating to: {}", targetUrl);
         getPage().navigate(targetUrl);
-
-        try {
-            if (getPage().title().contains("Just a moment...") || getPage().content().contains("Verify you are human")) {
-                log.warn("Cloudflare Turnstile challenge active on {} - attempting challenge interaction pass", targetUrl);
-                for (com.microsoft.playwright.Frame frame : getPage().frames()) {
-                    if (frame.url().contains("challenges.cloudflare.com")) {
-                        try {
-                            frame.locator(".fXVnL4 input, .lnOXD9, input[type='checkbox']").first()
-                                    .click(new com.microsoft.playwright.Locator.ClickOptions().setForce(true).setTimeout(2000));
-                        } catch (Exception ignored) {}
-                    }
-                }
-                getPage().waitForTimeout(2500);
-            }
-        } catch (Exception ignored) {}
     }
 
     @AfterMethod(alwaysRun = true)

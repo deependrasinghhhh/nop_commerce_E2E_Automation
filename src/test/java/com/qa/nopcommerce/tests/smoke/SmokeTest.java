@@ -4,6 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import com.qa.nopcommerce.annotation.TestCase;
 import com.qa.nopcommerce.base.BaseTest;
+import com.qa.nopcommerce.config.ConfigReader;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -25,13 +26,13 @@ public class SmokeTest extends BaseTest {
         navigateTo("/");
 
         // Auto-waiting assertion on page title
-        PlaywrightAssertions.assertThat(getPage()).hasTitle(Pattern.compile(".*nopCommerce.*"));
+        PlaywrightAssertions.assertThat(getPage()).hasTitle(Pattern.compile(".*(nopCommerce|Your store).*"));
 
         // Verify header elements
         Locator logo = getPage().locator(".header-logo a");
         PlaywrightAssertions.assertThat(logo).isVisible();
 
-        Locator topMenu = getPage().locator(".top-menu.notmobile");
+        Locator topMenu = getPage().locator(".header-menu, .top-menu");
         PlaywrightAssertions.assertThat(topMenu).isVisible();
 
         Locator searchInput = getPage().locator("#small-searchterms");
@@ -66,7 +67,7 @@ public class SmokeTest extends BaseTest {
     @Severity(SeverityLevel.BLOCKER)
     @Description("Verify nopCommerce administration login page renders email input, password input, and login button")
     public void testAdminLoginPageRendering() {
-        navigateTo("https://admin-demo.nopcommerce.com/login");
+        navigateTo(ConfigReader.getAdminUrl());
 
         PlaywrightAssertions.assertThat(getPage()).hasTitle(Pattern.compile(".*Your store. Login.*"));
 
@@ -76,7 +77,7 @@ public class SmokeTest extends BaseTest {
         Locator passwordInput = getPage().locator("#Password");
         PlaywrightAssertions.assertThat(passwordInput).isVisible();
 
-        Locator loginButton = getPage().locator("button[type='submit']");
+        Locator loginButton = getPage().locator("button.login-button");
         PlaywrightAssertions.assertThat(loginButton).isVisible();
     }
 }

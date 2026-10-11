@@ -25,7 +25,7 @@ public class AdminTest extends BaseTest {
     @Severity(SeverityLevel.BLOCKER)
     @Description("Verify nopCommerce administration login page renders email input, password input, and login button")
     public void testAdminLoginPageRendering() {
-        navigateTo("https://admin-demo.nopcommerce.com/admin/");
+        navigateTo(ConfigReader.getAdminUrl());
         AdminLoginPage adminLoginPage = new AdminLoginPage(getPage());
 
         PlaywrightAssertions.assertThat(getPage()).hasTitle(Pattern.compile(".*(Your store|nopCommerce demo store)\\. Login.*"));
@@ -38,7 +38,7 @@ public class AdminTest extends BaseTest {
     @Severity(SeverityLevel.BLOCKER)
     @Description("Verify administration login succeeds with valid administrator credentials")
     public void testAdminLoginValidCredentials() {
-        navigateTo("https://admin-demo.nopcommerce.com/admin/");
+        navigateTo(ConfigReader.getAdminUrl());
         AdminLoginPage adminLoginPage = new AdminLoginPage(getPage());
 
         String email = ConfigReader.getAdminEmail();
@@ -53,7 +53,7 @@ public class AdminTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify administration login rejects invalid password with error message")
     public void testAdminLoginInvalidPassword() {
-        navigateTo("https://admin-demo.nopcommerce.com/admin/");
+        navigateTo(ConfigReader.getAdminUrl());
         AdminLoginPage adminLoginPage = new AdminLoginPage(getPage());
 
         adminLoginPage.login("admin@yourstore.com", "WrongAdminPass999!");
@@ -66,9 +66,9 @@ public class AdminTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify admin dashboard renders navigation sidebar and dashboard statistics cards")
     public void testAdminDashboardElements() {
-        navigateTo("https://admin-demo.nopcommerce.com/admin/");
+        navigateTo(ConfigReader.getAdminUrl());
         AdminLoginPage adminLoginPage = new AdminLoginPage(getPage());
-        AdminDashboardPage dashboardPage = adminLoginPage.login("admin@yourstore.com", "admin");
+        AdminDashboardPage dashboardPage = adminLoginPage.login(ConfigReader.getAdminEmail(), ConfigReader.getAdminPassword());
 
         Assert.assertTrue(dashboardPage.isDashboardLoaded(), "Dashboard should be loaded");
         Assert.assertTrue(dashboardPage.getStatisticsCardCount() > 0, "Dashboard should display stat cards");
@@ -79,7 +79,7 @@ public class AdminTest extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify admin can access catalog product list page")
     public void testAdminCatalogProductsPage() {
-        navigateTo("https://admin-demo.nopcommerce.com/Admin/Product/List");
+        navigateTo("/Admin/Product/List");
 
         PlaywrightAssertions.assertThat(getPage())
                 .hasURL(Pattern.compile(".*(Product/List|login).*"));
@@ -90,7 +90,7 @@ public class AdminTest extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify admin can access sales orders list page")
     public void testAdminSalesOrdersPage() {
-        navigateTo("https://admin-demo.nopcommerce.com/Admin/Order/List");
+        navigateTo("/Admin/Order/List");
 
         PlaywrightAssertions.assertThat(getPage())
                 .hasURL(Pattern.compile(".*(Order/List|login).*"));
@@ -101,7 +101,7 @@ public class AdminTest extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify admin can access customer accounts list page")
     public void testAdminCustomersPage() {
-        navigateTo("https://admin-demo.nopcommerce.com/Admin/Customer/List");
+        navigateTo("/Admin/Customer/List");
 
         PlaywrightAssertions.assertThat(getPage())
                 .hasURL(Pattern.compile(".*(Customer/List|login).*"));

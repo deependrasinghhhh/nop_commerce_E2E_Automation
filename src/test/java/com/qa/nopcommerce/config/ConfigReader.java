@@ -84,11 +84,11 @@ public class ConfigReader {
     }
 
     public static String getBaseUrl() {
-        return get("baseUrl", "https://demo.nopcommerce.com");
+        return get("baseUrl", "http://localhost:5000");
     }
 
     public static String getAdminUrl() {
-        return get("adminUrl", "https://admin-demo.nopcommerce.com/admin/");
+        return get("adminUrl", "http://localhost:5000/Admin");
     }
 
     public static String getBrowser() {
@@ -112,7 +112,7 @@ public class ConfigReader {
     }
 
     public static String getAdminPassword() {
-        return get("adminPassword", "admin");
+        return get("adminPassword", "Admin@12345");
     }
 
     public static String getDbHost() {

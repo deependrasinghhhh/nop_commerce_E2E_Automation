@@ -59,9 +59,7 @@ public class PlaywrightFactory {
         BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions()
                 .setHeadless(headless)
                 .setSlowMo(ConfigReader.getSlowMo())
-                .setIgnoreDefaultArgs(java.util.Arrays.asList("--enable-automation"))
                 .setArgs(java.util.Arrays.asList(
-                        "--disable-blink-features=AutomationControlled",
                         "--no-sandbox",
                         "--disable-dev-shm-usage"
                 ));
@@ -95,7 +93,6 @@ public class PlaywrightFactory {
         }
 
         Page page = context.newPage();
-        page.addInitScript("Object.defineProperty(navigator, 'webdriver', {get: () => undefined});");
         page.setDefaultTimeout(ConfigReader.getDefaultTimeout());
         tlPage.set(page);
 
