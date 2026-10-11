@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [nopCommerce Smoke Suite]" guice-stage="DEVELOPMENT" verbose="0">
+  <listeners>
+    <listener class-name="com.qa.nopcommerce.listeners.TestListener"/>
+  </listeners>
+  <test thread-count="5" name="Smoke Tests(failed)" verbose="0">
+    <classes>
+      <class name="com.qa.nopcommerce.tests.smoke.SmokeTest">
+        <methods>
+          <include name="tearDown"/>
+          <include name="testStorefrontSearchBoxInput"/>
+          <include name="testHomePageTitleAndHeaderRendering"/>
+          <include name="setUp"/>
+        </methods>
+      </class> <!-- com.qa.nopcommerce.tests.smoke.SmokeTest -->
+    </classes>
+  </test> <!-- Smoke Tests(failed) -->
+</suite> <!-- Failed suite [nopCommerce Smoke Suite] -->
