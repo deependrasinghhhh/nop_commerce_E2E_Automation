@@ -31,7 +31,6 @@ public class LoginPage extends BasePage {
         fill(emailInput, email);
         fill(passwordInput, password);
         click(loginButton);
-        handleCloudflareIfPresent();
     }
 
     public void loginWithRememberMe(String email, String password) {
@@ -39,7 +38,6 @@ public class LoginPage extends BasePage {
         fill(passwordInput, password);
         rememberMeCheckbox.check();
         click(loginButton);
-        handleCloudflareIfPresent();
     }
 
     public String getEmailError() {

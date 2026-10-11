@@ -62,13 +62,8 @@ public class PlaywrightFactory {
                 .setIgnoreDefaultArgs(java.util.Arrays.asList("--enable-automation"))
                 .setArgs(java.util.Arrays.asList(
                         "--disable-blink-features=AutomationControlled",
-                        "--disable-features=IsolateOrigins,site-per-process",
                         "--no-sandbox",
-                        "--disable-dev-shm-usage",
-                        "--disable-infobars",
-                        "--no-first-run",
-                        "--no-default-browser-check",
-                        "--window-size=1366,768"
+                        "--disable-dev-shm-usage"
                 ));
 
         if (channel != null && !channel.trim().isEmpty() && !channel.equalsIgnoreCase("none")) {
@@ -87,30 +82,10 @@ public class PlaywrightFactory {
 
         Browser.NewContextOptions contextOptions = new Browser.NewContextOptions()
                 .setViewportSize(1366, 768)
-                .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36")
-                .setLocale("en-US")
-                .setTimezoneId("America/New_York")
                 .setIgnoreHTTPSErrors(true);
 
         BrowserContext context = browser.newContext(contextOptions);
         tlContext.set(context);
-
-        // Inject stealth anti-detection script across all pages and frames in this context
-        context.addInitScript(
-                "// 1. Mask webdriver\n" +
-                "Object.defineProperty(navigator, 'webdriver', { get: () => undefined });\n" +
-                "// 2. Mock plugins\n" +
-                "Object.defineProperty(navigator, 'plugins', { get: () => [1, 2, 3, 4, 5] });\n" +
-                "// 3. Mock languages\n" +
-                "Object.defineProperty(navigator, 'languages', { get: () => ['en-US', 'en'] });\n" +
-                "// 4. Mock chrome object\n" +
-                "window.chrome = window.chrome || { runtime: {}, app: { isInstalled: false } };\n" +
-                "// 5. Mock permissions\n" +
-                "if (navigator.permissions && navigator.permissions.query) {\n" +
-                "    const orig = navigator.permissions.query;\n" +
-                "    navigator.permissions.query = (p) => p.name === 'notifications' ? Promise.resolve({ state: Notification.permission }) : orig(p);\n" +
-                "}\n"
-        );
 
         if (ConfigReader.isRecordTrace()) {
             context.tracing().start(new Tracing.StartOptions()
@@ -120,6 +95,7 @@ public class PlaywrightFactory {
         }
 
         Page page = context.newPage();
+        page.addInitScript("Object.defineProperty(navigator, 'webdriver', {get: () => undefined});");
         page.setDefaultTimeout(ConfigReader.getDefaultTimeout());
         tlPage.set(page);
 

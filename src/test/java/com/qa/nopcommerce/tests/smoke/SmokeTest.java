@@ -68,7 +68,7 @@ public class SmokeTest extends BaseTest {
     public void testAdminLoginPageRendering() {
         navigateTo("https://admin-demo.nopcommerce.com/login");
 
-        PlaywrightAssertions.assertThat(getPage()).hasTitle(Pattern.compile(".*(Your store|nopCommerce demo store)\\. Login.*"));
+        PlaywrightAssertions.assertThat(getPage()).hasTitle(Pattern.compile(".*Your store. Login.*"));
 
         Locator emailInput = getPage().locator("#Email");
         PlaywrightAssertions.assertThat(emailInput).isVisible();

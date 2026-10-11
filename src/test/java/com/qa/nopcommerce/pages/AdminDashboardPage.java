@@ -17,7 +17,7 @@ public class AdminDashboardPage extends BasePage {
 
     public AdminDashboardPage(Page page) {
         super(page);
-        this.dashboardHeader = page.locator(".content-header h1, h1:has-text('Dashboard')").first();
+        this.dashboardHeader = page.locator("h1:has-text('Dashboard'), .content-header h1, h1.float-left");
         this.logoutLink = page.locator("a[href*='logout']");
         this.catalogMenu = page.locator(".nav-sidebar a:has-text('Catalog')").first();
         this.salesMenu = page.locator(".nav-sidebar a:has-text('Sales')").first();
@@ -26,18 +26,10 @@ public class AdminDashboardPage extends BasePage {
     }
 
     public boolean isDashboardLoaded() {
-        try {
-            dashboardHeader.waitFor(new Locator.WaitForOptions().setTimeout(15000));
-            return isVisible(dashboardHeader) && getText(dashboardHeader).contains("Dashboard");
-        } catch (Exception e) {
-            return false;
-        }
+        return isVisible(dashboardHeader) && getText(dashboardHeader).contains("Dashboard");
     }
 
     public int getStatisticsCardCount() {
-        try {
-            statCards.first().waitFor(new Locator.WaitForOptions().setTimeout(10000));
-        } catch (Exception ignored) {}
         return statCards.count();
     }
 
