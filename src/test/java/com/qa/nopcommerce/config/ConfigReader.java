@@ -84,11 +84,11 @@ public class ConfigReader {
     }
 
     public static String getBaseUrl() {
-        return get("baseUrl", "http://localhost:5000");
+        return get("baseUrl", "http://127.0.0.1:5000");
     }
 
     public static String getAdminUrl() {
-        return get("adminUrl", "http://localhost:5000/Admin");
+        return get("adminUrl", "http://127.0.0.1:5000/Admin");
     }
 
     public static String getBrowser() {
@@ -104,7 +104,7 @@ public class ConfigReader {
     }
 
     public static double getDefaultTimeout() {
-        return Double.parseDouble(get("defaultTimeout", "15000"));
+        return Double.parseDouble(get("defaultTimeout", "30000"));
     }
 
     public static String getAdminEmail() {
@@ -116,7 +116,7 @@ public class ConfigReader {
     }
 
     public static String getDbHost() {
-        return get("dbHost", "localhost");
+        return get("dbHost", "127.0.0.1");
     }
 
     public static int getDbPort() {

@@ -1,6 +1,7 @@
 package com.qa.nopcommerce.base;
 
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.WaitUntilState;
 import com.qa.nopcommerce.config.ConfigReader;
 import com.qa.nopcommerce.factory.PlaywrightFactory;
 import org.slf4j.Logger;
@@ -36,7 +37,7 @@ public abstract class BaseTest {
         String baseUrl = ConfigReader.getBaseUrl();
         String targetUrl = path.startsWith("http") ? path : baseUrl + (path.startsWith("/") ? path : "/" + path);
         log.info("Navigating to: {}", targetUrl);
-        getPage().navigate(targetUrl);
+        getPage().navigate(targetUrl, new Page.NavigateOptions().setWaitUntil(WaitUntilState.DOMCONTENTLOADED));
     }
 
     @AfterMethod(alwaysRun = true)

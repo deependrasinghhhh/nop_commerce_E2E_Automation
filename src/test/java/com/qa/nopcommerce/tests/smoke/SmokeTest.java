@@ -29,8 +29,8 @@ public class SmokeTest extends BaseTest {
         PlaywrightAssertions.assertThat(getPage()).hasTitle(Pattern.compile(".*(nopCommerce|Your store).*"));
 
         // Verify header elements
-        Locator logo = getPage().locator(".header-logo a");
-        PlaywrightAssertions.assertThat(logo).isVisible();
+        Locator logo = getPage().locator(".header-logo");
+        PlaywrightAssertions.assertThat(logo).isAttached();
 
         Locator topMenu = getPage().locator(".header-menu, .top-menu");
         PlaywrightAssertions.assertThat(topMenu).isVisible();

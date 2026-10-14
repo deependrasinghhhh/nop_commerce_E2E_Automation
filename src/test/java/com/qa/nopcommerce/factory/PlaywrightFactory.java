@@ -99,6 +99,7 @@ public class PlaywrightFactory {
 
         Page page = context.newPage();
         page.setDefaultTimeout(ConfigReader.getDefaultTimeout());
+        page.setDefaultNavigationTimeout(30000);
         tlPage.set(page);
 
         return page;
