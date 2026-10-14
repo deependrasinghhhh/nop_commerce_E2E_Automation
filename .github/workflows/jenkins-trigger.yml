@@ -1,0 +1,66 @@
+name: Jenkins CI Pipeline Trigger
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: 'TestNG Suite to run on Jenkins'
+        required: false
+        default: 'suites/smoke.xml'
+      browser:
+        description: 'Browser family'
+        required: false
+        default: 'chromium'
+
+jobs:
+  trigger-jenkins:
+    name: Trigger Jenkins Automation Pipeline
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Trigger Jenkins Pipeline Webhook
+        env:
+          JENKINS_URL: ${{ secrets.JENKINS_URL }}
+          JENKINS_USER: ${{ secrets.JENKINS_USER }}
+          JENKINS_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
+          TRIGGER_TOKEN: ${{ secrets.JENKINS_TRIGGER_TOKEN || 'nopcommerce-qa-trigger-token' }}
+        run: |
+          echo "=== Initiating Jenkins Pipeline Trigger ==="
+          if [ -n "$JENKINS_URL" ]; then
+            echo "Sending webhook trigger to Jenkins at: $JENKINS_URL"
+            if [ -n "$JENKINS_USER" ] && [ -n "$JENKINS_TOKEN" ]; then
+              STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+                -u "$JENKINS_USER:$JENKINS_TOKEN" \
+                "$JENKINS_URL/job/nopCommerce-QA-Pipeline/build?token=$TRIGGER_TOKEN" || echo "failed")
+            else
+              STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+                "$JENKINS_URL/job/nopCommerce-QA-Pipeline/build?token=$TRIGGER_TOKEN" || echo "failed")
+            fi
+            echo "Jenkins API Response HTTP Status: $STATUS"
+            if [ "$STATUS" = "201" ] || [ "$STATUS" = "200" ]; then
+              echo "✅ Successfully dispatched build to Jenkins Pipeline: nopCommerce-QA-Pipeline"
+            else
+              echo "⚠️ Jenkins returned HTTP $STATUS. Check Jenkins server endpoint or authentication."
+            fi
+          else
+            echo "ℹ️ No external JENKINS_URL configured in GitHub Repository Secrets."
+            echo "ℹ️ Local Jenkins instance is running at http://localhost:8080"
+            echo "ℹ️ Pipeline 'nopCommerce-QA-Pipeline' is configured with trigger token: 'nopcommerce-qa-trigger-token'"
+            echo "ℹ️ To trigger from local or webhook proxy, run:"
+            echo "   curl -X POST -u 'Deependra:1118dcb75992ada5baac019bfacd67a691' http://localhost:8080/job/nopCommerce-QA-Pipeline/build"
+          fi
+
+      - name: Verify Workflow Dispatch Payload
+        run: |
+          echo "Commit: ${{ github.sha }}"
+          echo "Branch: ${{ github.ref }}"
+          echo "Author: ${{ github.actor }}"
+          echo "Event:  ${{ github.event_name }}"

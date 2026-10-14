@@ -41,6 +41,11 @@ public abstract class BaseTest {
 
     @AfterMethod(alwaysRun = true)
     public void tearDown() {
+        PlaywrightFactory.closeContext();
+    }
+
+    @org.testng.annotations.AfterClass(alwaysRun = true)
+    public void tearDownClass() {
         PlaywrightFactory.quit();
     }
 }

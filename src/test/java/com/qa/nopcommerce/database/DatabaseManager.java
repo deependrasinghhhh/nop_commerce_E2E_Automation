@@ -1,6 +1,8 @@
 package com.qa.nopcommerce.database;
 
 import com.qa.nopcommerce.config.ConfigReader;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,11 +13,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Thread-safe Database Manager providing read-only JDBC verification against nopCommerce MSSQL database.
+ * Thread-safe Database Manager providing high-performance pooled read-only JDBC verification
+ * against nopCommerce MSSQL database using HikariCP.
  * Supports automated verification of customer records, order records, and shopping cart persistence.
  */
 public class DatabaseManager {
     private static final Logger log = LoggerFactory.getLogger(DatabaseManager.class);
+    private static volatile HikariDataSource dataSource;
 
     private static String getJdbcUrl() {
         String host = ConfigReader.get("dbHost", "localhost");
@@ -30,11 +34,42 @@ public class DatabaseManager {
         );
     }
 
+    private static synchronized HikariDataSource getDataSource() {
+        if (dataSource == null || dataSource.isClosed()) {
+            HikariConfig config = new HikariConfig();
+            config.setJdbcUrl(getJdbcUrl());
+            config.setUsername(ConfigReader.get("dbUser", "sa"));
+            config.setPassword(ConfigReader.get("dbPassword", "NopCommerce@2026!"));
+            config.setMaximumPoolSize(5);
+            config.setMinimumIdle(1);
+            config.setIdleTimeout(30000);
+            config.setConnectionTimeout(3000);
+            config.setPoolName("nopCommerce-HikariPool");
+            config.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            dataSource = new HikariDataSource(config);
+            log.info("Initialized HikariCP connection pool for {}", config.getJdbcUrl());
+        }
+        return dataSource;
+    }
+
     public static Connection getConnection() throws SQLException {
-        String url = getJdbcUrl();
-        String user = ConfigReader.get("dbUser", "sa");
-        String password = ConfigReader.get("dbPassword", "NopCommerce@2026!");
-        return DriverManager.getConnection(url, user, password);
+        try {
+            return getDataSource().getConnection();
+        } catch (Exception e) {
+            log.warn("HikariCP connection checkout failed ({}), falling back to direct connection", e.getMessage());
+            return DriverManager.getConnection(
+                    getJdbcUrl(),
+                    ConfigReader.get("dbUser", "sa"),
+                    ConfigReader.get("dbPassword", "NopCommerce@2026!")
+            );
+        }
+    }
+
+    public static synchronized void closePool() {
+        if (dataSource != null && !dataSource.isClosed()) {
+            dataSource.close();
+            log.info("Closed HikariCP connection pool");
+        }
     }
 
     public static boolean isDatabaseAccessible() {

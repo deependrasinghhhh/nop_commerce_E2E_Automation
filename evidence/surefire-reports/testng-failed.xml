@@ -1,20 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Failed suite [nopCommerce Database Verification Suite]" guice-stage="DEVELOPMENT" verbose="0">
+<suite name="Failed suite [nopCommerce Storefront UI Suite]" guice-stage="DEVELOPMENT" verbose="0">
   <listeners>
     <listener class-name="com.qa.nopcommerce.listeners.TestListener"/>
   </listeners>
-  <test thread-count="5" name="Database Read-Only Verification(failed)" verbose="0">
+  <test thread-count="5" name="Storefront UI Tests(failed)" verbose="0">
     <classes>
-      <class name="com.qa.nopcommerce.tests.db.DatabaseVerificationTest">
+      <class name="com.qa.nopcommerce.tests.ui.AdminTest">
         <methods>
-          <include name="testOrderRecordPersistenceInDatabase"/>
-          <include name="testCartItemPersistenceInDatabase"/>
-          <include name="checkDatabaseAvailability"/>
-          <include name="testCustomerRecordPersistenceInDatabase"/>
-          <include name="testDatabaseConnectionHealth"/>
+          <include name="testAdminLoginInvalidPassword"/>
+          <include name="testAdminCatalogProductsPage"/>
+          <include name="testAdminLoginValidCredentials"/>
+          <include name="testAdminSalesOrdersPage"/>
+          <include name="tearDown"/>
+          <include name="testAdminDashboardElements"/>
+          <include name="testAdminCustomersPage"/>
+          <include name="setUp"/>
         </methods>
-      </class> <!-- com.qa.nopcommerce.tests.db.DatabaseVerificationTest -->
+      </class> <!-- com.qa.nopcommerce.tests.ui.AdminTest -->
+      <class name="com.qa.nopcommerce.tests.ui.AuthTest">
+        <methods>
+          <include name="testRegistrationMalformedEmailValidation"/>
+          <include name="tearDown"/>
+          <include name="testCustomerLoginInvalidPassword"/>
+          <include name="testRegistrationMandatoryFieldValidation"/>
+          <include name="testRegistrationPasswordMismatch"/>
+          <include name="setUp"/>
+        </methods>
+      </class> <!-- com.qa.nopcommerce.tests.ui.AuthTest -->
     </classes>
-  </test> <!-- Database Read-Only Verification(failed) -->
-</suite> <!-- Failed suite [nopCommerce Database Verification Suite] -->
+  </test> <!-- Storefront UI Tests(failed) -->
+</suite> <!-- Failed suite [nopCommerce Storefront UI Suite] -->

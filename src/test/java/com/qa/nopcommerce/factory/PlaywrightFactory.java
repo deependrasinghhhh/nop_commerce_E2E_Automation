@@ -20,11 +20,14 @@ public class PlaywrightFactory {
     private static final ThreadLocal<Page> tlPage = new ThreadLocal<>();
 
     public static Page initBrowser(String browserName, boolean headless) {
-        log.info("Initializing Playwright browser: {} (headless: {}) on thread: {}",
+        log.info("Initializing Playwright session: browser={}, headless={}, thread={}",
                 browserName, headless, Thread.currentThread().getName());
 
-        Playwright playwright = Playwright.create();
-        tlPlaywright.set(playwright);
+        Playwright playwright = tlPlaywright.get();
+        if (playwright == null) {
+            playwright = Playwright.create();
+            tlPlaywright.set(playwright);
+        }
 
         String cdpUrl = ConfigReader.get("cdpUrl", "");
         if (cdpUrl != null && !cdpUrl.trim().isEmpty() && !"none".equalsIgnoreCase(cdpUrl)) {
@@ -54,29 +57,31 @@ public class PlaywrightFactory {
             }
         }
 
-        String channel = ConfigReader.get("browserChannel", "chrome");
+        Browser browser = tlBrowser.get();
+        if (browser == null || !browser.isConnected()) {
+            String channel = ConfigReader.get("browserChannel", "chrome");
 
-        BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions()
-                .setHeadless(headless)
-                .setSlowMo(ConfigReader.getSlowMo())
-                .setArgs(java.util.Arrays.asList(
-                        "--no-sandbox",
-                        "--disable-dev-shm-usage"
-                ));
+            BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions()
+                    .setHeadless(headless)
+                    .setSlowMo(ConfigReader.getSlowMo())
+                    .setArgs(java.util.Arrays.asList(
+                            "--no-sandbox",
+                            "--disable-dev-shm-usage"
+                    ));
 
-        if (channel != null && !channel.trim().isEmpty() && !channel.equalsIgnoreCase("none")) {
-            launchOptions.setChannel(channel);
+            if (channel != null && !channel.trim().isEmpty() && !channel.equalsIgnoreCase("none")) {
+                launchOptions.setChannel(channel);
+            }
+
+            if ("firefox".equalsIgnoreCase(browserName)) {
+                browser = playwright.firefox().launch(launchOptions);
+            } else if ("webkit".equalsIgnoreCase(browserName)) {
+                browser = playwright.webkit().launch(launchOptions);
+            } else {
+                browser = playwright.chromium().launch(launchOptions);
+            }
+            tlBrowser.set(browser);
         }
-
-        Browser browser;
-        if ("firefox".equalsIgnoreCase(browserName)) {
-            browser = playwright.firefox().launch(launchOptions);
-        } else if ("webkit".equalsIgnoreCase(browserName)) {
-            browser = playwright.webkit().launch(launchOptions);
-        } else {
-            browser = playwright.chromium().launch(launchOptions);
-        }
-        tlBrowser.set(browser);
 
         Browser.NewContextOptions contextOptions = new Browser.NewContextOptions()
                 .setViewportSize(1366, 768)
@@ -128,8 +133,8 @@ public class PlaywrightFactory {
         }
     }
 
-    public static void quit() {
-        log.info("Tearing down Playwright session on thread: {}", Thread.currentThread().getName());
+    public static void closeContext() {
+        log.info("Closing Page and BrowserContext on thread: {}", Thread.currentThread().getName());
         try {
             Page page = tlPage.get();
             if (page != null) {
@@ -137,27 +142,43 @@ public class PlaywrightFactory {
                     page.close();
                 } catch (Exception ignored) {}
             }
+            BrowserContext context = tlContext.get();
+            if (context != null) {
+                try {
+                    context.close();
+                } catch (Exception ignored) {}
+            }
+        } catch (Exception e) {
+            log.warn("Error closing context: {}", e.getMessage());
+        } finally {
+            tlPage.remove();
+            tlContext.remove();
+        }
+    }
+
+    public static void quit() {
+        log.info("Tearing down Playwright session on thread: {}", Thread.currentThread().getName());
+        try {
+            closeContext();
             String cdpUrl = ConfigReader.get("cdpUrl", "");
             boolean isCdp = cdpUrl != null && !cdpUrl.trim().isEmpty() && !"none".equalsIgnoreCase(cdpUrl);
             if (!isCdp) {
-                BrowserContext context = tlContext.get();
-                if (context != null) {
-                    context.close();
-                }
                 Browser browser = tlBrowser.get();
-                if (browser != null) {
-                    browser.close();
+                if (browser != null && browser.isConnected()) {
+                    try {
+                        browser.close();
+                    } catch (Exception ignored) {}
                 }
             }
             Playwright playwright = tlPlaywright.get();
             if (playwright != null) {
-                playwright.close();
+                try {
+                    playwright.close();
+                } catch (Exception ignored) {}
             }
         } catch (Exception e) {
             log.warn("Error during Playwright tearDown: {}", e.getMessage());
         } finally {
-            tlPage.remove();
-            tlContext.remove();
             tlBrowser.remove();
             tlPlaywright.remove();
         }

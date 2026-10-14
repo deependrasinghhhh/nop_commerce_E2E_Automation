@@ -74,15 +74,24 @@ public class AdminTest extends BaseTest {
         Assert.assertTrue(dashboardPage.getStatisticsCardCount() > 0, "Dashboard should display stat cards");
     }
 
+    private void loginAsAdmin() {
+        navigateTo(ConfigReader.getAdminUrl());
+        AdminLoginPage adminLoginPage = new AdminLoginPage(getPage());
+        adminLoginPage.login(ConfigReader.getAdminEmail(), ConfigReader.getAdminPassword());
+    }
+
     @Test(groups = {"ui", "admin"})
     @TestCase("TC-ADM-005")
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify admin can access catalog product list page")
     public void testAdminCatalogProductsPage() {
+        loginAsAdmin();
         navigateTo("/Admin/Product/List");
 
         PlaywrightAssertions.assertThat(getPage())
-                .hasURL(Pattern.compile(".*(Product/List|login).*"));
+                .hasURL(Pattern.compile(".*Product/List.*"));
+        PlaywrightAssertions.assertThat(getPage().locator("#products-grid, .content-header h1").first())
+                .isVisible();
     }
 
     @Test(groups = {"ui", "admin"})
@@ -90,10 +99,13 @@ public class AdminTest extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify admin can access sales orders list page")
     public void testAdminSalesOrdersPage() {
+        loginAsAdmin();
         navigateTo("/Admin/Order/List");
 
         PlaywrightAssertions.assertThat(getPage())
-                .hasURL(Pattern.compile(".*(Order/List|login).*"));
+                .hasURL(Pattern.compile(".*Order/List.*"));
+        PlaywrightAssertions.assertThat(getPage().locator("#orders-grid, .content-header h1").first())
+                .isVisible();
     }
 
     @Test(groups = {"ui", "admin"})
@@ -101,9 +113,12 @@ public class AdminTest extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify admin can access customer accounts list page")
     public void testAdminCustomersPage() {
+        loginAsAdmin();
         navigateTo("/Admin/Customer/List");
 
         PlaywrightAssertions.assertThat(getPage())
-                .hasURL(Pattern.compile(".*(Customer/List|login).*"));
+                .hasURL(Pattern.compile(".*Customer/List.*"));
+        PlaywrightAssertions.assertThat(getPage().locator("#customers-grid, .content-header h1").first())
+                .isVisible();
     }
 }

@@ -62,10 +62,29 @@ def scan_java_annotations():
 
 def parse_surefire_results():
     results = {} # method_name -> status (PASS, FAIL, SKIPPED)
-    search_dirs = [
-        os.path.join(ROOT_DIR, "target", "surefire-reports"),
-        SUREFIRE_DIR
-    ]
+    target_dir = os.path.join(ROOT_DIR, "target", "surefire-reports")
+    
+    # Check if target_dir has XML reports
+    has_target_xmls = os.path.exists(target_dir) and any(
+        f.startswith("TEST-") and f.endswith(".xml") for f in os.listdir(target_dir)
+    )
+
+    if has_target_xmls:
+        # Sync target/surefire-reports XML and HTML into evidence/surefire-reports
+        import shutil
+        os.makedirs(SUREFIRE_DIR, exist_ok=True)
+        for f in os.listdir(target_dir):
+            if f.endswith(".xml") or f.endswith(".html"):
+                src_f = os.path.join(target_dir, f)
+                if os.path.isfile(src_f):
+                    try:
+                        shutil.copy2(src_f, os.path.join(SUREFIRE_DIR, f))
+                    except Exception:
+                        pass
+        search_dirs = [target_dir]
+    else:
+        search_dirs = [SUREFIRE_DIR, target_dir]
+
     for s_dir in search_dirs:
         if not os.path.exists(s_dir):
             continue
@@ -208,13 +227,20 @@ def main():
         f.write("- **TestNG HTML Report:** `evidence/reports/testng-index.html`\n")
         f.write("- **Failure Screenshots:** `evidence/failures/`\n")
         f.write("- **Execution Traces:** `evidence/failures/*.zip`\n\n")
-        f.write("## 3. Environmental Blockers & Defect Summary\n\n")
-        f.write("### DEF-001 (Critical Blocker): Public Demo WAF Interception\n")
-        f.write("- **Description:** Automated browser sessions against `https://demo.nopcommerce.com` are intercepted by Cloudflare Turnstile bot verification challenges.\n")
-        f.write("- **Evidence:** Captured failure screenshots `evidence/failures/testHomePageTitleAndHeaderRendering.png` and `evidence/failures/testStorefrontSearchBoxInput.png`.\n")
-        f.write("- **Mitigation:** Fallback suite configured; local container execution available via `docker/docker-compose.yml`.\n\n")
-        f.write("### ENV-001 (Configuration Notice): MSSQL Database Container Inactive\n")
-        f.write("- **Description:** Host machine Docker daemon requires manual administrative elevation to run MSSQL 2022 container. Database verification tests gracefully record `SKIPPED` per TestNG lifecycle.\n")
+        f.write("## 3. Environmental Health & Defect Summary\n\n")
+        if failed_count == 0 and skipped_count == 0:
+            f.write("### Status: 100% Pass Rate Across All Executed Suites\n")
+            f.write("- **AUT State:** Local containerized nopCommerce 4.90.8 and MSSQL 2022 database are fully active and healthy.\n")
+            f.write("- **Defects:** Zero test failures or runtime exceptions recorded in the latest execution run.\n")
+            f.write("- **Blockers:** Zero environmental blockers detected.\n")
+        else:
+            if failed_count > 0:
+                f.write("### DEF-001 (Notice): Test Failures Detected\n")
+                f.write(f"- **Description:** {failed_count} test(s) failed during execution.\n")
+                f.write("- **Evidence:** Refer to captured screenshots in `evidence/failures/` and execution traces in `evidence/traces/`.\n\n")
+            if skipped_count > 0:
+                f.write("### ENV-001 (Configuration Notice): Tests Skipped / Container Inactive\n")
+                f.write(f"- **Description:** {skipped_count} test(s) were skipped due to environmental configuration or offline dependencies.\n")
 
     print(f"Generated Execution Summary at {SUMMARY_OUT_PATH}")
 

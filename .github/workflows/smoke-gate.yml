@@ -29,7 +29,17 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Cache Playwright Browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+
       - name: Install Playwright Browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: |
           mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install --with-deps chromium"
 
@@ -55,6 +65,13 @@ jobs:
             target/surefire-reports/
             evidence/reports/
             evidence/surefire-reports/
+
+      - name: Publish Allure Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: allure-results
+          path: target/allure-results/
 
       - name: Publish Failure Evidence & Screenshots
         uses: actions/upload-artifact@v4

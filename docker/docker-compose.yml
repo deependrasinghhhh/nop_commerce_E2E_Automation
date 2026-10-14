@@ -14,11 +14,11 @@ services:
       - nopcommerce_db_data:/var/opt/mssql
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P NopCommerce@2026! -C -Q 'SELECT 1' 2>/dev/null || /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P NopCommerce@2026! -Q 'SELECT 1' 2>/dev/null || exit 0"]
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P NopCommerce@2026! -C -Q 'SELECT 1' 2>/dev/null || /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P NopCommerce@2026! -Q 'SELECT 1' 2>/dev/null"]
       interval: 10s
       timeout: 5s
       retries: 6
-      start_period: 15s
+      start_period: 20s
 
   nopcommerce_web:
     image: nopcommerceteam/nopcommerce:4.90.8
@@ -35,11 +35,11 @@ services:
       - nopcommerce_app_data:/app/App_Data
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:80/ || exit 0"]
+      test: ["CMD-SHELL", "curl -f -s http://localhost:80/ >/dev/null || exit 1"]
       interval: 15s
       timeout: 10s
-      retries: 5
-      start_period: 30s
+      retries: 6
+      start_period: 45s
 
 volumes:
   nopcommerce_db_data:
