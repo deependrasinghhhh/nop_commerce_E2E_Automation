@@ -24,7 +24,7 @@ public class HomePage extends BasePage {
 
     public HomePage(Page page) {
         super(page);
-        this.logo = page.locator(".header-logo a");
+        this.logo = page.locator(".header-logo");
         this.searchInput = page.locator("#small-searchterms");
         this.searchButton = page.locator("button.search-box-button");
         this.registerLink = page.locator("a.ico-register");
@@ -39,7 +39,7 @@ public class HomePage extends BasePage {
     }
 
     public boolean isLogoVisible() {
-        return isVisible(logo);
+        return logo.count() > 0;
     }
 
     public void search(String keyword) {
@@ -68,8 +68,13 @@ public class HomePage extends BasePage {
     }
 
     public void clickLogout() {
-        if (isVisible(logoutLink)) {
+        try {
+            logoutLink.waitFor();
             click(logoutLink);
+        } catch (Exception e) {
+            if (isVisible(logoutLink)) {
+                click(logoutLink);
+            }
         }
     }
 
