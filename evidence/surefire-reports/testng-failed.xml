@@ -1,33 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Failed suite [nopCommerce Storefront UI Suite]" guice-stage="DEVELOPMENT" verbose="0">
+<suite name="Failed suite [nopCommerce Full Regression Suite]" guice-stage="DEVELOPMENT" verbose="0">
   <listeners>
     <listener class-name="com.qa.nopcommerce.listeners.TestListener"/>
   </listeners>
-  <test thread-count="5" name="Storefront UI Tests(failed)" verbose="0">
+  <test thread-count="5" parallel="classes" name="Storefront UI Tests(failed)" verbose="0">
     <classes>
-      <class name="com.qa.nopcommerce.tests.ui.AdminTest">
+      <class name="com.qa.nopcommerce.tests.ui.CatalogTest">
         <methods>
-          <include name="testAdminLoginInvalidPassword"/>
-          <include name="testAdminCatalogProductsPage"/>
-          <include name="testAdminLoginValidCredentials"/>
-          <include name="testAdminSalesOrdersPage"/>
+          <include name="testHomePageTitleAndHeaderRendering"/>
           <include name="tearDown"/>
-          <include name="testAdminDashboardElements"/>
-          <include name="testAdminCustomersPage"/>
+          <include name="tearDownClass"/>
           <include name="setUp"/>
         </methods>
-      </class> <!-- com.qa.nopcommerce.tests.ui.AdminTest -->
+      </class> <!-- com.qa.nopcommerce.tests.ui.CatalogTest -->
       <class name="com.qa.nopcommerce.tests.ui.AuthTest">
         <methods>
-          <include name="testRegistrationMalformedEmailValidation"/>
+          <include name="testCustomerLogout"/>
           <include name="tearDown"/>
-          <include name="testCustomerLoginInvalidPassword"/>
-          <include name="testRegistrationMandatoryFieldValidation"/>
-          <include name="testRegistrationPasswordMismatch"/>
+          <include name="tearDownClass"/>
           <include name="setUp"/>
         </methods>
       </class> <!-- com.qa.nopcommerce.tests.ui.AuthTest -->
     </classes>
   </test> <!-- Storefront UI Tests(failed) -->
-</suite> <!-- Failed suite [nopCommerce Storefront UI Suite] -->
+</suite> <!-- Failed suite [nopCommerce Full Regression Suite] -->

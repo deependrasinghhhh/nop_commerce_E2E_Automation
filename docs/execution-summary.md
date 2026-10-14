@@ -1,6 +1,6 @@
 # Test Execution Summary
 
-**Generated:** 2026-10-15 00:31:27 UTC
+**Generated:** 2026-10-15 01:56:13 UTC
 **Target AUT:** nopCommerce 4.90.8 (.NET 9)
 **Stack:** Java 21 LTS | Playwright Java 1.48.0 | TestNG 7.10.2 | Maven 3.9.6
 
