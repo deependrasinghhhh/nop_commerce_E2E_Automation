@@ -31,7 +31,7 @@ jobs:
           JENKINS_URL: ${{ secrets.JENKINS_URL }}
           JENKINS_USER: ${{ secrets.JENKINS_USER }}
           JENKINS_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
-          TRIGGER_TOKEN: ${{ secrets.JENKINS_TRIGGER_TOKEN || 'nopcommerce-qa-trigger-token' }}
+          TRIGGER_TOKEN: ${{ secrets.JENKINS_TRIGGER_TOKEN }}
         run: |
           echo "=== Initiating Jenkins Pipeline Trigger ==="
           if [ -n "$JENKINS_URL" ]; then
@@ -51,11 +51,12 @@ jobs:
               echo "⚠️ Jenkins returned HTTP $STATUS. Check Jenkins server endpoint or authentication."
             fi
           else
-            echo "ℹ️ No external JENKINS_URL configured in GitHub Repository Secrets."
-            echo "ℹ️ Local Jenkins instance is running at http://localhost:8080"
-            echo "ℹ️ Pipeline 'nopCommerce-QA-Pipeline' is configured with trigger token: 'nopcommerce-qa-trigger-token'"
-            echo "ℹ️ To trigger from local or webhook proxy, run:"
-            echo "   curl -X POST -u 'Deependra:1118dcb75992ada5baac019bfacd67a691' http://localhost:8080/job/nopCommerce-QA-Pipeline/build"
+            echo "ℹ️ No JENKINS_URL configured in GitHub Repository Secrets."
+            echo "ℹ️ To set up the Jenkins trigger, add the following secrets to this repository:"
+            echo "   JENKINS_URL          — e.g. http://your-jenkins:8080"
+            echo "   JENKINS_USER         — Jenkins username with API access"
+            echo "   JENKINS_API_TOKEN    — Jenkins API token (not password)"
+            echo "   JENKINS_TRIGGER_TOKEN — Pipeline remote trigger token"
           fi
 
       - name: Verify Workflow Dispatch Payload

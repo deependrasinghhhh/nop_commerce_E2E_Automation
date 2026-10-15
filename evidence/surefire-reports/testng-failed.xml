@@ -4,24 +4,17 @@
   <listeners>
     <listener class-name="com.qa.nopcommerce.listeners.TestListener"/>
   </listeners>
-  <test thread-count="5" parallel="classes" name="Storefront UI Tests(failed)" verbose="0">
+  <test thread-count="5" name="Database Persistence Verification Tests(failed)" verbose="0">
     <classes>
-      <class name="com.qa.nopcommerce.tests.ui.CatalogTest">
+      <class name="com.qa.nopcommerce.tests.db.DatabaseVerificationTest">
         <methods>
-          <include name="testHomePageTitleAndHeaderRendering"/>
-          <include name="tearDown"/>
-          <include name="tearDownClass"/>
-          <include name="setUp"/>
+          <include name="testOrderRecordPersistenceInDatabase"/>
+          <include name="testCartItemPersistenceInDatabase"/>
+          <include name="checkDatabaseAvailability"/>
+          <include name="testCustomerRecordPersistenceInDatabase"/>
+          <include name="testDatabaseConnectionHealth"/>
         </methods>
-      </class> <!-- com.qa.nopcommerce.tests.ui.CatalogTest -->
-      <class name="com.qa.nopcommerce.tests.ui.AuthTest">
-        <methods>
-          <include name="testCustomerLogout"/>
-          <include name="tearDown"/>
-          <include name="tearDownClass"/>
-          <include name="setUp"/>
-        </methods>
-      </class> <!-- com.qa.nopcommerce.tests.ui.AuthTest -->
+      </class> <!-- com.qa.nopcommerce.tests.db.DatabaseVerificationTest -->
     </classes>
-  </test> <!-- Storefront UI Tests(failed) -->
+  </test> <!-- Database Persistence Verification Tests(failed) -->
 </suite> <!-- Failed suite [nopCommerce Full Regression Suite] -->

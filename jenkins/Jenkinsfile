@@ -5,7 +5,7 @@ pipeline {
     agent any
 
     parameters {
-        choice(name: 'SUITE', choices: ['suites/regression.xml', 'suites/smoke.xml', 'suites/api.xml', 'suites/ui.xml', 'suites/db.xml'], description: 'TestNG Suite XML to execute')
+        choice(name: 'SUITE', choices: ['suites/regression.xml', 'suites/smoke.xml', 'suites/api.xml', 'suites/ui.xml', 'suites/db.xml', 'suites/a11y.xml', 'suites/nfr.xml'], description: 'TestNG Suite XML to execute')
         choice(name: 'BROWSER', choices: ['chromium', 'firefox', 'webkit'], description: 'Browser family for UI tests')
         booleanParam(name: 'HEADLESS', defaultValue: true, description: 'Run browser in headless mode')
         string(name: 'THREAD_COUNT', defaultValue: '2', description: 'Parallel execution thread count across test classes')
@@ -61,24 +61,49 @@ pipeline {
 
         stage('Playwright Driver Setup') {
             steps {
-                echo "=== Ensuring Playwright Browser Binaries are Ready ==="
-                sh 'mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install chromium" || true'
+                echo "=== Ensuring Playwright Browser Binaries & System Dependencies ==="
+                sh 'mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install --with-deps chromium" || true'
             }
         }
 
         stage('Execute Test Suite') {
             steps {
                 echo "=== Running Suite: ${params.SUITE} | Browser: ${params.BROWSER} | Headless: ${params.HEADLESS} | Threads: ${params.THREAD_COUNT} ==="
-                sh """
-                    mvn test \\
-                        -DsuiteFile=src/test/resources/${params.SUITE} \\
-                        -DbaseUrl=${env.BASE_URL} \\
-                        -DadminUrl=${env.ADMIN_URL} \\
-                        -DdbHost=${env.DB_HOST} \\
-                        -Dbrowser=${params.BROWSER} \\
-                        -Dheadless=${params.HEADLESS} \\
-                        -Dthread.count=${params.THREAD_COUNT}
-                """
+                script {
+                    try {
+                        withCredentials([
+                            string(credentialsId: 'nop-admin-password', variable: 'ADMIN_PASSWORD'),
+                            string(credentialsId: 'nop-db-password', variable: 'DB_PASSWORD')
+                        ]) {
+                            sh """
+                                mvn test \\
+                                    -DsuiteFile=src/test/resources/${params.SUITE} \\
+                                    -DbaseUrl=${env.BASE_URL} \\
+                                    -DadminUrl=${env.ADMIN_URL} \\
+                                    -DdbHost=${env.DB_HOST} \\
+                                    -Dbrowser=${params.BROWSER} \\
+                                    -Dheadless=${params.HEADLESS} \\
+                                    -Dthread.count=${params.THREAD_COUNT}
+                            """
+                        }
+                    } catch (Exception e) {
+                        if (e.getMessage()?.contains('Could not find credentials')) {
+                            echo "WARN: Jenkins credentials 'nop-admin-password' or 'nop-db-password' not found. Executing with default/environment configuration."
+                            sh """
+                                mvn test \\
+                                    -DsuiteFile=src/test/resources/${params.SUITE} \\
+                                    -DbaseUrl=${env.BASE_URL} \\
+                                    -DadminUrl=${env.ADMIN_URL} \\
+                                    -DdbHost=${env.DB_HOST} \\
+                                    -Dbrowser=${params.BROWSER} \\
+                                    -Dheadless=${params.HEADLESS} \\
+                                    -Dthread.count=${params.THREAD_COUNT}
+                            """
+                        } else {
+                            throw e
+                        }
+                    }
+                }
             }
         }
 
@@ -95,14 +120,27 @@ pipeline {
             echo "=== Archiving Test Results & Machine Evidence ==="
             junit allowEmptyResults: true, testResults: '**/surefire-reports/*.xml'
 
-            publishHTML(target: [
-                allowMissing: true,
-                alwaysLinkToLastBuild: true,
-                keepAll: true,
-                reportDir: 'target/surefire-reports',
-                reportFiles: 'index.html',
-                reportName: 'TestNG Execution Report'
-            ])
+            script {
+                try {
+                    publishHTML(target: [
+                        allowMissing: true,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: 'target/surefire-reports',
+                        reportFiles: 'index.html',
+                        reportName: 'TestNG Execution Report'
+                    ])
+                } catch (Throwable e) {
+                    echo "Notice: HTML Publisher plugin not available or failed: ${e.message}"
+                }
+
+                try {
+                    allure includeProperties: false, jdk: '', results: [[path: 'target/allure-results']]
+                } catch (Throwable e) {
+                    echo "Notice: Allure Jenkins plugin not available or failed: ${e.message}. Archiving allure-results directly."
+                    archiveArtifacts allowEmptyArchive: true, artifacts: 'target/allure-results/**'
+                }
+            }
 
             archiveArtifacts allowEmptyArchive: true, artifacts: 'evidence/**', fingerprint: true
             archiveArtifacts allowEmptyArchive: true, artifacts: 'docs/traceability-matrix.md, docs/execution-summary.md'

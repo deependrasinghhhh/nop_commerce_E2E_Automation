@@ -44,8 +44,7 @@ public class ProductDetailsPage extends BasePage {
     public void clickAddToCart() {
         click(addToCartButton);
         try {
-            page.locator("#bar-notification.success, #bar-notification .content").waitFor(
-                    new Locator.WaitForOptions().setTimeout(5000));
+            notificationBanner.waitFor(new Locator.WaitForOptions().setTimeout(5000));
         } catch (Exception ignored) {}
     }
 

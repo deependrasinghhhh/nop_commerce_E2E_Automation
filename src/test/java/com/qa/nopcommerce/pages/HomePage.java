@@ -68,14 +68,7 @@ public class HomePage extends BasePage {
     }
 
     public void clickLogout() {
-        try {
-            logoutLink.waitFor();
-            click(logoutLink);
-        } catch (Exception e) {
-            if (isVisible(logoutLink)) {
-                click(logoutLink);
-            }
-        }
+        click(logoutLink);
     }
 
     public CategoryPage navigateToCategory(String categoryName) {

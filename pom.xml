@@ -25,6 +25,7 @@
         <slf4j.version>2.0.16</slf4j.version>
         <allure.version>2.29.0</allure.version>
         <aspectj.version>1.9.22</aspectj.version>
+        <aspectj.argLine></aspectj.argLine>
         <suiteFile>src/test/resources/suites/smoke.xml</suiteFile>
     </properties>
 
@@ -125,6 +126,8 @@
                     <suiteXmlFiles>
                         <suiteXmlFile>${suiteFile}</suiteXmlFile>
                     </suiteXmlFiles>
+                    <argLine>${aspectj.argLine}</argLine>
+                    <useModulePath>false</useModulePath>
                     <systemPropertyVariables>
                         <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
                         <PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD>1</PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD>
@@ -183,6 +186,12 @@
             <id>a11y</id>
             <properties>
                 <suiteFile>src/test/resources/suites/a11y.xml</suiteFile>
+            </properties>
+        </profile>
+        <profile>
+            <id>nfr</id>
+            <properties>
+                <suiteFile>src/test/resources/suites/nfr.xml</suiteFile>
             </properties>
         </profile>
     </profiles>

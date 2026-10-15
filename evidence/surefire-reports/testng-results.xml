@@ -1,170 +1,170 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="55" passed="55" failed="0" skipped="0">
+<testng-results ignored="0" total="55" passed="51" failed="0" skipped="4">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2026-10-15T01:52:01 IST" name="nopCommerce Full Regression Suite" finished-at="2026-10-15T01:54:38 IST" duration-ms="157185">
+  <suite started-at="2026-10-16T01:32:34 IST" name="nopCommerce Full Regression Suite" finished-at="2026-10-16T01:35:21 IST" duration-ms="166991">
     <groups>
       <group name="a11y">
-        <method signature="AccessibilityTest.testCartPageAccessibility()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@25641d39]" name="testCartPageAccessibility" class="com.qa.nopcommerce.tests.a11y.AccessibilityTest"/>
-        <method signature="AccessibilityTest.testCategoryPageAccessibility()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@25641d39]" name="testCategoryPageAccessibility" class="com.qa.nopcommerce.tests.a11y.AccessibilityTest"/>
-        <method signature="AccessibilityTest.testHomePageAccessibility()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@25641d39]" name="testHomePageAccessibility" class="com.qa.nopcommerce.tests.a11y.AccessibilityTest"/>
-        <method signature="AccessibilityTest.testLoginPageAccessibility()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@25641d39]" name="testLoginPageAccessibility" class="com.qa.nopcommerce.tests.a11y.AccessibilityTest"/>
-        <method signature="AccessibilityTest.testRegisterPageAccessibility()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@25641d39]" name="testRegisterPageAccessibility" class="com.qa.nopcommerce.tests.a11y.AccessibilityTest"/>
+        <method signature="AccessibilityTest.testCartPageAccessibility()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@7b36aa0c]" name="testCartPageAccessibility" class="com.qa.nopcommerce.tests.a11y.AccessibilityTest"/>
+        <method signature="AccessibilityTest.testCategoryPageAccessibility()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@7b36aa0c]" name="testCategoryPageAccessibility" class="com.qa.nopcommerce.tests.a11y.AccessibilityTest"/>
+        <method signature="AccessibilityTest.testHomePageAccessibility()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@7b36aa0c]" name="testHomePageAccessibility" class="com.qa.nopcommerce.tests.a11y.AccessibilityTest"/>
+        <method signature="AccessibilityTest.testLoginPageAccessibility()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@7b36aa0c]" name="testLoginPageAccessibility" class="com.qa.nopcommerce.tests.a11y.AccessibilityTest"/>
+        <method signature="AccessibilityTest.testRegisterPageAccessibility()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@7b36aa0c]" name="testRegisterPageAccessibility" class="com.qa.nopcommerce.tests.a11y.AccessibilityTest"/>
       </group> <!-- a11y -->
       <group name="ui">
-        <method signature="AdminTest.testAdminCatalogProductsPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" name="testAdminCatalogProductsPage" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
-        <method signature="AdminTest.testAdminCustomersPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" name="testAdminCustomersPage" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
-        <method signature="AdminTest.testAdminDashboardElements()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" name="testAdminDashboardElements" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
-        <method signature="AdminTest.testAdminLoginInvalidPassword()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" name="testAdminLoginInvalidPassword" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
-        <method signature="AdminTest.testAdminLoginPageRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" name="testAdminLoginPageRendering" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
-        <method signature="AdminTest.testAdminLoginValidCredentials()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" name="testAdminLoginValidCredentials" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
-        <method signature="AdminTest.testAdminSalesOrdersPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" name="testAdminSalesOrdersPage" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
-        <method signature="AuthTest.testCustomerLoginBlankEmail()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" name="testCustomerLoginBlankEmail" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
-        <method signature="AuthTest.testCustomerLoginInvalidPassword()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" name="testCustomerLoginInvalidPassword" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
-        <method signature="AuthTest.testCustomerLoginValidCredentials()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" name="testCustomerLoginValidCredentials" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
-        <method signature="AuthTest.testCustomerLogout()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" name="testCustomerLogout" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
-        <method signature="AuthTest.testRegistrationMalformedEmailValidation()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" name="testRegistrationMalformedEmailValidation" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
-        <method signature="AuthTest.testRegistrationMandatoryFieldValidation()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" name="testRegistrationMandatoryFieldValidation" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
-        <method signature="AuthTest.testRegistrationPasswordMismatch()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" name="testRegistrationPasswordMismatch" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
-        <method signature="AuthTest.testValidCustomerRegistration()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" name="testValidCustomerRegistration" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
-        <method signature="CartTest.testAddProductToCart()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" name="testAddProductToCart" class="com.qa.nopcommerce.tests.ui.CartTest"/>
-        <method signature="CartTest.testApplyInvalidCouponCode()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" name="testApplyInvalidCouponCode" class="com.qa.nopcommerce.tests.ui.CartTest"/>
-        <method signature="CartTest.testRemoveItemFromCart()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" name="testRemoveItemFromCart" class="com.qa.nopcommerce.tests.ui.CartTest"/>
-        <method signature="CartTest.testUpdateCartItemQuantity()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" name="testUpdateCartItemQuantity" class="com.qa.nopcommerce.tests.ui.CartTest"/>
-        <method signature="CartTest.testViewShoppingCart()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" name="testViewShoppingCart" class="com.qa.nopcommerce.tests.ui.CartTest"/>
-        <method signature="CatalogTest.testCategoryNavigation()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" name="testCategoryNavigation" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
-        <method signature="CatalogTest.testHomePageTitleAndHeaderRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" name="testHomePageTitleAndHeaderRendering" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
-        <method signature="CatalogTest.testProductDetailsRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" name="testProductDetailsRendering" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
-        <method signature="CatalogTest.testProductSorting()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" name="testProductSorting" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
-        <method signature="CatalogTest.testShortSearchTermNotice()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" name="testShortSearchTermNotice" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
-        <method signature="CatalogTest.testStorefrontSearchBox()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" name="testStorefrontSearchBox" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
-        <method signature="CatalogTest.testTopMenuCategoriesRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" name="testTopMenuCategoriesRendering" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
-        <method signature="CheckoutTest.testCheckoutBillingAddressForm()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@130c12b7]" name="testCheckoutBillingAddressForm" class="com.qa.nopcommerce.tests.ui.CheckoutTest"/>
-        <method signature="CheckoutTest.testCheckoutInitiation()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@130c12b7]" name="testCheckoutInitiation" class="com.qa.nopcommerce.tests.ui.CheckoutTest"/>
-        <method signature="CheckoutTest.testCheckoutPaymentMethodOptions()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@130c12b7]" name="testCheckoutPaymentMethodOptions" class="com.qa.nopcommerce.tests.ui.CheckoutTest"/>
-        <method signature="CustomerAccountTest.testCustomerAddressesPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@5e600dd5]" name="testCustomerAddressesPage" class="com.qa.nopcommerce.tests.ui.CustomerAccountTest"/>
-        <method signature="CustomerAccountTest.testCustomerInfoPageRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@5e600dd5]" name="testCustomerInfoPageRendering" class="com.qa.nopcommerce.tests.ui.CustomerAccountTest"/>
-        <method signature="CustomerAccountTest.testCustomerOrdersPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@5e600dd5]" name="testCustomerOrdersPage" class="com.qa.nopcommerce.tests.ui.CustomerAccountTest"/>
+        <method signature="AdminTest.testAdminCatalogProductsPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" name="testAdminCatalogProductsPage" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
+        <method signature="AdminTest.testAdminCustomersPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" name="testAdminCustomersPage" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
+        <method signature="AdminTest.testAdminDashboardElements()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" name="testAdminDashboardElements" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
+        <method signature="AdminTest.testAdminLoginInvalidPassword()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" name="testAdminLoginInvalidPassword" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
+        <method signature="AdminTest.testAdminLoginPageRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" name="testAdminLoginPageRendering" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
+        <method signature="AdminTest.testAdminLoginValidCredentials()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" name="testAdminLoginValidCredentials" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
+        <method signature="AdminTest.testAdminSalesOrdersPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" name="testAdminSalesOrdersPage" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
+        <method signature="AuthTest.testCustomerLoginBlankEmail()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" name="testCustomerLoginBlankEmail" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
+        <method signature="AuthTest.testCustomerLoginInvalidPassword()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" name="testCustomerLoginInvalidPassword" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
+        <method signature="AuthTest.testCustomerLoginValidCredentials()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" name="testCustomerLoginValidCredentials" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
+        <method signature="AuthTest.testCustomerLogout()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" name="testCustomerLogout" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
+        <method signature="AuthTest.testRegistrationMalformedEmailValidation()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" name="testRegistrationMalformedEmailValidation" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
+        <method signature="AuthTest.testRegistrationMandatoryFieldValidation()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" name="testRegistrationMandatoryFieldValidation" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
+        <method signature="AuthTest.testRegistrationPasswordMismatch()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" name="testRegistrationPasswordMismatch" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
+        <method signature="AuthTest.testValidCustomerRegistration()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" name="testValidCustomerRegistration" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
+        <method signature="CartTest.testAddProductToCart()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" name="testAddProductToCart" class="com.qa.nopcommerce.tests.ui.CartTest"/>
+        <method signature="CartTest.testApplyInvalidCouponCode()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" name="testApplyInvalidCouponCode" class="com.qa.nopcommerce.tests.ui.CartTest"/>
+        <method signature="CartTest.testRemoveItemFromCart()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" name="testRemoveItemFromCart" class="com.qa.nopcommerce.tests.ui.CartTest"/>
+        <method signature="CartTest.testUpdateCartItemQuantity()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" name="testUpdateCartItemQuantity" class="com.qa.nopcommerce.tests.ui.CartTest"/>
+        <method signature="CartTest.testViewShoppingCart()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" name="testViewShoppingCart" class="com.qa.nopcommerce.tests.ui.CartTest"/>
+        <method signature="CatalogTest.testCategoryNavigation()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" name="testCategoryNavigation" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
+        <method signature="CatalogTest.testHomePageTitleAndHeaderRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" name="testHomePageTitleAndHeaderRendering" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
+        <method signature="CatalogTest.testProductDetailsRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" name="testProductDetailsRendering" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
+        <method signature="CatalogTest.testProductSorting()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" name="testProductSorting" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
+        <method signature="CatalogTest.testShortSearchTermNotice()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" name="testShortSearchTermNotice" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
+        <method signature="CatalogTest.testStorefrontSearchBox()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" name="testStorefrontSearchBox" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
+        <method signature="CatalogTest.testTopMenuCategoriesRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" name="testTopMenuCategoriesRendering" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
+        <method signature="CheckoutTest.testCheckoutBillingAddressForm()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@5e600dd5]" name="testCheckoutBillingAddressForm" class="com.qa.nopcommerce.tests.ui.CheckoutTest"/>
+        <method signature="CheckoutTest.testCheckoutInitiation()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@5e600dd5]" name="testCheckoutInitiation" class="com.qa.nopcommerce.tests.ui.CheckoutTest"/>
+        <method signature="CheckoutTest.testCheckoutPaymentMethodOptions()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@5e600dd5]" name="testCheckoutPaymentMethodOptions" class="com.qa.nopcommerce.tests.ui.CheckoutTest"/>
+        <method signature="CustomerAccountTest.testCustomerAddressesPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@576d5deb]" name="testCustomerAddressesPage" class="com.qa.nopcommerce.tests.ui.CustomerAccountTest"/>
+        <method signature="CustomerAccountTest.testCustomerInfoPageRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@576d5deb]" name="testCustomerInfoPageRendering" class="com.qa.nopcommerce.tests.ui.CustomerAccountTest"/>
+        <method signature="CustomerAccountTest.testCustomerOrdersPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@576d5deb]" name="testCustomerOrdersPage" class="com.qa.nopcommerce.tests.ui.CustomerAccountTest"/>
       </group> <!-- ui -->
       <group name="auth">
-        <method signature="AuthTest.testCustomerLoginBlankEmail()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" name="testCustomerLoginBlankEmail" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
-        <method signature="AuthTest.testCustomerLoginInvalidPassword()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" name="testCustomerLoginInvalidPassword" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
-        <method signature="AuthTest.testCustomerLoginValidCredentials()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" name="testCustomerLoginValidCredentials" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
-        <method signature="AuthTest.testCustomerLogout()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" name="testCustomerLogout" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
-        <method signature="AuthTest.testRegistrationMalformedEmailValidation()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" name="testRegistrationMalformedEmailValidation" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
-        <method signature="AuthTest.testRegistrationMandatoryFieldValidation()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" name="testRegistrationMandatoryFieldValidation" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
-        <method signature="AuthTest.testRegistrationPasswordMismatch()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" name="testRegistrationPasswordMismatch" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
-        <method signature="AuthTest.testValidCustomerRegistration()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" name="testValidCustomerRegistration" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
+        <method signature="AuthTest.testCustomerLoginBlankEmail()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" name="testCustomerLoginBlankEmail" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
+        <method signature="AuthTest.testCustomerLoginInvalidPassword()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" name="testCustomerLoginInvalidPassword" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
+        <method signature="AuthTest.testCustomerLoginValidCredentials()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" name="testCustomerLoginValidCredentials" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
+        <method signature="AuthTest.testCustomerLogout()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" name="testCustomerLogout" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
+        <method signature="AuthTest.testRegistrationMalformedEmailValidation()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" name="testRegistrationMalformedEmailValidation" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
+        <method signature="AuthTest.testRegistrationMandatoryFieldValidation()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" name="testRegistrationMandatoryFieldValidation" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
+        <method signature="AuthTest.testRegistrationPasswordMismatch()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" name="testRegistrationPasswordMismatch" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
+        <method signature="AuthTest.testValidCustomerRegistration()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" name="testValidCustomerRegistration" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
       </group> <!-- auth -->
       <group name="catalog">
-        <method signature="CatalogTest.testCategoryNavigation()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" name="testCategoryNavigation" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
-        <method signature="CatalogTest.testHomePageTitleAndHeaderRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" name="testHomePageTitleAndHeaderRendering" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
-        <method signature="CatalogTest.testProductDetailsRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" name="testProductDetailsRendering" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
-        <method signature="CatalogTest.testProductSorting()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" name="testProductSorting" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
-        <method signature="CatalogTest.testShortSearchTermNotice()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" name="testShortSearchTermNotice" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
-        <method signature="CatalogTest.testStorefrontSearchBox()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" name="testStorefrontSearchBox" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
-        <method signature="CatalogTest.testTopMenuCategoriesRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" name="testTopMenuCategoriesRendering" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
+        <method signature="CatalogTest.testCategoryNavigation()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" name="testCategoryNavigation" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
+        <method signature="CatalogTest.testHomePageTitleAndHeaderRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" name="testHomePageTitleAndHeaderRendering" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
+        <method signature="CatalogTest.testProductDetailsRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" name="testProductDetailsRendering" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
+        <method signature="CatalogTest.testProductSorting()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" name="testProductSorting" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
+        <method signature="CatalogTest.testShortSearchTermNotice()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" name="testShortSearchTermNotice" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
+        <method signature="CatalogTest.testStorefrontSearchBox()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" name="testStorefrontSearchBox" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
+        <method signature="CatalogTest.testTopMenuCategoriesRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" name="testTopMenuCategoriesRendering" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
       </group> <!-- catalog -->
       <group name="smoke">
-        <method signature="ApiEndpointTest.testStorefrontRootEndpoint()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@169e6180]" name="testStorefrontRootEndpoint" class="com.qa.nopcommerce.tests.api.ApiEndpointTest"/>
-        <method signature="SmokeTest.testAdminLoginPageRendering()[pri:0, instance:com.qa.nopcommerce.tests.smoke.SmokeTest@4b8ee4de]" name="testAdminLoginPageRendering" class="com.qa.nopcommerce.tests.smoke.SmokeTest"/>
-        <method signature="SmokeTest.testHomePageTitleAndHeaderRendering()[pri:0, instance:com.qa.nopcommerce.tests.smoke.SmokeTest@4b8ee4de]" name="testHomePageTitleAndHeaderRendering" class="com.qa.nopcommerce.tests.smoke.SmokeTest"/>
-        <method signature="SmokeTest.testStorefrontSearchBoxInput()[pri:0, instance:com.qa.nopcommerce.tests.smoke.SmokeTest@4b8ee4de]" name="testStorefrontSearchBoxInput" class="com.qa.nopcommerce.tests.smoke.SmokeTest"/>
-        <method signature="AdminTest.testAdminLoginPageRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" name="testAdminLoginPageRendering" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
-        <method signature="AdminTest.testAdminLoginValidCredentials()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" name="testAdminLoginValidCredentials" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
-        <method signature="AuthTest.testCustomerLoginValidCredentials()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" name="testCustomerLoginValidCredentials" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
-        <method signature="AuthTest.testValidCustomerRegistration()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" name="testValidCustomerRegistration" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
-        <method signature="CartTest.testAddProductToCart()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" name="testAddProductToCart" class="com.qa.nopcommerce.tests.ui.CartTest"/>
-        <method signature="CatalogTest.testHomePageTitleAndHeaderRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" name="testHomePageTitleAndHeaderRendering" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
-        <method signature="CatalogTest.testStorefrontSearchBox()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" name="testStorefrontSearchBox" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
-        <method signature="CheckoutTest.testCheckoutInitiation()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@130c12b7]" name="testCheckoutInitiation" class="com.qa.nopcommerce.tests.ui.CheckoutTest"/>
+        <method signature="ApiEndpointTest.testStorefrontRootEndpoint()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@35aea049]" name="testStorefrontRootEndpoint" class="com.qa.nopcommerce.tests.api.ApiEndpointTest"/>
+        <method signature="SmokeTest.testAdminLoginPageRendering()[pri:0, instance:com.qa.nopcommerce.tests.smoke.SmokeTest@27f981c6]" name="testAdminLoginPageRendering" class="com.qa.nopcommerce.tests.smoke.SmokeTest"/>
+        <method signature="SmokeTest.testHomePageTitleAndHeaderRendering()[pri:0, instance:com.qa.nopcommerce.tests.smoke.SmokeTest@27f981c6]" name="testHomePageTitleAndHeaderRendering" class="com.qa.nopcommerce.tests.smoke.SmokeTest"/>
+        <method signature="SmokeTest.testStorefrontSearchBoxInput()[pri:0, instance:com.qa.nopcommerce.tests.smoke.SmokeTest@27f981c6]" name="testStorefrontSearchBoxInput" class="com.qa.nopcommerce.tests.smoke.SmokeTest"/>
+        <method signature="AdminTest.testAdminLoginPageRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" name="testAdminLoginPageRendering" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
+        <method signature="AdminTest.testAdminLoginValidCredentials()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" name="testAdminLoginValidCredentials" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
+        <method signature="AuthTest.testCustomerLoginValidCredentials()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" name="testCustomerLoginValidCredentials" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
+        <method signature="AuthTest.testValidCustomerRegistration()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" name="testValidCustomerRegistration" class="com.qa.nopcommerce.tests.ui.AuthTest"/>
+        <method signature="CartTest.testAddProductToCart()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" name="testAddProductToCart" class="com.qa.nopcommerce.tests.ui.CartTest"/>
+        <method signature="CatalogTest.testHomePageTitleAndHeaderRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" name="testHomePageTitleAndHeaderRendering" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
+        <method signature="CatalogTest.testStorefrontSearchBox()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" name="testStorefrontSearchBox" class="com.qa.nopcommerce.tests.ui.CatalogTest"/>
+        <method signature="CheckoutTest.testCheckoutInitiation()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@5e600dd5]" name="testCheckoutInitiation" class="com.qa.nopcommerce.tests.ui.CheckoutTest"/>
       </group> <!-- smoke -->
       <group name="admin">
-        <method signature="AdminTest.testAdminCatalogProductsPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" name="testAdminCatalogProductsPage" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
-        <method signature="AdminTest.testAdminCustomersPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" name="testAdminCustomersPage" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
-        <method signature="AdminTest.testAdminDashboardElements()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" name="testAdminDashboardElements" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
-        <method signature="AdminTest.testAdminLoginInvalidPassword()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" name="testAdminLoginInvalidPassword" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
-        <method signature="AdminTest.testAdminLoginPageRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" name="testAdminLoginPageRendering" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
-        <method signature="AdminTest.testAdminLoginValidCredentials()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" name="testAdminLoginValidCredentials" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
-        <method signature="AdminTest.testAdminSalesOrdersPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" name="testAdminSalesOrdersPage" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
+        <method signature="AdminTest.testAdminCatalogProductsPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" name="testAdminCatalogProductsPage" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
+        <method signature="AdminTest.testAdminCustomersPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" name="testAdminCustomersPage" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
+        <method signature="AdminTest.testAdminDashboardElements()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" name="testAdminDashboardElements" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
+        <method signature="AdminTest.testAdminLoginInvalidPassword()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" name="testAdminLoginInvalidPassword" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
+        <method signature="AdminTest.testAdminLoginPageRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" name="testAdminLoginPageRendering" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
+        <method signature="AdminTest.testAdminLoginValidCredentials()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" name="testAdminLoginValidCredentials" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
+        <method signature="AdminTest.testAdminSalesOrdersPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" name="testAdminSalesOrdersPage" class="com.qa.nopcommerce.tests.ui.AdminTest"/>
       </group> <!-- admin -->
       <group name="nfr">
-        <method signature="NonFunctionalTest.testMobileNavigationMenuTrigger()[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@45099dd3]" name="testMobileNavigationMenuTrigger" class="com.qa.nopcommerce.tests.nfr.NonFunctionalTest"/>
-        <method signature="NonFunctionalTest.testNo500InternalServerErrorsOnAssets()[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@45099dd3]" name="testNo500InternalServerErrorsOnAssets" class="com.qa.nopcommerce.tests.nfr.NonFunctionalTest"/>
-        <method signature="NonFunctionalTest.testPageLoadPerformanceSla()[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@45099dd3]" name="testPageLoadPerformanceSla" class="com.qa.nopcommerce.tests.nfr.NonFunctionalTest"/>
-        <method signature="NonFunctionalTest.testResponsiveViewportLayout()[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@45099dd3]" name="testResponsiveViewportLayout" class="com.qa.nopcommerce.tests.nfr.NonFunctionalTest"/>
+        <method signature="NonFunctionalTest.testMobileNavigationMenuTrigger()[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@13e344d]" name="testMobileNavigationMenuTrigger" class="com.qa.nopcommerce.tests.nfr.NonFunctionalTest"/>
+        <method signature="NonFunctionalTest.testNo500InternalServerErrorsOnAssets()[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@13e344d]" name="testNo500InternalServerErrorsOnAssets" class="com.qa.nopcommerce.tests.nfr.NonFunctionalTest"/>
+        <method signature="NonFunctionalTest.testPageLoadPerformanceSla()[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@13e344d]" name="testPageLoadPerformanceSla" class="com.qa.nopcommerce.tests.nfr.NonFunctionalTest"/>
+        <method signature="NonFunctionalTest.testResponsiveViewportLayout()[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@13e344d]" name="testResponsiveViewportLayout" class="com.qa.nopcommerce.tests.nfr.NonFunctionalTest"/>
       </group> <!-- nfr -->
       <group name="api">
-        <method signature="ApiEndpointTest.testAdminPortalEndpoint()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@169e6180]" name="testAdminPortalEndpoint" class="com.qa.nopcommerce.tests.api.ApiEndpointTest"/>
-        <method signature="ApiEndpointTest.testCustomerLoginEndpoint()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@169e6180]" name="testCustomerLoginEndpoint" class="com.qa.nopcommerce.tests.api.ApiEndpointTest"/>
-        <method signature="ApiEndpointTest.testCustomerRegisterEndpoint()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@169e6180]" name="testCustomerRegisterEndpoint" class="com.qa.nopcommerce.tests.api.ApiEndpointTest"/>
-        <method signature="ApiEndpointTest.testNonExistentRouteHandling()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@169e6180]" name="testNonExistentRouteHandling" class="com.qa.nopcommerce.tests.api.ApiEndpointTest"/>
-        <method signature="ApiEndpointTest.testPostWithoutAntiForgeryTokenRejection()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@169e6180]" name="testPostWithoutAntiForgeryTokenRejection" class="com.qa.nopcommerce.tests.api.ApiEndpointTest"/>
-        <method signature="ApiEndpointTest.testStorefrontRootEndpoint()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@169e6180]" name="testStorefrontRootEndpoint" class="com.qa.nopcommerce.tests.api.ApiEndpointTest"/>
+        <method signature="ApiEndpointTest.testAdminPortalEndpoint()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@35aea049]" name="testAdminPortalEndpoint" class="com.qa.nopcommerce.tests.api.ApiEndpointTest"/>
+        <method signature="ApiEndpointTest.testCustomerLoginEndpoint()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@35aea049]" name="testCustomerLoginEndpoint" class="com.qa.nopcommerce.tests.api.ApiEndpointTest"/>
+        <method signature="ApiEndpointTest.testCustomerRegisterEndpoint()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@35aea049]" name="testCustomerRegisterEndpoint" class="com.qa.nopcommerce.tests.api.ApiEndpointTest"/>
+        <method signature="ApiEndpointTest.testNonExistentRouteHandling()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@35aea049]" name="testNonExistentRouteHandling" class="com.qa.nopcommerce.tests.api.ApiEndpointTest"/>
+        <method signature="ApiEndpointTest.testPostWithoutAntiForgeryTokenRejection()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@35aea049]" name="testPostWithoutAntiForgeryTokenRejection" class="com.qa.nopcommerce.tests.api.ApiEndpointTest"/>
+        <method signature="ApiEndpointTest.testStorefrontRootEndpoint()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@35aea049]" name="testStorefrontRootEndpoint" class="com.qa.nopcommerce.tests.api.ApiEndpointTest"/>
       </group> <!-- api -->
       <group name="checkout">
-        <method signature="CheckoutTest.testCheckoutBillingAddressForm()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@130c12b7]" name="testCheckoutBillingAddressForm" class="com.qa.nopcommerce.tests.ui.CheckoutTest"/>
-        <method signature="CheckoutTest.testCheckoutInitiation()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@130c12b7]" name="testCheckoutInitiation" class="com.qa.nopcommerce.tests.ui.CheckoutTest"/>
-        <method signature="CheckoutTest.testCheckoutPaymentMethodOptions()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@130c12b7]" name="testCheckoutPaymentMethodOptions" class="com.qa.nopcommerce.tests.ui.CheckoutTest"/>
+        <method signature="CheckoutTest.testCheckoutBillingAddressForm()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@5e600dd5]" name="testCheckoutBillingAddressForm" class="com.qa.nopcommerce.tests.ui.CheckoutTest"/>
+        <method signature="CheckoutTest.testCheckoutInitiation()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@5e600dd5]" name="testCheckoutInitiation" class="com.qa.nopcommerce.tests.ui.CheckoutTest"/>
+        <method signature="CheckoutTest.testCheckoutPaymentMethodOptions()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@5e600dd5]" name="testCheckoutPaymentMethodOptions" class="com.qa.nopcommerce.tests.ui.CheckoutTest"/>
       </group> <!-- checkout -->
       <group name="db">
-        <method signature="DatabaseVerificationTest.testCartItemPersistenceInDatabase()[pri:0, instance:com.qa.nopcommerce.tests.db.DatabaseVerificationTest@4686afc2]" name="testCartItemPersistenceInDatabase" class="com.qa.nopcommerce.tests.db.DatabaseVerificationTest"/>
-        <method signature="DatabaseVerificationTest.testCustomerRecordPersistenceInDatabase()[pri:0, instance:com.qa.nopcommerce.tests.db.DatabaseVerificationTest@4686afc2]" name="testCustomerRecordPersistenceInDatabase" class="com.qa.nopcommerce.tests.db.DatabaseVerificationTest"/>
-        <method signature="DatabaseVerificationTest.testDatabaseConnectionHealth()[pri:0, instance:com.qa.nopcommerce.tests.db.DatabaseVerificationTest@4686afc2]" name="testDatabaseConnectionHealth" class="com.qa.nopcommerce.tests.db.DatabaseVerificationTest"/>
-        <method signature="DatabaseVerificationTest.testOrderRecordPersistenceInDatabase()[pri:0, instance:com.qa.nopcommerce.tests.db.DatabaseVerificationTest@4686afc2]" name="testOrderRecordPersistenceInDatabase" class="com.qa.nopcommerce.tests.db.DatabaseVerificationTest"/>
+        <method signature="DatabaseVerificationTest.testCartItemPersistenceInDatabase()[pri:0, instance:com.qa.nopcommerce.tests.db.DatabaseVerificationTest@1e0b4072]" name="testCartItemPersistenceInDatabase" class="com.qa.nopcommerce.tests.db.DatabaseVerificationTest"/>
+        <method signature="DatabaseVerificationTest.testCustomerRecordPersistenceInDatabase()[pri:0, instance:com.qa.nopcommerce.tests.db.DatabaseVerificationTest@1e0b4072]" name="testCustomerRecordPersistenceInDatabase" class="com.qa.nopcommerce.tests.db.DatabaseVerificationTest"/>
+        <method signature="DatabaseVerificationTest.testDatabaseConnectionHealth()[pri:0, instance:com.qa.nopcommerce.tests.db.DatabaseVerificationTest@1e0b4072]" name="testDatabaseConnectionHealth" class="com.qa.nopcommerce.tests.db.DatabaseVerificationTest"/>
+        <method signature="DatabaseVerificationTest.testOrderRecordPersistenceInDatabase()[pri:0, instance:com.qa.nopcommerce.tests.db.DatabaseVerificationTest@1e0b4072]" name="testOrderRecordPersistenceInDatabase" class="com.qa.nopcommerce.tests.db.DatabaseVerificationTest"/>
       </group> <!-- db -->
       <group name="cart">
-        <method signature="CartTest.testAddProductToCart()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" name="testAddProductToCart" class="com.qa.nopcommerce.tests.ui.CartTest"/>
-        <method signature="CartTest.testApplyInvalidCouponCode()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" name="testApplyInvalidCouponCode" class="com.qa.nopcommerce.tests.ui.CartTest"/>
-        <method signature="CartTest.testRemoveItemFromCart()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" name="testRemoveItemFromCart" class="com.qa.nopcommerce.tests.ui.CartTest"/>
-        <method signature="CartTest.testUpdateCartItemQuantity()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" name="testUpdateCartItemQuantity" class="com.qa.nopcommerce.tests.ui.CartTest"/>
-        <method signature="CartTest.testViewShoppingCart()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" name="testViewShoppingCart" class="com.qa.nopcommerce.tests.ui.CartTest"/>
+        <method signature="CartTest.testAddProductToCart()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" name="testAddProductToCart" class="com.qa.nopcommerce.tests.ui.CartTest"/>
+        <method signature="CartTest.testApplyInvalidCouponCode()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" name="testApplyInvalidCouponCode" class="com.qa.nopcommerce.tests.ui.CartTest"/>
+        <method signature="CartTest.testRemoveItemFromCart()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" name="testRemoveItemFromCart" class="com.qa.nopcommerce.tests.ui.CartTest"/>
+        <method signature="CartTest.testUpdateCartItemQuantity()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" name="testUpdateCartItemQuantity" class="com.qa.nopcommerce.tests.ui.CartTest"/>
+        <method signature="CartTest.testViewShoppingCart()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" name="testViewShoppingCart" class="com.qa.nopcommerce.tests.ui.CartTest"/>
       </group> <!-- cart -->
       <group name="customer">
-        <method signature="CustomerAccountTest.testCustomerAddressesPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@5e600dd5]" name="testCustomerAddressesPage" class="com.qa.nopcommerce.tests.ui.CustomerAccountTest"/>
-        <method signature="CustomerAccountTest.testCustomerInfoPageRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@5e600dd5]" name="testCustomerInfoPageRendering" class="com.qa.nopcommerce.tests.ui.CustomerAccountTest"/>
-        <method signature="CustomerAccountTest.testCustomerOrdersPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@5e600dd5]" name="testCustomerOrdersPage" class="com.qa.nopcommerce.tests.ui.CustomerAccountTest"/>
+        <method signature="CustomerAccountTest.testCustomerAddressesPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@576d5deb]" name="testCustomerAddressesPage" class="com.qa.nopcommerce.tests.ui.CustomerAccountTest"/>
+        <method signature="CustomerAccountTest.testCustomerInfoPageRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@576d5deb]" name="testCustomerInfoPageRendering" class="com.qa.nopcommerce.tests.ui.CustomerAccountTest"/>
+        <method signature="CustomerAccountTest.testCustomerOrdersPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@576d5deb]" name="testCustomerOrdersPage" class="com.qa.nopcommerce.tests.ui.CustomerAccountTest"/>
       </group> <!-- customer -->
     </groups>
-    <test started-at="2026-10-15T01:52:01 IST" name="API Endpoint Integration Tests" finished-at="2026-10-15T01:52:10 IST" duration-ms="9148">
+    <test started-at="2026-10-16T01:32:34 IST" name="API Endpoint Integration Tests" finished-at="2026-10-16T01:32:50 IST" duration-ms="16170">
       <class name="com.qa.nopcommerce.tests.api.ApiEndpointTest">
-        <test-method is-config="true" signature="setupApiContext()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@169e6180]" started-at="2026-10-15T01:52:01 IST" name="setupApiContext" finished-at="2026-10-15T01:52:08 IST" duration-ms="6468" status="PASS">
+        <test-method is-config="true" signature="setupApiContext()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@35aea049]" started-at="2026-10-16T01:32:34 IST" name="setupApiContext" finished-at="2026-10-16T01:32:46 IST" duration-ms="11366" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setupApiContext -->
-        <test-method signature="testAdminPortalEndpoint()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@169e6180]" started-at="2026-10-15T01:52:08 IST" name="testAdminPortalEndpoint" finished-at="2026-10-15T01:52:09 IST" duration-ms="1271" status="PASS">
+        <test-method signature="testAdminPortalEndpoint()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@35aea049]" started-at="2026-10-16T01:32:46 IST" name="testAdminPortalEndpoint" finished-at="2026-10-16T01:32:48 IST" duration-ms="2452" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testAdminPortalEndpoint -->
-        <test-method signature="testCustomerLoginEndpoint()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@169e6180]" started-at="2026-10-15T01:52:09 IST" name="testCustomerLoginEndpoint" finished-at="2026-10-15T01:52:09 IST" duration-ms="208" status="PASS">
+        <test-method signature="testCustomerLoginEndpoint()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@35aea049]" started-at="2026-10-16T01:32:48 IST" name="testCustomerLoginEndpoint" finished-at="2026-10-16T01:32:49 IST" duration-ms="654" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testCustomerLoginEndpoint -->
-        <test-method signature="testCustomerRegisterEndpoint()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@169e6180]" started-at="2026-10-15T01:52:09 IST" name="testCustomerRegisterEndpoint" finished-at="2026-10-15T01:52:09 IST" duration-ms="243" status="PASS">
+        <test-method signature="testCustomerRegisterEndpoint()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@35aea049]" started-at="2026-10-16T01:32:49 IST" name="testCustomerRegisterEndpoint" finished-at="2026-10-16T01:32:49 IST" duration-ms="467" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testCustomerRegisterEndpoint -->
-        <test-method signature="testNonExistentRouteHandling()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@169e6180]" started-at="2026-10-15T01:52:09 IST" name="testNonExistentRouteHandling" finished-at="2026-10-15T01:52:09 IST" duration-ms="142" status="PASS">
+        <test-method signature="testNonExistentRouteHandling()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@35aea049]" started-at="2026-10-16T01:32:49 IST" name="testNonExistentRouteHandling" finished-at="2026-10-16T01:32:50 IST" duration-ms="266" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testNonExistentRouteHandling -->
-        <test-method signature="testPostWithoutAntiForgeryTokenRejection()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@169e6180]" started-at="2026-10-15T01:52:09 IST" name="testPostWithoutAntiForgeryTokenRejection" finished-at="2026-10-15T01:52:10 IST" duration-ms="77" status="PASS">
+        <test-method signature="testPostWithoutAntiForgeryTokenRejection()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@35aea049]" started-at="2026-10-16T01:32:50 IST" name="testPostWithoutAntiForgeryTokenRejection" finished-at="2026-10-16T01:32:50 IST" duration-ms="83" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testPostWithoutAntiForgeryTokenRejection -->
-        <test-method signature="testStorefrontRootEndpoint()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@169e6180]" started-at="2026-10-15T01:52:10 IST" name="testStorefrontRootEndpoint" finished-at="2026-10-15T01:52:10 IST" duration-ms="584" status="PASS">
+        <test-method signature="testStorefrontRootEndpoint()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@35aea049]" started-at="2026-10-16T01:32:50 IST" name="testStorefrontRootEndpoint" finished-at="2026-10-16T01:32:50 IST" duration-ms="454" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testStorefrontRootEndpoint -->
-        <test-method is-config="true" signature="tearDownApiContext()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@169e6180]" started-at="2026-10-15T01:52:10 IST" name="tearDownApiContext" finished-at="2026-10-15T01:52:10 IST" duration-ms="24" status="PASS">
+        <test-method is-config="true" signature="tearDownApiContext()[pri:0, instance:com.qa.nopcommerce.tests.api.ApiEndpointTest@35aea049]" started-at="2026-10-16T01:32:50 IST" name="tearDownApiContext" finished-at="2026-10-16T01:32:50 IST" duration-ms="67" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDownApiContext -->
       </class> <!-- com.qa.nopcommerce.tests.api.ApiEndpointTest -->
     </test> <!-- API Endpoint Integration Tests -->
-    <test started-at="2026-10-15T01:52:10 IST" name="Storefront Smoke Gate Tests" finished-at="2026-10-15T01:52:17 IST" duration-ms="6368">
+    <test started-at="2026-10-16T01:32:50 IST" name="Storefront Smoke Gate Tests" finished-at="2026-10-16T01:32:59 IST" duration-ms="8604">
       <class name="com.qa.nopcommerce.tests.smoke.SmokeTest">
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.smoke.SmokeTest@4b8ee4de]" started-at="2026-10-15T01:52:10 IST" name="setUp" finished-at="2026-10-15T01:52:12 IST" duration-ms="1894" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.smoke.SmokeTest@27f981c6]" started-at="2026-10-16T01:32:51 IST" name="setUp" finished-at="2026-10-16T01:32:53 IST" duration-ms="2631" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -175,15 +175,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testAdminLoginPageRendering()[pri:0, instance:com.qa.nopcommerce.tests.smoke.SmokeTest@4b8ee4de]" started-at="2026-10-15T01:52:12 IST" name="testAdminLoginPageRendering" finished-at="2026-10-15T01:52:13 IST" duration-ms="900" status="PASS">
+        <test-method signature="testAdminLoginPageRendering()[pri:0, instance:com.qa.nopcommerce.tests.smoke.SmokeTest@27f981c6]" started-at="2026-10-16T01:32:53 IST" name="testAdminLoginPageRendering" finished-at="2026-10-16T01:32:55 IST" duration-ms="1576" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testAdminLoginPageRendering -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.smoke.SmokeTest@4b8ee4de]" started-at="2026-10-15T01:52:13 IST" name="tearDown" finished-at="2026-10-15T01:52:13 IST" duration-ms="98" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.smoke.SmokeTest@27f981c6]" started-at="2026-10-16T01:32:55 IST" name="tearDown" finished-at="2026-10-16T01:32:55 IST" duration-ms="45" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.smoke.SmokeTest@4b8ee4de]" started-at="2026-10-15T01:52:13 IST" name="setUp" finished-at="2026-10-15T01:52:14 IST" duration-ms="358" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.smoke.SmokeTest@27f981c6]" started-at="2026-10-16T01:32:55 IST" name="setUp" finished-at="2026-10-16T01:32:55 IST" duration-ms="139" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -194,15 +194,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testHomePageTitleAndHeaderRendering()[pri:0, instance:com.qa.nopcommerce.tests.smoke.SmokeTest@4b8ee4de]" started-at="2026-10-15T01:52:14 IST" name="testHomePageTitleAndHeaderRendering" finished-at="2026-10-15T01:52:14 IST" duration-ms="883" status="PASS">
+        <test-method signature="testHomePageTitleAndHeaderRendering()[pri:0, instance:com.qa.nopcommerce.tests.smoke.SmokeTest@27f981c6]" started-at="2026-10-16T01:32:55 IST" name="testHomePageTitleAndHeaderRendering" finished-at="2026-10-16T01:32:56 IST" duration-ms="933" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testHomePageTitleAndHeaderRendering -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.smoke.SmokeTest@4b8ee4de]" started-at="2026-10-15T01:52:14 IST" name="tearDown" finished-at="2026-10-15T01:52:14 IST" duration-ms="39" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.smoke.SmokeTest@27f981c6]" started-at="2026-10-16T01:32:56 IST" name="tearDown" finished-at="2026-10-16T01:32:56 IST" duration-ms="14" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.smoke.SmokeTest@4b8ee4de]" started-at="2026-10-15T01:52:14 IST" name="setUp" finished-at="2026-10-15T01:52:15 IST" duration-ms="293" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.smoke.SmokeTest@27f981c6]" started-at="2026-10-16T01:32:56 IST" name="setUp" finished-at="2026-10-16T01:32:56 IST" duration-ms="134" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -213,23 +213,23 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testStorefrontSearchBoxInput()[pri:0, instance:com.qa.nopcommerce.tests.smoke.SmokeTest@4b8ee4de]" started-at="2026-10-15T01:52:15 IST" name="testStorefrontSearchBoxInput" finished-at="2026-10-15T01:52:16 IST" duration-ms="1455" status="PASS">
+        <test-method signature="testStorefrontSearchBoxInput()[pri:0, instance:com.qa.nopcommerce.tests.smoke.SmokeTest@27f981c6]" started-at="2026-10-16T01:32:56 IST" name="testStorefrontSearchBoxInput" finished-at="2026-10-16T01:32:58 IST" duration-ms="2294" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testStorefrontSearchBoxInput -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.smoke.SmokeTest@4b8ee4de]" started-at="2026-10-15T01:52:16 IST" name="tearDown" finished-at="2026-10-15T01:52:16 IST" duration-ms="40" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.smoke.SmokeTest@27f981c6]" started-at="2026-10-16T01:32:58 IST" name="tearDown" finished-at="2026-10-16T01:32:58 IST" duration-ms="29" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="tearDownClass()[pri:0, instance:com.qa.nopcommerce.tests.smoke.SmokeTest@4b8ee4de]" started-at="2026-10-15T01:52:16 IST" name="tearDownClass" finished-at="2026-10-15T01:52:17 IST" duration-ms="318" status="PASS">
+        <test-method is-config="true" signature="tearDownClass()[pri:0, instance:com.qa.nopcommerce.tests.smoke.SmokeTest@27f981c6]" started-at="2026-10-16T01:32:58 IST" name="tearDownClass" finished-at="2026-10-16T01:32:59 IST" duration-ms="720" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDownClass -->
       </class> <!-- com.qa.nopcommerce.tests.smoke.SmokeTest -->
     </test> <!-- Storefront Smoke Gate Tests -->
-    <test started-at="2026-10-15T01:52:17 IST" name="Storefront UI Tests" finished-at="2026-10-15T01:54:14 IST" duration-ms="117676">
+    <test started-at="2026-10-16T01:32:59 IST" name="Storefront UI Tests" finished-at="2026-10-16T01:34:44 IST" duration-ms="104565">
       <class name="com.qa.nopcommerce.tests.ui.CheckoutTest">
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@130c12b7]" started-at="2026-10-15T01:52:52 IST" name="setUp" finished-at="2026-10-15T01:52:54 IST" duration-ms="2064" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@5e600dd5]" started-at="2026-10-16T01:33:32 IST" name="setUp" finished-at="2026-10-16T01:33:36 IST" duration-ms="4415" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -240,15 +240,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testCheckoutBillingAddressForm()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@130c12b7]" started-at="2026-10-15T01:52:54 IST" name="testCheckoutBillingAddressForm" finished-at="2026-10-15T01:52:58 IST" duration-ms="4113" status="PASS">
+        <test-method signature="testCheckoutBillingAddressForm()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@5e600dd5]" started-at="2026-10-16T01:33:36 IST" name="testCheckoutBillingAddressForm" finished-at="2026-10-16T01:33:54 IST" duration-ms="17283" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testCheckoutBillingAddressForm -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@130c12b7]" started-at="2026-10-15T01:52:58 IST" name="tearDown" finished-at="2026-10-15T01:52:58 IST" duration-ms="73" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@5e600dd5]" started-at="2026-10-16T01:33:54 IST" name="tearDown" finished-at="2026-10-16T01:33:54 IST" duration-ms="27" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@130c12b7]" started-at="2026-10-15T01:52:58 IST" name="setUp" finished-at="2026-10-15T01:52:58 IST" duration-ms="317" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@5e600dd5]" started-at="2026-10-16T01:33:54 IST" name="setUp" finished-at="2026-10-16T01:33:54 IST" duration-ms="237" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -259,15 +259,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testCheckoutInitiation()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@130c12b7]" started-at="2026-10-15T01:52:58 IST" name="testCheckoutInitiation" finished-at="2026-10-15T01:53:01 IST" duration-ms="3067" status="PASS">
+        <test-method signature="testCheckoutInitiation()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@5e600dd5]" started-at="2026-10-16T01:33:54 IST" name="testCheckoutInitiation" finished-at="2026-10-16T01:33:58 IST" duration-ms="3463" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testCheckoutInitiation -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@130c12b7]" started-at="2026-10-15T01:53:01 IST" name="tearDown" finished-at="2026-10-15T01:53:01 IST" duration-ms="68" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@5e600dd5]" started-at="2026-10-16T01:33:58 IST" name="tearDown" finished-at="2026-10-16T01:33:58 IST" duration-ms="20" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@130c12b7]" started-at="2026-10-15T01:53:01 IST" name="setUp" finished-at="2026-10-15T01:53:02 IST" duration-ms="238" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@5e600dd5]" started-at="2026-10-16T01:33:58 IST" name="setUp" finished-at="2026-10-16T01:33:58 IST" duration-ms="217" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -278,21 +278,21 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testCheckoutPaymentMethodOptions()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@130c12b7]" started-at="2026-10-15T01:53:02 IST" name="testCheckoutPaymentMethodOptions" finished-at="2026-10-15T01:53:02 IST" duration-ms="488" status="PASS">
+        <test-method signature="testCheckoutPaymentMethodOptions()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@5e600dd5]" started-at="2026-10-16T01:33:58 IST" name="testCheckoutPaymentMethodOptions" finished-at="2026-10-16T01:33:58 IST" duration-ms="528" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testCheckoutPaymentMethodOptions -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@130c12b7]" started-at="2026-10-15T01:53:02 IST" name="tearDown" finished-at="2026-10-15T01:53:02 IST" duration-ms="62" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@5e600dd5]" started-at="2026-10-16T01:33:58 IST" name="tearDown" finished-at="2026-10-16T01:33:58 IST" duration-ms="16" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="tearDownClass()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@130c12b7]" started-at="2026-10-15T01:53:02 IST" name="tearDownClass" finished-at="2026-10-15T01:53:03 IST" duration-ms="465" status="PASS">
+        <test-method is-config="true" signature="tearDownClass()[pri:0, instance:com.qa.nopcommerce.tests.ui.CheckoutTest@5e600dd5]" started-at="2026-10-16T01:33:58 IST" name="tearDownClass" finished-at="2026-10-16T01:34:15 IST" duration-ms="17058" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDownClass -->
       </class> <!-- com.qa.nopcommerce.tests.ui.CheckoutTest -->
       <class name="com.qa.nopcommerce.tests.ui.AdminTest">
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" started-at="2026-10-15T01:53:10 IST" name="setUp" finished-at="2026-10-15T01:53:12 IST" duration-ms="1883" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" started-at="2026-10-16T01:34:16 IST" name="setUp" finished-at="2026-10-16T01:34:18 IST" duration-ms="2199" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -303,15 +303,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testAdminCatalogProductsPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" started-at="2026-10-15T01:53:12 IST" name="testAdminCatalogProductsPage" finished-at="2026-10-15T01:53:19 IST" duration-ms="7874" status="PASS">
+        <test-method signature="testAdminCatalogProductsPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" started-at="2026-10-16T01:34:18 IST" name="testAdminCatalogProductsPage" finished-at="2026-10-16T01:34:27 IST" duration-ms="8667" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testAdminCatalogProductsPage -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" started-at="2026-10-15T01:53:19 IST" name="tearDown" finished-at="2026-10-15T01:53:19 IST" duration-ms="66" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" started-at="2026-10-16T01:34:27 IST" name="tearDown" finished-at="2026-10-16T01:34:27 IST" duration-ms="15" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" started-at="2026-10-15T01:53:20 IST" name="setUp" finished-at="2026-10-15T01:53:20 IST" duration-ms="223" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" started-at="2026-10-16T01:34:27 IST" name="setUp" finished-at="2026-10-16T01:34:27 IST" duration-ms="115" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -322,15 +322,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testAdminCustomersPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" started-at="2026-10-15T01:53:20 IST" name="testAdminCustomersPage" finished-at="2026-10-15T01:53:27 IST" duration-ms="7760" status="PASS">
+        <test-method signature="testAdminCustomersPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" started-at="2026-10-16T01:34:27 IST" name="testAdminCustomersPage" finished-at="2026-10-16T01:34:29 IST" duration-ms="2460" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testAdminCustomersPage -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" started-at="2026-10-15T01:53:28 IST" name="tearDown" finished-at="2026-10-15T01:53:28 IST" duration-ms="52" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" started-at="2026-10-16T01:34:29 IST" name="tearDown" finished-at="2026-10-16T01:34:29 IST" duration-ms="14" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" started-at="2026-10-15T01:53:28 IST" name="setUp" finished-at="2026-10-15T01:53:28 IST" duration-ms="172" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" started-at="2026-10-16T01:34:29 IST" name="setUp" finished-at="2026-10-16T01:34:30 IST" duration-ms="148" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -341,15 +341,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testAdminDashboardElements()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" started-at="2026-10-15T01:53:28 IST" name="testAdminDashboardElements" finished-at="2026-10-15T01:53:35 IST" duration-ms="6944" status="PASS">
+        <test-method signature="testAdminDashboardElements()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" started-at="2026-10-16T01:34:30 IST" name="testAdminDashboardElements" finished-at="2026-10-16T01:34:33 IST" duration-ms="3094" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testAdminDashboardElements -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" started-at="2026-10-15T01:53:35 IST" name="tearDown" finished-at="2026-10-15T01:53:35 IST" duration-ms="47" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" started-at="2026-10-16T01:34:33 IST" name="tearDown" finished-at="2026-10-16T01:34:33 IST" duration-ms="13" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" started-at="2026-10-15T01:53:35 IST" name="setUp" finished-at="2026-10-15T01:53:35 IST" duration-ms="319" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" started-at="2026-10-16T01:34:33 IST" name="setUp" finished-at="2026-10-16T01:34:33 IST" duration-ms="128" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -360,15 +360,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testAdminLoginInvalidPassword()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" started-at="2026-10-15T01:53:35 IST" name="testAdminLoginInvalidPassword" finished-at="2026-10-15T01:53:56 IST" duration-ms="21258" status="PASS">
+        <test-method signature="testAdminLoginInvalidPassword()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" started-at="2026-10-16T01:34:33 IST" name="testAdminLoginInvalidPassword" finished-at="2026-10-16T01:34:34 IST" duration-ms="1222" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testAdminLoginInvalidPassword -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" started-at="2026-10-15T01:53:56 IST" name="tearDown" finished-at="2026-10-15T01:53:56 IST" duration-ms="51" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" started-at="2026-10-16T01:34:34 IST" name="tearDown" finished-at="2026-10-16T01:34:34 IST" duration-ms="31" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" started-at="2026-10-15T01:53:56 IST" name="setUp" finished-at="2026-10-15T01:53:57 IST" duration-ms="191" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" started-at="2026-10-16T01:34:34 IST" name="setUp" finished-at="2026-10-16T01:34:34 IST" duration-ms="119" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -379,15 +379,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testAdminLoginPageRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" started-at="2026-10-15T01:53:57 IST" name="testAdminLoginPageRendering" finished-at="2026-10-15T01:53:58 IST" duration-ms="995" status="PASS">
+        <test-method signature="testAdminLoginPageRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" started-at="2026-10-16T01:34:34 IST" name="testAdminLoginPageRendering" finished-at="2026-10-16T01:34:35 IST" duration-ms="464" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testAdminLoginPageRendering -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" started-at="2026-10-15T01:53:58 IST" name="tearDown" finished-at="2026-10-15T01:53:58 IST" duration-ms="79" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" started-at="2026-10-16T01:34:35 IST" name="tearDown" finished-at="2026-10-16T01:34:35 IST" duration-ms="13" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" started-at="2026-10-15T01:53:58 IST" name="setUp" finished-at="2026-10-15T01:53:58 IST" duration-ms="283" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" started-at="2026-10-16T01:34:35 IST" name="setUp" finished-at="2026-10-16T01:34:35 IST" duration-ms="147" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -398,15 +398,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testAdminLoginValidCredentials()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" started-at="2026-10-15T01:53:58 IST" name="testAdminLoginValidCredentials" finished-at="2026-10-15T01:54:05 IST" duration-ms="7474" status="PASS">
+        <test-method signature="testAdminLoginValidCredentials()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" started-at="2026-10-16T01:34:35 IST" name="testAdminLoginValidCredentials" finished-at="2026-10-16T01:34:38 IST" duration-ms="2653" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testAdminLoginValidCredentials -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" started-at="2026-10-15T01:54:05 IST" name="tearDown" finished-at="2026-10-15T01:54:06 IST" duration-ms="59" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" started-at="2026-10-16T01:34:38 IST" name="tearDown" finished-at="2026-10-16T01:34:38 IST" duration-ms="9" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" started-at="2026-10-15T01:54:06 IST" name="setUp" finished-at="2026-10-15T01:54:06 IST" duration-ms="266" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" started-at="2026-10-16T01:34:38 IST" name="setUp" finished-at="2026-10-16T01:34:38 IST" duration-ms="147" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -417,21 +417,21 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testAdminSalesOrdersPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" started-at="2026-10-15T01:54:06 IST" name="testAdminSalesOrdersPage" finished-at="2026-10-15T01:54:14 IST" duration-ms="7831" status="PASS">
+        <test-method signature="testAdminSalesOrdersPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" started-at="2026-10-16T01:34:38 IST" name="testAdminSalesOrdersPage" finished-at="2026-10-16T01:34:42 IST" duration-ms="4249" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testAdminSalesOrdersPage -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" started-at="2026-10-15T01:54:14 IST" name="tearDown" finished-at="2026-10-15T01:54:14 IST" duration-ms="86" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" started-at="2026-10-16T01:34:42 IST" name="tearDown" finished-at="2026-10-16T01:34:42 IST" duration-ms="10" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="tearDownClass()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@576d5deb]" started-at="2026-10-15T01:54:14 IST" name="tearDownClass" finished-at="2026-10-15T01:54:14 IST" duration-ms="575" status="PASS">
+        <test-method is-config="true" signature="tearDownClass()[pri:0, instance:com.qa.nopcommerce.tests.ui.AdminTest@5d534f5d]" started-at="2026-10-16T01:34:42 IST" name="tearDownClass" finished-at="2026-10-16T01:34:44 IST" duration-ms="1704" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDownClass -->
       </class> <!-- com.qa.nopcommerce.tests.ui.AdminTest -->
       <class name="com.qa.nopcommerce.tests.ui.CustomerAccountTest">
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@5e600dd5]" started-at="2026-10-15T01:53:03 IST" name="setUp" finished-at="2026-10-15T01:53:05 IST" duration-ms="2085" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@576d5deb]" started-at="2026-10-16T01:34:15 IST" name="setUp" finished-at="2026-10-16T01:34:18 IST" duration-ms="2447" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -442,15 +442,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testCustomerAddressesPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@5e600dd5]" started-at="2026-10-15T01:53:05 IST" name="testCustomerAddressesPage" finished-at="2026-10-15T01:53:05 IST" duration-ms="673" status="PASS">
+        <test-method signature="testCustomerAddressesPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@576d5deb]" started-at="2026-10-16T01:34:18 IST" name="testCustomerAddressesPage" finished-at="2026-10-16T01:34:20 IST" duration-ms="2411" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testCustomerAddressesPage -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@5e600dd5]" started-at="2026-10-15T01:53:05 IST" name="tearDown" finished-at="2026-10-15T01:53:06 IST" duration-ms="97" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@576d5deb]" started-at="2026-10-16T01:34:20 IST" name="tearDown" finished-at="2026-10-16T01:34:20 IST" duration-ms="42" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@5e600dd5]" started-at="2026-10-15T01:53:06 IST" name="setUp" finished-at="2026-10-15T01:53:06 IST" duration-ms="301" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@576d5deb]" started-at="2026-10-16T01:34:20 IST" name="setUp" finished-at="2026-10-16T01:34:21 IST" duration-ms="185" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -461,15 +461,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testCustomerInfoPageRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@5e600dd5]" started-at="2026-10-15T01:53:06 IST" name="testCustomerInfoPageRendering" finished-at="2026-10-15T01:53:08 IST" duration-ms="2397" status="PASS">
+        <test-method signature="testCustomerInfoPageRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@576d5deb]" started-at="2026-10-16T01:34:21 IST" name="testCustomerInfoPageRendering" finished-at="2026-10-16T01:34:25 IST" duration-ms="4200" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testCustomerInfoPageRendering -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@5e600dd5]" started-at="2026-10-15T01:53:08 IST" name="tearDown" finished-at="2026-10-15T01:53:08 IST" duration-ms="86" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@576d5deb]" started-at="2026-10-16T01:34:25 IST" name="tearDown" finished-at="2026-10-16T01:34:25 IST" duration-ms="14" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@5e600dd5]" started-at="2026-10-15T01:53:08 IST" name="setUp" finished-at="2026-10-15T01:53:09 IST" duration-ms="320" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@576d5deb]" started-at="2026-10-16T01:34:25 IST" name="setUp" finished-at="2026-10-16T01:34:25 IST" duration-ms="127" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -480,21 +480,21 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testCustomerOrdersPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@5e600dd5]" started-at="2026-10-15T01:53:09 IST" name="testCustomerOrdersPage" finished-at="2026-10-15T01:53:09 IST" duration-ms="487" status="PASS">
+        <test-method signature="testCustomerOrdersPage()[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@576d5deb]" started-at="2026-10-16T01:34:25 IST" name="testCustomerOrdersPage" finished-at="2026-10-16T01:34:26 IST" duration-ms="639" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testCustomerOrdersPage -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@5e600dd5]" started-at="2026-10-15T01:53:09 IST" name="tearDown" finished-at="2026-10-15T01:53:09 IST" duration-ms="63" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@576d5deb]" started-at="2026-10-16T01:34:26 IST" name="tearDown" finished-at="2026-10-16T01:34:26 IST" duration-ms="12" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="tearDownClass()[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@5e600dd5]" started-at="2026-10-15T01:53:09 IST" name="tearDownClass" finished-at="2026-10-15T01:53:10 IST" duration-ms="356" status="PASS">
+        <test-method is-config="true" signature="tearDownClass()[pri:0, instance:com.qa.nopcommerce.tests.ui.CustomerAccountTest@576d5deb]" started-at="2026-10-16T01:34:26 IST" name="tearDownClass" finished-at="2026-10-16T01:34:27 IST" duration-ms="1493" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDownClass -->
       </class> <!-- com.qa.nopcommerce.tests.ui.CustomerAccountTest -->
       <class name="com.qa.nopcommerce.tests.ui.CartTest">
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" started-at="2026-10-15T01:52:36 IST" name="setUp" finished-at="2026-10-15T01:52:38 IST" duration-ms="1738" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" started-at="2026-10-16T01:33:24 IST" name="setUp" finished-at="2026-10-16T01:33:29 IST" duration-ms="5132" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -505,15 +505,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testAddProductToCart()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" started-at="2026-10-15T01:52:38 IST" name="testAddProductToCart" finished-at="2026-10-15T01:52:40 IST" duration-ms="1984" status="PASS">
+        <test-method signature="testAddProductToCart()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" started-at="2026-10-16T01:33:29 IST" name="testAddProductToCart" finished-at="2026-10-16T01:33:37 IST" duration-ms="8140" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testAddProductToCart -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" started-at="2026-10-15T01:52:40 IST" name="tearDown" finished-at="2026-10-15T01:52:40 IST" duration-ms="90" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" started-at="2026-10-16T01:33:37 IST" name="tearDown" finished-at="2026-10-16T01:33:37 IST" duration-ms="52" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" started-at="2026-10-15T01:52:40 IST" name="setUp" finished-at="2026-10-15T01:52:40 IST" duration-ms="262" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" started-at="2026-10-16T01:33:37 IST" name="setUp" finished-at="2026-10-16T01:33:37 IST" duration-ms="161" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -524,15 +524,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testApplyInvalidCouponCode()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" started-at="2026-10-15T01:52:40 IST" name="testApplyInvalidCouponCode" finished-at="2026-10-15T01:52:44 IST" duration-ms="3696" status="PASS">
+        <test-method signature="testApplyInvalidCouponCode()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" started-at="2026-10-16T01:33:37 IST" name="testApplyInvalidCouponCode" finished-at="2026-10-16T01:33:54 IST" duration-ms="16195" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testApplyInvalidCouponCode -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" started-at="2026-10-15T01:52:44 IST" name="tearDown" finished-at="2026-10-15T01:52:44 IST" duration-ms="62" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" started-at="2026-10-16T01:33:54 IST" name="tearDown" finished-at="2026-10-16T01:33:54 IST" duration-ms="99" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" started-at="2026-10-15T01:52:44 IST" name="setUp" finished-at="2026-10-15T01:52:45 IST" duration-ms="259" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" started-at="2026-10-16T01:33:54 IST" name="setUp" finished-at="2026-10-16T01:33:54 IST" duration-ms="353" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -543,15 +543,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testRemoveItemFromCart()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" started-at="2026-10-15T01:52:45 IST" name="testRemoveItemFromCart" finished-at="2026-10-15T01:53:06 IST" duration-ms="21406" status="PASS">
+        <test-method signature="testRemoveItemFromCart()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" started-at="2026-10-16T01:33:54 IST" name="testRemoveItemFromCart" finished-at="2026-10-16T01:33:57 IST" duration-ms="3379" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testRemoveItemFromCart -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" started-at="2026-10-15T01:53:06 IST" name="tearDown" finished-at="2026-10-15T01:53:06 IST" duration-ms="113" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" started-at="2026-10-16T01:33:57 IST" name="tearDown" finished-at="2026-10-16T01:33:57 IST" duration-ms="20" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" started-at="2026-10-15T01:53:06 IST" name="setUp" finished-at="2026-10-15T01:53:07 IST" duration-ms="420" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" started-at="2026-10-16T01:33:57 IST" name="setUp" finished-at="2026-10-16T01:33:58 IST" duration-ms="234" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -562,15 +562,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testUpdateCartItemQuantity()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" started-at="2026-10-15T01:53:07 IST" name="testUpdateCartItemQuantity" finished-at="2026-10-15T01:53:28 IST" duration-ms="21788" status="PASS">
+        <test-method signature="testUpdateCartItemQuantity()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" started-at="2026-10-16T01:33:58 IST" name="testUpdateCartItemQuantity" finished-at="2026-10-16T01:34:01 IST" duration-ms="3043" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testUpdateCartItemQuantity -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" started-at="2026-10-15T01:53:28 IST" name="tearDown" finished-at="2026-10-15T01:53:28 IST" duration-ms="80" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" started-at="2026-10-16T01:34:01 IST" name="tearDown" finished-at="2026-10-16T01:34:01 IST" duration-ms="18" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" started-at="2026-10-15T01:53:28 IST" name="setUp" finished-at="2026-10-15T01:53:29 IST" duration-ms="234" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" started-at="2026-10-16T01:34:01 IST" name="setUp" finished-at="2026-10-16T01:34:01 IST" duration-ms="151" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -581,21 +581,21 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testViewShoppingCart()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" started-at="2026-10-15T01:53:29 IST" name="testViewShoppingCart" finished-at="2026-10-15T01:53:30 IST" duration-ms="1442" status="PASS">
+        <test-method signature="testViewShoppingCart()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" started-at="2026-10-16T01:34:01 IST" name="testViewShoppingCart" finished-at="2026-10-16T01:34:15 IST" duration-ms="14262" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testViewShoppingCart -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" started-at="2026-10-15T01:53:30 IST" name="tearDown" finished-at="2026-10-15T01:53:30 IST" duration-ms="45" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" started-at="2026-10-16T01:34:15 IST" name="tearDown" finished-at="2026-10-16T01:34:15 IST" duration-ms="59" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="tearDownClass()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@121314f7]" started-at="2026-10-15T01:53:30 IST" name="tearDownClass" finished-at="2026-10-15T01:53:31 IST" duration-ms="409" status="PASS">
+        <test-method is-config="true" signature="tearDownClass()[pri:0, instance:com.qa.nopcommerce.tests.ui.CartTest@130c12b7]" started-at="2026-10-16T01:34:15 IST" name="tearDownClass" finished-at="2026-10-16T01:34:16 IST" duration-ms="573" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDownClass -->
       </class> <!-- com.qa.nopcommerce.tests.ui.CartTest -->
       <class name="com.qa.nopcommerce.tests.ui.CatalogTest">
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" started-at="2026-10-15T01:52:17 IST" name="setUp" finished-at="2026-10-15T01:52:19 IST" duration-ms="2419" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" started-at="2026-10-16T01:32:59 IST" name="setUp" finished-at="2026-10-16T01:33:02 IST" duration-ms="2499" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -606,15 +606,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testCategoryNavigation()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" started-at="2026-10-15T01:52:19 IST" name="testCategoryNavigation" finished-at="2026-10-15T01:52:21 IST" duration-ms="1877" status="PASS">
+        <test-method signature="testCategoryNavigation()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" started-at="2026-10-16T01:33:02 IST" name="testCategoryNavigation" finished-at="2026-10-16T01:33:06 IST" duration-ms="4180" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testCategoryNavigation -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" started-at="2026-10-15T01:52:21 IST" name="tearDown" finished-at="2026-10-15T01:52:21 IST" duration-ms="67" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" started-at="2026-10-16T01:33:06 IST" name="tearDown" finished-at="2026-10-16T01:33:06 IST" duration-ms="27" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" started-at="2026-10-15T01:52:21 IST" name="setUp" finished-at="2026-10-15T01:52:21 IST" duration-ms="322" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" started-at="2026-10-16T01:33:06 IST" name="setUp" finished-at="2026-10-16T01:33:07 IST" duration-ms="542" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -625,15 +625,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testHomePageTitleAndHeaderRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" started-at="2026-10-15T01:52:21 IST" name="testHomePageTitleAndHeaderRendering" finished-at="2026-10-15T01:52:22 IST" duration-ms="1069" status="PASS">
+        <test-method signature="testHomePageTitleAndHeaderRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" started-at="2026-10-16T01:33:07 IST" name="testHomePageTitleAndHeaderRendering" finished-at="2026-10-16T01:33:08 IST" duration-ms="1332" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testHomePageTitleAndHeaderRendering -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" started-at="2026-10-15T01:52:22 IST" name="tearDown" finished-at="2026-10-15T01:52:23 IST" duration-ms="69" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" started-at="2026-10-16T01:33:08 IST" name="tearDown" finished-at="2026-10-16T01:33:08 IST" duration-ms="24" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" started-at="2026-10-15T01:52:23 IST" name="setUp" finished-at="2026-10-15T01:52:23 IST" duration-ms="313" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" started-at="2026-10-16T01:33:08 IST" name="setUp" finished-at="2026-10-16T01:33:08 IST" duration-ms="157" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -644,15 +644,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testProductDetailsRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" started-at="2026-10-15T01:52:23 IST" name="testProductDetailsRendering" finished-at="2026-10-15T01:52:24 IST" duration-ms="1481" status="PASS">
+        <test-method signature="testProductDetailsRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" started-at="2026-10-16T01:33:08 IST" name="testProductDetailsRendering" finished-at="2026-10-16T01:33:10 IST" duration-ms="1741" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testProductDetailsRendering -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" started-at="2026-10-15T01:52:24 IST" name="tearDown" finished-at="2026-10-15T01:52:24 IST" duration-ms="64" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" started-at="2026-10-16T01:33:10 IST" name="tearDown" finished-at="2026-10-16T01:33:10 IST" duration-ms="23" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" started-at="2026-10-15T01:52:24 IST" name="setUp" finished-at="2026-10-15T01:52:25 IST" duration-ms="378" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" started-at="2026-10-16T01:33:10 IST" name="setUp" finished-at="2026-10-16T01:33:10 IST" duration-ms="198" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -663,15 +663,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testProductSorting()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" started-at="2026-10-15T01:52:25 IST" name="testProductSorting" finished-at="2026-10-15T01:52:46 IST" duration-ms="21626" status="PASS">
+        <test-method signature="testProductSorting()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" started-at="2026-10-16T01:33:10 IST" name="testProductSorting" finished-at="2026-10-16T01:33:11 IST" duration-ms="909" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testProductSorting -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" started-at="2026-10-15T01:52:47 IST" name="tearDown" finished-at="2026-10-15T01:52:47 IST" duration-ms="94" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" started-at="2026-10-16T01:33:11 IST" name="tearDown" finished-at="2026-10-16T01:33:11 IST" duration-ms="13" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" started-at="2026-10-15T01:52:47 IST" name="setUp" finished-at="2026-10-15T01:52:47 IST" duration-ms="311" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" started-at="2026-10-16T01:33:11 IST" name="setUp" finished-at="2026-10-16T01:33:11 IST" duration-ms="125" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -682,15 +682,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testShortSearchTermNotice()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" started-at="2026-10-15T01:52:47 IST" name="testShortSearchTermNotice" finished-at="2026-10-15T01:52:47 IST" duration-ms="569" status="PASS">
+        <test-method signature="testShortSearchTermNotice()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" started-at="2026-10-16T01:33:11 IST" name="testShortSearchTermNotice" finished-at="2026-10-16T01:33:12 IST" duration-ms="680" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testShortSearchTermNotice -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" started-at="2026-10-15T01:52:47 IST" name="tearDown" finished-at="2026-10-15T01:52:48 IST" duration-ms="43" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" started-at="2026-10-16T01:33:12 IST" name="tearDown" finished-at="2026-10-16T01:33:12 IST" duration-ms="16" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" started-at="2026-10-15T01:52:48 IST" name="setUp" finished-at="2026-10-15T01:52:48 IST" duration-ms="263" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" started-at="2026-10-16T01:33:12 IST" name="setUp" finished-at="2026-10-16T01:33:12 IST" duration-ms="156" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -701,15 +701,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testStorefrontSearchBox()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" started-at="2026-10-15T01:52:48 IST" name="testStorefrontSearchBox" finished-at="2026-10-15T01:52:50 IST" duration-ms="2079" status="PASS">
+        <test-method signature="testStorefrontSearchBox()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" started-at="2026-10-16T01:33:12 IST" name="testStorefrontSearchBox" finished-at="2026-10-16T01:33:14 IST" duration-ms="1759" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testStorefrontSearchBox -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" started-at="2026-10-15T01:52:50 IST" name="tearDown" finished-at="2026-10-15T01:52:50 IST" duration-ms="47" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" started-at="2026-10-16T01:33:14 IST" name="tearDown" finished-at="2026-10-16T01:33:14 IST" duration-ms="19" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" started-at="2026-10-15T01:52:50 IST" name="setUp" finished-at="2026-10-15T01:52:50 IST" duration-ms="362" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" started-at="2026-10-16T01:33:14 IST" name="setUp" finished-at="2026-10-16T01:33:14 IST" duration-ms="138" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -720,21 +720,21 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testTopMenuCategoriesRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" started-at="2026-10-15T01:52:50 IST" name="testTopMenuCategoriesRendering" finished-at="2026-10-15T01:52:51 IST" duration-ms="826" status="PASS">
+        <test-method signature="testTopMenuCategoriesRendering()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" started-at="2026-10-16T01:33:14 IST" name="testTopMenuCategoriesRendering" finished-at="2026-10-16T01:33:15 IST" duration-ms="1112" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testTopMenuCategoriesRendering -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" started-at="2026-10-15T01:52:51 IST" name="tearDown" finished-at="2026-10-15T01:52:51 IST" duration-ms="41" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" started-at="2026-10-16T01:33:15 IST" name="tearDown" finished-at="2026-10-16T01:33:15 IST" duration-ms="11" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="tearDownClass()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@60bd273d]" started-at="2026-10-15T01:52:51 IST" name="tearDownClass" finished-at="2026-10-15T01:52:52 IST" duration-ms="482" status="PASS">
+        <test-method is-config="true" signature="tearDownClass()[pri:0, instance:com.qa.nopcommerce.tests.ui.CatalogTest@121314f7]" started-at="2026-10-16T01:33:15 IST" name="tearDownClass" finished-at="2026-10-16T01:33:24 IST" duration-ms="8660" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDownClass -->
       </class> <!-- com.qa.nopcommerce.tests.ui.CatalogTest -->
       <class name="com.qa.nopcommerce.tests.ui.AuthTest">
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" started-at="2026-10-15T01:52:17 IST" name="setUp" finished-at="2026-10-15T01:52:19 IST" duration-ms="2350" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" started-at="2026-10-16T01:32:59 IST" name="setUp" finished-at="2026-10-16T01:33:02 IST" duration-ms="2499" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -745,15 +745,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testCustomerLoginBlankEmail()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" started-at="2026-10-15T01:52:19 IST" name="testCustomerLoginBlankEmail" finished-at="2026-10-15T01:52:20 IST" duration-ms="1054" status="PASS">
+        <test-method signature="testCustomerLoginBlankEmail()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" started-at="2026-10-16T01:33:02 IST" name="testCustomerLoginBlankEmail" finished-at="2026-10-16T01:33:04 IST" duration-ms="2542" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testCustomerLoginBlankEmail -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" started-at="2026-10-15T01:52:20 IST" name="tearDown" finished-at="2026-10-15T01:52:20 IST" duration-ms="89" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" started-at="2026-10-16T01:33:04 IST" name="tearDown" finished-at="2026-10-16T01:33:04 IST" duration-ms="42" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" started-at="2026-10-15T01:52:20 IST" name="setUp" finished-at="2026-10-15T01:52:21 IST" duration-ms="382" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" started-at="2026-10-16T01:33:04 IST" name="setUp" finished-at="2026-10-16T01:33:05 IST" duration-ms="246" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -764,15 +764,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testCustomerLoginInvalidPassword()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" started-at="2026-10-15T01:52:21 IST" name="testCustomerLoginInvalidPassword" finished-at="2026-10-15T01:52:22 IST" duration-ms="1375" status="PASS">
+        <test-method signature="testCustomerLoginInvalidPassword()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" started-at="2026-10-16T01:33:05 IST" name="testCustomerLoginInvalidPassword" finished-at="2026-10-16T01:33:07 IST" duration-ms="2573" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testCustomerLoginInvalidPassword -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" started-at="2026-10-15T01:52:22 IST" name="tearDown" finished-at="2026-10-15T01:52:22 IST" duration-ms="103" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" started-at="2026-10-16T01:33:07 IST" name="tearDown" finished-at="2026-10-16T01:33:07 IST" duration-ms="13" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" started-at="2026-10-15T01:52:22 IST" name="setUp" finished-at="2026-10-15T01:52:22 IST" duration-ms="410" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" started-at="2026-10-16T01:33:07 IST" name="setUp" finished-at="2026-10-16T01:33:07 IST" duration-ms="171" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -783,15 +783,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testCustomerLoginValidCredentials()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" started-at="2026-10-15T01:52:22 IST" name="testCustomerLoginValidCredentials" finished-at="2026-10-15T01:52:24 IST" duration-ms="1738" status="PASS">
+        <test-method signature="testCustomerLoginValidCredentials()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" started-at="2026-10-16T01:33:07 IST" name="testCustomerLoginValidCredentials" finished-at="2026-10-16T01:33:09 IST" duration-ms="1891" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testCustomerLoginValidCredentials -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" started-at="2026-10-15T01:52:24 IST" name="tearDown" finished-at="2026-10-15T01:52:24 IST" duration-ms="73" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" started-at="2026-10-16T01:33:09 IST" name="tearDown" finished-at="2026-10-16T01:33:09 IST" duration-ms="15" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" started-at="2026-10-15T01:52:24 IST" name="setUp" finished-at="2026-10-15T01:52:25 IST" duration-ms="287" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" started-at="2026-10-16T01:33:09 IST" name="setUp" finished-at="2026-10-16T01:33:09 IST" duration-ms="180" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -802,15 +802,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testCustomerLogout()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" started-at="2026-10-15T01:52:25 IST" name="testCustomerLogout" finished-at="2026-10-15T01:52:27 IST" duration-ms="2284" status="PASS">
+        <test-method signature="testCustomerLogout()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" started-at="2026-10-16T01:33:09 IST" name="testCustomerLogout" finished-at="2026-10-16T01:33:12 IST" duration-ms="2188" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testCustomerLogout -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" started-at="2026-10-15T01:52:27 IST" name="tearDown" finished-at="2026-10-15T01:52:27 IST" duration-ms="64" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" started-at="2026-10-16T01:33:12 IST" name="tearDown" finished-at="2026-10-16T01:33:12 IST" duration-ms="21" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" started-at="2026-10-15T01:52:27 IST" name="setUp" finished-at="2026-10-15T01:52:27 IST" duration-ms="244" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" started-at="2026-10-16T01:33:12 IST" name="setUp" finished-at="2026-10-16T01:33:12 IST" duration-ms="183" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -821,15 +821,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testRegistrationMalformedEmailValidation()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" started-at="2026-10-15T01:52:27 IST" name="testRegistrationMalformedEmailValidation" finished-at="2026-10-15T01:52:28 IST" duration-ms="1006" status="PASS">
+        <test-method signature="testRegistrationMalformedEmailValidation()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" started-at="2026-10-16T01:33:12 IST" name="testRegistrationMalformedEmailValidation" finished-at="2026-10-16T01:33:13 IST" duration-ms="1213" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testRegistrationMalformedEmailValidation -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" started-at="2026-10-15T01:52:28 IST" name="tearDown" finished-at="2026-10-15T01:52:28 IST" duration-ms="36" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" started-at="2026-10-16T01:33:13 IST" name="tearDown" finished-at="2026-10-16T01:33:13 IST" duration-ms="14" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" started-at="2026-10-15T01:52:28 IST" name="setUp" finished-at="2026-10-15T01:52:29 IST" duration-ms="259" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" started-at="2026-10-16T01:33:13 IST" name="setUp" finished-at="2026-10-16T01:33:13 IST" duration-ms="129" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -840,15 +840,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testRegistrationMandatoryFieldValidation()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" started-at="2026-10-15T01:52:29 IST" name="testRegistrationMandatoryFieldValidation" finished-at="2026-10-15T01:52:33 IST" duration-ms="4712" status="PASS">
+        <test-method signature="testRegistrationMandatoryFieldValidation()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" started-at="2026-10-16T01:33:13 IST" name="testRegistrationMandatoryFieldValidation" finished-at="2026-10-16T01:33:18 IST" duration-ms="4835" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testRegistrationMandatoryFieldValidation -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" started-at="2026-10-15T01:52:33 IST" name="tearDown" finished-at="2026-10-15T01:52:33 IST" duration-ms="50" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" started-at="2026-10-16T01:33:18 IST" name="tearDown" finished-at="2026-10-16T01:33:18 IST" duration-ms="49" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" started-at="2026-10-15T01:52:33 IST" name="setUp" finished-at="2026-10-15T01:52:34 IST" duration-ms="197" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" started-at="2026-10-16T01:33:18 IST" name="setUp" finished-at="2026-10-16T01:33:19 IST" duration-ms="337" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -859,15 +859,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testRegistrationPasswordMismatch()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" started-at="2026-10-15T01:52:34 IST" name="testRegistrationPasswordMismatch" finished-at="2026-10-15T01:52:34 IST" duration-ms="602" status="PASS">
+        <test-method signature="testRegistrationPasswordMismatch()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" started-at="2026-10-16T01:33:19 IST" name="testRegistrationPasswordMismatch" finished-at="2026-10-16T01:33:21 IST" duration-ms="2249" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testRegistrationPasswordMismatch -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" started-at="2026-10-15T01:52:34 IST" name="tearDown" finished-at="2026-10-15T01:52:34 IST" duration-ms="39" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" started-at="2026-10-16T01:33:21 IST" name="tearDown" finished-at="2026-10-16T01:33:21 IST" duration-ms="13" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" started-at="2026-10-15T01:52:34 IST" name="setUp" finished-at="2026-10-15T01:52:34 IST" duration-ms="261" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" started-at="2026-10-16T01:33:21 IST" name="setUp" finished-at="2026-10-16T01:33:21 IST" duration-ms="129" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -878,23 +878,23 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testValidCustomerRegistration()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" started-at="2026-10-15T01:52:34 IST" name="testValidCustomerRegistration" finished-at="2026-10-15T01:52:36 IST" duration-ms="1562" status="PASS">
+        <test-method signature="testValidCustomerRegistration()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" started-at="2026-10-16T01:33:21 IST" name="testValidCustomerRegistration" finished-at="2026-10-16T01:33:27 IST" duration-ms="6353" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testValidCustomerRegistration -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" started-at="2026-10-15T01:52:36 IST" name="tearDown" finished-at="2026-10-15T01:52:36 IST" duration-ms="24" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" started-at="2026-10-16T01:33:27 IST" name="tearDown" finished-at="2026-10-16T01:33:27 IST" duration-ms="56" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="tearDownClass()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@4f80542f]" started-at="2026-10-15T01:52:36 IST" name="tearDownClass" finished-at="2026-10-15T01:52:36 IST" duration-ms="353" status="PASS">
+        <test-method is-config="true" signature="tearDownClass()[pri:0, instance:com.qa.nopcommerce.tests.ui.AuthTest@60bd273d]" started-at="2026-10-16T01:33:27 IST" name="tearDownClass" finished-at="2026-10-16T01:33:32 IST" duration-ms="4503" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDownClass -->
       </class> <!-- com.qa.nopcommerce.tests.ui.AuthTest -->
     </test> <!-- Storefront UI Tests -->
-    <test started-at="2026-10-15T01:54:14 IST" name="Accessibility Compliance Tests" finished-at="2026-10-15T01:54:31 IST" duration-ms="16566">
+    <test started-at="2026-10-16T01:34:44 IST" name="Accessibility Compliance Tests" finished-at="2026-10-16T01:35:05 IST" duration-ms="21334">
       <class name="com.qa.nopcommerce.tests.a11y.AccessibilityTest">
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@25641d39]" started-at="2026-10-15T01:54:14 IST" name="setUp" finished-at="2026-10-15T01:54:17 IST" duration-ms="2338" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@7b36aa0c]" started-at="2026-10-16T01:34:44 IST" name="setUp" finished-at="2026-10-16T01:34:46 IST" duration-ms="2505" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -905,15 +905,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testCartPageAccessibility()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@25641d39]" started-at="2026-10-15T01:54:17 IST" name="testCartPageAccessibility" finished-at="2026-10-15T01:54:20 IST" duration-ms="3779" status="PASS">
+        <test-method signature="testCartPageAccessibility()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@7b36aa0c]" started-at="2026-10-16T01:34:46 IST" name="testCartPageAccessibility" finished-at="2026-10-16T01:34:50 IST" duration-ms="4058" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testCartPageAccessibility -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@25641d39]" started-at="2026-10-15T01:54:21 IST" name="tearDown" finished-at="2026-10-15T01:54:21 IST" duration-ms="75" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@7b36aa0c]" started-at="2026-10-16T01:34:50 IST" name="tearDown" finished-at="2026-10-16T01:34:50 IST" duration-ms="15" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@25641d39]" started-at="2026-10-15T01:54:21 IST" name="setUp" finished-at="2026-10-15T01:54:21 IST" duration-ms="318" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@7b36aa0c]" started-at="2026-10-16T01:34:50 IST" name="setUp" finished-at="2026-10-16T01:34:51 IST" duration-ms="149" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -924,15 +924,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testCategoryPageAccessibility()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@25641d39]" started-at="2026-10-15T01:54:21 IST" name="testCategoryPageAccessibility" finished-at="2026-10-15T01:54:24 IST" duration-ms="3290" status="PASS">
+        <test-method signature="testCategoryPageAccessibility()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@7b36aa0c]" started-at="2026-10-16T01:34:51 IST" name="testCategoryPageAccessibility" finished-at="2026-10-16T01:34:55 IST" duration-ms="4177" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testCategoryPageAccessibility -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@25641d39]" started-at="2026-10-15T01:54:24 IST" name="tearDown" finished-at="2026-10-15T01:54:24 IST" duration-ms="68" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@7b36aa0c]" started-at="2026-10-16T01:34:55 IST" name="tearDown" finished-at="2026-10-16T01:34:55 IST" duration-ms="16" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@25641d39]" started-at="2026-10-15T01:54:24 IST" name="setUp" finished-at="2026-10-15T01:54:25 IST" duration-ms="239" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@7b36aa0c]" started-at="2026-10-16T01:34:55 IST" name="setUp" finished-at="2026-10-16T01:34:55 IST" duration-ms="126" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -943,15 +943,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testHomePageAccessibility()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@25641d39]" started-at="2026-10-15T01:54:25 IST" name="testHomePageAccessibility" finished-at="2026-10-15T01:54:27 IST" duration-ms="2225" status="PASS">
+        <test-method signature="testHomePageAccessibility()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@7b36aa0c]" started-at="2026-10-16T01:34:55 IST" name="testHomePageAccessibility" finished-at="2026-10-16T01:34:59 IST" duration-ms="4166" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testHomePageAccessibility -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@25641d39]" started-at="2026-10-15T01:54:27 IST" name="tearDown" finished-at="2026-10-15T01:54:27 IST" duration-ms="52" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@7b36aa0c]" started-at="2026-10-16T01:34:59 IST" name="tearDown" finished-at="2026-10-16T01:34:59 IST" duration-ms="16" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@25641d39]" started-at="2026-10-15T01:54:27 IST" name="setUp" finished-at="2026-10-15T01:54:27 IST" duration-ms="264" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@7b36aa0c]" started-at="2026-10-16T01:34:59 IST" name="setUp" finished-at="2026-10-16T01:34:59 IST" duration-ms="142" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -962,15 +962,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testLoginPageAccessibility()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@25641d39]" started-at="2026-10-15T01:54:27 IST" name="testLoginPageAccessibility" finished-at="2026-10-15T01:54:28 IST" duration-ms="1312" status="PASS">
+        <test-method signature="testLoginPageAccessibility()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@7b36aa0c]" started-at="2026-10-16T01:34:59 IST" name="testLoginPageAccessibility" finished-at="2026-10-16T01:35:02 IST" duration-ms="2655" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testLoginPageAccessibility -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@25641d39]" started-at="2026-10-15T01:54:28 IST" name="tearDown" finished-at="2026-10-15T01:54:28 IST" duration-ms="64" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@7b36aa0c]" started-at="2026-10-16T01:35:02 IST" name="tearDown" finished-at="2026-10-16T01:35:02 IST" duration-ms="12" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@25641d39]" started-at="2026-10-15T01:54:28 IST" name="setUp" finished-at="2026-10-15T01:54:29 IST" duration-ms="262" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@7b36aa0c]" started-at="2026-10-16T01:35:02 IST" name="setUp" finished-at="2026-10-16T01:35:02 IST" duration-ms="176" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -981,47 +981,207 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testRegisterPageAccessibility()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@25641d39]" started-at="2026-10-15T01:54:29 IST" name="testRegisterPageAccessibility" finished-at="2026-10-15T01:54:30 IST" duration-ms="1377" status="PASS">
+        <test-method signature="testRegisterPageAccessibility()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@7b36aa0c]" started-at="2026-10-16T01:35:02 IST" name="testRegisterPageAccessibility" finished-at="2026-10-16T01:35:04 IST" duration-ms="2392" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testRegisterPageAccessibility -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@25641d39]" started-at="2026-10-15T01:54:30 IST" name="tearDown" finished-at="2026-10-15T01:54:30 IST" duration-ms="47" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@7b36aa0c]" started-at="2026-10-16T01:35:04 IST" name="tearDown" finished-at="2026-10-16T01:35:04 IST" duration-ms="14" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="tearDownClass()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@25641d39]" started-at="2026-10-15T01:54:30 IST" name="tearDownClass" finished-at="2026-10-15T01:54:31 IST" duration-ms="716" status="PASS">
+        <test-method is-config="true" signature="tearDownClass()[pri:0, instance:com.qa.nopcommerce.tests.a11y.AccessibilityTest@7b36aa0c]" started-at="2026-10-16T01:35:04 IST" name="tearDownClass" finished-at="2026-10-16T01:35:05 IST" duration-ms="568" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDownClass -->
       </class> <!-- com.qa.nopcommerce.tests.a11y.AccessibilityTest -->
     </test> <!-- Accessibility Compliance Tests -->
-    <test started-at="2026-10-15T01:54:31 IST" name="Database Persistence Verification Tests" finished-at="2026-10-15T01:54:32 IST" duration-ms="995">
+    <test started-at="2026-10-16T01:35:05 IST" name="Database Persistence Verification Tests" finished-at="2026-10-16T01:35:08 IST" duration-ms="2693">
       <class name="com.qa.nopcommerce.tests.db.DatabaseVerificationTest">
-        <test-method is-config="true" signature="checkDatabaseAvailability()[pri:0, instance:com.qa.nopcommerce.tests.db.DatabaseVerificationTest@4686afc2]" started-at="2026-10-15T01:54:31 IST" name="checkDatabaseAvailability" finished-at="2026-10-15T01:54:32 IST" duration-ms="880" status="PASS">
+        <test-method is-config="true" signature="checkDatabaseAvailability()[pri:0, instance:com.qa.nopcommerce.tests.db.DatabaseVerificationTest@1e0b4072]" started-at="2026-10-16T01:35:05 IST" name="checkDatabaseAvailability" finished-at="2026-10-16T01:35:08 IST" duration-ms="2657" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- checkDatabaseAvailability -->
-        <test-method signature="testCartItemPersistenceInDatabase()[pri:0, instance:com.qa.nopcommerce.tests.db.DatabaseVerificationTest@4686afc2]" started-at="2026-10-15T01:54:32 IST" name="testCartItemPersistenceInDatabase" finished-at="2026-10-15T01:54:32 IST" duration-ms="60" status="PASS">
+        <test-method signature="testCartItemPersistenceInDatabase()[pri:0, instance:com.qa.nopcommerce.tests.db.DatabaseVerificationTest@1e0b4072]" started-at="2026-10-16T01:35:08 IST" name="testCartItemPersistenceInDatabase" finished-at="2026-10-16T01:35:08 IST" duration-ms="3" status="SKIP">
+          <exception class="org.testng.SkipException">
+            <message>
+              <![CDATA[Environmental Blocker: MSSQL Database container unreachable at localhost:1433]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[org.testng.SkipException: Environmental Blocker: MSSQL Database container unreachable at localhost:1433
+at com.qa.nopcommerce.tests.db.DatabaseVerificationTest.testCartItemPersistenceInDatabase(DatabaseVerificationTest.java:62)
+at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1612)
+at org.testng.TestRunner.privateRun(TestRunner.java:739)
+at org.testng.TestRunner.run(TestRunner.java:614)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+at org.testng.TestNG.runSuites(TestNG.java:1112)
+at org.testng.TestNG.run(TestNG.java:1079)
+at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:308)
+at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:71)
+at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:113)
+at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+]]>
+            </full-stacktrace>
+          </exception> <!-- org.testng.SkipException -->
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testCartItemPersistenceInDatabase -->
-        <test-method signature="testCustomerRecordPersistenceInDatabase()[pri:0, instance:com.qa.nopcommerce.tests.db.DatabaseVerificationTest@4686afc2]" started-at="2026-10-15T01:54:32 IST" name="testCustomerRecordPersistenceInDatabase" finished-at="2026-10-15T01:54:32 IST" duration-ms="24" status="PASS">
+        <test-method signature="testCustomerRecordPersistenceInDatabase()[pri:0, instance:com.qa.nopcommerce.tests.db.DatabaseVerificationTest@1e0b4072]" started-at="2026-10-16T01:35:08 IST" name="testCustomerRecordPersistenceInDatabase" finished-at="2026-10-16T01:35:08 IST" duration-ms="3" status="SKIP">
+          <exception class="org.testng.SkipException">
+            <message>
+              <![CDATA[Environmental Blocker: MSSQL Database container unreachable at localhost:1433]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[org.testng.SkipException: Environmental Blocker: MSSQL Database container unreachable at localhost:1433
+at com.qa.nopcommerce.tests.db.DatabaseVerificationTest.testCustomerRecordPersistenceInDatabase(DatabaseVerificationTest.java:38)
+at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1612)
+at org.testng.TestRunner.privateRun(TestRunner.java:739)
+at org.testng.TestRunner.run(TestRunner.java:614)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+at org.testng.TestNG.runSuites(TestNG.java:1112)
+at org.testng.TestNG.run(TestNG.java:1079)
+at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:308)
+at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:71)
+at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:113)
+at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+]]>
+            </full-stacktrace>
+          </exception> <!-- org.testng.SkipException -->
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testCustomerRecordPersistenceInDatabase -->
-        <test-method signature="testDatabaseConnectionHealth()[pri:0, instance:com.qa.nopcommerce.tests.db.DatabaseVerificationTest@4686afc2]" started-at="2026-10-15T01:54:32 IST" name="testDatabaseConnectionHealth" finished-at="2026-10-15T01:54:32 IST" duration-ms="3" status="PASS">
+        <test-method signature="testDatabaseConnectionHealth()[pri:0, instance:com.qa.nopcommerce.tests.db.DatabaseVerificationTest@1e0b4072]" started-at="2026-10-16T01:35:08 IST" name="testDatabaseConnectionHealth" finished-at="2026-10-16T01:35:08 IST" duration-ms="2" status="SKIP">
+          <exception class="org.testng.SkipException">
+            <message>
+              <![CDATA[Environmental Blocker: MSSQL Database container unreachable at localhost:1433]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[org.testng.SkipException: Environmental Blocker: MSSQL Database container unreachable at localhost:1433
+at com.qa.nopcommerce.tests.db.DatabaseVerificationTest.testDatabaseConnectionHealth(DatabaseVerificationTest.java:74)
+at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1612)
+at org.testng.TestRunner.privateRun(TestRunner.java:739)
+at org.testng.TestRunner.run(TestRunner.java:614)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+at org.testng.TestNG.runSuites(TestNG.java:1112)
+at org.testng.TestNG.run(TestNG.java:1079)
+at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:308)
+at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:71)
+at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:113)
+at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+]]>
+            </full-stacktrace>
+          </exception> <!-- org.testng.SkipException -->
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testDatabaseConnectionHealth -->
-        <test-method signature="testOrderRecordPersistenceInDatabase()[pri:0, instance:com.qa.nopcommerce.tests.db.DatabaseVerificationTest@4686afc2]" started-at="2026-10-15T01:54:32 IST" name="testOrderRecordPersistenceInDatabase" finished-at="2026-10-15T01:54:32 IST" duration-ms="10" status="PASS">
+        <test-method signature="testOrderRecordPersistenceInDatabase()[pri:0, instance:com.qa.nopcommerce.tests.db.DatabaseVerificationTest@1e0b4072]" started-at="2026-10-16T01:35:08 IST" name="testOrderRecordPersistenceInDatabase" finished-at="2026-10-16T01:35:08 IST" duration-ms="2" status="SKIP">
+          <exception class="org.testng.SkipException">
+            <message>
+              <![CDATA[Environmental Blocker: MSSQL Database container unreachable at localhost:1433]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[org.testng.SkipException: Environmental Blocker: MSSQL Database container unreachable at localhost:1433
+at com.qa.nopcommerce.tests.db.DatabaseVerificationTest.testOrderRecordPersistenceInDatabase(DatabaseVerificationTest.java:50)
+at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1612)
+at org.testng.TestRunner.privateRun(TestRunner.java:739)
+at org.testng.TestRunner.run(TestRunner.java:614)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+at org.testng.TestNG.runSuites(TestNG.java:1112)
+at org.testng.TestNG.run(TestNG.java:1079)
+at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:308)
+at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:71)
+at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:113)
+at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+]]>
+            </full-stacktrace>
+          </exception> <!-- org.testng.SkipException -->
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testOrderRecordPersistenceInDatabase -->
       </class> <!-- com.qa.nopcommerce.tests.db.DatabaseVerificationTest -->
     </test> <!-- Database Persistence Verification Tests -->
-    <test started-at="2026-10-15T01:54:32 IST" name="Non-Functional Responsive and SLA Tests" finished-at="2026-10-15T01:54:38 IST" duration-ms="6253">
+    <test started-at="2026-10-16T01:35:08 IST" name="Non-Functional Responsive and SLA Tests" finished-at="2026-10-16T01:35:21 IST" duration-ms="13402">
       <class name="com.qa.nopcommerce.tests.nfr.NonFunctionalTest">
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@45099dd3]" started-at="2026-10-15T01:54:32 IST" name="setUp" finished-at="2026-10-15T01:54:33 IST" duration-ms="1475" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@13e344d]" started-at="2026-10-16T01:35:08 IST" name="setUp" finished-at="2026-10-16T01:35:12 IST" duration-ms="4004" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -1032,15 +1192,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testMobileNavigationMenuTrigger()[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@45099dd3]" started-at="2026-10-15T01:54:33 IST" name="testMobileNavigationMenuTrigger" finished-at="2026-10-15T01:54:34 IST" duration-ms="788" status="PASS">
+        <test-method signature="testMobileNavigationMenuTrigger()[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@13e344d]" started-at="2026-10-16T01:35:12 IST" name="testMobileNavigationMenuTrigger" finished-at="2026-10-16T01:35:16 IST" duration-ms="4399" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testMobileNavigationMenuTrigger -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@45099dd3]" started-at="2026-10-15T01:54:34 IST" name="tearDown" finished-at="2026-10-15T01:54:34 IST" duration-ms="73" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@13e344d]" started-at="2026-10-16T01:35:16 IST" name="tearDown" finished-at="2026-10-16T01:35:16 IST" duration-ms="41" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@45099dd3]" started-at="2026-10-15T01:54:34 IST" name="setUp" finished-at="2026-10-15T01:54:35 IST" duration-ms="316" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@13e344d]" started-at="2026-10-16T01:35:16 IST" name="setUp" finished-at="2026-10-16T01:35:17 IST" duration-ms="376" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -1051,15 +1211,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testNo500InternalServerErrorsOnAssets()[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@45099dd3]" started-at="2026-10-15T01:54:35 IST" name="testNo500InternalServerErrorsOnAssets" finished-at="2026-10-15T01:54:35 IST" duration-ms="601" status="PASS">
+        <test-method signature="testNo500InternalServerErrorsOnAssets()[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@13e344d]" started-at="2026-10-16T01:35:17 IST" name="testNo500InternalServerErrorsOnAssets" finished-at="2026-10-16T01:35:18 IST" duration-ms="1079" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testNo500InternalServerErrorsOnAssets -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@45099dd3]" started-at="2026-10-15T01:54:35 IST" name="tearDown" finished-at="2026-10-15T01:54:35 IST" duration-ms="65" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@13e344d]" started-at="2026-10-16T01:35:18 IST" name="tearDown" finished-at="2026-10-16T01:35:18 IST" duration-ms="14" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@45099dd3]" started-at="2026-10-15T01:54:35 IST" name="setUp" finished-at="2026-10-15T01:54:36 IST" duration-ms="288" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@13e344d]" started-at="2026-10-16T01:35:18 IST" name="setUp" finished-at="2026-10-16T01:35:18 IST" duration-ms="137" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -1070,15 +1230,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testPageLoadPerformanceSla()[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@45099dd3]" started-at="2026-10-15T01:54:36 IST" name="testPageLoadPerformanceSla" finished-at="2026-10-15T01:54:36 IST" duration-ms="590" status="PASS">
+        <test-method signature="testPageLoadPerformanceSla()[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@13e344d]" started-at="2026-10-16T01:35:18 IST" name="testPageLoadPerformanceSla" finished-at="2026-10-16T01:35:19 IST" duration-ms="904" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testPageLoadPerformanceSla -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@45099dd3]" started-at="2026-10-15T01:54:36 IST" name="tearDown" finished-at="2026-10-15T01:54:36 IST" duration-ms="81" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@13e344d]" started-at="2026-10-16T01:35:19 IST" name="tearDown" finished-at="2026-10-16T01:35:19 IST" duration-ms="9" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@45099dd3]" started-at="2026-10-15T01:54:36 IST" name="setUp" finished-at="2026-10-15T01:54:37 IST" duration-ms="257" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@13e344d]" started-at="2026-10-16T01:35:19 IST" name="setUp" finished-at="2026-10-16T01:35:19 IST" duration-ms="129" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -1089,15 +1249,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testResponsiveViewportLayout()[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@45099dd3]" started-at="2026-10-15T01:54:37 IST" name="testResponsiveViewportLayout" finished-at="2026-10-15T01:54:38 IST" duration-ms="1210" status="PASS">
+        <test-method signature="testResponsiveViewportLayout()[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@13e344d]" started-at="2026-10-16T01:35:19 IST" name="testResponsiveViewportLayout" finished-at="2026-10-16T01:35:21 IST" duration-ms="1851" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testResponsiveViewportLayout -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@45099dd3]" started-at="2026-10-15T01:54:38 IST" name="tearDown" finished-at="2026-10-15T01:54:38 IST" duration-ms="58" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@13e344d]" started-at="2026-10-16T01:35:21 IST" name="tearDown" finished-at="2026-10-16T01:35:21 IST" duration-ms="10" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-        <test-method is-config="true" signature="tearDownClass()[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@45099dd3]" started-at="2026-10-15T01:54:38 IST" name="tearDownClass" finished-at="2026-10-15T01:54:38 IST" duration-ms="356" status="PASS">
+        <test-method is-config="true" signature="tearDownClass()[pri:0, instance:com.qa.nopcommerce.tests.nfr.NonFunctionalTest@13e344d]" started-at="2026-10-16T01:35:21 IST" name="tearDownClass" finished-at="2026-10-16T01:35:21 IST" duration-ms="349" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDownClass -->

@@ -1,5 +1,6 @@
 package com.qa.nopcommerce.listeners;
 
+import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.Page;
 import com.qa.nopcommerce.annotation.TestCase;
 import com.qa.nopcommerce.config.ConfigReader;
@@ -54,9 +55,12 @@ public class TestListener implements ITestListener {
 
         // Stop tracing without retaining on success to preserve disk space
         Page page = PlaywrightFactory.getPage();
-        if (page != null && ConfigReader.isRecordTrace()) {
+        if (page != null && !page.isClosed() && ConfigReader.isRecordTrace()) {
             try {
-                PlaywrightFactory.getContext().tracing().stop();
+                BrowserContext context = PlaywrightFactory.getContext();
+                if (context != null) {
+                    context.tracing().stop();
+                }
             } catch (Exception ignored) {}
         }
     }
@@ -68,7 +72,7 @@ public class TestListener implements ITestListener {
         log.error("=== TEST FAILED: {} [TestCaseID: {}] ===", methodName, testCaseId, result.getThrowable());
 
         Page page = PlaywrightFactory.getPage();
-        if (page != null) {
+        if (page != null && !page.isClosed()) {
             String sanitizedName = methodName.replaceAll("[^a-zA-Z0-9_-]", "_");
 
             // 1. Capture full-page screenshot

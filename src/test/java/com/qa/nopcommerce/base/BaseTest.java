@@ -13,6 +13,16 @@ import org.testng.annotations.Parameters;
 
 /**
  * Base Test class providing lifecycle initialization and teardown hooks for UI tests.
+ *
+ * <p><strong>Lifecycle mapping to TestNG parallel=classes (thread-count=2):</strong></p>
+ * <ul>
+ *   <li>{@code @BeforeMethod} — creates a fresh BrowserContext + Page per test method.</li>
+ *   <li>{@code @AfterMethod} — closes only the context/page; the Browser stays alive for the next
+ *       method in the same class.</li>
+ *   <li>{@code @AfterClass} — closes the Browser and Playwright for this thread. Safe even when
+ *       parallel execution is active because TestNG runs all methods of a class on the same thread
+ *       before invoking {@code @AfterClass}.</li>
+ * </ul>
  */
 public abstract class BaseTest {
     protected final Logger log = LoggerFactory.getLogger(getClass());
@@ -26,13 +36,22 @@ public abstract class BaseTest {
 
         boolean headless = ConfigReader.isHeadless();
         PlaywrightFactory.initBrowser(browserName, headless);
-        log.info("Initialized test session using browser: {}", browserName);
+        log.info("Initialized test session — browser={}, headless={}, thread={}",
+                browserName, headless, Thread.currentThread().getName());
     }
 
+    /**
+     * Returns the Page owned by the calling thread's current BrowserContext.
+     */
     public Page getPage() {
         return PlaywrightFactory.getPage();
     }
 
+    /**
+     * Navigates the current page to the given path (absolute URL or relative to baseUrl).
+     * Uses {@code DOMCONTENTLOADED} rather than {@code networkidle} to avoid stalling
+     * on long-polling or analytics requests.
+     */
     public void navigateTo(String path) {
         String baseUrl = ConfigReader.getBaseUrl();
         String targetUrl = path.startsWith("http") ? path : baseUrl + (path.startsWith("/") ? path : "/" + path);

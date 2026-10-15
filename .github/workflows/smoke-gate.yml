@@ -38,12 +38,20 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-playwright-
 
-      - name: Install Playwright Browsers
+      - name: Install Playwright Browsers & System Dependencies
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: |
           mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install --with-deps chromium"
 
+      - name: Install Playwright System Dependencies (cache hit)
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: |
+          mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install-deps chromium"
+
       - name: Execute API Integration Suite
+        env:
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
           mvn clean test -DsuiteFile=src/test/resources/suites/api.xml \
             -DbaseUrl=https://demo.nopcommerce.com \

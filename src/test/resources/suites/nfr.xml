@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="nopCommerce Non-Functional Requirements Suite">
+    <listeners>
+        <listener class-name="com.qa.nopcommerce.listeners.TestListener" />
+    </listeners>
+
+    <test name="Responsive Design and SLA Tests">
+        <classes>
+            <class name="com.qa.nopcommerce.tests.nfr.NonFunctionalTest" />
+        </classes>
+    </test>
+</suite>

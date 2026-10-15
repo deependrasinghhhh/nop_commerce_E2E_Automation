@@ -62,8 +62,11 @@ public class CheckoutPage extends BasePage {
     }
 
     public void clickCheckoutAsGuest() {
-        if (isVisible(checkoutAsGuestButton)) {
-            click(checkoutAsGuestButton);
+        try {
+            checkoutAsGuestButton.waitFor(new Locator.WaitForOptions().setTimeout(4000));
+            checkoutAsGuestButton.click();
+        } catch (Exception ignored) {
+            // Already past login / guest prompt, or prompt not displayed
         }
     }
 

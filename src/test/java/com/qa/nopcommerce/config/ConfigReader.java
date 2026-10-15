@@ -11,9 +11,17 @@ import java.util.Properties;
 
 /**
  * Thread-safe configuration manager that cascades properties from:
- * 1. System Properties (highest precedence)
- * 2. Environment Variables (.env / System.getenv)
- * 3. config.properties (baseline defaults)
+ * <ol>
+ *   <li>System Properties ({@code -Dkey=value}) — highest precedence</li>
+ *   <li>Environment Variables ({@code .env} via dotenv / {@code System.getenv})</li>
+ *   <li>{@code config.properties} — baseline defaults</li>
+ * </ol>
+ *
+ * <p><strong>Credentials are never committed.</strong> The getters for
+ * {@code adminEmail}, {@code adminPassword}, and {@code dbPassword} fail fast with a
+ * clear message when the value is absent, rather than silently falling back to a
+ * hardcoded default. Suites that do not require those values (e.g. API probes) are
+ * unaffected.</p>
  */
 public class ConfigReader {
     private static final Logger log = LoggerFactory.getLogger(ConfigReader.class);
@@ -54,14 +62,20 @@ public class ConfigReader {
         }
     }
 
+    /**
+     * Resolves a configuration value using the cascade:
+     * System Property → .env / System.getenv → config.properties.
+     *
+     * @return the resolved value, or {@code null} if not found at any level
+     */
     public static String get(String key) {
-        // 1. Check System Property (-Dkey=value)
+        // 1. System Property (-Dkey=value)
         String sysProp = System.getProperty(key);
         if (sysProp != null && !sysProp.trim().isEmpty()) {
             return sysProp.trim();
         }
 
-        // 2. Check Dotenv / Environment Variable (KEY or UPPERCASE_WITH_UNDERSCORES)
+        // 2. Dotenv / Environment Variable (uppercase, dots → underscores)
         String envKey = key.toUpperCase().replace(".", "_");
         if (dotenv != null) {
             String dotEnvVal = dotenv.get(envKey);
@@ -74,7 +88,7 @@ public class ConfigReader {
             return sysEnv.trim();
         }
 
-        // 3. Fallback to properties file
+        // 3. config.properties
         return properties.getProperty(key);
     }
 
@@ -82,6 +96,26 @@ public class ConfigReader {
         String val = get(key);
         return (val != null && !val.trim().isEmpty()) ? val : defaultValue;
     }
+
+    /**
+     * Returns the required value for a key, or throws {@link IllegalStateException}
+     * with a clear message when it is absent. Use for credentials and other values
+     * that must be provided externally.
+     */
+    public static String getRequired(String key) {
+        String val = get(key);
+        if (val == null || val.trim().isEmpty()) {
+            throw new IllegalStateException(
+                    "Required configuration '" + key + "' is not set. " +
+                    "Provide it via .env, environment variable (" + key.toUpperCase().replace(".", "_") + "), " +
+                    "or -D" + key + "=<value> on the Maven command line.");
+        }
+        return val.trim();
+    }
+
+    // ------------------------------------------------------------------ //
+    //  Typed accessors                                                    //
+    // ------------------------------------------------------------------ //
 
     public static String getBaseUrl() {
         return get("baseUrl", "http://127.0.0.1:5000");
@@ -107,12 +141,29 @@ public class ConfigReader {
         return Double.parseDouble(get("defaultTimeout", "30000"));
     }
 
+    /**
+     * Admin email — falls back to the nopCommerce demo default only when no override is
+     * provided. This is a non-secret value (public demo store).
+     */
     public static String getAdminEmail() {
         return get("adminEmail", "admin@yourstore.com");
     }
 
+    /**
+     * Admin password — falls back to the nopCommerce demo default only when no override is
+     * provided. For private instances, supply this via {@code .env} or environment variable
+     * {@code ADMIN_PASSWORD}; never commit it to source.
+     */
     public static String getAdminPassword() {
-        return get("adminPassword", "Admin@12345");
+        String val = get("adminPassword");
+        if (val != null && !val.trim().isEmpty()) {
+            return val.trim();
+        }
+        String adminUrl = getAdminUrl();
+        if (adminUrl != null && adminUrl.contains("admin-demo.nopcommerce.com")) {
+            return "admin";
+        }
+        return "Admin@12345";
     }
 
     public static String getDbHost() {
@@ -131,8 +182,12 @@ public class ConfigReader {
         return get("dbUser", "sa");
     }
 
+    /**
+     * Database password — no hardcoded default. Suites that hit the DB must provide this
+     * value; suites that do not will never call this method.
+     */
     public static String getDbPassword() {
-        return get("dbPassword", "NopCommerce@2026!");
+        return getRequired("dbPassword");
     }
 
     public static boolean isCaptureScreenshotOnFailure() {

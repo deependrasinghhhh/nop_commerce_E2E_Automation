@@ -39,7 +39,7 @@ public class DatabaseManager {
             HikariConfig config = new HikariConfig();
             config.setJdbcUrl(getJdbcUrl());
             config.setUsername(ConfigReader.get("dbUser", "sa"));
-            config.setPassword(ConfigReader.get("dbPassword", "NopCommerce@2026!"));
+            config.setPassword(ConfigReader.get("dbPassword", ""));
             config.setMaximumPoolSize(5);
             config.setMinimumIdle(1);
             config.setIdleTimeout(30000);
@@ -60,7 +60,7 @@ public class DatabaseManager {
             return DriverManager.getConnection(
                     getJdbcUrl(),
                     ConfigReader.get("dbUser", "sa"),
-                    ConfigReader.get("dbPassword", "NopCommerce@2026!")
+                    ConfigReader.get("dbPassword", "")
             );
         }
     }
