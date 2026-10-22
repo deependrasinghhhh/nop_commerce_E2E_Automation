@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="TestSuite" time="169.825" tests="55" errors="0" skipped="4" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="TestSuite" time="97.744" tests="55" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="26"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="IN"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-26.0.2\bin"/>
-    <property name="sun.java.command" value="C:\Users\Deependra Singh\AppData\Local\Temp\surefire4539252955056201336\surefirebooter-20261016013231527_3.jar C:\Users\Deependra Singh\AppData\Local\Temp\surefire4539252955056201336 2026-10-16T01-32-31_034-jvmRun1 surefire-20261016013231527_1tmp surefire_0-20261016013231527_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\Deependra Singh\AppData\Local\Temp\surefire9984139405777705814\surefirebooter-20261022203626328_3.jar C:\Users\Deependra Singh\AppData\Local\Temp\surefire9984139405777705814 2026-10-22T20-36-26_040-jvmRun1 surefire-20261022203626328_1tmp surefire_0-20261022203626328_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="C:\Users\Deependra Singh\OneDrive\Desktop\E2E_Automation_nopcommerce\target\test-classes;C:\Users\Deependra Singh\OneDrive\Desktop\E2E_Automation_nopcommerce\target\classes;C:\Users\Deependra Singh\.m2\repository\com\microsoft\playwright\playwright\1.49.0\playwright-1.49.0.jar;C:\Users\Deependra Singh\.m2\repository\com\google\code\gson\gson\2.11.0\gson-2.11.0.jar;C:\Users\Deependra Singh\.m2\repository\com\google\errorprone\error_prone_annotations\2.27.0\error_prone_annotations-2.27.0.jar;C:\Users\Deependra Singh\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\Deependra Singh\.m2\repository\com\microsoft\playwright\driver\1.49.0\driver-1.49.0.jar;C:\Users\Deependra Singh\.m2\repository\com\microsoft\playwright\driver-bundle\1.49.0\driver-bundle-1.49.0.jar;C:\Users\Deependra Singh\.m2\repository\org\testng\testng\7.10.2\testng-7.10.2.jar;C:\Users\Deependra Singh\.m2\repository\org\slf4j\slf4j-api\1.7.36\slf4j-api-1.7.36.jar;C:\Users\Deependra Singh\.m2\repository\com\beust\jcommander\1.82\jcommander-1.82.jar;C:\Users\Deependra Singh\.m2\repository\org\webjars\jquery\3.7.1\jquery-3.7.1.jar;C:\Users\Deependra Singh\.m2\repository\com\deque\html\axe-core\playwright\4.6.0\playwright-4.6.0.jar;C:\Users\Deependra Singh\.m2\repository\commons-codec\commons-codec\1.15\commons-codec-1.15.jar;C:\Users\Deependra Singh\.m2\repository\org\apache\commons\commons-compress\1.22\commons-compress-1.22.jar;C:\Users\Deependra Singh\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.14.1\jackson-annotations-2.14.1.jar;C:\Users\Deependra Singh\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.14.1\jackson-databind-2.14.1.jar;C:\Users\Deependra Singh\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.14.1\jackson-core-2.14.1.jar;C:\Users\Deependra Singh\.m2\repository\commons-io\commons-io\2.11.0\commons-io-2.11.0.jar;C:\Users\Deependra Singh\.m2\repository\com\deque\html\axe-core\dequeutilites\4.6.0\dequeutilites-4.6.0.jar;C:\Users\Deependra Singh\.m2\repository\com\microsoft\sqlserver\mssql-jdbc\12.8.1.jre11\mssql-jdbc-12.8.1.jre11.jar;C:\Users\Deependra Singh\.m2\repository\com\zaxxer\HikariCP\5.1.0\HikariCP-5.1.0.jar;C:\Users\Deependra Singh\.m2\repository\io\github\cdimascio\dotenv-java\3.0.0\dotenv-java-3.0.0.jar;C:\Users\Deependra Singh\.m2\repository\org\slf4j\slf4j-simple\2.0.16\slf4j-simple-2.0.16.jar;C:\Users\Deependra Singh\.m2\repository\io\qameta\allure\allure-testng\2.29.0\allure-testng-2.29.0.jar;C:\Users\Deependra Singh\.m2\repository\io\qameta\allure\allure-java-commons\2.29.0\allure-java-commons-2.29.0.jar;C:\Users\Deependra Singh\.m2\repository\io\qameta\allure\allure-model\2.29.0\allure-model-2.29.0.jar;C:\Users\Deependra Singh\.m2\repository\io\qameta\allure\allure-test-filter\2.29.0\allure-test-filter-2.29.0.jar;C:\Users\Deependra Singh\.m2\repository\org\aspectj\aspectjweaver\1.9.22\aspectjweaver-1.9.22.jar;"/>
     <property name="allure.results.directory" value="C:\Users\Deependra Singh\OneDrive\Desktop\E2E_Automation_nopcommerce\target/allure-results"/>
@@ -31,7 +31,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\Deependra Singh\AppData\Local\Temp\surefire4539252955056201336\surefirebooter-20261016013231527_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\Deependra Singh\AppData\Local\Temp\surefire9984139405777705814\surefirebooter-20261022203626328_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="26.0.2+10-55"/>
@@ -60,75 +60,66 @@
     <property name="stdin.encoding" value="Cp1252"/>
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="70.0"/>
+    <property name="dbPassword" value="NopCommerce@2026!"/>
   </properties>
-  <testcase name="testAdminPortalEndpoint" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="2.655">
+  <testcase name="testAdminPortalEndpoint" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="3.922">
     <system-err><![CDATA[SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
 SLF4J: Defaulting to no-operation (NOP) logger implementation
 SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
 ]]></system-err>
   </testcase>
-  <testcase name="testCustomerLoginEndpoint" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.59"/>
-  <testcase name="testCustomerRegisterEndpoint" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.471"/>
-  <testcase name="testNonExistentRouteHandling" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.269"/>
-  <testcase name="testPostWithoutAntiForgeryTokenRejection" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.087"/>
-  <testcase name="testStorefrontRootEndpoint" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.458"/>
-  <testcase name="testAdminLoginPageRendering" classname="com.qa.nopcommerce.tests.smoke.SmokeTest" time="1.596"/>
-  <testcase name="testHomePageTitleAndHeaderRendering" classname="com.qa.nopcommerce.tests.smoke.SmokeTest" time="0.941"/>
-  <testcase name="testStorefrontSearchBoxInput" classname="com.qa.nopcommerce.tests.smoke.SmokeTest" time="2.309"/>
-  <testcase name="testCustomerLoginBlankEmail" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="2.574"/>
-  <testcase name="testCustomerLoginInvalidPassword" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.622"/>
-  <testcase name="testCustomerLoginValidCredentials" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="1.214"/>
-  <testcase name="testCustomerLogout" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.587"/>
-  <testcase name="testRegistrationMalformedEmailValidation" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="1.144"/>
-  <testcase name="testRegistrationMandatoryFieldValidation" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="4.213"/>
-  <testcase name="testRegistrationPasswordMismatch" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="2.262"/>
-  <testcase name="testValidCustomerRegistration" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="6.428"/>
-  <testcase name="testCategoryNavigation" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="1.382"/>
-  <testcase name="testHomePageTitleAndHeaderRendering" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.515"/>
-  <testcase name="testProductDetailsRendering" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.318"/>
-  <testcase name="testProductSorting" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.919"/>
-  <testcase name="testShortSearchTermNotice" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.695"/>
-  <testcase name="testStorefrontSearchBox" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.471"/>
-  <testcase name="testTopMenuCategoriesRendering" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="1.119"/>
-  <testcase name="testAddProductToCart" classname="com.qa.nopcommerce.tests.ui.CartTest" time="0.681"/>
-  <testcase name="testApplyInvalidCouponCode" classname="com.qa.nopcommerce.tests.ui.CartTest" time="16.256"/>
-  <testcase name="testRemoveItemFromCart" classname="com.qa.nopcommerce.tests.ui.CartTest" time="3.393"/>
-  <testcase name="testUpdateCartItemQuantity" classname="com.qa.nopcommerce.tests.ui.CartTest" time="2.977"/>
-  <testcase name="testViewShoppingCart" classname="com.qa.nopcommerce.tests.ui.CartTest" time="14.317"/>
-  <testcase name="testCheckoutBillingAddressForm" classname="com.qa.nopcommerce.tests.ui.CheckoutTest" time="16.45"/>
-  <testcase name="testCheckoutInitiation" classname="com.qa.nopcommerce.tests.ui.CheckoutTest" time="3.482"/>
-  <testcase name="testCheckoutPaymentMethodOptions" classname="com.qa.nopcommerce.tests.ui.CheckoutTest" time="0.545"/>
-  <testcase name="testCustomerAddressesPage" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="2.237"/>
-  <testcase name="testCustomerInfoPageRendering" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="4.206"/>
-  <testcase name="testCustomerOrdersPage" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="0.713"/>
-  <testcase name="testAdminCatalogProductsPage" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="1.851"/>
-  <testcase name="testAdminCustomersPage" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="2.472"/>
-  <testcase name="testAdminDashboardElements" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="3.104"/>
-  <testcase name="testAdminLoginInvalidPassword" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="1.237"/>
-  <testcase name="testAdminLoginPageRendering" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="0.479"/>
-  <testcase name="testAdminLoginValidCredentials" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="2.665"/>
-  <testcase name="testAdminSalesOrdersPage" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="4.259"/>
-  <testcase name="testCartPageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="4.083"/>
-  <testcase name="testCategoryPageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="4.193"/>
-  <testcase name="testHomePageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="4.18"/>
-  <testcase name="testLoginPageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="2.665"/>
-  <testcase name="testRegisterPageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="2.409"/>
-  <testcase name="testCartItemPersistenceInDatabase" classname="com.qa.nopcommerce.tests.db.DatabaseVerificationTest" time="0.0">
-    <skipped message="Environmental Blocker: MSSQL Database container unreachable at localhost:1433"/>
-    <system-out><![CDATA[[DB-ENV] MSSQL database container is currently offline or unreachable. Database verification tests will record environmental status.
-]]></system-out>
-  </testcase>
-  <testcase name="testCustomerRecordPersistenceInDatabase" classname="com.qa.nopcommerce.tests.db.DatabaseVerificationTest" time="0.0">
-    <skipped message="Environmental Blocker: MSSQL Database container unreachable at localhost:1433"/>
-  </testcase>
-  <testcase name="testDatabaseConnectionHealth" classname="com.qa.nopcommerce.tests.db.DatabaseVerificationTest" time="0.0">
-    <skipped message="Environmental Blocker: MSSQL Database container unreachable at localhost:1433"/>
-  </testcase>
-  <testcase name="testOrderRecordPersistenceInDatabase" classname="com.qa.nopcommerce.tests.db.DatabaseVerificationTest" time="0.0">
-    <skipped message="Environmental Blocker: MSSQL Database container unreachable at localhost:1433"/>
-  </testcase>
-  <testcase name="testMobileNavigationMenuTrigger" classname="com.qa.nopcommerce.tests.nfr.NonFunctionalTest" time="4.417"/>
-  <testcase name="testNo500InternalServerErrorsOnAssets" classname="com.qa.nopcommerce.tests.nfr.NonFunctionalTest" time="1.091"/>
-  <testcase name="testPageLoadPerformanceSla" classname="com.qa.nopcommerce.tests.nfr.NonFunctionalTest" time="0.912"/>
-  <testcase name="testResponsiveViewportLayout" classname="com.qa.nopcommerce.tests.nfr.NonFunctionalTest" time="1.858"/>
+  <testcase name="testCustomerLoginEndpoint" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.215"/>
+  <testcase name="testCustomerRegisterEndpoint" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="3.598"/>
+  <testcase name="testNonExistentRouteHandling" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.207"/>
+  <testcase name="testPostWithoutAntiForgeryTokenRejection" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.125"/>
+  <testcase name="testStorefrontRootEndpoint" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.409"/>
+  <testcase name="testAdminLoginPageRendering" classname="com.qa.nopcommerce.tests.smoke.SmokeTest" time="1.182"/>
+  <testcase name="testHomePageTitleAndHeaderRendering" classname="com.qa.nopcommerce.tests.smoke.SmokeTest" time="2.718"/>
+  <testcase name="testStorefrontSearchBoxInput" classname="com.qa.nopcommerce.tests.smoke.SmokeTest" time="3.269"/>
+  <testcase name="testCustomerLoginBlankEmail" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.689"/>
+  <testcase name="testCustomerLoginInvalidPassword" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="1.526"/>
+  <testcase name="testCustomerLoginValidCredentials" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.595"/>
+  <testcase name="testCustomerLogout" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="1.936"/>
+  <testcase name="testRegistrationMalformedEmailValidation" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.853"/>
+  <testcase name="testRegistrationMandatoryFieldValidation" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.503"/>
+  <testcase name="testRegistrationPasswordMismatch" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.688"/>
+  <testcase name="testValidCustomerRegistration" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.587"/>
+  <testcase name="testCategoryNavigation" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="1.139"/>
+  <testcase name="testHomePageTitleAndHeaderRendering" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.356"/>
+  <testcase name="testProductDetailsRendering" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="1.298"/>
+  <testcase name="testProductSorting" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.697"/>
+  <testcase name="testShortSearchTermNotice" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.388"/>
+  <testcase name="testStorefrontSearchBox" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="1.322"/>
+  <testcase name="testTopMenuCategoriesRendering" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.029"/>
+  <testcase name="testAddProductToCart" classname="com.qa.nopcommerce.tests.ui.CartTest" time="1.959"/>
+  <testcase name="testApplyInvalidCouponCode" classname="com.qa.nopcommerce.tests.ui.CartTest" time="5.509"/>
+  <testcase name="testRemoveItemFromCart" classname="com.qa.nopcommerce.tests.ui.CartTest" time="1.454"/>
+  <testcase name="testUpdateCartItemQuantity" classname="com.qa.nopcommerce.tests.ui.CartTest" time="1.699"/>
+  <testcase name="testViewShoppingCart" classname="com.qa.nopcommerce.tests.ui.CartTest" time="0.264"/>
+  <testcase name="testCheckoutBillingAddressForm" classname="com.qa.nopcommerce.tests.ui.CheckoutTest" time="0.696"/>
+  <testcase name="testCheckoutInitiation" classname="com.qa.nopcommerce.tests.ui.CheckoutTest" time="0.955"/>
+  <testcase name="testCheckoutPaymentMethodOptions" classname="com.qa.nopcommerce.tests.ui.CheckoutTest" time="0.419"/>
+  <testcase name="testCustomerAddressesPage" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="0.497"/>
+  <testcase name="testCustomerInfoPageRendering" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="2.041"/>
+  <testcase name="testCustomerOrdersPage" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="0.205"/>
+  <testcase name="testAdminCatalogProductsPage" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="6.856"/>
+  <testcase name="testAdminCustomersPage" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="2.595"/>
+  <testcase name="testAdminDashboardElements" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="2.105"/>
+  <testcase name="testAdminLoginInvalidPassword" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="0.86"/>
+  <testcase name="testAdminLoginPageRendering" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="0.494"/>
+  <testcase name="testAdminLoginValidCredentials" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="1.859"/>
+  <testcase name="testAdminSalesOrdersPage" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="2.646"/>
+  <testcase name="testCartPageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="2.316"/>
+  <testcase name="testCategoryPageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="1.914"/>
+  <testcase name="testHomePageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="2.076"/>
+  <testcase name="testLoginPageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="1.496"/>
+  <testcase name="testRegisterPageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="1.789"/>
+  <testcase name="testCartItemPersistenceInDatabase" classname="com.qa.nopcommerce.tests.db.DatabaseVerificationTest" time="0.077"/>
+  <testcase name="testCustomerRecordPersistenceInDatabase" classname="com.qa.nopcommerce.tests.db.DatabaseVerificationTest" time="0.017"/>
+  <testcase name="testDatabaseConnectionHealth" classname="com.qa.nopcommerce.tests.db.DatabaseVerificationTest" time="0.005"/>
+  <testcase name="testOrderRecordPersistenceInDatabase" classname="com.qa.nopcommerce.tests.db.DatabaseVerificationTest" time="0.011"/>
+  <testcase name="testMobileNavigationMenuTrigger" classname="com.qa.nopcommerce.tests.nfr.NonFunctionalTest" time="0.558"/>
+  <testcase name="testNo500InternalServerErrorsOnAssets" classname="com.qa.nopcommerce.tests.nfr.NonFunctionalTest" time="0.52"/>
+  <testcase name="testPageLoadPerformanceSla" classname="com.qa.nopcommerce.tests.nfr.NonFunctionalTest" time="0.527"/>
+  <testcase name="testResponsiveViewportLayout" classname="com.qa.nopcommerce.tests.nfr.NonFunctionalTest" time="0.965"/>
 </testsuite>

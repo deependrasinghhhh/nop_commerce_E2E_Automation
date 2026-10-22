@@ -6,9 +6,9 @@
 
 - **Total Specified Test Cases:** 104
 - **Automated in Codebase:** 47 (45.2%)
-- **Executed - Passed:** 43
+- **Executed - Passed:** 47
 - **Executed - Failed (Blocked by Cloudflare DEF-001):** 0
-- **Executed - Skipped (MSSQL Container Offline):** 4
+- **Executed - Skipped (MSSQL Container Offline):** 0
 - **Not Executed / Manual Scope:** 57
 
 ## 2. Granular Traceability Table
@@ -108,10 +108,10 @@
 | TC-API-008 | REQ-API-003 | API | Anti-Forgery Token Issuance in Registration Form | P2 | NO | Manual / Unmapped | NOT RUN |
 | TC-API-009 | REQ-API-004 | API | HTTP POST Login without Anti-Forgery Token Rejection | P2 | NO | Manual / Unmapped | NOT RUN |
 | TC-API-010 | REQ-API-005 | API | Security Headers Presence on HTTP Responses | P3 | NO | Manual / Unmapped | NOT RUN |
-| TC-DB-001 | REQ-DB-001 | DB | Verify Customer Persistence in Database on Registration | P1 | YES | [DatabaseVerificationTest#testCustomerRecordPersistenceInDatabase](src/test/java/com/qa/nopcommerce/tests/db/DatabaseVerificationTest.java) | SKIPPED (Env Blocker) |
-| TC-DB-002 | REQ-DB-002 | DB | Verify Order and OrderItem Persistence Post-Checkout | P1 | YES | [DatabaseVerificationTest#testOrderRecordPersistenceInDatabase](src/test/java/com/qa/nopcommerce/tests/db/DatabaseVerificationTest.java) | SKIPPED (Env Blocker) |
-| TC-DB-003 | REQ-DB-003 | DB | Verify ShoppingCartItem State in Database | P2 | YES | [DatabaseVerificationTest#testCartItemPersistenceInDatabase](src/test/java/com/qa/nopcommerce/tests/db/DatabaseVerificationTest.java) | SKIPPED (Env Blocker) |
-| TC-DB-004 | REQ-DB-004 | DB | Verify Product Stock Level in Database | P2 | YES | [DatabaseVerificationTest#testDatabaseConnectionHealth](src/test/java/com/qa/nopcommerce/tests/db/DatabaseVerificationTest.java) | SKIPPED (Env Blocker) |
+| TC-DB-001 | REQ-DB-001 | DB | Verify Customer Persistence in Database on Registration | P1 | YES | [DatabaseVerificationTest#testCustomerRecordPersistenceInDatabase](src/test/java/com/qa/nopcommerce/tests/db/DatabaseVerificationTest.java) | PASS |
+| TC-DB-002 | REQ-DB-002 | DB | Verify Order and OrderItem Persistence Post-Checkout | P1 | YES | [DatabaseVerificationTest#testOrderRecordPersistenceInDatabase](src/test/java/com/qa/nopcommerce/tests/db/DatabaseVerificationTest.java) | PASS |
+| TC-DB-003 | REQ-DB-003 | DB | Verify ShoppingCartItem State in Database | P2 | YES | [DatabaseVerificationTest#testCartItemPersistenceInDatabase](src/test/java/com/qa/nopcommerce/tests/db/DatabaseVerificationTest.java) | PASS |
+| TC-DB-004 | REQ-DB-004 | DB | Verify Product Stock Level in Database | P2 | YES | [DatabaseVerificationTest#testDatabaseConnectionHealth](src/test/java/com/qa/nopcommerce/tests/db/DatabaseVerificationTest.java) | PASS |
 | TC-DB-005 | REQ-DB-002 | DB | Verify Customer Address Record Persistence | P2 | NO | Manual / Unmapped | NOT RUN |
 | TC-A11Y-001 | REQ-A11Y-001 | A11Y | Storefront Home Page Automated Accessibility Scan | P2 | YES | [AccessibilityTest#testHomePageAccessibility](src/test/java/com/qa/nopcommerce/tests/a11y/AccessibilityTest.java) | PASS |
 | TC-A11Y-002 | REQ-A11Y-001 | A11Y | Registration Page Automated Accessibility Scan | P2 | YES | [AccessibilityTest#testLoginPageAccessibility](src/test/java/com/qa/nopcommerce/tests/a11y/AccessibilityTest.java) | PASS |

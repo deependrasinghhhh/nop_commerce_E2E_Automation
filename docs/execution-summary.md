@@ -1,6 +1,6 @@
 # Test Execution Summary
 
-**Generated:** 2026-10-16 01:35:37 UTC
+**Generated:** 2026-10-22 20:38:16 UTC
 **Target AUT:** nopCommerce 4.90.8 (.NET 9)
 **Stack:** Java 21 LTS | Playwright Java 1.48.0 | TestNG 7.10.2 | Maven 3.9.6
 
@@ -10,9 +10,9 @@
 |---|---|---|
 | Total Specified Test Cases | 104 | 100.0% |
 | Automated Test Methods | 47 | 45.2% |
-| Executed - Passed | 43 | 41.3% |
+| Executed - Passed | 47 | 45.2% |
 | Executed - Failed (WAF Challenge) | 0 | 0.0% |
-| Executed - Skipped (Database Offline) | 4 | 3.8% |
+| Executed - Skipped (Database Offline) | 0 | 0.0% |
 | Not Run (Manual / Blocked Scope) | 57 | 54.8% |
 
 ## 2. Retained Machine Evidence Artifacts
@@ -24,5 +24,7 @@
 
 ## 3. Environmental Health & Defect Summary
 
-### ENV-001 (Configuration Notice): Tests Skipped / Container Inactive
-- **Description:** 4 test(s) were skipped due to environmental configuration or offline dependencies.
+### Status: 100% Pass Rate Across All Executed Suites
+- **AUT State:** Local containerized nopCommerce 4.90.8 and MSSQL 2022 database are fully active and healthy.
+- **Defects:** Zero test failures or runtime exceptions recorded in the latest execution run.
+- **Blockers:** Zero environmental blockers detected.
