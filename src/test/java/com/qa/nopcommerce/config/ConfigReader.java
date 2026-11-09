@@ -75,18 +75,25 @@ public class ConfigReader {
             return sysProp.trim();
         }
 
-        // 2. Dotenv / Environment Variable (uppercase, dots → underscores)
+        // 2. Dotenv / Environment Variable (supports camelCase, UPPERCASE, and UPPER_SNAKE_CASE)
         String envKey = key.toUpperCase().replace(".", "_");
+        String snakeKey = key.replaceAll("([a-z])([A-Z])", "$1_$2").toUpperCase().replace(".", "_");
+
         if (dotenv != null) {
-            String dotEnvVal = dotenv.get(envKey);
-            if (dotEnvVal != null && !dotEnvVal.trim().isEmpty()) {
-                return dotEnvVal.trim();
-            }
+            String val = dotenv.get(envKey);
+            if (val != null && !val.trim().isEmpty()) return val.trim();
+            val = dotenv.get(snakeKey);
+            if (val != null && !val.trim().isEmpty()) return val.trim();
+            val = dotenv.get(key);
+            if (val != null && !val.trim().isEmpty()) return val.trim();
         }
+
         String sysEnv = System.getenv(envKey);
-        if (sysEnv != null && !sysEnv.trim().isEmpty()) {
-            return sysEnv.trim();
-        }
+        if (sysEnv != null && !sysEnv.trim().isEmpty()) return sysEnv.trim();
+        sysEnv = System.getenv(snakeKey);
+        if (sysEnv != null && !sysEnv.trim().isEmpty()) return sysEnv.trim();
+        sysEnv = System.getenv(key);
+        if (sysEnv != null && !sysEnv.trim().isEmpty()) return sysEnv.trim();
 
         // 3. config.properties
         return properties.getProperty(key);

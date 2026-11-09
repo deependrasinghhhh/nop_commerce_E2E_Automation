@@ -3,7 +3,7 @@
 > **Portfolio Engineering Notice**: This repository contains an enterprise-grade, production-ready **Quality Assurance & Test Automation Framework** engineered for **nopCommerce 4.90.8** (.NET 9 / ASP.NET Core). It is strictly built with technical transparency: every metric, test case count, pass rate, and execution log is directly backed by machine-generated artifacts retained in `evidence/`.
 
 [![Java 21](https://img.shields.io/badge/Java-21%20LTS-orange.svg)](https://www.oracle.com/java/)
-[![Playwright](https://img.shields.io/badge/Playwright%20Java-1.48.0-green.svg)](https://playwright.dev/java/)
+[![Playwright](https://img.shields.io/badge/Playwright%20Java-1.49.0-green.svg)](https://playwright.dev/java/)
 [![TestNG](https://img.shields.io/badge/TestNG-7.10.2-red.svg)](https://testng.org/)
 [![Maven](https://img.shields.io/badge/Maven-3.9.6-blue.svg)](https://maven.apache.org/)
 [![Docker](https://img.shields.io/badge/Docker-nopCommerce%204.90.8-2496ED.svg)](https://hub.docker.com/r/nopcommerceteam/nopcommerce)
@@ -18,7 +18,7 @@
 
 This project delivers a multi-layered, end-to-end automated test engineering solution for **nopCommerce 4.90.8** (.NET 9 / ASP.NET Core). Rebuilt from the ground up onto a modern Java ecosystem, the framework incorporates industry best practices for high-velocity continuous integration:
 
-* **Core Test Automation Engine:** **Java 21 LTS** + **Microsoft Playwright Java 1.48.0**
+* **Core Test Automation Engine:** **Java 21 LTS** + **Microsoft Playwright Java 1.49.0**
 * **Test Runner & Orchestration:** **TestNG 7.10.2** with parallel class execution and XML suite decoupling
 * **Build & Dependency System:** **Apache Maven 3.9.6** with environment profiles (`smoke`, `ui`, `api`, `db`, `a11y`, `regression`)
 * **Design Pattern:** Industry-standard **Page Object Model (POM)** across 12 page classes with encapsulation and fluent chaining
