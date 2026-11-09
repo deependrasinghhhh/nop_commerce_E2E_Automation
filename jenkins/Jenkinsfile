@@ -70,39 +70,39 @@ pipeline {
             steps {
                 echo "=== Running Suite: ${params.SUITE} | Browser: ${params.BROWSER} | Headless: ${params.HEADLESS} | Threads: ${params.THREAD_COUNT} ==="
                 script {
+                    def dbPass = 'NopCommerce@2026!'
+                    def adminPass = 'Admin@12345'
+
                     try {
-                        withCredentials([
-                            string(credentialsId: 'nop-admin-password', variable: 'ADMIN_PASSWORD'),
-                            string(credentialsId: 'nop-db-password', variable: 'DB_PASSWORD')
-                        ]) {
-                            sh """
-                                mvn test \\
-                                    -DsuiteFile=src/test/resources/${params.SUITE} \\
-                                    -DbaseUrl=${env.BASE_URL} \\
-                                    -DadminUrl=${env.ADMIN_URL} \\
-                                    -DdbHost=${env.DB_HOST} \\
-                                    -Dbrowser=${params.BROWSER} \\
-                                    -Dheadless=${params.HEADLESS} \\
-                                    -Dthread.count=${params.THREAD_COUNT}
-                            """
+                        withCredentials([string(credentialsId: 'nop-db-password', variable: 'JENKINS_DB_PASS')]) {
+                            dbPass = env.JENKINS_DB_PASS
+                            echo "Successfully loaded 'nop-db-password' from Jenkins credentials store."
                         }
                     } catch (Exception e) {
-                        if (e.getMessage()?.contains('Could not find credentials')) {
-                            echo "WARN: Jenkins credentials 'nop-admin-password' or 'nop-db-password' not found. Executing with default/environment configuration."
-                            sh """
-                                mvn test \\
-                                    -DsuiteFile=src/test/resources/${params.SUITE} \\
-                                    -DbaseUrl=${env.BASE_URL} \\
-                                    -DadminUrl=${env.ADMIN_URL} \\
-                                    -DdbHost=${env.DB_HOST} \\
-                                    -Dbrowser=${params.BROWSER} \\
-                                    -Dheadless=${params.HEADLESS} \\
-                                    -Dthread.count=${params.THREAD_COUNT}
-                            """
-                        } else {
-                            throw e
-                        }
+                        echo "Notice: Using default database credentials (${e.message ?: 'credential not found'})."
                     }
+
+                    try {
+                        withCredentials([string(credentialsId: 'nop-admin-password', variable: 'JENKINS_ADMIN_PASS')]) {
+                            adminPass = env.JENKINS_ADMIN_PASS
+                            echo "Successfully loaded 'nop-admin-password' from Jenkins credentials store."
+                        }
+                    } catch (Exception e) {
+                        echo "Notice: Using default admin credentials (${e.message ?: 'credential not found'})."
+                    }
+
+                    sh """
+                        mvn test \\
+                            -DsuiteFile=src/test/resources/${params.SUITE} \\
+                            -DbaseUrl=${env.BASE_URL} \\
+                            -DadminUrl=${env.ADMIN_URL} \\
+                            -DdbHost=${env.DB_HOST} \\
+                            -DdbPassword='${dbPass}' \\
+                            -DadminPassword='${adminPass}' \\
+                            -Dbrowser=${params.BROWSER} \\
+                            -Dheadless=${params.HEADLESS} \\
+                            -Dthread.count=${params.THREAD_COUNT}
+                    """
                 }
             }
         }
