@@ -13,7 +13,10 @@ import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.io.FileWriter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -24,13 +27,14 @@ import java.util.List;
 @Feature("Accessibility Compliance (WCAG 2.1 AA)")
 public class AccessibilityTest extends BaseTest {
 
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
+            .enable(SerializationFeature.INDENT_OUTPUT);
+
     private void saveAxeReport(String pageName, AxeResults results) {
         try {
             Files.createDirectories(Paths.get("evidence/a11y"));
             String fileName = "evidence/a11y/" + pageName + "-axe-results.json";
-            try (FileWriter writer = new FileWriter(fileName)) {
-                writer.write(results.toString());
-            }
+            OBJECT_MAPPER.writeValue(new File(fileName), results);
             log.info("Saved accessibility scan results to {}", fileName);
         } catch (IOException e) {
             log.warn("Failed to write axe report for {}: {}", pageName, e.getMessage());
