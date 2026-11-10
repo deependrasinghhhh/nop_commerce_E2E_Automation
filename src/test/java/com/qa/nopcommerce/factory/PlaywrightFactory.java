@@ -100,7 +100,11 @@ public class PlaywrightFactory {
                 .setIgnoreHTTPSErrors(ignoreHttpsErrors);
 
         if (ConfigReader.isRecordVideo()) {
-            options.setRecordVideoDir(Paths.get("evidence/videos/"));
+            java.nio.file.Path videoDir = Paths.get("evidence/videos/");
+            try {
+                java.nio.file.Files.createDirectories(videoDir);
+            } catch (Exception ignored) {}
+            options.setRecordVideoDir(videoDir);
         }
         return options;
     }
@@ -204,7 +208,11 @@ public class PlaywrightFactory {
         BrowserContext context = tlContext.get();
         if (context != null && ConfigReader.isRecordTrace() && !Boolean.TRUE.equals(tlTraceStopped.get())) {
             try {
-                context.tracing().stop(new Tracing.StopOptions().setPath(Paths.get(tracePath)));
+                java.nio.file.Path path = Paths.get(tracePath);
+                if (path.getParent() != null) {
+                    java.nio.file.Files.createDirectories(path.getParent());
+                }
+                context.tracing().stop(new Tracing.StopOptions().setPath(path));
                 tlTraceStopped.set(true);
                 log.info("Saved Playwright execution trace to {}", tracePath);
             } catch (Exception e) {
@@ -255,7 +263,11 @@ public class PlaywrightFactory {
             try {
                 if (ConfigReader.isRecordTrace() && !Boolean.TRUE.equals(tlTraceStopped.get())) {
                     String tracePath = "evidence/traces/" + sanitizeFileName(testName) + "-trace.zip";
-                    context.tracing().stop(new Tracing.StopOptions().setPath(Paths.get(tracePath)));
+                    java.nio.file.Path path = Paths.get(tracePath);
+                    if (path.getParent() != null) {
+                        java.nio.file.Files.createDirectories(path.getParent());
+                    }
+                    context.tracing().stop(new Tracing.StopOptions().setPath(path));
                     tlTraceStopped.set(true);
                 }
             } catch (Exception e) {

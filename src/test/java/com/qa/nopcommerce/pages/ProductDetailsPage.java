@@ -107,8 +107,14 @@ public class ProductDetailsPage extends BasePage {
     }
 
     public void openProductReviewsSection() {
-        if (isVisible(addReviewLink)) {
+        try {
+            addReviewLink.waitFor(new Locator.WaitForOptions().setTimeout(5000));
             click(addReviewLink);
+        } catch (Exception e) {
+            log.debug("Add review link not immediately visible: {}", e.getMessage());
+            if (isVisible(addReviewLink)) {
+                click(addReviewLink);
+            }
         }
     }
 

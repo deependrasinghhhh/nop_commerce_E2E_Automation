@@ -27,6 +27,7 @@
         <aspectj.version>1.9.22</aspectj.version>
         <aspectj.argLine></aspectj.argLine>
         <suiteFile>src/test/resources/suites/smoke.xml</suiteFile>
+        <suiteXmlFile>${suiteFile}</suiteXmlFile>
     </properties>
 
     <dependencyManagement>
@@ -124,7 +125,7 @@
                 <version>3.5.2</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <suiteXmlFile>${suiteFile}</suiteXmlFile>
+                        <suiteXmlFile>${suiteXmlFile}</suiteXmlFile>
                     </suiteXmlFiles>
                     <argLine>${aspectj.argLine}</argLine>
                     <useModulePath>false</useModulePath>

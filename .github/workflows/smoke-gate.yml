@@ -115,6 +115,7 @@ jobs:
           TEST_ENV_NAME: github-actions-isolated-docker
         run: |
           mvn test \
+            -DsuiteFile=src/test/resources/suites/smoke.xml \
             -DsuiteXmlFile=src/test/resources/suites/smoke.xml \
             -DbaseUrl="${BASE_URL}" \
             -DadminUrl="${ADMIN_URL}" \
@@ -215,6 +216,7 @@ jobs:
           TEST_ENV_NAME: github-actions-isolated-docker
         run: |
           mvn test \
+            -DsuiteFile=src/test/resources/suites/api.xml \
             -DsuiteXmlFile=src/test/resources/suites/api.xml \
             -DbaseUrl="${BASE_URL}" \
             -DadminUrl="${ADMIN_URL}"

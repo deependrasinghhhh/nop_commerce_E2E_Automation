@@ -66,7 +66,7 @@ def scan_java_annotations():
 def parse_surefire_results():
     results = {}
     target_dir = os.path.join(ROOT_DIR, "target", "surefire-reports")
-    search_dirs = [target_dir, SUREFIRE_DIR] if os.path.exists(target_dir) else [SUREFIRE_DIR]
+    search_dirs = [SUREFIRE_DIR, target_dir] if os.path.exists(target_dir) else [SUREFIRE_DIR]
 
     for s_dir in search_dirs:
         if not os.path.exists(s_dir):
