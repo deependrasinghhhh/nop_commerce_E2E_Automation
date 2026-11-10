@@ -29,16 +29,14 @@ public class ApiEndpointTest {
 
     @BeforeClass(alwaysRun = true)
     public void setupApiContext() {
-        playwright = Playwright.create();
         baseUrl = ConfigReader.getBaseUrl();
+        playwright = Playwright.create();
         Map<String, String> headers = new HashMap<>();
-        headers.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36");
-        headers.put("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-
+        headers.put("User-Agent", "NopCommerce-API-Probe/1.0");
         requestContext = playwright.request().newContext(new APIRequest.NewContextOptions()
                 .setBaseURL(baseUrl)
-                .setExtraHTTPHeaders(headers)
-                .setIgnoreHTTPSErrors(true));
+                .setIgnoreHTTPSErrors(ConfigReader.isIgnoreHttpsErrors())
+                .setExtraHTTPHeaders(headers));
     }
 
     @AfterClass(alwaysRun = true)
@@ -51,81 +49,78 @@ public class ApiEndpointTest {
         }
     }
 
-    @Test(groups = {"api", "smoke"})
-    @TestCase("TC-API-001")
+    @Test(groups = {"api"})
+    @TestCase(value = "TC-API-001", requirementId = "REQ-API-001")
     @Severity(SeverityLevel.BLOCKER)
-    @Description("Verify storefront root HTTP endpoint responds with valid HTTP status (200 OK or 403 WAF challenge)")
+    @Description("Verify storefront root HTTP endpoint returns 200 OK and nopCommerce HTML payload")
     public void testStorefrontRootEndpoint() {
         APIResponse response = requestContext.get("/");
         int status = response.status();
-        Assert.assertTrue(status == 200 || status == 403,
-                "Expected status 200 (OK) or 403 (WAF Challenge), but received: " + status);
+        Assert.assertEquals(status, 200, "Expected HTTP 200 OK from isolated storefront root, received: " + status);
+        Assert.assertTrue(response.text().contains("nopCommerce"), "Root HTML body must contain nopCommerce branding");
     }
 
     @Test(groups = {"api"})
-    @TestCase("TC-API-002")
+    @TestCase(value = "TC-API-002", requirementId = "REQ-API-001")
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Verify customer login HTTP route returns HTML content type")
-    public void testCustomerLoginEndpoint() {
-        APIResponse response = requestContext.get("/login");
-        int status = response.status();
-        Assert.assertTrue(status == 200 || status == 403,
-                "Expected status 200 or 403, but received: " + status);
-
-        if (status == 200) {
-            String contentType = response.headers().get("content-type");
-            Assert.assertNotNull(contentType);
-            Assert.assertTrue(contentType.contains("text/html"), "Expected text/html content type");
-        }
-    }
-
-    @Test(groups = {"api"})
-    @TestCase("TC-API-003")
-    @Severity(SeverityLevel.CRITICAL)
-    @Description("Verify registration HTTP route returns valid HTML response")
+    @Description("Verify registration HTTP route returns 200 OK and valid registration form HTML")
     public void testCustomerRegisterEndpoint() {
         APIResponse response = requestContext.get("/register");
         int status = response.status();
-        Assert.assertTrue(status == 200 || status == 403,
-                "Expected status 200 or 403, but received: " + status);
+        Assert.assertEquals(status, 200, "Expected HTTP 200 OK on /register, received: " + status);
+        Assert.assertTrue(response.text().contains("Register"), "Expected registration page content");
     }
 
     @Test(groups = {"api"})
-    @TestCase("TC-API-004")
+    @TestCase(value = "TC-API-003", requirementId = "REQ-API-001")
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Verify administration portal root responds with redirect, login prompt, or challenge")
-    public void testAdminPortalEndpoint() {
-        APIResponse response = requestContext.get("/admin");
+    @Description("Verify customer login HTTP route returns 200 OK and text/html content type")
+    public void testCustomerLoginEndpoint() {
+        APIResponse response = requestContext.get("/login");
         int status = response.status();
-        Assert.assertTrue(status == 200 || status == 302 || status == 403,
-                "Expected status 200, 302, or 403 for admin portal, but received: " + status);
+        Assert.assertEquals(status, 200, "Expected HTTP 200 OK on /login, received: " + status);
+
+        String contentType = response.headers().get("content-type");
+        Assert.assertNotNull(contentType);
+        Assert.assertTrue(contentType.contains("text/html"), "Expected text/html content type");
     }
 
     @Test(groups = {"api"})
-    @TestCase("TC-API-005")
+    @TestCase(value = "TC-API-005", requirementId = "REQ-API-001")
     @Severity(SeverityLevel.NORMAL)
-    @Description("Verify non-existent route returns 404 Not Found or redirect")
+    @Description("Verify non-existent route returns 404 Not Found or redirect to page-not-found")
     public void testNonExistentRouteHandling() {
         APIResponse response = requestContext.get("/non-existent-page-qa-probe-404");
         int status = response.status();
-        Assert.assertTrue(status == 404 || status == 302 || status == 403,
-                "Expected 404 Not Found or 403 WAF response, but received: " + status);
+        Assert.assertTrue(status == 404 || status == 302,
+                "Expected 404 Not Found or 302 redirect on unknown route, received: " + status);
     }
 
     @Test(groups = {"api"})
-    @TestCase("TC-API-006")
+    @TestCase(value = "TC-API-007", requirementId = "REQ-API-002")
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Verify state-modifying POST request without anti-forgery token is rejected (400, 403, or redirect)")
+    @Description("Verify protected administration portal root responds with login prompt or redirect")
+    public void testAdminPortalEndpoint() {
+        APIResponse response = requestContext.get("/Admin");
+        int status = response.status();
+        Assert.assertTrue(status == 200 || status == 302,
+                "Expected status 200 (after redirect to login) or 302 for /Admin, received: " + status);
+    }
+
+    @Test(groups = {"api"})
+    @TestCase(value = "TC-API-009", requirementId = "REQ-API-004")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Verify state-modifying POST request without anti-forgery token is rejected (400 or 302)")
     public void testPostWithoutAntiForgeryTokenRejection() {
         com.microsoft.playwright.options.FormData formData = com.microsoft.playwright.options.FormData.create()
                 .set("Email", "unauthorized@example.com")
-                .set("Password", "InvalidPassword123");
+                .set("Password", "InvalidProbePass");
 
         APIResponse response = requestContext.post("/login", com.microsoft.playwright.options.RequestOptions.create()
                 .setForm(formData));
 
         int status = response.status();
-        Assert.assertTrue(status == 400 || status == 403 || status == 405 || status == 302,
-                "Expected POST rejection status (400/403/405/302), received: " + status);
+        Assert.assertTrue(status == 400 || status == 405 || status == 302,
+                "Expected anti-forgery POST rejection status (400/405/302), received: " + status);
     }
 }

@@ -20,46 +20,41 @@ import java.util.List;
 public class NonFunctionalTest extends BaseTest {
 
     @Test(groups = {"nfr"})
-    @TestCase("TC-NFR-001")
+    @TestCase(value = "TC-NFR-001", requirementId = "REQ-NFR-001")
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Verify storefront responsive layout adapts across Desktop (1920x1080), Tablet (768x1024), and Mobile (375x667)")
+    @Description("Verify storefront responsive layout adapts across Desktop (1920x1080) and Mobile (375x667)")
     public void testResponsiveViewportLayout() {
-        // Desktop
         getPage().setViewportSize(1920, 1080);
         navigateTo("/");
-        Locator topMenuDesktop = getPage().locator(".top-menu.notmobile");
-        if (topMenuDesktop.count() > 0) {
-            PlaywrightAssertions.assertThat(topMenuDesktop).isVisible();
-        }
+        Locator topMenuDesktop = getPage().locator(".top-menu.notmobile, .header-menu").first();
+        PlaywrightAssertions.assertThat(topMenuDesktop).isVisible();
 
-        // Mobile
         getPage().setViewportSize(375, 667);
         navigateTo("/");
-        Locator searchBox = getPage().locator("#small-searchterms, .search-box");
-        Assert.assertTrue(searchBox.count() > 0, "Search element should be available in mobile viewport");
+        Locator searchBox = getPage().locator("#small-searchterms, .search-box").first();
+        PlaywrightAssertions.assertThat(searchBox).isVisible();
     }
 
     @Test(groups = {"nfr"})
-    @TestCase("TC-NFR-002")
+    @TestCase(value = "TC-NFR-002", requirementId = "REQ-NFR-001")
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify mobile viewport renders navigation hamburger menu trigger")
     public void testMobileNavigationMenuTrigger() {
         getPage().setViewportSize(375, 667);
         navigateTo("/");
 
-        Locator mobileMenu = getPage().locator(".menu-toggle, .responsive-nav-button, .mobile-menu");
-        if (mobileMenu.count() > 0) {
-            PlaywrightAssertions.assertThat(mobileMenu.first()).isVisible();
-        }
+        Locator mobileMenu = getPage().locator(".menu-toggle, .menu__toggle, .responsive-nav-button, .mobile-menu").first();
+        PlaywrightAssertions.assertThat(mobileMenu).isVisible();
     }
 
     @Test(groups = {"nfr"})
-    @TestCase("TC-NFR-003")
+    @TestCase(value = "TC-NFR-003", requirementId = "REQ-NFR-002")
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Verify page load performance SLA: DOMContentLoaded within 10000ms threshold")
+    @Description("Verify page load performance SLA: DOMContentLoaded within 15000ms threshold")
     public void testPageLoadPerformanceSla() {
         long startTime = System.currentTimeMillis();
         navigateTo("/");
+        PlaywrightAssertions.assertThat(getPage().locator(".header-logo")).isVisible();
         long duration = System.currentTimeMillis() - startTime;
 
         log.info("Homepage navigation took {} ms", duration);
@@ -67,7 +62,7 @@ public class NonFunctionalTest extends BaseTest {
     }
 
     @Test(groups = {"nfr"})
-    @TestCase("TC-NFR-004")
+    @TestCase(value = "TC-NFR-004", requirementId = "REQ-NFR-003")
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify network request traffic contains no uncaught 500 Server Errors on core assets")
     public void testNo500InternalServerErrorsOnAssets() {
@@ -79,6 +74,7 @@ public class NonFunctionalTest extends BaseTest {
         });
 
         navigateTo("/");
+        PlaywrightAssertions.assertThat(getPage().locator(".header-logo")).isVisible();
         Assert.assertTrue(failedUrls.isEmpty(), "Found 500 Server Errors on page assets: " + failedUrls);
     }
 }

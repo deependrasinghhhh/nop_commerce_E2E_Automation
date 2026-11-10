@@ -16,6 +16,10 @@ public class CartPage extends BasePage {
     private final Locator updateCartButton;
     private final Locator discountCodeInput;
     private final Locator applyDiscountButton;
+    private final Locator couponMessage;
+    private final Locator removeDiscountButton;
+    private final Locator discountRowSummary;
+    private final Locator subTotalSummary;
     private final Locator termsOfServiceCheckbox;
     private final Locator checkoutButton;
     private final Locator orderTotal;
@@ -29,10 +33,18 @@ public class CartPage extends BasePage {
         this.updateCartButton = page.locator("#updatecart");
         this.discountCodeInput = page.locator("#discountcouponcode");
         this.applyDiscountButton = page.locator("#applydiscountcouponcode");
+        this.couponMessage = page.locator(".coupon-box .message-success, .coupon-box .message-failure, .coupon-box .message, .message-error");
+        this.removeDiscountButton = page.locator("button.remove-discount-button, button[name*='removediscount']");
+        this.discountRowSummary = page.locator(".order-total-discount .value-summary, .cart-total .discount-total");
+        this.subTotalSummary = page.locator(".order-subtotal .value-summary");
         this.termsOfServiceCheckbox = page.locator("#termsofservice");
         this.checkoutButton = page.locator("#checkout");
         this.orderTotal = page.locator(".order-total .value-summary");
         this.emptyCartMessage = page.locator(".no-data");
+    }
+
+    public Locator getCartRows() {
+        return cartRows;
     }
 
     public int getCartItemCount() {
@@ -61,9 +73,44 @@ public class CartPage extends BasePage {
         waitForLoad();
     }
 
+    public void clearCart() {
+        while (cartRows.count() > 0) {
+            Locator removeBtn = cartRows.first().locator("button.remove-btn");
+            if (isVisible(removeBtn)) {
+                click(removeBtn);
+                waitForLoad();
+            } else {
+                break;
+            }
+        }
+    }
+
     public void applyCouponCode(String couponCode) {
         fill(discountCodeInput, couponCode);
         click(applyDiscountButton);
+    }
+
+    public void removeAppliedCouponIfPresent() {
+        if (isVisible(removeDiscountButton)) {
+            click(removeDiscountButton);
+            waitForLoad();
+        }
+    }
+
+    public Locator getCouponMessage() {
+        return couponMessage;
+    }
+
+    public Locator getDiscountRowSummary() {
+        return discountRowSummary;
+    }
+
+    public Locator getSubTotalSummary() {
+        return subTotalSummary;
+    }
+
+    public Locator getEmptyCartMessage() {
+        return emptyCartMessage;
     }
 
     public void acceptTermsOfService() {
@@ -82,6 +129,10 @@ public class CartPage extends BasePage {
 
     public String getOrderTotal() {
         return getText(orderTotal);
+    }
+
+    public Locator getOrderTotalLocator() {
+        return orderTotal;
     }
 
     public boolean isCartEmpty() {

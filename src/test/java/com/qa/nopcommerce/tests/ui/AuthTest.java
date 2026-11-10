@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 public class AuthTest extends BaseTest {
 
     @Test(groups = {"ui", "auth", "smoke"})
-    @TestCase("TC-AUTH-001")
+    @TestCase(value = "TC-AUTH-001", requirementId = "REQ-AUTH-001")
     @Severity(SeverityLevel.BLOCKER)
     @Description("Verify valid customer registration with all mandatory fields completed")
     public void testValidCustomerRegistration() {
@@ -31,8 +31,9 @@ public class AuthTest extends BaseTest {
         RegisterPage registerPage = new RegisterPage(getPage());
 
         String uniqueEmail = "nop_qa_" + UUID.randomUUID().toString().substring(0, 8) + "@example.com";
+        String dynamicPassword = "QaAuth@" + UUID.randomUUID().toString().substring(0, 8);
         registerPage.selectGender("male");
-        registerPage.fillRegistrationForm("Alex", "QA Tester", uniqueEmail, "QA Corp", "Test@123456", "Test@123456");
+        registerPage.fillRegistrationForm("Alex", "QA Tester", uniqueEmail, "QA Corp", dynamicPassword, dynamicPassword);
         registerPage.clickRegisterButton();
 
         PlaywrightAssertions.assertThat(getPage().locator(".result"))
@@ -40,7 +41,7 @@ public class AuthTest extends BaseTest {
     }
 
     @Test(groups = {"ui", "auth"})
-    @TestCase("TC-AUTH-002")
+    @TestCase(value = "TC-AUTH-002", requirementId = "REQ-AUTH-002")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify registration form field validation when mandatory fields are omitted")
     public void testRegistrationMandatoryFieldValidation() {
@@ -49,91 +50,89 @@ public class AuthTest extends BaseTest {
 
         registerPage.clickRegisterButton();
 
-        Assert.assertTrue(registerPage.getFirstNameError().toLowerCase().contains("first name") || getPage().locator(".field-validation-error").count() > 0,
-                "First name validation error mismatch");
-        Assert.assertTrue(registerPage.getLastNameError().toLowerCase().contains("last name") || getPage().locator(".field-validation-error").count() > 0,
-                "Last name validation error mismatch");
-        Assert.assertTrue(registerPage.getEmailError().toLowerCase().contains("email") || getPage().locator(".field-validation-error").count() > 0,
-                "Email validation error mismatch");
-        Assert.assertTrue(registerPage.getPasswordError().toLowerCase().contains("password") || getPage().locator(".field-validation-error").count() > 0,
-                "Password validation error mismatch");
+        PlaywrightAssertions.assertThat(getPage().locator("#FirstName-error")).isVisible();
+        PlaywrightAssertions.assertThat(getPage().locator("#LastName-error")).isVisible();
+        PlaywrightAssertions.assertThat(getPage().locator("#Email-error")).isVisible();
+        PlaywrightAssertions.assertThat(getPage().locator("#ConfirmPassword-error, #Password-error").first()).isVisible();
     }
 
     @Test(groups = {"ui", "auth"})
-    @TestCase("TC-AUTH-003")
+    @TestCase(value = "TC-AUTH-005", requirementId = "REQ-AUTH-002")
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify registration with malformed email format triggers inline error")
     public void testRegistrationMalformedEmailValidation() {
         navigateTo("/register");
         RegisterPage registerPage = new RegisterPage(getPage());
 
-        registerPage.fillRegistrationForm("Alex", "QA Tester", "invalid-email-format", "QA Corp", "Test@123456", "Test@123456");
+        String dynamicPassword = "QaAuth@" + UUID.randomUUID().toString().substring(0, 8);
+        registerPage.fillRegistrationForm("Alex", "QA Tester", "invalid-email-format", "QA Corp", dynamicPassword, dynamicPassword);
         registerPage.clickRegisterButton();
 
-        String emailErr = registerPage.getEmailError();
-        boolean hasEmailError = emailErr.toLowerCase().contains("email") || emailErr.toLowerCase().contains("wrong") || emailErr.toLowerCase().contains("valid") || getPage().locator("#Email:invalid, .field-validation-error").count() > 0;
-        Assert.assertTrue(hasEmailError, "Expected email validation error or HTML5 invalid state");
+        PlaywrightAssertions.assertThat(getPage().locator("#Email-error")).isVisible();
     }
 
     @Test(groups = {"ui", "auth"})
-    @TestCase("TC-AUTH-004")
+    @TestCase(value = "TC-AUTH-008", requirementId = "REQ-AUTH-004")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify registration fails when password and confirm password do not match")
     public void testRegistrationPasswordMismatch() {
         navigateTo("/register");
         RegisterPage registerPage = new RegisterPage(getPage());
 
-        registerPage.fillRegistrationForm("Alex", "QA Tester", "mismatch@example.com", "QA Corp", "Password@1", "Password@2");
+        String uniqueSuffix = UUID.randomUUID().toString().substring(0, 8);
+        registerPage.fillRegistrationForm("Alex", "QA Tester", "mismatch_" + uniqueSuffix + "@example.com", "QA Corp",
+                "PassA_" + uniqueSuffix, "PassB_" + uniqueSuffix);
         registerPage.clickRegisterButton();
 
-        Assert.assertTrue(registerPage.getConfirmPasswordError().contains("The password and confirmation password do not match"),
-                "Expected password mismatch error");
+        PlaywrightAssertions.assertThat(getPage().locator("#ConfirmPassword-error"))
+                .containsText("The password and confirmation password do not match.");
     }
 
     @Test(groups = {"ui", "auth", "smoke"})
-    @TestCase("TC-AUTH-006")
+    @TestCase(value = "TC-AUTH-009", requirementId = "REQ-AUTH-005")
     @Severity(SeverityLevel.BLOCKER)
-    @Description("Verify customer login with valid credentials")
+    @Description("Verify customer login with valid registered credentials")
     public void testCustomerLoginValidCredentials() {
         navigateTo("/login");
         LoginPage loginPage = new LoginPage(getPage());
 
         loginPage.login(ConfigReader.getAdminEmail(), ConfigReader.getAdminPassword());
 
-        PlaywrightAssertions.assertThat(getPage().locator("a.ico-account, a.ico-logout, a:has-text('Log out'), a:has-text('My account')").first()).isVisible();
+        PlaywrightAssertions.assertThat(getPage().locator("a.ico-account, a.ico-logout").first()).isVisible();
     }
 
     @Test(groups = {"ui", "auth"})
-    @TestCase("TC-AUTH-007")
+    @TestCase(value = "TC-AUTH-011", requirementId = "REQ-AUTH-006")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify customer login with invalid password displays authentication error")
     public void testCustomerLoginInvalidPassword() {
         navigateTo("/login");
         LoginPage loginPage = new LoginPage(getPage());
 
-        loginPage.login("admin@yourstore.com", "WrongPassword999!");
+        String invalidPassword = "Invalid_" + UUID.randomUUID().toString().substring(0, 8);
+        loginPage.login(ConfigReader.getAdminEmail(), invalidPassword);
 
         Assert.assertTrue(loginPage.isErrorMessageDisplayed(), "Expected login error message");
-        Assert.assertTrue(loginPage.getErrorMessage().contains("unsuccessful") || loginPage.getErrorMessage().contains("No customer account found"),
+        Assert.assertTrue(loginPage.getErrorMessage().contains("Login was unsuccessful"),
                 "Expected error message indicating login failure");
     }
 
     @Test(groups = {"ui", "auth"})
-    @TestCase("TC-AUTH-008")
+    @TestCase(value = "TC-AUTH-012", requirementId = "REQ-AUTH-006")
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify customer login validation when email field is blank")
     public void testCustomerLoginBlankEmail() {
         navigateTo("/login");
         LoginPage loginPage = new LoginPage(getPage());
 
-        loginPage.login("", "AnyPassword123");
+        loginPage.login("", "Invalid_" + UUID.randomUUID().toString().substring(0, 8));
 
-        Assert.assertTrue(loginPage.getEmailError().contains("Please enter your email"),
-                "Expected email required validation message");
+        PlaywrightAssertions.assertThat(getPage().locator("#Email-error"))
+                .containsText("Please enter your email");
     }
 
     @Test(groups = {"ui", "auth"})
-    @TestCase("TC-AUTH-011")
+    @TestCase(value = "TC-AUTH-013", requirementId = "REQ-AUTH-007")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify customer logout clears session and restores login link in header")
     public void testCustomerLogout() {
@@ -144,6 +143,6 @@ public class AuthTest extends BaseTest {
         HomePage homePage = new HomePage(getPage());
         homePage.clickLogout();
 
-        PlaywrightAssertions.assertThat(getPage().locator("a.ico-login, a:has-text('Log in')").first()).isVisible();
+        PlaywrightAssertions.assertThat(getPage().locator("a.ico-login").first()).isVisible();
     }
 }

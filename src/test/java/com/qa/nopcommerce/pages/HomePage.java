@@ -8,7 +8,6 @@ import com.microsoft.playwright.Page;
  */
 public class HomePage extends BasePage {
 
-    // Locators
     private final Locator logo;
     private final Locator searchInput;
     private final Locator searchButton;
@@ -38,8 +37,8 @@ public class HomePage extends BasePage {
         this.featuredProductsGrid = page.locator(".product-grid.home-page-product-grid");
     }
 
-    public boolean isLogoVisible() {
-        return logo.count() > 0;
+    public Locator getLogo() {
+        return logo;
     }
 
     public void search(String keyword) {
@@ -62,6 +61,11 @@ public class HomePage extends BasePage {
         return new CartPage(page);
     }
 
+    public WishlistPage clickWishlist() {
+        click(wishlistLink);
+        return new WishlistPage(page);
+    }
+
     public CustomerInfoPage clickMyAccount() {
         click(customerInfoLink);
         return new CustomerInfoPage(page);
@@ -81,8 +85,8 @@ public class HomePage extends BasePage {
         currencyDropdown.selectOption(currencyText);
     }
 
-    public boolean isFeaturedProductsVisible() {
-        return isVisible(featuredProductsGrid);
+    public Locator getFeaturedProductsGrid() {
+        return featuredProductsGrid;
     }
 
     public Locator getSearchInput() {
@@ -91,5 +95,9 @@ public class HomePage extends BasePage {
 
     public Locator getCartLink() {
         return cartLink;
+    }
+
+    public Locator getWishlistLink() {
+        return wishlistLink;
     }
 }

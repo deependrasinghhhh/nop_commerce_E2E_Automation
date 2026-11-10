@@ -34,7 +34,7 @@ public class CheckoutPage extends BasePage {
     // Payment info step
     private final Locator paymentInfoContinueButton;
 
-    // Confirm step
+    // Confirm order step
     private final Locator confirmOrderButton;
 
     public CheckoutPage(Page page) {

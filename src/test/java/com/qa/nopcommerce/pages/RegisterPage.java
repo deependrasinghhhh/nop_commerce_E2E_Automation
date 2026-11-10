@@ -12,6 +12,9 @@ public class RegisterPage extends BasePage {
     private final Locator genderFemaleRadio;
     private final Locator firstNameInput;
     private final Locator lastNameInput;
+    private final Locator dateOfBirthDay;
+    private final Locator dateOfBirthMonth;
+    private final Locator dateOfBirthYear;
     private final Locator emailInput;
     private final Locator companyInput;
     private final Locator newsletterCheckbox;
@@ -21,7 +24,7 @@ public class RegisterPage extends BasePage {
     private final Locator resultMessage;
     private final Locator continueButton;
 
-    // Validation error locators
+    // Field-level error message locators
     private final Locator firstNameError;
     private final Locator lastNameError;
     private final Locator emailError;
@@ -35,6 +38,9 @@ public class RegisterPage extends BasePage {
         this.genderFemaleRadio = page.locator("#gender-female");
         this.firstNameInput = page.locator("#FirstName");
         this.lastNameInput = page.locator("#LastName");
+        this.dateOfBirthDay = page.locator("select[name='DateOfBirthDay']");
+        this.dateOfBirthMonth = page.locator("select[name='DateOfBirthMonth']");
+        this.dateOfBirthYear = page.locator("select[name='DateOfBirthYear']");
         this.emailInput = page.locator("#Email");
         this.companyInput = page.locator("#Company");
         this.newsletterCheckbox = page.locator("#Newsletter");
@@ -44,11 +50,11 @@ public class RegisterPage extends BasePage {
         this.resultMessage = page.locator(".result");
         this.continueButton = page.locator("a.register-continue-button");
 
-        this.firstNameError = page.locator("#FirstName-error, span[data-valmsg-for='FirstName'], .field-validation-error[data-valmsg-for='FirstName']");
-        this.lastNameError = page.locator("#LastName-error, span[data-valmsg-for='LastName'], .field-validation-error[data-valmsg-for='LastName']");
+        this.firstNameError = page.locator("#FirstName-error, span[data-valmsg-for='FirstName']");
+        this.lastNameError = page.locator("#LastName-error, span[data-valmsg-for='LastName']");
         this.emailError = page.locator("#Email-error, span[data-valmsg-for='Email'], .field-validation-error[data-valmsg-for='Email']");
         this.passwordError = page.locator("#Password-error, span[data-valmsg-for='Password'], .field-validation-error[data-valmsg-for='Password']");
-        this.confirmPasswordError = page.locator("#ConfirmPassword-error, span[data-valmsg-for='ConfirmPassword'], .field-validation-error[data-valmsg-for='ConfirmPassword']");
+        this.confirmPasswordError = page.locator("#ConfirmPassword-error, span[data-valmsg-for='ConfirmPassword']");
         this.validationSummaryError = page.locator(".message-error.validation-summary-errors, .message-error");
     }
 

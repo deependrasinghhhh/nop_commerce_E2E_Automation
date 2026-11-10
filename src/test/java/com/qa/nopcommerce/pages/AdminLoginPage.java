@@ -17,7 +17,7 @@ public class AdminLoginPage extends BasePage {
         super(page);
         this.emailInput = page.locator("#Email");
         this.passwordInput = page.locator("#Password");
-        this.loginButton = page.locator("button.login-button, .returning-wrapper button[type='submit'], button[type='submit'].login-button").first();
+        this.loginButton = page.locator(".login-page button.login-button, button.login-button, button[type='submit'].login-button, .returning-wrapper button[type='submit']").first();
         this.errorMessage = page.locator(".message-error");
     }
 

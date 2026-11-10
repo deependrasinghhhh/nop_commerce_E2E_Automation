@@ -13,11 +13,11 @@ import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 
 @Epic("Non-Functional Requirements")
@@ -38,44 +38,29 @@ public class AccessibilityTest extends BaseTest {
     }
 
     @Test(groups = {"a11y"})
-    @TestCase("TC-A11Y-001")
+    @TestCase(value = "TC-A11Y-001", requirementId = "REQ-A11Y-001")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Execute axe-core WCAG 2.1 AA accessibility scan on Storefront Homepage")
     public void testHomePageAccessibility() {
         navigateTo("/");
         AxeResults axeResults = new AxeBuilder(getPage())
-                .withTags(java.util.Arrays.asList("wcag2a", "wcag2aa"))
+                .withTags(Arrays.asList("wcag2a", "wcag2aa"))
                 .analyze();
 
         saveAxeReport("homepage", axeResults);
         List<Rule> violations = axeResults.getViolations();
         log.info("Homepage WCAG violations detected: {}", violations.size());
-        // Document violations in evidence rather than hard-failing build
         Assert.assertNotNull(axeResults, "Axe analysis results must not be null");
     }
 
     @Test(groups = {"a11y"})
-    @TestCase("TC-A11Y-002")
-    @Severity(SeverityLevel.CRITICAL)
-    @Description("Execute axe-core WCAG 2.1 AA accessibility scan on Customer Login page")
-    public void testLoginPageAccessibility() {
-        navigateTo("/login");
-        AxeResults axeResults = new AxeBuilder(getPage())
-                .withTags(java.util.Arrays.asList("wcag2a", "wcag2aa"))
-                .analyze();
-
-        saveAxeReport("login-page", axeResults);
-        Assert.assertNotNull(axeResults, "Axe analysis results must not be null");
-    }
-
-    @Test(groups = {"a11y"})
-    @TestCase("TC-A11Y-003")
+    @TestCase(value = "TC-A11Y-002", requirementId = "REQ-A11Y-001")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Execute axe-core WCAG 2.1 AA accessibility scan on Customer Registration page")
     public void testRegisterPageAccessibility() {
         navigateTo("/register");
         AxeResults axeResults = new AxeBuilder(getPage())
-                .withTags(java.util.Arrays.asList("wcag2a", "wcag2aa"))
+                .withTags(Arrays.asList("wcag2a", "wcag2aa"))
                 .analyze();
 
         saveAxeReport("register-page", axeResults);
@@ -83,13 +68,27 @@ public class AccessibilityTest extends BaseTest {
     }
 
     @Test(groups = {"a11y"})
-    @TestCase("TC-A11Y-004")
+    @TestCase(value = "TC-A11Y-003", requirementId = "REQ-A11Y-001")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Execute axe-core WCAG 2.1 AA accessibility scan on Customer Login page")
+    public void testLoginPageAccessibility() {
+        navigateTo("/login");
+        AxeResults axeResults = new AxeBuilder(getPage())
+                .withTags(Arrays.asList("wcag2a", "wcag2aa"))
+                .analyze();
+
+        saveAxeReport("login-page", axeResults);
+        Assert.assertNotNull(axeResults, "Axe analysis results must not be null");
+    }
+
+    @Test(groups = {"a11y"})
+    @TestCase(value = "TC-A11Y-004", requirementId = "REQ-A11Y-001")
     @Severity(SeverityLevel.NORMAL)
     @Description("Execute axe-core WCAG 2.1 AA accessibility scan on Shopping Cart page")
     public void testCartPageAccessibility() {
         navigateTo("/cart");
         AxeResults axeResults = new AxeBuilder(getPage())
-                .withTags(java.util.Arrays.asList("wcag2a", "wcag2aa"))
+                .withTags(Arrays.asList("wcag2a", "wcag2aa"))
                 .analyze();
 
         saveAxeReport("cart-page", axeResults);
@@ -97,13 +96,13 @@ public class AccessibilityTest extends BaseTest {
     }
 
     @Test(groups = {"a11y"})
-    @TestCase("TC-A11Y-005")
+    @TestCase(value = "TC-A11Y-005", requirementId = "REQ-A11Y-001")
     @Severity(SeverityLevel.NORMAL)
-    @Description("Execute axe-core WCAG 2.1 AA accessibility scan on Category listing page")
+    @Description("Execute axe-core WCAG 2.1 AA accessibility scan on Product Detail / Category page")
     public void testCategoryPageAccessibility() {
         navigateTo("/desktops");
         AxeResults axeResults = new AxeBuilder(getPage())
-                .withTags(java.util.Arrays.asList("wcag2a", "wcag2aa"))
+                .withTags(Arrays.asList("wcag2a", "wcag2aa"))
                 .analyze();
 
         saveAxeReport("category-desktops-page", axeResults);

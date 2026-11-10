@@ -11,7 +11,6 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.regex.Pattern;
@@ -20,14 +19,17 @@ import java.util.regex.Pattern;
 @Feature("Order Placement & Checkout Flow")
 public class CheckoutTest extends BaseTest {
 
+    private static final String SIMPLE_PRODUCT_SLUG = "/apple-macbook-pro";
+
     @Test(groups = {"ui", "checkout", "smoke"})
-    @TestCase("TC-CHK-001")
+    @TestCase(value = "TC-CHK-001", requirementId = "REQ-CHK-001")
     @Severity(SeverityLevel.BLOCKER)
-    @Description("Verify checkout initialization from cart redirects to checkout page or guest checkout prompt")
+    @Description("Verify checkout initialization from cart enforces Terms of Service and redirects to checkout/login")
     public void testCheckoutInitiation() {
-        navigateTo("/apple-macbook-pro");
+        navigateTo(SIMPLE_PRODUCT_SLUG);
         ProductDetailsPage productPage = new ProductDetailsPage(getPage());
         productPage.clickAddToCart();
+        PlaywrightAssertions.assertThat(productPage.getNotificationBanner()).isVisible();
 
         navigateTo("/cart");
         CartPage cartPage = new CartPage(getPage());
@@ -39,13 +41,14 @@ public class CheckoutTest extends BaseTest {
     }
 
     @Test(groups = {"ui", "checkout"})
-    @TestCase("TC-CHK-002")
+    @TestCase(value = "TC-CHK-002", requirementId = "REQ-CHK-002")
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Verify checkout requires billing address fields when checking out as guest")
+    @Description("Verify guest checkout option opens the billing address form")
     public void testCheckoutBillingAddressForm() {
-        navigateTo("/apple-macbook-pro");
+        navigateTo(SIMPLE_PRODUCT_SLUG);
         ProductDetailsPage productPage = new ProductDetailsPage(getPage());
         productPage.clickAddToCart();
+        PlaywrightAssertions.assertThat(productPage.getNotificationBanner()).isVisible();
 
         navigateTo("/cart");
         CartPage cartPage = new CartPage(getPage());
@@ -53,20 +56,26 @@ public class CheckoutTest extends BaseTest {
 
         checkoutPage.clickCheckoutAsGuest();
 
-        PlaywrightAssertions.assertThat(getPage().locator("#BillingNewAddress_CountryId, #billing-buttons-container, #billing-address-select, .checkout-data, #checkout-steps").first())
+        PlaywrightAssertions.assertThat(getPage().locator("#BillingNewAddress_CountryId, #billing-buttons-container").first())
                 .isVisible();
     }
 
     @Test(groups = {"ui", "checkout"})
-    @TestCase("TC-CHK-007")
+    @TestCase(value = "TC-CHK-008", requirementId = "REQ-CHK-005")
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Verify payment method options (Check/Money Order, Credit Card) are selectable")
+    @Description("Verify payment method step (Check / Money Order) is reachable after billing and shipping steps")
     public void testCheckoutPaymentMethodOptions() {
-        navigateTo("/onepagecheckout");
+        navigateTo(SIMPLE_PRODUCT_SLUG);
+        ProductDetailsPage productPage = new ProductDetailsPage(getPage());
+        productPage.clickAddToCart();
+        PlaywrightAssertions.assertThat(productPage.getNotificationBanner()).isVisible();
 
-        // If one page checkout is directly accessed or in progress
-        if (getPage().locator("#checkout-steps").count() > 0) {
-            PlaywrightAssertions.assertThat(getPage().locator("#checkout-steps")).isVisible();
-        }
+        navigateTo("/cart");
+        CartPage cartPage = new CartPage(getPage());
+        CheckoutPage checkoutPage = cartPage.proceedToCheckout();
+        checkoutPage.clickCheckoutAsGuest();
+
+        PlaywrightAssertions.assertThat(getPage().locator("#checkout-steps, .checkout-page").first())
+                .isVisible();
     }
 }

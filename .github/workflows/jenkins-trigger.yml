@@ -39,14 +39,14 @@ jobs:
             if [ -n "$JENKINS_USER" ] && [ -n "$JENKINS_TOKEN" ]; then
               STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
                 -u "$JENKINS_USER:$JENKINS_TOKEN" \
-                "$JENKINS_URL/job/nopCommerce-QA-Pipeline/build?token=$TRIGGER_TOKEN" || echo "failed")
+                "$JENKINS_URL/job/nopCommerce-E2E-Automation-Pipeline/build?token=$TRIGGER_TOKEN" || echo "failed")
             else
               STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
-                "$JENKINS_URL/job/nopCommerce-QA-Pipeline/build?token=$TRIGGER_TOKEN" || echo "failed")
+                "$JENKINS_URL/job/nopCommerce-E2E-Automation-Pipeline/build?token=$TRIGGER_TOKEN" || echo "failed")
             fi
             echo "Jenkins API Response HTTP Status: $STATUS"
             if [ "$STATUS" = "201" ] || [ "$STATUS" = "200" ]; then
-              echo "✅ Successfully dispatched build to Jenkins Pipeline: nopCommerce-QA-Pipeline"
+              echo "✅ Successfully dispatched build to Jenkins Pipeline: nopCommerce-E2E-Automation-Pipeline"
             else
               echo "⚠️ Jenkins returned HTTP $STATUS. Check Jenkins server endpoint or authentication."
             fi

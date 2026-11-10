@@ -36,7 +36,7 @@ public abstract class BaseTest {
 
         boolean headless = ConfigReader.isHeadless();
         PlaywrightFactory.initBrowser(browserName, headless);
-        log.info("Initialized test session — browser={}, headless={}, thread={}",
+        log.info("Initialized test session – browser={}, headless={}, thread={}",
                 browserName, headless, Thread.currentThread().getName());
     }
 

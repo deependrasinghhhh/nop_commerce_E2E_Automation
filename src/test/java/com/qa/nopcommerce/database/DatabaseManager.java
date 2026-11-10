@@ -13,33 +13,43 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Thread-safe Database Manager providing high-performance pooled read-only JDBC verification
- * against nopCommerce MSSQL database using HikariCP.
- * Supports automated verification of customer records, order records, and shopping cart persistence.
+ * Thread-safe Database Manager providing pooled JDBC verification and isolated test-data
+ * cleanup against the nopCommerce MSSQL database using HikariCP.
+ *
+ * <p>Requires {@code DB_USER} and {@code DB_PASSWORD} via {@link ConfigReader}; never falls
+ * back to hardcoded or empty credentials.</p>
  */
 public class DatabaseManager {
     private static final Logger log = LoggerFactory.getLogger(DatabaseManager.class);
     private static volatile HikariDataSource dataSource;
 
+    private DatabaseManager() {
+        // Utility class
+    }
+
     private static String getJdbcUrl() {
-        String host = ConfigReader.get("dbHost", "localhost");
-        String port = ConfigReader.get("dbPort", "1433");
-        String dbName = ConfigReader.get("dbName", "nopcommerce_db");
-        String encrypt = ConfigReader.get("dbEncrypt", "false");
-        String trustCert = ConfigReader.get("dbTrustServerCertificate", "true");
+        String host = ConfigReader.getDbHost();
+        int port = ConfigReader.getDbPort();
+        String dbName = ConfigReader.getDbName();
+        boolean encrypt = ConfigReader.isDbEncrypt();
+        boolean trustCert = ConfigReader.isDbTrustServerCertificate();
 
         return String.format(
-                "jdbc:sqlserver://%s:%s;databaseName=%s;encrypt=%s;trustServerCertificate=%s;loginTimeout=3;",
+                "jdbc:sqlserver://%s:%d;databaseName=%s;encrypt=%b;trustServerCertificate=%b;loginTimeout=3;",
                 host, port, dbName, encrypt, trustCert
         );
     }
 
     private static synchronized HikariDataSource getDataSource() {
+        // Fail fast if required DB credentials are not configured
+        String dbUser = ConfigReader.getDbUser();
+        String dbPassword = ConfigReader.getDbPassword();
+
         if (dataSource == null || dataSource.isClosed()) {
             HikariConfig config = new HikariConfig();
             config.setJdbcUrl(getJdbcUrl());
-            config.setUsername(ConfigReader.get("dbUser", "sa"));
-            config.setPassword(ConfigReader.get("dbPassword", ""));
+            config.setUsername(dbUser);
+            config.setPassword(dbPassword);
             config.setMaximumPoolSize(5);
             config.setMinimumIdle(1);
             config.setIdleTimeout(30000);
@@ -53,15 +63,13 @@ public class DatabaseManager {
     }
 
     public static Connection getConnection() throws SQLException {
+        String dbUser = ConfigReader.getDbUser();
+        String dbPassword = ConfigReader.getDbPassword();
         try {
             return getDataSource().getConnection();
         } catch (Exception e) {
-            log.warn("HikariCP connection checkout failed ({}), falling back to direct connection", e.getMessage());
-            return DriverManager.getConnection(
-                    getJdbcUrl(),
-                    ConfigReader.get("dbUser", "sa"),
-                    ConfigReader.get("dbPassword", "")
-            );
+            log.warn("HikariCP connection checkout failed ({}), attempting direct JDBC connection", e.getMessage());
+            return DriverManager.getConnection(getJdbcUrl(), dbUser, dbPassword);
         }
     }
 
@@ -72,7 +80,15 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Validates that DB credentials are configured (throws {@link IllegalStateException} if missing)
+     * and checks whether the MSSQL instance is reachable.
+     */
     public static boolean isDatabaseAccessible() {
+        // Ensure missing secrets fail clearly rather than being swallowed
+        ConfigReader.getDbUser();
+        ConfigReader.getDbPassword();
+
         try (Connection conn = getConnection()) {
             return conn != null && !conn.isClosed();
         } catch (Exception e) {
@@ -127,5 +143,61 @@ public class DatabaseManager {
             log.error("Database query failed for getShoppingCartItemCount: {}", e.getMessage());
         }
         return 0;
+    }
+
+    public static boolean addressExistsForCustomer(String customerEmail, String address1) {
+        String sql = "SELECT COUNT(1) AS TotalCount FROM Address a " +
+                     "INNER JOIN CustomerAddresses ca ON a.Id = ca.Address_Id " +
+                     "INNER JOIN Customer c ON c.Id = ca.Customer_Id " +
+                     "WHERE c.Email = ? AND a.Address1 = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, customerEmail);
+            stmt.setString(2, address1);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("TotalCount") > 0;
+                }
+            }
+        } catch (SQLException e) {
+            log.error("Database query failed for addressExistsForCustomer: {}", e.getMessage());
+        }
+        return false;
+    }
+
+    /**
+     * Deletes isolated test product reviews created during automated E2E runs by review title.
+     */
+    public static void deleteProductReviewByTitle(String reviewTitle) {
+        if (reviewTitle == null || reviewTitle.isBlank()) {
+            return;
+        }
+        String sql = "DELETE FROM ProductReview WHERE Title = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, reviewTitle);
+            int removed = stmt.executeUpdate();
+            log.info("Cleaned up {} isolated ProductReview row(s) with title '{}'", removed, reviewTitle);
+        } catch (Exception e) {
+            log.debug("Skipping DB review cleanup for '{}': {}", reviewTitle, e.getMessage());
+        }
+    }
+
+    /**
+     * Deletes isolated test discount coupon created during automated E2E runs.
+     */
+    public static void deleteDiscountCouponByCode(String couponCode) {
+        if (couponCode == null || couponCode.isBlank()) {
+            return;
+        }
+        String sql = "DELETE FROM Discount WHERE CouponCode = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, couponCode);
+            int removed = stmt.executeUpdate();
+            log.info("Cleaned up {} isolated Discount row(s) with couponCode '{}'", removed, couponCode);
+        } catch (Exception e) {
+            log.debug("Skipping DB discount cleanup for '{}': {}", couponCode, e.getMessage());
+        }
     }
 }

@@ -5,9 +5,10 @@ pipeline {
     agent any
 
     parameters {
-        choice(name: 'SUITE', choices: ['suites/regression.xml', 'suites/smoke.xml', 'suites/api.xml', 'suites/ui.xml', 'suites/db.xml', 'suites/a11y.xml', 'suites/nfr.xml'], description: 'TestNG Suite XML to execute')
-        choice(name: 'BROWSER', choices: ['chromium', 'firefox', 'webkit'], description: 'Browser family for UI tests')
+        choice(name: 'SUITE', choices: ['suites/regression.xml', 'suites/smoke.xml', 'suites/api.xml', 'suites/ui.xml', 'suites/db.xml', 'suites/nfr.xml', 'suites/a11y.xml'], description: 'TestNG Suite XML file to execute')
+        choice(name: 'BROWSER', choices: ['chromium', 'firefox', 'webkit'], description: 'Browser family for UI test execution')
         booleanParam(name: 'HEADLESS', defaultValue: true, description: 'Run browser in headless mode')
+        booleanParam(name: 'ENABLE_TREND_HISTORY', defaultValue: true, description: 'Persist Allure report trend history across CI builds')
         string(name: 'THREAD_COUNT', defaultValue: '2', description: 'Parallel execution thread count across test classes')
     }
 
@@ -19,6 +20,7 @@ pipeline {
         BASE_URL = 'http://host.docker.internal:5000'
         ADMIN_URL = 'http://host.docker.internal:5000/Admin'
         DB_HOST = 'host.docker.internal'
+        TEST_ENV_NAME = 'jenkins-ci-docker'
     }
 
     options {
@@ -37,24 +39,47 @@ pipeline {
             }
         }
 
+        stage('Validate Required Jenkins Secrets') {
+            steps {
+                echo "=== Verifying Required Secret Bindings in Jenkins Credentials Store ==="
+                withCredentials([
+                    string(credentialsId: 'nop-admin-email', variable: 'ADMIN_EMAIL'),
+                    string(credentialsId: 'nop-admin-password', variable: 'ADMIN_PASSWORD'),
+                    string(credentialsId: 'nop-db-user', variable: 'DB_USER'),
+                    string(credentialsId: 'nop-db-password', variable: 'DB_PASSWORD')
+                ]) {
+                    sh '''
+                        set -e
+                        [ -n "${ADMIN_EMAIL:-}" ] || { echo "ERROR: Missing required secret nop-admin-email (ADMIN_EMAIL)." >&2; exit 1; }
+                        [ -n "${ADMIN_PASSWORD:-}" ] || { echo "ERROR: Missing required secret nop-admin-password (ADMIN_PASSWORD)." >&2; exit 1; }
+                        [ -n "${DB_USER:-}" ] || { echo "ERROR: Missing required secret nop-db-user (DB_USER)." >&2; exit 1; }
+                        [ -n "${DB_PASSWORD:-}" ] || { echo "ERROR: Missing required secret nop-db-password (DB_PASSWORD)." >&2; exit 1; }
+                        echo "All required Jenkins secrets validated."
+                    '''
+                }
+            }
+        }
+
         stage('AUT Environment Verification') {
             steps {
-                echo "=== Verifying nopCommerce AUT Readiness at ${env.BASE_URL} ==="
+                echo "=== Verifying Isolated nopCommerce AUT Readiness at ${env.BASE_URL} ==="
                 sh '''
-                    if curl -s -f "${BASE_URL}/" > /dev/null; then
-                        echo "AUT is active and responding on ${BASE_URL}"
-                    else
-                        echo "Awaiting AUT on ${BASE_URL}..."
-                        for i in $(seq 1 30); do
-                            if curl -s -f "${BASE_URL}/" > /dev/null; then
-                                echo "AUT became ready on ${BASE_URL}"
-                                exit 0
-                            fi
-                            sleep 5
-                        done
-                        echo "Timed out waiting for ${BASE_URL}"
-                        exit 1
-                    fi
+                    set -e
+                    case "${BASE_URL}" in
+                        *demo.nopcommerce.com*)
+                            echo "ERROR: Public demo site is forbidden as a test target (${BASE_URL})." >&2
+                            exit 1
+                            ;;
+                    esac
+                    for i in $(seq 1 30); do
+                        if curl -s -f "${BASE_URL}/" > /dev/null; then
+                            echo "AUT is active and responding on ${BASE_URL}"
+                            exit 0
+                        fi
+                        sleep 5
+                    done
+                    echo "ERROR: Timed out waiting for isolated AUT on ${BASE_URL}" >&2
+                    exit 1
                 '''
             }
         }
@@ -62,92 +87,82 @@ pipeline {
         stage('Playwright Driver Setup') {
             steps {
                 echo "=== Ensuring Playwright Browser Binaries & System Dependencies ==="
-                sh 'mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install --with-deps chromium" || true'
+                sh "mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args=\"install --with-deps ${params.BROWSER}\""
+            }
+        }
+
+        stage('Restore Allure Trend History') {
+            when {
+                expression { return params.ENABLE_TREND_HISTORY }
+            }
+            steps {
+                sh '''
+                    mkdir -p target/allure-results
+                    if [ -d "${JENKINS_HOME}/allure-history/${JOB_NAME}/history" ]; then
+                        cp -r "${JENKINS_HOME}/allure-history/${JOB_NAME}/history" target/allure-results/history
+                        echo "Restored Allure trend history from previous CI build."
+                    fi
+                '''
             }
         }
 
         stage('Execute Test Suite') {
             steps {
                 echo "=== Running Suite: ${params.SUITE} | Browser: ${params.BROWSER} | Headless: ${params.HEADLESS} | Threads: ${params.THREAD_COUNT} ==="
-                script {
-                    def dbPass = 'NopCommerce@2026!'
-                    def adminPass = 'Admin@12345'
-
-                    try {
-                        withCredentials([string(credentialsId: 'nop-db-password', variable: 'JENKINS_DB_PASS')]) {
-                            dbPass = env.JENKINS_DB_PASS
-                            echo "Successfully loaded 'nop-db-password' from Jenkins credentials store."
-                        }
-                    } catch (Exception e) {
-                        echo "Notice: Using default database credentials (${e.message ?: 'credential not found'})."
-                    }
-
-                    try {
-                        withCredentials([string(credentialsId: 'nop-admin-password', variable: 'JENKINS_ADMIN_PASS')]) {
-                            adminPass = env.JENKINS_ADMIN_PASS
-                            echo "Successfully loaded 'nop-admin-password' from Jenkins credentials store."
-                        }
-                    } catch (Exception e) {
-                        echo "Notice: Using default admin credentials (${e.message ?: 'credential not found'})."
-                    }
-
-                    sh """
-                        mvn test \\
-                            -DsuiteFile=src/test/resources/${params.SUITE} \\
-                            -DbaseUrl=${env.BASE_URL} \\
-                            -DadminUrl=${env.ADMIN_URL} \\
-                            -DdbHost=${env.DB_HOST} \\
-                            -DdbPassword='${dbPass}' \\
-                            -DadminPassword='${adminPass}' \\
-                            -Dbrowser=${params.BROWSER} \\
-                            -Dheadless=${params.HEADLESS} \\
-                            -Dthread.count=${params.THREAD_COUNT}
-                    """
+                withCredentials([
+                    string(credentialsId: 'nop-admin-email', variable: 'ADMIN_EMAIL'),
+                    string(credentialsId: 'nop-admin-password', variable: 'ADMIN_PASSWORD'),
+                    string(credentialsId: 'nop-db-user', variable: 'DB_USER'),
+                    string(credentialsId: 'nop-db-password', variable: 'DB_PASSWORD')
+                ]) {
+                    sh '''
+                        mvn clean test \
+                            -DsuiteFile="src/test/resources/${SUITE}" \
+                            -DbrowserName="${BROWSER}" \
+                            -Dheadless="${HEADLESS}" \
+                            -DthreadCount="${THREAD_COUNT}" \
+                            -DbaseUrl="${BASE_URL}" \
+                            -DadminUrl="${ADMIN_URL}" \
+                            -DdbHost="${DB_HOST}"
+                    '''
                 }
             }
         }
 
-        stage('RTM Traceability Reconciliation') {
+        stage('RTM Traceability Matrix Sync') {
             steps {
-                echo "=== Running Machine RTM Reconciliation Script ==="
-                sh 'python3 scripts/reconcile_rtm.py 2>/dev/null || python scripts/reconcile_rtm.py 2>/dev/null || echo "RTM script completed"'
+                echo "=== Running RTM Reconciliation Script ==="
+                sh 'python3 scripts/reconcile_rtm.py'
             }
         }
     }
 
     post {
         always {
-            echo "=== Archiving Test Results & Machine Evidence ==="
-            junit allowEmptyResults: true, testResults: '**/surefire-reports/*.xml'
+            echo "=== Archiving Test Artifacts and Generating Allure Reports ==="
+            archiveArtifacts artifacts: 'target/surefire-reports/**/*, evidence/reports/**/*, evidence/failures/**/*, target/allure-results/**/*', allowEmptyArchive: true
 
             script {
                 try {
-                    publishHTML(target: [
-                        allowMissing: true,
-                        alwaysLinkToLastBuild: true,
-                        keepAll: true,
-                        reportDir: 'target/surefire-reports',
-                        reportFiles: 'index.html',
-                        reportName: 'TestNG Execution Report'
-                    ])
-                } catch (Throwable e) {
-                    echo "Notice: HTML Publisher plugin not available or failed: ${e.message}"
-                }
-
-                try {
                     allure includeProperties: false, jdk: '', results: [[path: 'target/allure-results']]
-                } catch (Throwable e) {
-                    echo "Notice: Allure Jenkins plugin not available or failed: ${e.message}. Archiving allure-results directly."
-                    archiveArtifacts allowEmptyArchive: true, artifacts: 'target/allure-results/**'
+                    if (params.ENABLE_TREND_HISTORY) {
+                        sh '''
+                            if [ -d "allure-report/history" ]; then
+                                mkdir -p "${JENKINS_HOME}/allure-history/${JOB_NAME}"
+                                cp -r allure-report/history "${JENKINS_HOME}/allure-history/${JOB_NAME}/"
+                            fi
+                        '''
+                    }
+                } catch (Exception e) {
+                    echo "Notice: Allure Plugin step skipped or failed: ${e.message}"
                 }
             }
-
-            archiveArtifacts allowEmptyArchive: true, artifacts: 'evidence/**', fingerprint: true
-            archiveArtifacts allowEmptyArchive: true, artifacts: 'docs/traceability-matrix.md, docs/execution-summary.md'
         }
-
+        success {
+            echo "Jenkins Automation Build SUCCEEDED!"
+        }
         failure {
-            echo "Pipeline completed with failures. Review evidence artifacts in the build archive for screenshots and traces."
+            echo "Jenkins Automation Build FAILED. Check test output & evidence artifacts."
         }
     }
 }

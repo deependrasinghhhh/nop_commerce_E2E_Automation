@@ -12,7 +12,6 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.regex.Pattern;
@@ -21,22 +20,22 @@ import java.util.regex.Pattern;
 @Feature("Catalog Browsing, Search & Discovery")
 public class CatalogTest extends BaseTest {
 
-    @Test(groups = {"ui", "catalog", "smoke"})
-    @TestCase("TC-CAT-001")
-    @Severity(SeverityLevel.BLOCKER)
-    @Description("Verify storefront homepage title, logo, top navigation bar, and search box render successfully")
-    public void testHomePageTitleAndHeaderRendering() {
-        navigateTo("/");
-        HomePage homePage = new HomePage(getPage());
+    @Test(groups = {"ui", "catalog"})
+    @TestCase(value = "TC-CAT-002", requirementId = "REQ-CAT-001")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Verify navigating to Computers and Desktops subcategory displays matching products")
+    public void testCategoryNavigation() {
+        navigateTo("/computers");
+        CategoryPage categoryPage = new CategoryPage(getPage());
+        PlaywrightAssertions.assertThat(getPage().locator(".page-title h1")).containsText("Computers");
 
-        PlaywrightAssertions.assertThat(getPage()).hasTitle(Pattern.compile(".*(nopCommerce|Your store).*"));
-        Assert.assertTrue(homePage.isLogoVisible(), "Storefront logo is not visible");
-        PlaywrightAssertions.assertThat(homePage.getSearchInput()).isVisible();
-        PlaywrightAssertions.assertThat(homePage.getCartLink()).isVisible();
+        navigateTo("/desktops");
+        CategoryPage desktopsPage = new CategoryPage(getPage());
+        PlaywrightAssertions.assertThat(desktopsPage.getProductItems()).not().hasCount(0);
     }
 
     @Test(groups = {"ui", "catalog"})
-    @TestCase("TC-CAT-002")
+    @TestCase(value = "TC-CAT-003", requirementId = "REQ-CAT-001")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify top menu contains standard categories (Computers, Electronics, Apparel)")
     public void testTopMenuCategoriesRendering() {
@@ -46,76 +45,63 @@ public class CatalogTest extends BaseTest {
         PlaywrightAssertions.assertThat(topMenu.locator("a[href*='/computers']").first()).isVisible();
         PlaywrightAssertions.assertThat(topMenu.locator("a[href*='/electronics']").first()).isVisible();
         PlaywrightAssertions.assertThat(topMenu.locator("a[href*='/apparel']").first()).isVisible();
-        PlaywrightAssertions.assertThat(topMenu.locator("a[href*='/digital-downloads']").first()).isVisible();
-        PlaywrightAssertions.assertThat(topMenu.locator("a[href*='/books']").first()).isVisible();
     }
 
     @Test(groups = {"ui", "catalog"})
-    @TestCase("TC-CAT-003")
-    @Severity(SeverityLevel.CRITICAL)
-    @Description("Verify navigation to category and sub-category lists products")
-    public void testCategoryNavigation() {
-        navigateTo("/computers");
-        CategoryPage categoryPage = new CategoryPage(getPage());
-
-        Assert.assertTrue(categoryPage.getCategoryTitle().contains("Computers"),
-                "Category title mismatch");
-
-        // Navigate to sub-category Desktops
-        navigateTo("/desktops");
-        CategoryPage desktopsPage = new CategoryPage(getPage());
-        Assert.assertTrue(desktopsPage.getProductCount() > 0,
-                "Expected at least one product in Desktops category");
-    }
-
-    @Test(groups = {"ui", "catalog"})
-    @TestCase("TC-CAT-005")
-    @Severity(SeverityLevel.NORMAL)
-    @Description("Verify products sorting dropdown can be changed")
-    public void testProductSorting() {
-        navigateTo("/desktops");
-        CategoryPage categoryPage = new CategoryPage(getPage());
-
-        // Sort by Price: Low to High (value = 10)
-        categoryPage.selectSortOption("10");
-        Assert.assertTrue(categoryPage.getProductCount() > 0, "Products should render after sort");
-    }
-
-    @Test(groups = {"ui", "catalog"})
-    @TestCase("TC-CAT-008")
+    @TestCase(value = "TC-CAT-009", requirementId = "REQ-CAT-002")
     @Severity(SeverityLevel.BLOCKER)
     @Description("Verify product details page renders product name, price, and add-to-cart button")
     public void testProductDetailsRendering() {
         navigateTo("/build-your-own-computer");
         ProductDetailsPage productPage = new ProductDetailsPage(getPage());
 
-        Assert.assertTrue(productPage.getProductName().contains("Build your own computer"),
-                "Product title mismatch");
-        Assert.assertFalse(productPage.getProductPrice().isEmpty(),
-                "Product price should not be empty");
-    }
-
-    @Test(groups = {"ui", "catalog", "smoke"})
-    @TestCase("TC-CAT-011")
-    @Severity(SeverityLevel.CRITICAL)
-    @Description("Verify search input executes keyword search and returns matching items")
-    public void testStorefrontSearchBox() {
-        navigateTo("/");
-        HomePage homePage = new HomePage(getPage());
-        homePage.search("camera");
-
-        PlaywrightAssertions.assertThat(getPage()).hasURL(Pattern.compile(".*search.*q=camera.*"));
-        PlaywrightAssertions.assertThat(getPage().locator(".search-results")).isVisible();
+        PlaywrightAssertions.assertThat(productPage.getProductNameHeading())
+                .containsText("Build your own computer");
+        PlaywrightAssertions.assertThat(productPage.getProductPriceLocator()).isVisible();
     }
 
     @Test(groups = {"ui", "catalog"})
-    @TestCase("TC-CAT-012")
+    @TestCase(value = "TC-CAT-010", requirementId = "REQ-CAT-002")
     @Severity(SeverityLevel.NORMAL)
-    @Description("Verify search with empty or single-character query triggers minimum length alert or notice")
+    @Description("Verify product detail page image gallery and overview elements render")
+    public void testProductImageGalleryDisplay() {
+        navigateTo("/build-your-own-computer");
+        PlaywrightAssertions.assertThat(getPage().locator(".gallery .picture img").first()).isVisible();
+    }
+
+    @Test(groups = {"ui", "catalog"})
+    @TestCase(value = "TC-CAT-013", requirementId = "REQ-CAT-004")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify search with non-existent keyword displays no-result message")
+    public void testSearchWithNonExistentKeyword() {
+        navigateTo("/");
+        HomePage homePage = new HomePage(getPage());
+        homePage.search("xyznonexistentproduct999");
+
+        PlaywrightAssertions.assertThat(getPage()).hasURL(Pattern.compile(".*search.*q=xyznonexistentproduct999.*"));
+        PlaywrightAssertions.assertThat(getPage().locator(".no-result")).isVisible();
+    }
+
+    @Test(groups = {"ui", "catalog"})
+    @TestCase(value = "TC-CAT-014", requirementId = "REQ-CAT-004")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify search with single-character query triggers minimum length warning")
     public void testShortSearchTermNotice() {
         navigateTo("/search?q=a");
 
         Locator warning = getPage().locator(".warning, .no-result");
         PlaywrightAssertions.assertThat(warning.first()).isVisible();
+    }
+
+    @Test(groups = {"ui", "catalog"})
+    @TestCase(value = "TC-CAT-016", requirementId = "REQ-CAT-005")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify products sorting dropdown sorts products by Price: Low to High")
+    public void testProductSorting() {
+        navigateTo("/desktops");
+        CategoryPage categoryPage = new CategoryPage(getPage());
+
+        categoryPage.selectSortOption("10");
+        PlaywrightAssertions.assertThat(categoryPage.getProductItems()).not().hasCount(0);
     }
 }

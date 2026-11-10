@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Secret & Credential Configuration Errors",
+    "matchedStatuses": ["broken", "failed"],
+    "messageRegex": ".*(Missing required secret|ADMIN_PASSWORD|DB_PASSWORD|ADMIN_EMAIL|DB_USER).*"
+  },
+  {
+    "name": "Environmental & Infrastructure Blockers",
+    "matchedStatuses": ["broken", "failed", "skipped"],
+    "messageRegex": ".*(Environmental Blocker|unreachable|Connection refused|ECONNREFUSED|ERR_CONNECTION_REFUSED|Refusing to target shared public demo).*"
+  },
+  {
+    "name": "Database Connectivity & SQL Persistence Failures",
+    "matchedStatuses": ["broken", "failed"],
+    "messageRegex": ".*(SQLException|SQLServerException|HikariPool|Database query failed).*"
+  },
+  {
+    "name": "UI Locator Timeout & Synchronization Failures",
+    "matchedStatuses": ["broken", "failed"],
+    "messageRegex": ".*(TimeoutError|Timeout .* exceeded|waiting for locator).*"
+  },
+  {
+    "name": "Product Functional Assertion Defects",
+    "matchedStatuses": ["failed"],
+    "messageRegex": ".*(AssertionError|AssertionFailedError|expected .* but found).*"
+  }
+]

@@ -6,23 +6,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Thread-safe Playwright Factory ensuring strict instance isolation across TestNG threads.
  *
- * <p><strong>Lifecycle contract:</strong></p>
+ * <p><strong>Isolation & Security Guarantees:</strong></p>
  * <ul>
- *   <li>{@link #initBrowser} — called once per test method ({@code @BeforeMethod}).
- *       Creates a fresh {@code BrowserContext} and {@code Page} each time.
- *       Lazily creates {@code Playwright} and {@code Browser} on first use per thread.</li>
- *   <li>{@link #closeContext} — called once per test method ({@code @AfterMethod}).
- *       Tears down only the context-scoped resources (Page, BrowserContext).</li>
- *   <li>{@link #quit} — called once per test class ({@code @AfterClass}).
- *       Tears down thread-scoped resources (Browser, Playwright) and removes ThreadLocals.</li>
+ *   <li>Even when connecting via CDP ({@code cdpUrl}), a brand-new isolated {@link BrowserContext}
+ *       is created per test method—never reusing {@code browser.contexts().get(0)}.</li>
+ *   <li>HTTPS certificate errors are ignored ONLY when explicitly enabled via
+ *       {@code ignoreHttpsErrors=true} / {@code IGNORE_HTTPS_ERRORS=true}.</li>
+ *   <li>Browser launch arguments are scoped to the specific browser engine family
+ *       (Chromium/Chrome/Edge vs. Firefox vs. WebKit).</li>
  * </ul>
- *
- * <p>Each TestNG worker thread owns its own Playwright → Browser → BrowserContext → Page chain.
- * Resources are never shared across threads.</p>
  */
 public class PlaywrightFactory {
     private static final Logger log = LoggerFactory.getLogger(PlaywrightFactory.class);
@@ -31,97 +29,189 @@ public class PlaywrightFactory {
     private static final ThreadLocal<Browser> tlBrowser = new ThreadLocal<>();
     private static final ThreadLocal<BrowserContext> tlContext = new ThreadLocal<>();
     private static final ThreadLocal<Page> tlPage = new ThreadLocal<>();
+    private static final ThreadLocal<Boolean> tlCdpSession = ThreadLocal.withInitial(() -> false);
+    private static final ThreadLocal<Boolean> tlTraceStopped = ThreadLocal.withInitial(() -> false);
+
+    private PlaywrightFactory() {
+        // Utility class
+    }
 
     /**
-     * Initialises a fresh BrowserContext and Page for the calling thread.
-     * Reuses the thread's Playwright and Browser instances if they are still alive;
-     * otherwise creates new ones.
-     *
-     * @param browserName one of {@code chromium}, {@code firefox}, {@code webkit}
-     * @param headless    {@code true} to run headless
-     * @return the newly created {@link Page}
+     * Initialises a fresh, isolated {@link BrowserContext} and {@link Page} for the calling thread.
      */
     public static Page initBrowser(String browserName, boolean headless) {
-        log.info("Initializing Playwright session: browser={}, headless={}, thread={}",
-                browserName, headless, Thread.currentThread().getName());
+        boolean ignoreHttpsErrors = ConfigReader.isIgnoreHttpsErrors();
+        log.info("Initializing Playwright session: browser={}, headless={}, ignoreHttpsErrors={}, thread={}",
+                browserName, headless, ignoreHttpsErrors, Thread.currentThread().getName());
 
-        // --- 1. Ensure Playwright instance for this thread ---
         Playwright playwright = tlPlaywright.get();
         if (playwright == null) {
             playwright = Playwright.create();
             tlPlaywright.set(playwright);
         }
 
-        // --- 2. CDP remote connection (optional) ---
-        String cdpUrl = ConfigReader.get("cdpUrl", "");
+        tlTraceStopped.set(false);
+
+        // --- Optional CDP remote connection (always creates an isolated context) ---
+        String cdpUrl = ConfigReader.getCdpUrl();
         if (cdpUrl != null && !cdpUrl.trim().isEmpty() && !"none".equalsIgnoreCase(cdpUrl)) {
-            try {
-                log.info("Connecting to existing browser session via CDP: {}", cdpUrl);
-                Browser browser = playwright.chromium().connectOverCDP(cdpUrl);
+            log.info("Connecting to browser via CDP endpoint: {}", cdpUrl);
+            Browser browser = tlBrowser.get();
+            if (browser == null || !browser.isConnected()) {
+                browser = playwright.chromium().connectOverCDP(cdpUrl);
                 tlBrowser.set(browser);
-
-                BrowserContext context = browser.contexts().isEmpty()
-                        ? browser.newContext()
-                        : browser.contexts().get(0);
-                tlContext.set(context);
-
-                startTracingIfEnabled(context);
-
-                Page page = context.newPage();
-                applyPageDefaults(page);
-                tlPage.set(page);
-                return page;
-            } catch (Exception e) {
-                log.warn("CDP connection to {} failed ({}), falling back to direct browser launch",
-                        cdpUrl, e.getMessage());
+                tlCdpSession.set(true);
             }
+
+            // NEVER reuse browser.contexts().get(0); always create a fresh isolated context
+            BrowserContext context = browser.newContext(buildContextOptions(ignoreHttpsErrors));
+            tlContext.set(context);
+            startTracingIfEnabled(context);
+
+            Page page = context.newPage();
+            page.setDefaultTimeout(ConfigReader.getDefaultTimeout());
+            tlPage.set(page);
+            return page;
         }
 
-        // --- 3. Ensure Browser instance for this thread ---
+        // --- Standard per-thread Browser instance ---
         Browser browser = tlBrowser.get();
         if (browser == null || !browser.isConnected()) {
-            String channel = ConfigReader.get("browserChannel", "none");
-
-            BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions()
-                    .setHeadless(headless)
-                    .setSlowMo(ConfigReader.getSlowMo())
-                    .setArgs(java.util.Arrays.asList(
-                            "--no-sandbox",
-                            "--disable-dev-shm-usage"
-                    ));
-
-            if (channel != null && !channel.trim().isEmpty() && !channel.equalsIgnoreCase("none")) {
-                launchOptions.setChannel(channel);
-            }
-
-            browser = switch (browserName.toLowerCase()) {
-                case "firefox" -> playwright.firefox().launch(launchOptions);
-                case "webkit" -> playwright.webkit().launch(launchOptions);
-                default -> playwright.chromium().launch(launchOptions);
-            };
+            browser = createBrowserInstance(playwright, browserName, headless);
             tlBrowser.set(browser);
+            tlCdpSession.set(false);
         }
 
-        // --- 4. Always create a fresh BrowserContext + Page per test ---
-        Browser.NewContextOptions contextOptions = new Browser.NewContextOptions()
-                .setViewportSize(1366, 768)
-                .setIgnoreHTTPSErrors(true);
-
-        BrowserContext context = browser.newContext(contextOptions);
+        // --- Fresh isolated BrowserContext per test method ---
+        BrowserContext context = browser.newContext(buildContextOptions(ignoreHttpsErrors));
         tlContext.set(context);
-
         startTracingIfEnabled(context);
 
         Page page = context.newPage();
-        applyPageDefaults(page);
+        page.setDefaultTimeout(ConfigReader.getDefaultTimeout());
         tlPage.set(page);
 
         return page;
     }
 
-    // ------------------------------------------------------------------ //
-    //  Accessors                                                          //
-    // ------------------------------------------------------------------ //
+    private static Browser.NewContextOptions buildContextOptions(boolean ignoreHttpsErrors) {
+        Browser.NewContextOptions options = new Browser.NewContextOptions()
+                .setViewportSize(1920, 1080)
+                .setIgnoreHTTPSErrors(ignoreHttpsErrors);
+
+        if (ConfigReader.isRecordVideo()) {
+            options.setRecordVideoDir(Paths.get("evidence/videos/"));
+        }
+        return options;
+    }
+
+    private static Browser createBrowserInstance(Playwright playwright, String browserName, boolean headless) {
+        String normalizedBrowser = browserName == null ? "chromium" : browserName.toLowerCase().trim();
+        String channel = ConfigReader.getBrowserChannel();
+        boolean useChannel = channel != null && !channel.isBlank() && !"none".equalsIgnoreCase(channel);
+        double slowMo = ConfigReader.getSlowMo();
+        List<String> customArgs = ConfigReader.getBrowserArgs();
+
+        switch (normalizedBrowser) {
+            case "firefox": {
+                List<String> ffArgs = new ArrayList<>();
+                if (headless) {
+                    ffArgs.add("-width=1920");
+                    ffArgs.add("-height=1080");
+                }
+                ffArgs.addAll(customArgs);
+                log.info("Launching Firefox (headless={}, args={})", headless, ffArgs);
+                return playwright.firefox().launch(new BrowserType.LaunchOptions()
+                        .setHeadless(headless)
+                        .setSlowMo(slowMo)
+                        .setArgs(ffArgs));
+            }
+
+            case "webkit":
+            case "safari": {
+                List<String> wkArgs = new ArrayList<>(customArgs);
+                log.info("Launching WebKit (headless={}, args={})", headless, wkArgs);
+                return playwright.webkit().launch(new BrowserType.LaunchOptions()
+                        .setHeadless(headless)
+                        .setSlowMo(slowMo)
+                        .setArgs(wkArgs));
+            }
+
+            case "chrome": {
+                List<String> chromeArgs = buildChromiumArgs(customArgs);
+                log.info("Launching Google Chrome (channel=chrome, headless={}, args={})", headless, chromeArgs);
+                return playwright.chromium().launch(new BrowserType.LaunchOptions()
+                        .setChannel("chrome")
+                        .setHeadless(headless)
+                        .setSlowMo(slowMo)
+                        .setArgs(chromeArgs));
+            }
+
+            case "msedge":
+            case "edge": {
+                List<String> edgeArgs = buildChromiumArgs(customArgs);
+                log.info("Launching Microsoft Edge (channel=msedge, headless={}, args={})", headless, edgeArgs);
+                return playwright.chromium().launch(new BrowserType.LaunchOptions()
+                        .setChannel("msedge")
+                        .setHeadless(headless)
+                        .setSlowMo(slowMo)
+                        .setArgs(edgeArgs));
+            }
+
+            case "chromium":
+            default: {
+                List<String> chromiumArgs = buildChromiumArgs(customArgs);
+                log.info("Launching Chromium (channel={}, headless={}, args={})",
+                        useChannel ? channel : "default", headless, chromiumArgs);
+                BrowserType.LaunchOptions options = new BrowserType.LaunchOptions()
+                        .setHeadless(headless)
+                        .setSlowMo(slowMo)
+                        .setArgs(chromiumArgs);
+                if (useChannel) {
+                    options.setChannel(channel);
+                }
+                return playwright.chromium().launch(options);
+            }
+        }
+    }
+
+    private static List<String> buildChromiumArgs(List<String> customArgs) {
+        List<String> args = new ArrayList<>();
+        args.add("--disable-dev-shm-usage");
+        args.add("--no-sandbox");
+        args.add("--disable-gpu");
+        args.add("--disable-extensions");
+        args.add("--window-size=1920,1080");
+        if (customArgs != null) {
+            args.addAll(customArgs);
+        }
+        return args;
+    }
+
+    private static void startTracingIfEnabled(BrowserContext context) {
+        if (ConfigReader.isRecordTrace()) {
+            context.tracing().start(new Tracing.StartOptions()
+                    .setScreenshots(true)
+                    .setSnapshots(true)
+                    .setSources(true));
+        }
+    }
+
+    /**
+     * Stops active Playwright tracing and exports the zip archive to {@code tracePath}.
+     */
+    public static void stopTracing(String tracePath) {
+        BrowserContext context = tlContext.get();
+        if (context != null && ConfigReader.isRecordTrace() && !Boolean.TRUE.equals(tlTraceStopped.get())) {
+            try {
+                context.tracing().stop(new Tracing.StopOptions().setPath(Paths.get(tracePath)));
+                tlTraceStopped.set(true);
+                log.info("Saved Playwright execution trace to {}", tracePath);
+            } catch (Exception e) {
+                log.warn("Could not save execution trace to {}: {}", tracePath, e.getMessage());
+            }
+        }
+    }
 
     public static Playwright getPlaywright() {
         return tlPlaywright.get();
@@ -139,108 +229,83 @@ public class PlaywrightFactory {
         return tlPage.get();
     }
 
-    // ------------------------------------------------------------------ //
-    //  Tracing                                                            //
-    // ------------------------------------------------------------------ //
-
-    public static void stopTracing(String traceFilePath) {
-        BrowserContext context = tlContext.get();
-        if (context != null && ConfigReader.isRecordTrace()) {
-            try {
-                context.tracing().stop(new Tracing.StopOptions()
-                        .setPath(Paths.get(traceFilePath)));
-                log.info("Saved Playwright execution trace to {}", traceFilePath);
-            } catch (Exception e) {
-                log.warn("Could not save trace: {}", e.getMessage());
-            }
-        }
-    }
-
-    // ------------------------------------------------------------------ //
-    //  Teardown — context-scoped (per test method)                        //
-    // ------------------------------------------------------------------ //
-
     /**
-     * Closes the current Page and BrowserContext owned by the calling thread.
-     * Idempotent — safe to call even if resources were already closed or never created.
+     * Closes current test's Page and isolated BrowserContext.
      */
     public static void closeContext() {
-        log.info("Closing Page and BrowserContext on thread: {}", Thread.currentThread().getName());
-        try {
-            Page page = tlPage.get();
-            if (page != null && !page.isClosed()) {
-                try {
+        closeContext("test");
+    }
+
+    public static void closeContext(String testName) {
+        Page page = tlPage.get();
+        if (page != null) {
+            try {
+                if (!page.isClosed()) {
                     page.close();
-                } catch (Exception ignored) { /* already closed or stale */ }
+                }
+            } catch (Exception e) {
+                log.warn("Error closing Page: {}", e.getMessage());
+            } finally {
+                tlPage.remove();
             }
-            BrowserContext context = tlContext.get();
-            if (context != null) {
+        }
+
+        BrowserContext context = tlContext.get();
+        if (context != null) {
+            try {
+                if (ConfigReader.isRecordTrace() && !Boolean.TRUE.equals(tlTraceStopped.get())) {
+                    String tracePath = "evidence/traces/" + sanitizeFileName(testName) + "-trace.zip";
+                    context.tracing().stop(new Tracing.StopOptions().setPath(Paths.get(tracePath)));
+                    tlTraceStopped.set(true);
+                }
+            } catch (Exception e) {
+                log.debug("Trace already stopped or unavailable for {}: {}", testName, e.getMessage());
+            } finally {
                 try {
                     context.close();
-                } catch (Exception ignored) { /* already closed or stale */ }
+                } catch (Exception e) {
+                    log.warn("Error closing BrowserContext: {}", e.getMessage());
+                }
+                tlContext.remove();
+                tlTraceStopped.remove();
             }
-        } finally {
-            tlPage.remove();
-            tlContext.remove();
         }
     }
-
-    // ------------------------------------------------------------------ //
-    //  Teardown — thread-scoped (per test class)                          //
-    // ------------------------------------------------------------------ //
 
     /**
-     * Tears down all Playwright resources owned by the calling thread:
-     * Page → BrowserContext → Browser → Playwright, then removes all ThreadLocals.
-     * Idempotent.
+     * Tears down Browser and Playwright for the current thread.
      */
     public static void quit() {
-        log.info("Tearing down Playwright session on thread: {}", Thread.currentThread().getName());
-        try {
-            closeContext(); // Page + BrowserContext first
+        closeContext();
 
-            String cdpUrl = ConfigReader.get("cdpUrl", "");
-            boolean isCdp = cdpUrl != null && !cdpUrl.trim().isEmpty() && !"none".equalsIgnoreCase(cdpUrl);
-            if (!isCdp) {
-                Browser browser = tlBrowser.get();
-                if (browser != null && browser.isConnected()) {
-                    try {
-                        browser.close();
-                    } catch (Exception ignored) { /* already closed */ }
-                }
-            }
-            Playwright playwright = tlPlaywright.get();
-            if (playwright != null) {
-                try {
-                    playwright.close();
-                } catch (Exception ignored) { /* already closed */ }
-            }
-        } finally {
-            tlBrowser.remove();
-            tlPlaywright.remove();
-        }
-    }
-
-    // ------------------------------------------------------------------ //
-    //  Internal helpers                                                    //
-    // ------------------------------------------------------------------ //
-
-    private static void applyPageDefaults(Page page) {
-        double timeout = ConfigReader.getDefaultTimeout();
-        page.setDefaultTimeout(timeout);
-        page.setDefaultNavigationTimeout(Math.max(timeout, 45_000.0));
-    }
-
-    private static void startTracingIfEnabled(BrowserContext context) {
-        if (ConfigReader.isRecordTrace()) {
+        Browser browser = tlBrowser.get();
+        if (browser != null) {
             try {
-                context.tracing().start(new Tracing.StartOptions()
-                        .setScreenshots(true)
-                        .setSnapshots(true)
-                        .setSources(true));
+                if (!Boolean.TRUE.equals(tlCdpSession.get())) {
+                    browser.close();
+                }
             } catch (Exception e) {
-                log.warn("Could not start tracing: {}", e.getMessage());
+                log.warn("Error closing Browser: {}", e.getMessage());
+            } finally {
+                tlBrowser.remove();
+                tlCdpSession.remove();
             }
         }
+
+        Playwright playwright = tlPlaywright.get();
+        if (playwright != null) {
+            try {
+                playwright.close();
+            } catch (Exception e) {
+                log.warn("Error closing Playwright: {}", e.getMessage());
+            } finally {
+                tlPlaywright.remove();
+            }
+        }
+        log.info("Playwright session shut down for thread {}", Thread.currentThread().getName());
+    }
+
+    private static String sanitizeFileName(String name) {
+        return name == null ? "test" : name.replaceAll("[^a-zA-Z0-9._-]", "_");
     }
 }

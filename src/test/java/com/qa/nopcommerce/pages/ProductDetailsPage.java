@@ -4,7 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 
 /**
- * Page Object representing nopCommerce Product Details page.
+ * Page Object representing nopCommerce Product Details and Product Reviews pages.
  */
 public class ProductDetailsPage extends BasePage {
 
@@ -16,6 +16,17 @@ public class ProductDetailsPage extends BasePage {
     private final Locator notificationBanner;
     private final Locator notificationClose;
     private final Locator cartLink;
+    private final Locator wishlistLink;
+
+    // Product Review locators
+    private final Locator addReviewLink;
+    private final Locator reviewTitleInput;
+    private final Locator reviewTextInput;
+    private final Locator rating5Radio;
+    private final Locator submitReviewButton;
+    private final Locator reviewResultNotification;
+    private final Locator reviewListItems;
+    private final Locator reviewValidationError;
 
     public ProductDetailsPage(Page page) {
         super(page);
@@ -27,6 +38,16 @@ public class ProductDetailsPage extends BasePage {
         this.notificationBanner = page.locator("#bar-notification .content");
         this.notificationClose = page.locator("#bar-notification .close");
         this.cartLink = page.locator("#topcartlink a");
+        this.wishlistLink = page.locator("a.ico-wishlist");
+
+        this.addReviewLink = page.locator("a[href*='productreviews'], a[href='#productreviews'], .product-review-links a").first();
+        this.reviewTitleInput = page.locator("#AddProductReview_Title");
+        this.reviewTextInput = page.locator("#AddProductReview_ReviewText");
+        this.rating5Radio = page.locator("#addproductrating_5");
+        this.submitReviewButton = page.locator("button[name='add-review'], button.write-product-review-button");
+        this.reviewResultNotification = page.locator("div.result, #bar-notification .content");
+        this.reviewListItems = page.locator(".product-review-item");
+        this.reviewValidationError = page.locator(".review-already-added, .message-error, .validation-summary-errors");
     }
 
     public String getProductName() {
@@ -37,27 +58,36 @@ public class ProductDetailsPage extends BasePage {
         return getText(productPrice);
     }
 
+    public Locator getProductNameHeading() {
+        return productName;
+    }
+
+    public Locator getProductPriceLocator() {
+        return productPrice;
+    }
+
     public void setQuantity(int qty) {
         fill(quantityInput, String.valueOf(qty));
     }
 
     public void clickAddToCart() {
         click(addToCartButton);
-        try {
-            notificationBanner.waitFor(new Locator.WaitForOptions().setTimeout(5000));
-        } catch (Exception ignored) {}
+    }
+
+    public void addToCart() {
+        clickAddToCart();
     }
 
     public void clickAddToWishlist() {
         click(addToWishlistButton);
     }
 
-    public String getNotificationText() {
-        return getText(notificationBanner);
+    public Locator getNotificationBanner() {
+        return notificationBanner;
     }
 
-    public boolean isNotificationDisplayed() {
-        return isVisible(notificationBanner);
+    public String getNotificationText() {
+        return getText(notificationBanner);
     }
 
     public void closeNotification() {
@@ -69,5 +99,41 @@ public class ProductDetailsPage extends BasePage {
     public CartPage goToCart() {
         click(cartLink);
         return new CartPage(page);
+    }
+
+    public WishlistPage goToWishlist() {
+        click(wishlistLink);
+        return new WishlistPage(page);
+    }
+
+    public void openProductReviewsSection() {
+        if (isVisible(addReviewLink)) {
+            click(addReviewLink);
+        }
+    }
+
+    public void submitProductReview(String title, String reviewBody) {
+        fill(reviewTitleInput, title);
+        fill(reviewTextInput, reviewBody);
+        if (isVisible(rating5Radio)) {
+            rating5Radio.check();
+        }
+        click(submitReviewButton);
+    }
+
+    public Locator getReviewResultNotification() {
+        return reviewResultNotification;
+    }
+
+    public Locator getReviewListItems() {
+        return reviewListItems;
+    }
+
+    public Locator getReviewValidationError() {
+        return reviewValidationError;
+    }
+
+    public Locator getSubmitReviewButton() {
+        return submitReviewButton;
     }
 }

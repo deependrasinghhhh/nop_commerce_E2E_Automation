@@ -19,20 +19,18 @@ import java.util.regex.Pattern;
 public class SmokeTest extends BaseTest {
 
     @Test(groups = {"smoke"})
-    @TestCase("TC-CAT-001")
+    @TestCase(value = "TC-CAT-001", requirementId = "REQ-CAT-001")
     @Severity(SeverityLevel.BLOCKER)
     @Description("Verify storefront homepage title, logo, top navigation bar, and search box render successfully")
     public void testHomePageTitleAndHeaderRendering() {
         navigateTo("/");
 
-        // Auto-waiting assertion on page title
         PlaywrightAssertions.assertThat(getPage()).hasTitle(Pattern.compile(".*(nopCommerce|Your store).*"));
 
-        // Verify header elements
         Locator logo = getPage().locator(".header-logo");
-        PlaywrightAssertions.assertThat(logo).isAttached();
+        PlaywrightAssertions.assertThat(logo).isVisible();
 
-        Locator topMenu = getPage().locator(".header-menu, .top-menu");
+        Locator topMenu = getPage().locator(".header-menu, .top-menu").first();
         PlaywrightAssertions.assertThat(topMenu).isVisible();
 
         Locator searchInput = getPage().locator("#small-searchterms");
@@ -43,7 +41,7 @@ public class SmokeTest extends BaseTest {
     }
 
     @Test(groups = {"smoke"})
-    @TestCase("TC-CAT-011")
+    @TestCase(value = "TC-CAT-011", requirementId = "REQ-CAT-003")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify top search input executes keyword search and renders product grid results")
     public void testStorefrontSearchBoxInput() {
@@ -55,7 +53,6 @@ public class SmokeTest extends BaseTest {
         Locator searchButton = getPage().locator("button.search-box-button");
         searchButton.click();
 
-        // Verify navigation to search results
         PlaywrightAssertions.assertThat(getPage()).hasURL(Pattern.compile(".*search.*q=computer.*"));
 
         Locator searchResults = getPage().locator(".search-results");
@@ -63,13 +60,13 @@ public class SmokeTest extends BaseTest {
     }
 
     @Test(groups = {"smoke"})
-    @TestCase("TC-ADM-001")
+    @TestCase(value = "TC-ADM-002", requirementId = "REQ-ADM-001")
     @Severity(SeverityLevel.BLOCKER)
-    @Description("Verify nopCommerce administration login page renders email input, password input, and login button")
+    @Description("Verify nopCommerce administration portal redirects unauthenticated user to login form")
     public void testAdminLoginPageRendering() {
         navigateTo(ConfigReader.getAdminUrl());
 
-        PlaywrightAssertions.assertThat(getPage()).hasTitle(Pattern.compile(".*Your store. Login.*"));
+        PlaywrightAssertions.assertThat(getPage()).hasTitle(Pattern.compile(".*(Your store|nopCommerce).*Login.*"));
 
         Locator emailInput = getPage().locator("#Email");
         PlaywrightAssertions.assertThat(emailInput).isVisible();
@@ -77,7 +74,7 @@ public class SmokeTest extends BaseTest {
         Locator passwordInput = getPage().locator("#Password");
         PlaywrightAssertions.assertThat(passwordInput).isVisible();
 
-        Locator loginButton = getPage().locator("button.login-button");
+        Locator loginButton = getPage().locator("button.login-button, button[type='submit']").first();
         PlaywrightAssertions.assertThat(loginButton).isVisible();
     }
 }

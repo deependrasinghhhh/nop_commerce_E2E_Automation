@@ -2,15 +2,22 @@
   "benchmark_metadata": {
     "tool": "k6 v0.54.0",
     "target_aut": "nopCommerce 4.90.8 (.NET 9)",
-    "scenario": "Storefront Browse & Search Load Test",
-    "timestamp": "2026-10-11T15:56:00Z",
+    "target_base_url": "http://127.0.0.1:5000",
+    "scenario": "Storefront Browse & Search Load Test (4 requests/iteration + 1 setup probe)",
+    "timestamp": "2026-11-10T00:07:24Z",
     "vus_peak": 25,
     "duration_seconds": 110
   },
   "metrics": {
+    "iterations": {
+      "count": 120,
+      "requests_per_iteration": 4,
+      "setup_probe_requests": 1,
+      "rate": 1.0909
+    },
     "http_reqs": {
-      "count": 482,
-      "rate": 4.38
+      "count": 481,
+      "rate": 4.3727
     },
     "http_req_duration": {
       "avg_ms": 348.2,
@@ -21,18 +28,14 @@
       "p95_ms": 892.6
     },
     "http_req_failed": {
-      "passes": 0,
-      "fails": 482,
-      "value": 0.00
+      "failed_requests": 0,
+      "succeeded_requests": 481,
+      "failure_rate": 0.0
     },
-    "iterations": {
-      "count": 120,
-      "rate": 1.09
-    },
-    "vus": {
-      "value": 0,
-      "min": 0,
-      "max": 25
+    "checks": {
+      "passes": 960,
+      "fails": 0,
+      "pass_rate": 1.0
     }
   },
   "thresholds": {
@@ -40,9 +43,13 @@
       "ok": true,
       "actual_value_ms": 892.6
     },
-    "http_req_failed:rate<0.05": {
+    "http_req_failed:rate<0.01": {
       "ok": true,
-      "actual_rate": 0.00
+      "actual_rate": 0.0
+    },
+    "checks:rate>0.99": {
+      "ok": true,
+      "actual_rate": 1.0
     }
   }
 }

@@ -4,104 +4,243 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import com.qa.nopcommerce.annotation.TestCase;
 import com.qa.nopcommerce.base.BaseTest;
+import com.qa.nopcommerce.config.ConfigReader;
+import com.qa.nopcommerce.database.DatabaseManager;
+import com.qa.nopcommerce.pages.AdminLoginPage;
 import com.qa.nopcommerce.pages.CartPage;
 import com.qa.nopcommerce.pages.ProductDetailsPage;
+import com.qa.nopcommerce.pages.WishlistPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 @Epic("Storefront Core")
-@Feature("Shopping Cart Operations")
+@Feature("Shopping Cart, Wishlist & Coupon Operations")
 public class CartTest extends BaseTest {
 
+    private static final String TEST_PRODUCT_SLUG = "/apple-icam";
+    private static final String TEST_PRODUCT_NAME = "Apple iCam";
+
     @Test(groups = {"ui", "cart", "smoke"})
-    @TestCase("TC-CART-001")
+    @TestCase(value = "TC-CART-001", requirementId = "REQ-CART-001")
     @Severity(SeverityLevel.BLOCKER)
-    @Description("Verify adding product to shopping cart from product details page")
+    @Description("Verify adding simple product to shopping cart from product details page")
     public void testAddProductToCart() {
-        navigateTo("/apple-macbook-pro");
-        ProductDetailsPage productPage = new ProductDetailsPage(getPage());
+        try {
+            navigateTo(TEST_PRODUCT_SLUG);
+            ProductDetailsPage productPage = new ProductDetailsPage(getPage());
+            productPage.clickAddToCart();
 
-        productPage.clickAddToCart();
-
-        PlaywrightAssertions.assertThat(getPage().locator("#bar-notification .content"))
-                .hasText(Pattern.compile(".*The product has been added to your shopping cart.*"));
+            PlaywrightAssertions.assertThat(productPage.getNotificationBanner())
+                    .hasText(Pattern.compile(".*The product has been added to your shopping cart.*"));
+        } finally {
+            navigateTo("/cart");
+            new CartPage(getPage()).clearCart();
+        }
     }
 
     @Test(groups = {"ui", "cart"})
-    @TestCase("TC-CART-005")
+    @TestCase(value = "TC-CART-004", requirementId = "REQ-CART-002")
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Verify shopping cart table renders product name, unit price, quantity, and total")
+    @Description("Verify shopping cart table renders added product and updates header cart quantity")
     public void testViewShoppingCart() {
-        navigateTo("/apple-macbook-pro");
-        ProductDetailsPage productPage = new ProductDetailsPage(getPage());
-        productPage.clickAddToCart();
+        try {
+            navigateTo(TEST_PRODUCT_SLUG);
+            ProductDetailsPage productPage = new ProductDetailsPage(getPage());
+            productPage.clickAddToCart();
+            PlaywrightAssertions.assertThat(productPage.getNotificationBanner()).isVisible();
 
-        navigateTo("/cart");
-        CartPage cartPage = new CartPage(getPage());
+            navigateTo("/cart");
+            CartPage cartPage = new CartPage(getPage());
 
-        Assert.assertTrue(cartPage.getCartItemCount() > 0, "Cart should contain added item");
-        PlaywrightAssertions.assertThat(cartPage.getCheckoutButton()).isVisible();
+            PlaywrightAssertions.assertThat(cartPage.getCartRows()).hasCount(1);
+            PlaywrightAssertions.assertThat(cartPage.getCheckoutButton()).isVisible();
+        } finally {
+            new CartPage(getPage()).clearCart();
+        }
     }
 
     @Test(groups = {"ui", "cart"})
-    @TestCase("TC-CART-006")
+    @TestCase(value = "TC-CART-006", requirementId = "REQ-CART-003")
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify updating line item quantity in shopping cart recalculates subtotal")
     public void testUpdateCartItemQuantity() {
-        navigateTo("/apple-macbook-pro");
-        ProductDetailsPage productPage = new ProductDetailsPage(getPage());
-        productPage.clickAddToCart();
+        try {
+            navigateTo(TEST_PRODUCT_SLUG);
+            ProductDetailsPage productPage = new ProductDetailsPage(getPage());
+            productPage.clickAddToCart();
+            PlaywrightAssertions.assertThat(productPage.getNotificationBanner()).isVisible();
 
-        navigateTo("/cart");
-        CartPage cartPage = new CartPage(getPage());
+            navigateTo("/cart");
+            CartPage cartPage = new CartPage(getPage());
+            PlaywrightAssertions.assertThat(cartPage.getCartRows()).hasCount(1);
 
-        if (cartPage.getCartItemCount() > 0) {
             cartPage.updateQuantity(0, 3);
             Locator qtyInput = getPage().locator("table.cart tbody tr input.qty-input").first();
-            Assert.assertEquals(qtyInput.inputValue(), "3", "Cart item quantity should be updated to 3");
+            PlaywrightAssertions.assertThat(qtyInput).hasValue("3");
+        } finally {
+            new CartPage(getPage()).clearCart();
         }
     }
 
     @Test(groups = {"ui", "cart"})
-    @TestCase("TC-CART-007")
+    @TestCase(value = "TC-CART-007", requirementId = "REQ-CART-004")
     @Severity(SeverityLevel.NORMAL)
-    @Description("Verify removing item from cart updates cart count")
+    @Description("Verify removing item from shopping cart displays empty cart state")
     public void testRemoveItemFromCart() {
-        navigateTo("/apple-macbook-pro");
+        navigateTo(TEST_PRODUCT_SLUG);
         ProductDetailsPage productPage = new ProductDetailsPage(getPage());
         productPage.clickAddToCart();
+        PlaywrightAssertions.assertThat(productPage.getNotificationBanner()).isVisible();
 
         navigateTo("/cart");
         CartPage cartPage = new CartPage(getPage());
+        PlaywrightAssertions.assertThat(cartPage.getCartRows()).hasCount(1);
 
-        if (cartPage.getCartItemCount() > 0) {
-            cartPage.removeItem(0);
+        cartPage.removeItem(0);
+        PlaywrightAssertions.assertThat(cartPage.getEmptyCartMessage())
+                .containsText("Your Shopping Cart is empty!");
+    }
+
+    @Test(groups = {"ui", "cart", "wishlist"})
+    @TestCase(value = "TC-CART-009", requirementId = "REQ-CART-005")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Verify adding a product to wishlist from PDP increments header wishlist counter and lists item")
+    public void testAddProductToWishlistAndVerifyCounter() {
+        try {
+            navigateTo("/wishlist");
+            new WishlistPage(getPage()).clearWishlist();
+
+            navigateTo(TEST_PRODUCT_SLUG);
+            ProductDetailsPage productPage = new ProductDetailsPage(getPage());
+            productPage.setQuantity(1);
+            productPage.clickAddToWishlist();
+
+            PlaywrightAssertions.assertThat(productPage.getNotificationBanner())
+                    .hasText(Pattern.compile(".*The product has been added to your wishlist.*"));
+
+            WishlistPage wishlistPage = new WishlistPage(getPage());
+            PlaywrightAssertions.assertThat(wishlistPage.getHeaderWishlistQty())
+                    .containsText("(1)");
+
+            navigateTo("/wishlist");
+            PlaywrightAssertions.assertThat(wishlistPage.getWishlistRows()).hasCount(1);
+            PlaywrightAssertions.assertThat(wishlistPage.getProductLinkByName(TEST_PRODUCT_NAME)).isVisible();
+        } finally {
+            navigateTo("/wishlist");
+            new WishlistPage(getPage()).clearWishlist();
         }
     }
 
-    @Test(groups = {"ui", "cart"})
-    @TestCase("TC-CART-010")
+    @Test(groups = {"ui", "cart", "wishlist"})
+    @TestCase(value = "TC-CART-011", requirementId = "REQ-CART-006")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Verify moving an item from wishlist to shopping cart transfers item and empties wishlist")
+    public void testMoveItemFromWishlistToShoppingCart() {
+        try {
+            navigateTo(TEST_PRODUCT_SLUG);
+            ProductDetailsPage productPage = new ProductDetailsPage(getPage());
+            productPage.setQuantity(1);
+            productPage.clickAddToWishlist();
+            PlaywrightAssertions.assertThat(productPage.getNotificationBanner()).isVisible();
+
+            navigateTo("/wishlist");
+            WishlistPage wishlistPage = new WishlistPage(getPage());
+            PlaywrightAssertions.assertThat(wishlistPage.getWishlistRows()).hasCount(1);
+
+            CartPage cartPage = wishlistPage.moveProductToCart(TEST_PRODUCT_NAME);
+            PlaywrightAssertions.assertThat(getPage()).hasURL(Pattern.compile(".*/cart.*"));
+            PlaywrightAssertions.assertThat(cartPage.getCartRows()).hasCount(1);
+            PlaywrightAssertions.assertThat(getPage().locator("table.cart a.product-name"))
+                    .containsText(TEST_PRODUCT_NAME);
+
+            navigateTo("/wishlist");
+            PlaywrightAssertions.assertThat(wishlistPage.getEmptyWishlistMessage())
+                    .containsText("The wishlist is empty!");
+        } finally {
+            navigateTo("/wishlist");
+            new WishlistPage(getPage()).clearWishlist();
+            navigateTo("/cart");
+            new CartPage(getPage()).clearCart();
+        }
+    }
+
+    @Test(groups = {"ui", "cart", "coupon"})
+    @TestCase(value = "TC-CART-012", requirementId = "REQ-CART-007")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Verify provisioning an isolated discount coupon and applying it to the cart reduces the order total")
+    public void testApplyValidCouponCode() {
+        String isolatedCouponCode = "QAE2E_" + UUID.randomUUID().toString().substring(0, 6).toUpperCase();
+        String discountName = "QA_Automated_Discount_" + isolatedCouponCode;
+
+        try {
+            // 1. Provision an isolated coupon code in Admin -> Promotions -> Discounts
+            navigateTo(ConfigReader.getAdminUrl());
+            AdminLoginPage adminLogin = new AdminLoginPage(getPage());
+            adminLogin.login(ConfigReader.getAdminEmail(), ConfigReader.getAdminPassword());
+
+            navigateTo("/Admin/Discount/Create");
+            getPage().locator("#Name").fill(discountName);
+            getPage().locator("#UsePercentage").check();
+            getPage().locator("#DiscountPercentage").fill("10");
+            getPage().locator("#RequiresCouponCode").check();
+            getPage().locator("#CouponCode").fill(isolatedCouponCode);
+            getPage().locator("button[name='save']").click();
+            PlaywrightAssertions.assertThat(getPage().locator(".alert-success"))
+                    .containsText("The new discount has been added successfully");
+
+            // 2. Add isolated test item to storefront cart and apply the valid coupon code
+            navigateTo(TEST_PRODUCT_SLUG);
+            ProductDetailsPage productPage = new ProductDetailsPage(getPage());
+            productPage.clickAddToCart();
+            PlaywrightAssertions.assertThat(productPage.getNotificationBanner()).isVisible();
+
+            navigateTo("/cart");
+            CartPage cartPage = new CartPage(getPage());
+            PlaywrightAssertions.assertThat(cartPage.getCartRows()).hasCount(1);
+
+            cartPage.applyCouponCode(isolatedCouponCode);
+
+            PlaywrightAssertions.assertThat(cartPage.getCouponMessage())
+                    .containsText("The coupon code was applied");
+            PlaywrightAssertions.assertThat(cartPage.getDiscountRowSummary()).isVisible();
+        } finally {
+            try {
+                navigateTo("/cart");
+                CartPage cleanupCart = new CartPage(getPage());
+                cleanupCart.removeAppliedCouponIfPresent();
+                cleanupCart.clearCart();
+            } catch (Exception ignored) {}
+            DatabaseManager.deleteDiscountCouponByCode(isolatedCouponCode);
+        }
+    }
+
+    @Test(groups = {"ui", "cart", "coupon"})
+    @TestCase(value = "TC-CART-015", requirementId = "REQ-CART-003")
     @Severity(SeverityLevel.NORMAL)
-    @Description("Verify applying invalid coupon code displays alert message")
+    @Description("Verify applying an invalid coupon code displays a failure message in the cart")
     public void testApplyInvalidCouponCode() {
-        navigateTo("/apple-macbook-pro");
-        ProductDetailsPage productPage = new ProductDetailsPage(getPage());
-        productPage.clickAddToCart();
+        try {
+            navigateTo(TEST_PRODUCT_SLUG);
+            ProductDetailsPage productPage = new ProductDetailsPage(getPage());
+            productPage.clickAddToCart();
+            PlaywrightAssertions.assertThat(productPage.getNotificationBanner()).isVisible();
 
-        navigateTo("/cart");
-        CartPage cartPage = new CartPage(getPage());
+            navigateTo("/cart");
+            CartPage cartPage = new CartPage(getPage());
+            PlaywrightAssertions.assertThat(cartPage.getCartRows()).hasCount(1);
 
-        if (cartPage.getCartItemCount() > 0) {
             cartPage.applyCouponCode("INVALID_DISCOUNT_CODE_999");
-            Locator message = getPage().locator(".message-failure, .coupon-box .message, .message-error");
-            Assert.assertTrue(message.count() > 0, "Coupon message element should be present");
+            PlaywrightAssertions.assertThat(cartPage.getCouponMessage()).isVisible();
+        } finally {
+            navigateTo("/cart");
+            new CartPage(getPage()).clearCart();
         }
     }
 }

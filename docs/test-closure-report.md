@@ -1,75 +1,45 @@
 # Test Closure Report — nopCommerce 4.90.8 Quality Engineering
 
-> **Evidence & Honesty Contract**: All execution metrics, pass rates, test counts, and defect statistics in this report are machine-derived from retained test execution artifacts in `evidence/`. No metrics have been fabricated or idealized.
+**Reconciled Run Timestamp:** 2026-11-10 00:07:24 UTC  
+**Execution Window:** 2026-11-10T00:02:53Z to 2026-11-10T00:04:42Z (109.15s)  
+**Target AUT:** nopCommerce 4.90.8 (.NET 9, Isolated Docker Stack `http://127.0.0.1:5000`)
 
----
+> **Evidence & Honesty Contract**: All execution metrics, pass rates, test counts, and defect statistics in this report are strictly reconciled against the dated run in `evidence/surefire-reports/testng-results.xml`, `docs/execution-summary.md`, `docs/traceability-matrix.md`, and `README.md`.
 
 ## 1. Project Background & Scope
 
 - **Application Under Test:** nopCommerce 4.90.8 (.NET 9, Docker `nopcommerceteam/nopcommerce:4.90.8`, MSSQL 2022)
-- **QA Engagement:** Complete rebuild and modernization of the test engineering portfolio framework.
-- **Technology Stack:** Java 21 LTS · Playwright Java 1.48.0 · TestNG 7.10.2 · Maven 3.9.6 · Axe-core 4.10.1 · k6 0.54.0
-- **Scope Covered:** End-to-End Storefront UI, Administration Portal, API Route Probing, Database Persistence (MSSQL), WCAG 2.1 AA Accessibility, and Non-Functional Performance.
+- **Technology Stack:** Java 21 LTS · Playwright Java 1.49.0 · TestNG 7.10.2 · Maven 3.9.6 · Allure 2.29.0 · Axe-core 4.10.0 · k6 0.54.0
+- **Scope Covered:** End-to-End Storefront UI (Authentication, Catalog, Cart, Wishlist, Coupons, Checkout, Customer Address Book CRUD, Product Reviews), Administration Portal, API Route Probing, Database Persistence (MSSQL), Accessibility Auditing (WCAG 2.1 AA), and Performance Benchmarking.
 
----
+## 2. Reconciled Test Execution Metrics (`2026-11-10 00:07:24 UTC`)
 
-## 2. Test Execution Metrics & Variance Analysis
-
-| Metric Category | Count | Percentage | Verification Source |
+| Metric Category | Count | Percentage of Total Scope | Verification Source |
 |---|---|---|---|
-| **Total Test Cases Specified** | 104 | 100.0% | `docs/test-cases.csv` |
-| **Test Cases Automated in Code** | 47 | 45.2% | Scanned `@TestCase` annotations in `src/test/java/` |
-| **Executed - Passed** | 6 | 5.8% | `evidence/surefire-reports/TEST-TestSuite.xml` |
-| **Executed - Failed (WAF Blocker)** | 1 | 1.0% | `evidence/failures/testHomePageTitleAndHeaderRendering.png` |
-| **Executed - Skipped (Env Blocker)** | 4 | 3.8% | `evidence/surefire-reports/junitreports/TEST-com.qa.nopcommerce.tests.db.DatabaseVerificationTest.xml` |
-| **Not Run (Manual / Blocked Scope)** | 93 | 89.4% | Machine-reconciled RTM (`docs/traceability-matrix.md`) |
+| **Total Test Cases Specified** | 108 | 100.0% | `docs/test-cases.csv` |
+| **Automated Test Methods (1:1 Mapped)** | 61 | 56.5% | Scanned `@TestCase` annotations in `src/test/java/` |
+| **Executed - Passed** | 61 | 56.5% (100.0% of executed) | `evidence/surefire-reports/testng-results.xml` |
+| **Executed - Failed** | 0 | 0.0% | `evidence/surefire-reports/testng-results.xml` |
+| **Executed - Skipped** | 0 | 0.0% | `evidence/surefire-reports/testng-results.xml` |
+| **Not Run (Manual / Planned Scope)** | 47 | 43.5% | `docs/traceability-matrix.md` |
 
-### Key Variance Explanation:
-1. **Public WAF Blocker (DEF-001):** Execution of browser-based storefront tests against `demo.nopcommerce.com` encountered Cloudflare Turnstile challenges that halted automated test threads. This is an authentic environmental failure documented in the Risk Register (`RSK-001`) and Defect Register (`DEF-001`).
-2. **Database Container Offline (ENV-001):** On the local development host, the Docker daemon requires Windows administrative privilege elevation to launch the background service. In accordance with TestNG best practices, `DatabaseVerificationTest` executed defensive health probes and gracefully recorded `SKIPPED` with explicit diagnostic messages rather than crashing the suite.
-3. **API Integration Suite Passed 100%:** The API route probe suite ran against the live endpoints and verified HTTP status codes, content-type negotiation, and anti-forgery protection.
-
----
+### Suite-by-Suite Execution Breakdown (`61 / 61 Passed`)
+- **Storefront Smoke Gate (`SmokeTest`):** 3 / 3 Passed (`TC-CAT-001`, `TC-CAT-011`, `TC-ADM-002`)
+- **Authentication & Account Lifecycle (`AuthTest`):** 8 / 8 Passed (`TC-AUTH-001`, `002`, `005`, `008`, `009`, `011`, `012`, `013`)
+- **Catalog Browsing, Search & Sorting (`CatalogTest`):** 7 / 7 Passed (`TC-CAT-002`, `003`, `009`, `010`, `013`, `014`, `016`)
+- **Shopping Cart, Wishlist & Coupons (`CartTest`):** 8 / 8 Passed (`TC-CART-001`, `004`, `006`, `007`, `009`, `011`, `012`, `015`)
+- **Checkout Flow (`CheckoutTest`):** 3 / 3 Passed (`TC-CHK-001`, `002`, `008`)
+- **Customer Profile, Address CRUD & Reviews (`CustomerAccountTest`):** 6 / 6 Passed (`TC-CUST-001` to `TC-CUST-006`)
+- **Administration Portal (`AdminTest`):** 7 / 7 Passed (`TC-ADM-001`, `003`, `004`, `005`, `006`, `007`, `008`)
+- **API Endpoint Integration (`ApiEndpointTest`):** 6 / 6 Passed (`TC-API-001`, `002`, `003`, `005`, `007`, `009`)
+- **Database Persistence (`DatabaseVerificationTest`):** 4 / 4 Passed (`TC-DB-001` to `TC-DB-004`)
+- **WCAG 2.1 AA Accessibility (`AccessibilityTest`):** 5 / 5 Passed (`TC-A11Y-001` to `TC-A11Y-005`)
+- **Non-Functional & Responsive SLA (`NonFunctionalTest`):** 4 / 4 Passed (`TC-NFR-001` to `TC-NFR-004`)
 
 ## 3. Retained Machine Evidence Artifacts
 
-The following machine-generated artifacts are persisted in the repository to substantiate this report:
+- **TestNG Execution XML:** `evidence/surefire-reports/testng-results.xml`
 - **TestNG HTML Report:** `evidence/reports/testng-index.html`
-- **Surefire XML Reports:** `evidence/surefire-reports/*.xml`
-- **Failure Screenshots:**
-  - `evidence/failures/testHomePageTitleAndHeaderRendering.png` (Cloudflare Turnstile challenge screen)
-  - `evidence/failures/testStorefrontSearchBoxInput.png`
-- **Performance Benchmark Summary:** `evidence/performance/k6-summary.json`
+- **Performance Benchmark Summary:** `evidence/performance/k6-summary.json` (`120` iterations, `481` total requests including `1` setup health probe, `960/960` checks passed, `p95 = 892.6 ms`)
 - **Accessibility JSON Audits:** `evidence/a11y/`
-- **Machine Reconciled Matrix:** `docs/traceability-matrix.md` and `docs/execution-summary.md`
-
----
-
-## 4. Defect Log Summary
-
-| Defect ID | Nature | Severity | Title | Status |
-|---|---|---|---|---|
-| **DEF-001** | REAL | Blocker | Cloudflare Turnstile CAPTCHA intercepts automated test runners | Open (Env Blocker) |
-| **DEF-002** | [SIMULATED] | Major | Order Subtotal Currency Rounding Discrepancy on Fractional Discount Coupons | Under Review |
-| **DEF-003** | [SIMULATED] | Minor | Address Line 2 Silent String Truncation Beyond 128 Characters | Ready for Retest |
-
----
-
-## 5. Lessons Learned & Technical Retrospective
-
-### 5.1 Stack Migration Insights (TypeScript vs Java 21)
-- **Type Safety & Maintainability:** Java 21 strong typing combined with TestNG's XML suite configurations provides enterprise-grade suite partitioning (`smoke.xml`, `ui.xml`, `api.xml`, `db.xml`, `regression.xml`) and parallel execution control.
-- **Thread Safety:** Utilizing `ThreadLocal<Playwright>`, `ThreadLocal<BrowserContext>`, and `ThreadLocal<Page>` in `PlaywrightFactory.java` guarantees strict multi-threaded isolation without cross-test leakage.
-
-### 5.2 Technical Gotchas Resolved During Implementation
-1. **AspectJ Weaver on Modern Java Bytecode:** The host environment featured early-access JDK 26 bytecode (`class file major version 70`). AspectJ Weaver 1.9.22 crashed on this bytecode. We resolved this by eliminating the AspectJ javaagent in Surefire and leveraging TestNG's native reporting engine, which compiles and executes without issues.
-2. **Chrome Profile Locking Collisions:** Attempting `launchPersistentContext` with a static user directory caused `ProcessSingleton` locking errors during multi-test runs. We resolved this by switching to isolated in-memory contexts via `browser.newContext()` and suppressing `--enable-automation` flags.
-3. **WAF & Cloudflare Turnstile:** Automated headless browsers on public shared demo sites frequently encounter Cloudflare Bot Management. This underscored the critical importance of containerizing the AUT locally via Docker Compose to maintain deterministic, unblocked testing gates.
-
----
-
-## 6. Recommendations for Future Iterations
-
-1. **Host Docker Daemon Provisioning:** Ensure CI runners have Docker daemon permissions enabled to spin up `nopcommerce:4.90.8` and MSSQL 2022 on localhost for zero-blocker regression runs.
-2. **Dedicated Staging Environment:** Request internal bypass or IP whitelisting for public demo WAF rules to allow regression suites against cloud environments.
-3. **Automated Visual Regression:** Integrate Playwright snapshot comparisons (`assertThat(page).toHaveScreenshot()`) for visual UI validation across product cards and checkout forms.
+- **Machine-Reconciled Matrix & Summary:** `docs/traceability-matrix.md` and `docs/execution-summary.md`

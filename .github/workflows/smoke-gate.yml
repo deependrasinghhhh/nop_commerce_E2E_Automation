@@ -6,16 +6,49 @@ on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:
+    inputs:
+      enable_trend_history:
+        description: 'Persist Allure report history across CI runs'
+        required: false
+        default: 'true'
+        type: string
+
+env:
+  BASE_URL: http://127.0.0.1:5000
+  ADMIN_URL: http://127.0.0.1:5000/Admin
+  DB_HOST: 127.0.0.1
+  DB_PORT: 1433
+  DB_NAME: nopcommerce_db
+  ENABLE_TREND_HISTORY: ${{ github.event.inputs.enable_trend_history || 'true' }}
 
 jobs:
-  smoke-test-gate:
-    name: Run Smoke & API Gate
+  browser-smoke-gate:
+    name: Browser Smoke Suite (Isolated Instance)
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+
+      - name: Validate Required Secrets
+        env:
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          set -e
+          missing=0
+          for var in ADMIN_EMAIL ADMIN_PASSWORD DB_USER DB_PASSWORD; do
+            if [ -z "${!var:-}" ]; then
+              echo "::error::Required secret '$var' is not configured in GitHub repository secrets."
+              missing=1
+            fi
+          done
+          if [ "$missing" -ne 0 ]; then
+            exit 1
+          fi
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
@@ -48,45 +81,157 @@ jobs:
         run: |
           mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install-deps chromium"
 
-      - name: Execute API Integration Suite
+      - name: Start Isolated nopCommerce Docker Stack & Verify Health
         env:
-          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
-          mvn clean test -DsuiteFile=src/test/resources/suites/api.xml \
-            -DbaseUrl=https://demo.nopcommerce.com \
-            -DadminUrl=https://admin-demo.nopcommerce.com/admin/ \
+          set -e
+          docker compose -f docker/docker-compose.yml up -d
+          echo "Waiting for nopcommerce_mssql container to report healthy..."
+          timeout 120s bash -c 'until [ "$(docker inspect -f {{.State.Health.Status}} nopcommerce_mssql)" = "healthy" ]; do sleep 3; done'
+          echo "Waiting for nopcommerce_web container to report healthy..."
+          timeout 180s bash -c 'until [ "$(docker inspect -f {{.State.Health.Status}} nopcommerce_web)" = "healthy" ]; do sleep 3; done'
+          echo "Verifying HTTP 200 readiness on isolated storefront (${BASE_URL})..."
+          timeout 60s bash -c 'until curl -fsS "${BASE_URL}/" | grep -qi "nopCommerce"; do sleep 2; done'
+          echo "Isolated nopCommerce test instance is healthy and ready."
+
+      - name: Restore Allure Report History (Trend Tracking)
+        if: env.ENABLE_TREND_HISTORY == 'true'
+        uses: actions/cache/restore@v4
+        with:
+          path: target/allure-results/history
+          key: allure-history-smoke-${{ github.ref_name }}-${{ github.run_id }}
+          restore-keys: |
+            allure-history-smoke-${{ github.ref_name }}-
+            allure-history-smoke-main-
+
+      - name: Execute Browser Smoke Suite
+        env:
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          TEST_ENV_NAME: github-actions-isolated-docker
+        run: |
+          mvn test \
+            -DsuiteXmlFile=src/test/resources/suites/smoke.xml \
+            -DbaseUrl="${BASE_URL}" \
+            -DadminUrl="${ADMIN_URL}" \
+            -Dbrowser=chromium \
             -Dheadless=true \
-            -DbrowserChannel=none
+            -DignoreHttpsErrors=false
+
+      - name: Generate Allure Report & Persist History
+        if: always()
+        run: |
+          mvn allure:report
+          if [ "${ENABLE_TREND_HISTORY}" = "true" ] && [ -d "target/site/allure-maven-plugin/history" ]; then
+            mkdir -p target/allure-results/history
+            cp -r target/site/allure-maven-plugin/history/* target/allure-results/history/ || true
+          fi
+
+      - name: Save Allure Report History Cache
+        if: always() && env.ENABLE_TREND_HISTORY == 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: target/allure-results/history
+          key: allure-history-smoke-${{ github.ref_name }}-${{ github.run_id }}
 
       - name: Run RTM Reconciliation Script
         if: always()
         run: |
-          python scripts/reconcile_rtm.py
+          python3 scripts/reconcile_rtm.py
 
-      - name: Publish TestNG / Surefire XML Reports
+      - name: Collect Container Logs on Failure
+        if: failure()
+        run: |
+          mkdir -p evidence/logs
+          docker compose -f docker/docker-compose.yml logs --no-color > evidence/logs/docker-compose.log || true
+
+      - name: Tear Down Isolated nopCommerce Stack
+        if: always()
+        env:
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          docker compose -f docker/docker-compose.yml down -v --remove-orphans || true
+
+      - name: Publish Smoke Test & Allure Artifacts
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: surefire-test-reports
+          name: browser-smoke-gate-artifacts
           path: |
             target/surefire-reports/
-            evidence/reports/
-            evidence/surefire-reports/
-
-      - name: Publish Allure Results
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: allure-results
-          path: target/allure-results/
-
-      - name: Publish Failure Evidence & Screenshots
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: test-evidence-artifacts
-          path: |
-            evidence/failures/
+            target/allure-results/
+            target/site/allure-maven-plugin/
+            evidence/
             docs/traceability-matrix.md
             docs/execution-summary.md
+
+  api-contract-gate:
+    name: API Probe Suite (Isolated Instance)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Validate Required Secrets
+        env:
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          set -e
+          for var in DB_USER DB_PASSWORD; do
+            if [ -z "${!var:-}" ]; then
+              echo "::error::Required secret '$var' is not configured in GitHub repository secrets."
+              exit 1
+            fi
+          done
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Start Isolated nopCommerce Docker Stack & Verify Health
+        env:
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          set -e
+          docker compose -f docker/docker-compose.yml up -d
+          timeout 120s bash -c 'until [ "$(docker inspect -f {{.State.Health.Status}} nopcommerce_mssql)" = "healthy" ]; do sleep 3; done'
+          timeout 180s bash -c 'until [ "$(docker inspect -f {{.State.Health.Status}} nopcommerce_web)" = "healthy" ]; do sleep 3; done'
+          timeout 60s bash -c 'until curl -fsS "${BASE_URL}/" | grep -qi "nopCommerce"; do sleep 2; done'
+
+      - name: Execute API Integration Suite
+        env:
+          TEST_ENV_NAME: github-actions-isolated-docker
+        run: |
+          mvn test \
+            -DsuiteXmlFile=src/test/resources/suites/api.xml \
+            -DbaseUrl="${BASE_URL}" \
+            -DadminUrl="${ADMIN_URL}"
+
+      - name: Tear Down Isolated nopCommerce Stack
+        if: always()
+        env:
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          docker compose -f docker/docker-compose.yml down -v --remove-orphans || true
+
+      - name: Publish API Suite Artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: api-contract-gate-artifacts
+          path: |
+            target/surefire-reports/
+            target/allure-results/
