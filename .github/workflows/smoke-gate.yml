@@ -85,16 +85,9 @@ jobs:
         env:
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          BASE_URL: ${{ env.BASE_URL }}
         run: |
-          set -e
-          docker compose -f docker/docker-compose.yml up -d
-          echo "Waiting for nopcommerce_mssql container to report healthy..."
-          timeout 120s bash -c 'until [ "$(docker inspect -f {{.State.Health.Status}} nopcommerce_mssql)" = "healthy" ]; do sleep 3; done'
-          echo "Waiting for nopcommerce_web container to report healthy..."
-          timeout 180s bash -c 'until [ "$(docker inspect -f {{.State.Health.Status}} nopcommerce_web)" = "healthy" ]; do sleep 3; done'
-          echo "Verifying HTTP 200 readiness on isolated storefront (${BASE_URL})..."
-          timeout 60s bash -c 'until curl -fsS "${BASE_URL}/" | grep -qi "nopCommerce"; do sleep 2; done'
-          echo "Isolated nopCommerce test instance is healthy and ready."
+          bash docker/bootstrap-aut.sh
 
       - name: Restore Allure Report History (Trend Tracking)
         if: env.ENABLE_TREND_HISTORY == 'true'
@@ -204,12 +197,9 @@ jobs:
         env:
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          BASE_URL: ${{ env.BASE_URL }}
         run: |
-          set -e
-          docker compose -f docker/docker-compose.yml up -d
-          timeout 120s bash -c 'until [ "$(docker inspect -f {{.State.Health.Status}} nopcommerce_mssql)" = "healthy" ]; do sleep 3; done'
-          timeout 180s bash -c 'until [ "$(docker inspect -f {{.State.Health.Status}} nopcommerce_web)" = "healthy" ]; do sleep 3; done'
-          timeout 60s bash -c 'until curl -fsS "${BASE_URL}/" | grep -qi "nopCommerce"; do sleep 2; done'
+          bash docker/bootstrap-aut.sh
 
       - name: Execute API Integration Suite
         env:
