@@ -35,7 +35,7 @@ services:
       - nopcommerce_app_data:/app/App_Data
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "curl -f -s http://localhost:80/ >/dev/null || exit 1"]
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:80/ || curl -f -s http://localhost:80/ >/dev/null || exit 1"]
       interval: 15s
       timeout: 10s
       retries: 6
