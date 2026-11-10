@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-DB_USER="${DB_USER:-sa}"
-DB_PASSWORD="${DB_PASSWORD:-NopCommerce@2026!}"
-BASE_URL="${BASE_URL:-http://127.0.0.1:5000}"
+export DB_USER="${DB_USER:-sa}"
+export DB_PASSWORD="${DB_PASSWORD:-NopCommerce@2026!}"
+export BASE_URL="${BASE_URL:-http://127.0.0.1:5000}"
 
 echo "=== [1/5] Starting isolated nopCommerce Docker stack ==="
 docker compose -f docker/docker-compose.yml up -d
@@ -37,3 +37,4 @@ echo "=== [5/5] Verifying storefront HTTP 200 readiness on ${BASE_URL} ==="
 timeout 120s bash -c 'until curl -fsSL "${BASE_URL}/" 2>/dev/null | grep -qi "nopCommerce"; do sleep 3; done'
 
 echo "=== Isolated nopCommerce AUT is fully initialized, healthy, and ready! ==="
+

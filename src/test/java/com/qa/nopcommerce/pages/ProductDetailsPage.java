@@ -35,8 +35,8 @@ public class ProductDetailsPage extends BasePage {
         this.quantityInput = page.locator("input.qty-input, [id^='product_enteredQuantity_']").first();
         this.addToCartButton = page.locator("button.add-to-cart-button, [id^='add-to-cart-button-']").first();
         this.addToWishlistButton = page.locator("button.add-to-wishlist-button, [id^='add-to-wishlist-button-']").first();
-        this.notificationBanner = page.locator("#bar-notification .content");
-        this.notificationClose = page.locator("#bar-notification .close");
+        this.notificationBanner = page.locator("#bar-notification .content").first();
+        this.notificationClose = page.locator("#bar-notification .close").first();
         this.cartLink = page.locator("#topcartlink a");
         this.wishlistLink = page.locator("a.ico-wishlist");
 
@@ -71,6 +71,9 @@ public class ProductDetailsPage extends BasePage {
     }
 
     public void clickAddToCart() {
+        try {
+            page.waitForFunction("() => typeof window.AjaxCart !== 'undefined' && typeof window.jQuery !== 'undefined'", null, new Page.WaitForFunctionOptions().setTimeout(10000));
+        } catch (Exception ignored) {}
         click(addToCartButton);
     }
 
@@ -79,6 +82,9 @@ public class ProductDetailsPage extends BasePage {
     }
 
     public void clickAddToWishlist() {
+        try {
+            page.waitForFunction("() => typeof window.AjaxCart !== 'undefined' && typeof window.jQuery !== 'undefined'", null, new Page.WaitForFunctionOptions().setTimeout(10000));
+        } catch (Exception ignored) {}
         click(addToWishlistButton);
     }
 

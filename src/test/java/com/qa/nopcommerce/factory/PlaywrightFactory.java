@@ -32,6 +32,11 @@ public class PlaywrightFactory {
     private static final ThreadLocal<Boolean> tlCdpSession = ThreadLocal.withInitial(() -> false);
     private static final ThreadLocal<Boolean> tlTraceStopped = ThreadLocal.withInitial(() -> false);
 
+    static {
+        // Elevate Playwright assertion timeout from default 5s to 15s for CI and parallel container execution
+        com.microsoft.playwright.assertions.PlaywrightAssertions.setDefaultAssertionTimeout(15000);
+    }
+
     private PlaywrightFactory() {
         // Utility class
     }

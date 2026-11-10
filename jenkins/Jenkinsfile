@@ -116,6 +116,7 @@ pipeline {
                     string(credentialsId: 'nop-db-password', variable: 'DB_PASSWORD')
                 ]) {
                     sh '''
+                        rm -rf evidence/failures/* evidence/reports/* || true
                         mvn clean test \
                             -DsuiteFile="src/test/resources/${SUITE}" \
                             -DsuiteXmlFile="src/test/resources/${SUITE}" \
