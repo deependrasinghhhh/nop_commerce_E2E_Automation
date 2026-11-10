@@ -1,19 +1,18 @@
 # Requirements Traceability Matrix (RTM)
 
-**Reconciliation Timestamp:** 2026-11-10 00:07:24 UTC  
-**Execution Window:** 2026-11-10T00:02:53Z to 2026-11-10T00:04:42Z (109.15s)  
+**Reconciliation Timestamp:** 2026-11-10 16:39:42 UTC
+**Execution Window:** 2026-11-10T16:37:29Z to 2026-11-10T16:39:42Z (133.00s)
 **Target AUT:** nopCommerce 4.90.8 (.NET 9, Isolated Docker Stack `http://127.0.0.1:5000`)
 
-> **Evidence Notice:** This matrix is machine-reconciled from `docs/test-cases.csv`, `@TestCase` annotations in Java source code, and `evidence/surefire-reports/testng-results.xml`.
+> **Evidence Notice:** Reconciled from `docs/test-cases.csv`, Java `@TestCase` annotations, and `evidence/surefire-reports/testng-results.xml`.
 
 ## 1. Traceability Summary
 
 - **Total Specified Test Cases:** 108
 - **Automated Test Methods (1:1 Mapped):** 61 (56.5%)
-- **Executed - Passed:** 61 (56.5% of total / 100.0% of executed)
-- **Executed - Failed:** 0 (0.0%)
-- **Executed - Skipped:** 0 (0.0%)
-- **Not Executed / Manual Scope:** 47 (43.5%)
+- **Executed:** 61/61 automated methods (100.0%)
+- **Passed / Failed / Skipped:** 61 / 0 / 0 (100.0% pass rate of executed)
+- **Not Executed / Manual Scope:** 47
 
 ## 2. Granular Traceability Table
 

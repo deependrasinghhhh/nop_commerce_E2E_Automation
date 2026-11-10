@@ -1,0 +1,275 @@
+<html>
+<head>
+<title>TestNG:  Storefront UI Tests</title>
+<link href="../testng.css" rel="stylesheet" type="text/css" />
+<link href="../my-testng.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+.log { display: none;}
+.stack-trace { display: none;}
+</style>
+<script type="text/javascript">
+<!--
+function flip(e) {
+  current = e.style.display;
+  if (current == 'block') {
+    e.style.display = 'none';
+    return 0;
+  }
+  else {
+    e.style.display = 'block';
+    return 1;
+  }
+}
+
+function toggleBox(szDivId, elem, msg1, msg2)
+{
+  var res = -1;  if (document.getElementById) {
+    res = flip(document.getElementById(szDivId));
+  }
+  else if (document.all) {
+    // this is the way old msie versions work
+    res = flip(document.all[szDivId]);
+  }
+  if(elem) {
+    if(res == 0) elem.innerHTML = msg1; else elem.innerHTML = msg2;
+  }
+
+}
+
+function toggleAllBoxes() {
+  if (document.getElementsByTagName) {
+    d = document.getElementsByTagName('div');
+    for (i = 0; i < d.length; i++) {
+      if (d[i].className == 'log') {
+        flip(d[i]);
+      }
+    }
+  }
+}
+
+// -->
+</script>
+
+</head>
+<body>
+<h2 align='center'>Storefront UI Tests</h2><table border='1' align="center">
+<tr>
+<td>Tests passed/Failed/Skipped:</td><td>39/0/0</td>
+</tr><tr>
+<td>Started on:</td><td>Tue Nov 10 22:07:47 IST 2026</td>
+</tr>
+<tr><td>Total time:</td><td>86 seconds (86617 ms)</td>
+</tr><tr>
+<td>Included groups:</td><td></td>
+</tr><tr>
+<td>Excluded groups:</td><td></td>
+</tr>
+</table><p/>
+<small><i>(Hover the method name to see the test class name)</i></small><p/>
+<table width='100%' border='1' class='invocation-passed'>
+<tr><td colspan='4' align='center'><b>PASSED TESTS</b></td></tr>
+<tr><td><b>Test method</b></td>
+<td><b>Attribute(s)</b></td>
+<td width="30%"><b>Exception</b></td>
+<td width="10%"><b>Time (seconds)</b></td>
+<td><b>Instance</b></td>
+</tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.CartTest.testAddProductToWishlistAndVerifyCounter()'><b>testAddProductToWishlistAndVerifyCounter</b><br>Test class: com.qa.nopcommerce.tests.ui.CartTest</td>
+<td></td>
+<td>2</td>
+<td>com.qa.nopcommerce.tests.ui.CartTest@6fdbe764</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.CheckoutTest.testCheckoutInitiation()'><b>testCheckoutInitiation</b><br>Test class: com.qa.nopcommerce.tests.ui.CheckoutTest</td>
+<td></td>
+<td>2</td>
+<td>com.qa.nopcommerce.tests.ui.CheckoutTest@51c668e3</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.CatalogTest.testProductDetailsRendering()'><b>testProductDetailsRendering</b><br>Test class: com.qa.nopcommerce.tests.ui.CatalogTest</td>
+<td></td>
+<td>1</td>
+<td>com.qa.nopcommerce.tests.ui.CatalogTest@a38c7fe</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.AuthTest.testRegistrationMandatoryFieldValidation()'><b>testRegistrationMandatoryFieldValidation</b><br>Test class: com.qa.nopcommerce.tests.ui.AuthTest</td>
+<td></td>
+<td>0</td>
+<td>com.qa.nopcommerce.tests.ui.AuthTest@4d5650ae</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.CustomerAccountTest.testCustomerInfoPageRendering()'><b>testCustomerInfoPageRendering</b><br>Test class: com.qa.nopcommerce.tests.ui.CustomerAccountTest</td>
+<td></td>
+<td>2</td>
+<td>com.qa.nopcommerce.tests.ui.CustomerAccountTest@2e6a8155</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.CartTest.testMoveItemFromWishlistToShoppingCart()'><b>testMoveItemFromWishlistToShoppingCart</b><br>Test class: com.qa.nopcommerce.tests.ui.CartTest</td>
+<td></td>
+<td>6</td>
+<td>com.qa.nopcommerce.tests.ui.CartTest@6fdbe764</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.CartTest.testRemoveItemFromCart()'><b>testRemoveItemFromCart</b><br>Test class: com.qa.nopcommerce.tests.ui.CartTest</td>
+<td></td>
+<td>6</td>
+<td>com.qa.nopcommerce.tests.ui.CartTest@6fdbe764</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.CartTest.testAddProductToCart()'><b>testAddProductToCart</b><br>Test class: com.qa.nopcommerce.tests.ui.CartTest</td>
+<td></td>
+<td>5</td>
+<td>com.qa.nopcommerce.tests.ui.CartTest@6fdbe764</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.AuthTest.testCustomerLoginInvalidPassword()'><b>testCustomerLoginInvalidPassword</b><br>Test class: com.qa.nopcommerce.tests.ui.AuthTest</td>
+<td></td>
+<td>1</td>
+<td>com.qa.nopcommerce.tests.ui.AuthTest@4d5650ae</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.AuthTest.testRegistrationPasswordMismatch()'><b>testRegistrationPasswordMismatch</b><br>Test class: com.qa.nopcommerce.tests.ui.AuthTest</td>
+<td></td>
+<td>0</td>
+<td>com.qa.nopcommerce.tests.ui.AuthTest@4d5650ae</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.CatalogTest.testCategoryNavigation()'><b>testCategoryNavigation</b><br>Test class: com.qa.nopcommerce.tests.ui.CatalogTest</td>
+<td></td>
+<td>1</td>
+<td>com.qa.nopcommerce.tests.ui.CatalogTest@a38c7fe</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.AuthTest.testValidCustomerRegistration()'><b>testValidCustomerRegistration</b><br>Test class: com.qa.nopcommerce.tests.ui.AuthTest</td>
+<td></td>
+<td>1</td>
+<td>com.qa.nopcommerce.tests.ui.AuthTest@4d5650ae</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.AuthTest.testCustomerLoginBlankEmail()'><b>testCustomerLoginBlankEmail</b><br>Test class: com.qa.nopcommerce.tests.ui.AuthTest</td>
+<td></td>
+<td>1</td>
+<td>com.qa.nopcommerce.tests.ui.AuthTest@4d5650ae</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.AuthTest.testRegistrationMalformedEmailValidation()'><b>testRegistrationMalformedEmailValidation</b><br>Test class: com.qa.nopcommerce.tests.ui.AuthTest</td>
+<td></td>
+<td>0</td>
+<td>com.qa.nopcommerce.tests.ui.AuthTest@4d5650ae</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.AdminTest.testAdminSalesOrdersPage()'><b>testAdminSalesOrdersPage</b><br>Test class: com.qa.nopcommerce.tests.ui.AdminTest</td>
+<td></td>
+<td>4</td>
+<td>com.qa.nopcommerce.tests.ui.AdminTest@6221a451</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.AuthTest.testCustomerLogout()'><b>testCustomerLogout</b><br>Test class: com.qa.nopcommerce.tests.ui.AuthTest</td>
+<td></td>
+<td>1</td>
+<td>com.qa.nopcommerce.tests.ui.AuthTest@4d5650ae</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.CustomerAccountTest.testDeleteCustomerAddressFromAddressBook()'><b>testDeleteCustomerAddressFromAddressBook</b><br>Test class: com.qa.nopcommerce.tests.ui.CustomerAccountTest</td>
+<td></td>
+<td>4</td>
+<td>com.qa.nopcommerce.tests.ui.CustomerAccountTest@2e6a8155</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.CustomerAccountTest.testProductReviewBlockedForUnauthenticatedGuest()'><b>testProductReviewBlockedForUnauthenticatedGuest</b><br>Test class: com.qa.nopcommerce.tests.ui.CustomerAccountTest</td>
+<td></td>
+<td>2</td>
+<td>com.qa.nopcommerce.tests.ui.CustomerAccountTest@2e6a8155</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.CustomerAccountTest.testCustomerOrdersPage()'><b>testCustomerOrdersPage</b><br>Test class: com.qa.nopcommerce.tests.ui.CustomerAccountTest</td>
+<td></td>
+<td>1</td>
+<td>com.qa.nopcommerce.tests.ui.CustomerAccountTest@2e6a8155</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.AdminTest.testAdminCatalogCategoriesPage()'><b>testAdminCatalogCategoriesPage</b><br>Test class: com.qa.nopcommerce.tests.ui.AdminTest</td>
+<td></td>
+<td>5</td>
+<td>com.qa.nopcommerce.tests.ui.AdminTest@6221a451</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.AdminTest.testAdminLoginValidCredentials()'><b>testAdminLoginValidCredentials</b><br>Test class: com.qa.nopcommerce.tests.ui.AdminTest</td>
+<td></td>
+<td>1</td>
+<td>com.qa.nopcommerce.tests.ui.AdminTest@6221a451</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.CustomerAccountTest.testCustomerAddressCreateEditAndDelete()'><b>testCustomerAddressCreateEditAndDelete</b><br>Test class: com.qa.nopcommerce.tests.ui.CustomerAccountTest</td>
+<td></td>
+<td>6</td>
+<td>com.qa.nopcommerce.tests.ui.CustomerAccountTest@2e6a8155</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.AdminTest.testAdminCustomersPage()'><b>testAdminCustomersPage</b><br>Test class: com.qa.nopcommerce.tests.ui.AdminTest</td>
+<td></td>
+<td>3</td>
+<td>com.qa.nopcommerce.tests.ui.AdminTest@6221a451</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.AuthTest.testCustomerLoginValidCredentials()'><b>testCustomerLoginValidCredentials</b><br>Test class: com.qa.nopcommerce.tests.ui.AuthTest</td>
+<td></td>
+<td>1</td>
+<td>com.qa.nopcommerce.tests.ui.AuthTest@4d5650ae</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.CatalogTest.testShortSearchTermNotice()'><b>testShortSearchTermNotice</b><br>Test class: com.qa.nopcommerce.tests.ui.CatalogTest</td>
+<td></td>
+<td>0</td>
+<td>com.qa.nopcommerce.tests.ui.CatalogTest@a38c7fe</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.CartTest.testApplyValidCouponCode()'><b>testApplyValidCouponCode</b><br>Test class: com.qa.nopcommerce.tests.ui.CartTest</td>
+<td></td>
+<td>11</td>
+<td>com.qa.nopcommerce.tests.ui.CartTest@6fdbe764</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.CatalogTest.testSearchWithNonExistentKeyword()'><b>testSearchWithNonExistentKeyword</b><br>Test class: com.qa.nopcommerce.tests.ui.CatalogTest</td>
+<td></td>
+<td>1</td>
+<td>com.qa.nopcommerce.tests.ui.CatalogTest@a38c7fe</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.CheckoutTest.testCheckoutPaymentMethodOptions()'><b>testCheckoutPaymentMethodOptions</b><br>Test class: com.qa.nopcommerce.tests.ui.CheckoutTest</td>
+<td></td>
+<td>3</td>
+<td>com.qa.nopcommerce.tests.ui.CheckoutTest@51c668e3</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.CatalogTest.testTopMenuCategoriesRendering()'><b>testTopMenuCategoriesRendering</b><br>Test class: com.qa.nopcommerce.tests.ui.CatalogTest</td>
+<td></td>
+<td>0</td>
+<td>com.qa.nopcommerce.tests.ui.CatalogTest@a38c7fe</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.CartTest.testViewShoppingCart()'><b>testViewShoppingCart</b><br>Test class: com.qa.nopcommerce.tests.ui.CartTest</td>
+<td></td>
+<td>7</td>
+<td>com.qa.nopcommerce.tests.ui.CartTest@6fdbe764</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.CatalogTest.testProductImageGalleryDisplay()'><b>testProductImageGalleryDisplay</b><br>Test class: com.qa.nopcommerce.tests.ui.CatalogTest</td>
+<td></td>
+<td>0</td>
+<td>com.qa.nopcommerce.tests.ui.CatalogTest@a38c7fe</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.CartTest.testUpdateCartItemQuantity()'><b>testUpdateCartItemQuantity</b><br>Test class: com.qa.nopcommerce.tests.ui.CartTest</td>
+<td></td>
+<td>9</td>
+<td>com.qa.nopcommerce.tests.ui.CartTest@6fdbe764</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.AdminTest.testAdminDashboardElements()'><b>testAdminDashboardElements</b><br>Test class: com.qa.nopcommerce.tests.ui.AdminTest</td>
+<td></td>
+<td>2</td>
+<td>com.qa.nopcommerce.tests.ui.AdminTest@6221a451</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.AdminTest.testAdminLoginInvalidPassword()'><b>testAdminLoginInvalidPassword</b><br>Test class: com.qa.nopcommerce.tests.ui.AdminTest</td>
+<td></td>
+<td>2</td>
+<td>com.qa.nopcommerce.tests.ui.AdminTest@6221a451</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.CatalogTest.testProductSorting()'><b>testProductSorting</b><br>Test class: com.qa.nopcommerce.tests.ui.CatalogTest</td>
+<td></td>
+<td>2</td>
+<td>com.qa.nopcommerce.tests.ui.CatalogTest@a38c7fe</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.CheckoutTest.testCheckoutBillingAddressForm()'><b>testCheckoutBillingAddressForm</b><br>Test class: com.qa.nopcommerce.tests.ui.CheckoutTest</td>
+<td></td>
+<td>3</td>
+<td>com.qa.nopcommerce.tests.ui.CheckoutTest@51c668e3</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.CustomerAccountTest.testSubmitProductReviewAsRegisteredUser()'><b>testSubmitProductReviewAsRegisteredUser</b><br>Test class: com.qa.nopcommerce.tests.ui.CustomerAccountTest</td>
+<td></td>
+<td>5</td>
+<td>com.qa.nopcommerce.tests.ui.CustomerAccountTest@2e6a8155</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.AdminTest.testAdminCatalogProductsPage()'><b>testAdminCatalogProductsPage</b><br>Test class: com.qa.nopcommerce.tests.ui.AdminTest</td>
+<td></td>
+<td>5</td>
+<td>com.qa.nopcommerce.tests.ui.AdminTest@6221a451</td></tr>
+<tr>
+<td title='com.qa.nopcommerce.tests.ui.CartTest.testApplyInvalidCouponCode()'><b>testApplyInvalidCouponCode</b><br>Test class: com.qa.nopcommerce.tests.ui.CartTest</td>
+<td></td>
+<td>4</td>
+<td>com.qa.nopcommerce.tests.ui.CartTest@6fdbe764</td></tr>
+</table><p>
+</body>
+</html>

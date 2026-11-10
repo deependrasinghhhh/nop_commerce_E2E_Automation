@@ -71,6 +71,7 @@ public class CustomerAccountTest extends BaseTest {
                 "CustomerQA",
                 email,
                 "United States of America",
+                "Texas",
                 "Austin",
                 initialStreet,
                 "78701",
@@ -79,7 +80,7 @@ public class CustomerAccountTest extends BaseTest {
         PlaywrightAssertions.assertThat(infoPage.getAddressCardByText(initialStreet)).isVisible();
 
         // 2. Edit Address
-        infoPage.editAddressByStreet(initialStreet, "Seattle", updatedStreet, "98101");
+        infoPage.editAddressByStreet(initialStreet, "Washington", "Seattle", updatedStreet, "98101");
         PlaywrightAssertions.assertThat(infoPage.getAddressCardByText(updatedStreet)).isVisible();
         PlaywrightAssertions.assertThat(infoPage.getAddressCardByText(updatedStreet)).containsText("Seattle");
 
@@ -103,6 +104,7 @@ public class CustomerAccountTest extends BaseTest {
                 "CustomerQA",
                 email,
                 "United States of America",
+                "Colorado",
                 "Denver",
                 street,
                 "80202",

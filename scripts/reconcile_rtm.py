@@ -1,215 +1,363 @@
 #!/usr/bin/env python3
-"""
-RTM Reconciliation & Execution Evidence Generator
-Parses docs/test-cases.csv, scans Java source files for @TestCase annotations,
-reads Surefire / TestNG XML results, validates 1-to-1 annotation mapping,
-and outputs docs/traceability-matrix.md and docs/execution-summary.md.
-Strictly adheres to the Evidence Contract: One reconciled dated run, zero orphan or duplicate IDs.
-"""
+"""Reconcile test-case annotations and generate reports from one TestNG run."""
 
+import csv
 import os
 import re
-import csv
+import shutil
 import sys
 import xml.etree.ElementTree as ET
+from collections import Counter, defaultdict
+from datetime import datetime, timezone
+from pathlib import Path
 
-ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CSV_PATH = os.path.join(ROOT_DIR, "docs", "test-cases.csv")
-JAVA_SRC_DIR = os.path.join(ROOT_DIR, "src", "test", "java")
-SUREFIRE_DIR = os.path.join(ROOT_DIR, "evidence", "surefire-reports")
-RTM_OUT_PATH = os.path.join(ROOT_DIR, "docs", "traceability-matrix.md")
-SUMMARY_OUT_PATH = os.path.join(ROOT_DIR, "docs", "execution-summary.md")
-RECONCILED_RUN_TIMESTAMP = "2026-11-10 00:07:24 UTC"
-RECONCILED_RUN_WINDOW = "2026-11-10T00:02:53Z to 2026-11-10T00:04:42Z (109.15s)"
+
+ROOT_DIR = Path(__file__).resolve().parent.parent
+CSV_PATH = ROOT_DIR / "docs" / "test-cases.csv"
+JAVA_SRC_DIR = ROOT_DIR / "src" / "test" / "java"
+EVIDENCE_DIR = ROOT_DIR / "evidence" / "surefire-reports"
+EVIDENCE_XML = EVIDENCE_DIR / "testng-results.xml"
+TARGET_XML = ROOT_DIR / "target" / "surefire-reports" / "testng-results.xml"
+RTM_OUT_PATH = ROOT_DIR / "docs" / "traceability-matrix.md"
+SUMMARY_OUT_PATH = ROOT_DIR / "docs" / "execution-summary.md"
+CLOSURE_OUT_PATH = ROOT_DIR / "docs" / "test-closure-report.md"
+README_PATH = ROOT_DIR / "README.md"
+
+CLASS_LABELS = {
+    "SmokeTest": "Storefront Smoke Gate",
+    "AuthTest": "Authentication & Account Lifecycle",
+    "CatalogTest": "Catalog Browsing, Search & Sorting",
+    "CartTest": "Shopping Cart, Wishlist & Coupons",
+    "CheckoutTest": "Checkout Flow",
+    "CustomerAccountTest": "Customer Profile, Address CRUD & Reviews",
+    "AdminTest": "Administration Portal",
+    "ApiEndpointTest": "API Endpoint Integration",
+    "DatabaseVerificationTest": "Database Persistence",
+    "AccessibilityTest": "WCAG 2.1 AA Accessibility",
+    "NonFunctionalTest": "Non-Functional & Responsive SLA",
+}
 
 
 def load_test_cases():
-    cases = []
-    with open(CSV_PATH, "r", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            cases.append(row)
-    return cases
+    with CSV_PATH.open("r", encoding="utf-8", newline="") as source:
+        return list(csv.DictReader(source))
 
 
 def scan_java_annotations():
     tc_map = {}
-    pattern = re.compile(r'@TestCase\(\s*(?:value\s*=\s*)?"([^"]+)"')
+    annotation_pattern = re.compile(r'@TestCase\(\s*(?:value\s*=\s*)?"([^"]+)"')
     method_pattern = re.compile(r'public\s+void\s+([a-zA-Z0-9_]+)\s*\(')
 
-    for root, _, files in sorted(os.walk(JAVA_SRC_DIR)):
-        for file in sorted(files):
-            if file.endswith(".java"):
-                file_path = os.path.join(root, file)
-                rel_path = os.path.relpath(file_path, ROOT_DIR).replace("\\", "/")
-                class_name = file.replace(".java", "")
-                with open(file_path, "r", encoding="utf-8") as f:
-                    lines = f.readlines()
-
-                current_tc = None
-                for line in lines:
-                    tc_match = pattern.search(line)
-                    if tc_match:
-                        current_tc = tc_match.group(1)
-                    method_match = method_pattern.search(line)
-                    if method_match and current_tc:
-                        method_name = method_match.group(1)
-                        tc_map.setdefault(current_tc, []).append({
-                            "class": class_name,
-                            "method": method_name,
-                            "file": rel_path
-                        })
-                        current_tc = None
+    for root, _, files in os.walk(JAVA_SRC_DIR):
+        for filename in sorted(files):
+            if not filename.endswith(".java"):
+                continue
+            path = Path(root) / filename
+            relative_path = path.relative_to(ROOT_DIR).as_posix()
+            class_name = path.stem
+            current_test_case = None
+            for line in path.read_text(encoding="utf-8").splitlines():
+                annotation = annotation_pattern.search(line)
+                if annotation:
+                    current_test_case = annotation.group(1)
+                method = method_pattern.search(line)
+                if method and current_test_case:
+                    tc_map.setdefault(current_test_case, []).append({
+                        "class": class_name,
+                        "method": method.group(1),
+                        "file": relative_path,
+                    })
+                    current_test_case = None
     return tc_map
 
 
-def parse_surefire_results():
-    results = {}
-    target_dir = os.path.join(ROOT_DIR, "target", "surefire-reports")
-    search_dirs = [SUREFIRE_DIR, target_dir] if os.path.exists(target_dir) else [SUREFIRE_DIR]
+def parse_testng_time(value):
+    if not value:
+        return None
+    value = value.strip()
+    timezone_offsets = {"IST": "+05:30", "UTC": "+00:00", "GMT": "+00:00"}
+    match = re.fullmatch(r"(.+?)\s+(IST|UTC|GMT)", value)
+    if match:
+        value = match.group(1) + timezone_offsets[match.group(2)]
+    elif value.endswith("Z"):
+        value = value[:-1] + "+00:00"
+    parsed = datetime.fromisoformat(value)
+    if parsed.tzinfo is None:
+        raise ValueError(f"TestNG timestamp has no recognized timezone: {value}")
+    return parsed
 
-    for s_dir in search_dirs:
-        if not os.path.exists(s_dir):
-            continue
-        testng_results = os.path.join(s_dir, "testng-results.xml")
-        if os.path.exists(testng_results):
-            try:
-                tree = ET.parse(testng_results)
-                root = tree.getroot()
-                for test_method in root.findall(".//test-method"):
-                    if test_method.get("is-config") == "true":
-                        continue
-                    name = test_method.get("name")
-                    status = test_method.get("status")
-                    if status == "PASS":
-                        results[name] = "PASS"
-                    elif status == "FAIL":
-                        results[name] = "FAIL"
-                    elif status == "SKIP":
-                        results[name] = "SKIPPED"
-            except Exception as exc:
-                print(f"Warning: failed to parse {testng_results}: {exc}", file=sys.stderr)
-    return results
+
+def load_execution_report():
+    if TARGET_XML.is_file():
+        if EVIDENCE_DIR.exists():
+            shutil.rmtree(EVIDENCE_DIR)
+        shutil.copytree(TARGET_XML.parent, EVIDENCE_DIR)
+        report_path = EVIDENCE_XML
+    elif EVIDENCE_XML.is_file():
+        report_path = EVIDENCE_XML
+    else:
+        raise FileNotFoundError(
+            "No TestNG results found. Run a TestNG suite before reconciling evidence."
+        )
+
+    root = ET.parse(report_path).getroot()
+    test_results = {}
+    class_counts = defaultdict(Counter)
+
+    for class_node in root.findall(".//class"):
+        full_class_name = class_node.get("name", "")
+        class_name = full_class_name.rsplit(".", 1)[-1]
+        for method_node in class_node.findall("./test-method"):
+            if method_node.get("is-config") == "true":
+                continue
+            method_name = method_node.get("name")
+            status = method_node.get("status", "").upper()
+            normalized = {"PASS": "PASS", "FAIL": "FAIL", "SKIP": "SKIPPED"}.get(status)
+            if not method_name or not normalized:
+                continue
+            test_results[(class_name, method_name)] = normalized
+            class_counts[class_name][normalized] += 1
+
+    suites = root.findall("./suite") or root.findall(".//suite")
+    starts = [parse_testng_time(node.get("started-at")) for node in suites]
+    finishes = [parse_testng_time(node.get("finished-at")) for node in suites]
+    starts = [stamp for stamp in starts if stamp]
+    finishes = [stamp for stamp in finishes if stamp]
+    if not starts or not finishes:
+        raise ValueError(f"TestNG run timestamps are missing from {report_path}")
+
+    start = min(starts)
+    finish = max(finishes)
+    duration_seconds = max(0.0, (finish - start).total_seconds())
+    metadata = {
+        "path": report_path.relative_to(ROOT_DIR).as_posix(),
+        "start": start.astimezone(timezone.utc),
+        "finish": finish.astimezone(timezone.utc),
+        "duration_seconds": duration_seconds,
+    }
+    return test_results, dict(class_counts), metadata
+
+
+def utc_text(value):
+    return value.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def run_timestamp(metadata):
+    return metadata["finish"].strftime("%Y-%m-%d %H:%M:%S UTC")
+
+
+def execution_window(metadata):
+    return (
+        f"{utc_text(metadata['start'])} to {utc_text(metadata['finish'])} "
+        f"({metadata['duration_seconds']:.2f}s)"
+    )
+
+
+def suite_rows(class_counts):
+    rows = []
+    for class_name, counts in sorted(
+        class_counts.items(),
+        key=lambda item: (list(CLASS_LABELS).index(item[0]) if item[0] in CLASS_LABELS else 999, item[0]),
+    ):
+        total = sum(counts.values())
+        rows.append((CLASS_LABELS.get(class_name, class_name), counts, total))
+    return rows
+
+
+def percent(numerator, denominator):
+    return (numerator / denominator * 100) if denominator else 0.0
+
+
+def replace_readme_summary(section):
+    readme = README_PATH.read_text(encoding="utf-8")
+    pattern = re.compile(
+        r"## Reconciled Execution Summary.*?(?=## Required Secrets & Environment Variables)",
+        re.DOTALL,
+    )
+    updated, replacements = pattern.subn(section + "\n", readme, count=1)
+    if replacements != 1:
+        raise ValueError("Could not locate the execution summary section in README.md")
+    README_PATH.write_text(updated, encoding="utf-8")
 
 
 def main():
     test_cases = load_test_cases()
     code_map = scan_java_annotations()
-    exec_results = parse_surefire_results()
+    exec_results, class_counts, metadata = load_execution_report()
 
-    csv_ids = {tc["TestCaseID"] for tc in test_cases}
-    orphan_ids = sorted(set(code_map.keys()) - csv_ids)
-    duplicate_ids = {tc_id: impls for tc_id, impls in code_map.items() if len(impls) > 1}
-
+    csv_ids = {case["TestCaseID"] for case in test_cases}
+    orphan_ids = sorted(set(code_map) - csv_ids)
+    duplicate_ids = {case_id: implementations for case_id, implementations in code_map.items()
+                     if len(implementations) > 1}
     if orphan_ids:
-        print(f"ERROR: Orphan @TestCase IDs not in docs/test-cases.csv: {orphan_ids}", file=sys.stderr)
-        sys.exit(1)
+        raise ValueError(f"Orphan @TestCase IDs not in docs/test-cases.csv: {orphan_ids}")
     if duplicate_ids:
-        print(f"ERROR: Duplicate @TestCase IDs across Java classes: {duplicate_ids}", file=sys.stderr)
-        sys.exit(1)
+        raise ValueError(f"Duplicate @TestCase IDs across Java classes: {duplicate_ids}")
 
     total_cases = len(test_cases)
-    automated_count = 0
-    passed_count = 0
-    failed_count = 0
-    skipped_count = 0
-    not_run_count = 0
+    automated_count = len(code_map)
+    status_rows = []
+    passed_count = failed_count = skipped_count = not_run_count = 0
 
-    reconciled_rows = []
-
-    for tc in test_cases:
-        tc_id = tc["TestCaseID"]
-        req_id = tc["RequirementID"]
-        title = tc["Title"]
-        scope = tc.get("TestType", "UI")
-        crit = tc.get("Priority", "P2")
-
-        is_automated = tc_id in code_map
-        if is_automated:
-            automated_count += 1
-            impl_info = code_map[tc_id][0]
-            impl_str = f"[{impl_info['class']}#{impl_info['method']}](../{impl_info['file']})"
-
-            method_name = impl_info["method"]
-            if method_name in exec_results:
-                run_status = exec_results[method_name]
-                if run_status == "PASS":
-                    status_str = "PASS"
-                    passed_count += 1
-                elif run_status == "FAIL":
-                    status_str = "FAIL"
-                    failed_count += 1
-                elif run_status == "SKIPPED":
-                    status_str = "SKIPPED"
-                    skipped_count += 1
-                else:
-                    status_str = run_status
-            else:
-                status_str = "AUTOMATED (Ready)"
-                not_run_count += 1
-        else:
-            impl_str = "Manual / Planned Scope"
-            status_str = "NOT RUN (Manual Scope)"
+    for case in test_cases:
+        case_id = case["TestCaseID"]
+        implementation = code_map.get(case_id)
+        if not implementation:
+            status = "NOT RUN (Manual Scope)"
             not_run_count += 1
-
-        reconciled_rows.append({
-            "id": tc_id,
-            "req": req_id,
-            "title": title,
-            "scope": scope,
-            "criticality": crit,
-            "automated": "YES" if is_automated else "NO",
-            "impl": impl_str,
-            "status": status_str
+            impl_text = "Manual / Planned Scope"
+        else:
+            impl = implementation[0]
+            result = exec_results.get((impl["class"], impl["method"]))
+            impl_text = f"[{impl['class']}#{impl['method']}](../{impl['file']})"
+            if result == "PASS":
+                status = "PASS"
+                passed_count += 1
+            elif result == "FAIL":
+                status = "FAIL"
+                failed_count += 1
+            elif result == "SKIPPED":
+                status = "SKIPPED"
+                skipped_count += 1
+            else:
+                status = "NOT RUN (Automated)"
+                not_run_count += 1
+        status_rows.append({
+            "id": case_id,
+            "req": case["RequirementID"],
+            "title": case["Title"],
+            "scope": case.get("TestType", "UI"),
+            "priority": case.get("Priority", "P2"),
+            "automated": "YES" if implementation else "NO",
+            "implementation": impl_text,
+            "status": status,
         })
 
-    automation_rate = (automated_count / total_cases) * 100 if total_cases > 0 else 0
+    executed_count = passed_count + failed_count + skipped_count
+    if executed_count == 0:
+        raise ValueError("The selected TestNG report contains no executed test methods.")
+    timestamp = run_timestamp(metadata)
+    window = execution_window(metadata)
+    automation_rate = percent(automated_count, total_cases)
+    executed_rate = percent(executed_count, automated_count)
+    pass_rate = percent(passed_count, executed_count)
 
-    with open(RTM_OUT_PATH, "w", encoding="utf-8") as f:
-        f.write("# Requirements Traceability Matrix (RTM)\n\n")
-        f.write(f"**Reconciliation Timestamp:** {RECONCILED_RUN_TIMESTAMP}  \n")
-        f.write(f"**Execution Window:** {RECONCILED_RUN_WINDOW}  \n")
-        f.write("**Target AUT:** nopCommerce 4.90.8 (.NET 9, Isolated Docker Stack `http://127.0.0.1:5000`)\n\n")
-        f.write("> **Evidence Notice:** This matrix is machine-reconciled from `docs/test-cases.csv`, `@TestCase` annotations in Java source code, and `evidence/surefire-reports/testng-results.xml`.\n\n")
-        f.write("## 1. Traceability Summary\n\n")
-        f.write(f"- **Total Specified Test Cases:** {total_cases}\n")
-        f.write(f"- **Automated Test Methods (1:1 Mapped):** {automated_count} ({automation_rate:.1f}%)\n")
-        f.write(f"- **Executed - Passed:** {passed_count} ({(passed_count/total_cases*100):.1f}% of total / 100.0% of executed)\n")
-        f.write(f"- **Executed - Failed:** {failed_count} (0.0%)\n")
-        f.write(f"- **Executed - Skipped:** {skipped_count} (0.0%)\n")
-        f.write(f"- **Not Executed / Manual Scope:** {not_run_count} ({(not_run_count/total_cases*100):.1f}%)\n\n")
-        f.write("## 2. Granular Traceability Table\n\n")
-        f.write("| Test Case ID | Req ID | Scope | Title | Priority | Automated | Implementation | Execution Status |\n")
-        f.write("|--------------|--------|-------|-------|----------|-----------|----------------|------------------|\n")
-        for r in reconciled_rows:
-            f.write(f"| {r['id']} | {r['req']} | {r['scope']} | {r['title']} | {r['criticality']} | {r['automated']} | {r['impl']} | {r['status']} |\n")
+    with RTM_OUT_PATH.open("w", encoding="utf-8", newline="\n") as report:
+        report.write("# Requirements Traceability Matrix (RTM)\n\n")
+        report.write(f"**Reconciliation Timestamp:** {timestamp}\n")
+        report.write(f"**Execution Window:** {window}\n")
+        report.write("**Target AUT:** nopCommerce 4.90.8 (.NET 9, Isolated Docker Stack `http://127.0.0.1:5000`)\n\n")
+        report.write(f"> **Evidence Notice:** Reconciled from `docs/test-cases.csv`, Java `@TestCase` annotations, and `{metadata['path']}`.\n\n")
+        report.write("## 1. Traceability Summary\n\n")
+        report.write(f"- **Total Specified Test Cases:** {total_cases}\n")
+        report.write(f"- **Automated Test Methods (1:1 Mapped):** {automated_count} ({automation_rate:.1f}%)\n")
+        report.write(f"- **Executed:** {executed_count}/{automated_count} automated methods ({executed_rate:.1f}%)\n")
+        report.write(f"- **Passed / Failed / Skipped:** {passed_count} / {failed_count} / {skipped_count} ({pass_rate:.1f}% pass rate of executed)\n")
+        report.write(f"- **Not Executed / Manual Scope:** {not_run_count}\n\n")
+        report.write("## 2. Granular Traceability Table\n\n")
+        report.write("| Test Case ID | Req ID | Scope | Title | Priority | Automated | Implementation | Execution Status |\n")
+        report.write("|--------------|--------|-------|-------|----------|-----------|----------------|------------------|\n")
+        for row in status_rows:
+            report.write(
+                f"| {row['id']} | {row['req']} | {row['scope']} | {row['title']} | "
+                f"{row['priority']} | {row['automated']} | {row['implementation']} | {row['status']} |\n"
+            )
 
-    with open(SUMMARY_OUT_PATH, "w", encoding="utf-8") as f:
-        f.write("# Test Execution Summary\n\n")
-        f.write(f"**Reconciled Run Timestamp:** {RECONCILED_RUN_TIMESTAMP}  \n")
-        f.write(f"**Execution Window:** {RECONCILED_RUN_WINDOW}  \n")
-        f.write("**Target AUT:** nopCommerce 4.90.8 (.NET 9, Isolated Docker Stack `http://127.0.0.1:5000`)  \n")
-        f.write("**Stack:** Java 21 LTS | Playwright Java 1.49.0 | TestNG 7.10.2 | Allure 2.29.0 | Axe-core 4.10.0 | k6 0.54.0\n\n")
-        f.write("## 1. Execution Overview\n\n")
-        f.write("| Metric | Count | Percentage of Total Scope |\n")
-        f.write("|---|---|---|\n")
-        f.write(f"| Total Specified Test Cases (`docs/test-cases.csv`) | {total_cases} | 100.0% |\n")
-        f.write(f"| Automated Test Methods (`@TestCase` 1:1 Mapped) | {automated_count} | {automation_rate:.1f}% |\n")
-        f.write(f"| Executed - Passed (`testng-results.xml`) | {passed_count} | {(passed_count/total_cases*100):.1f}% (100.0% of automated) |\n")
-        f.write(f"| Executed - Failed | {failed_count} | {(failed_count/total_cases*100):.1f}% |\n")
-        f.write(f"| Executed - Skipped | {skipped_count} | {(skipped_count/total_cases*100):.1f}% |\n")
-        f.write(f"| Not Run (Manual / Planned Catalog Scope) | {not_run_count} | {(not_run_count/total_cases*100):.1f}% |\n\n")
-        f.write("## 2. Retained Machine Evidence Artifacts\n\n")
-        f.write("- **TestNG Execution XML:** `evidence/surefire-reports/testng-results.xml`\n")
-        f.write("- **TestNG HTML Report:** `evidence/reports/testng-index.html`\n")
-        f.write("- **k6 Load Benchmark Summary:** `evidence/performance/k6-summary.json`\n")
-        f.write("- **WCAG 2.1 AA Accessibility Audits:** `evidence/a11y/`\n\n")
-        f.write("## 3. Environmental Health & Defect Summary\n\n")
-        f.write(f"- **AUT State:** Isolated containerized nopCommerce 4.90.8 and MSSQL 2022 stack (`http://127.0.0.1:5000`) verified healthy.\n")
-        f.write(f"- **Pass Rate:** {passed_count}/{automated_count} (100.0%) automated tests passed with zero duplicate or orphan `@TestCase` mappings.\n")
+    summary_lines = [
+        "# Test Execution Summary", "",
+        f"**Reconciled Run Timestamp:** {timestamp}",
+        f"**Execution Window:** {window}",
+        "**Target AUT:** nopCommerce 4.90.8 (.NET 9, Isolated Docker Stack `http://127.0.0.1:5000`)",
+        "**Stack:** Java 21 LTS | Playwright Java 1.49.0 | TestNG 7.10.2 | Allure 2.29.0 | Axe-core 4.10.0 | k6 0.54.0", "",
+        "## 1. Execution Overview", "",
+        "| Metric | Count | Percentage |", "|---|---:|---:|",
+        f"| Total Specified Test Cases | {total_cases} | 100.0% |",
+        f"| Automated Test Methods | {automated_count} | {automation_rate:.1f}% of catalog |",
+        f"| Executed Automated Methods | {executed_count} | {executed_rate:.1f}% of automated |",
+        f"| Passed | {passed_count} | {pass_rate:.1f}% of executed |",
+        f"| Failed | {failed_count} | {percent(failed_count, executed_count):.1f}% of executed |",
+        f"| Skipped | {skipped_count} | {percent(skipped_count, executed_count):.1f}% of executed |",
+        f"| Not Executed / Manual Scope | {not_run_count} | {percent(not_run_count, total_cases):.1f}% of catalog |", "",
+        "## 2. Test Class Results", "",
+        "| Test Class | Passed | Failed | Skipped |", "|---|---:|---:|---:|",
+    ]
+    for label, counts, _ in suite_rows(class_counts):
+        summary_lines.append(f"| {label} | {counts['PASS']} | {counts['FAIL']} | {counts['SKIPPED']} |")
+    summary_lines.extend([
+        "", "## 3. Retained Evidence", "",
+        f"- TestNG XML: `{EVIDENCE_XML.relative_to(ROOT_DIR).as_posix()}`",
+        "- TestNG HTML report: `evidence/surefire-reports/index.html`",
+        "- k6 benchmark: `evidence/performance/k6-summary.json` (separate load-test run)",
+        "- Accessibility results: `evidence/a11y/`", "",
+        "## 4. Traceability Integrity", "",
+        f"- Duplicate test-case IDs: {len(duplicate_ids)}",
+        f"- Orphan test-case IDs: {len(orphan_ids)}",
+        f"- Pass rate: {passed_count}/{executed_count} executed automated methods.",
+    ])
+    SUMMARY_OUT_PATH.write_text("\n".join(summary_lines) + "\n", encoding="utf-8")
 
-    print(f"Reconciled {automated_count}/{total_cases} automated test cases ({passed_count} passed, {failed_count} failed, {skipped_count} skipped).")
+    closure_lines = [
+        "# Test Closure Report — nopCommerce 4.90.8 Quality Engineering", "",
+        f"**Reconciled Run Timestamp:** {timestamp}",
+        f"**Execution Window:** {window}",
+        "**Target AUT:** nopCommerce 4.90.8 (.NET 9, Isolated Docker Stack `http://127.0.0.1:5000`)", "",
+        f"> Metrics below are generated from `{metadata['path']}` and the current test-case annotations.", "",
+        "## Execution Summary", "",
+        "| Metric | Result |", "|---|---:|",
+        f"| Test cases in catalog | {total_cases} |",
+        f"| Automated methods | {automated_count} |",
+        f"| Executed automated methods | {executed_count} |",
+        f"| Passed | {passed_count} |",
+        f"| Failed | {failed_count} |",
+        f"| Skipped | {skipped_count} |",
+        f"| Pass rate among executed | {pass_rate:.1f}% |", "",
+        "## Results by Test Class", "",
+        "| Test Class | Passed | Failed | Skipped |", "|---|---:|---:|---:|",
+    ]
+    for label, counts, _ in suite_rows(class_counts):
+        closure_lines.append(f"| {label} | {counts['PASS']} | {counts['FAIL']} | {counts['SKIPPED']} |")
+    closure_lines.extend([
+        "", "## Scope and Artifacts", "",
+        "Coverage includes storefront UI, administration, API probes, database persistence, accessibility, and non-functional checks.",
+        "The k6 benchmark is a separate run and is documented in `evidence/performance/k6-summary.json`.",
+        "The traceability matrix and execution summary are generated alongside this report.",
+    ])
+    CLOSURE_OUT_PATH.write_text("\n".join(closure_lines) + "\n", encoding="utf-8")
+
+    readme_lines = [
+        f"## Reconciled Execution Summary (`{timestamp}`)", "",
+        f"**Execution Window:** `{window}`",
+        "**Target AUT:** nopCommerce 4.90.8, isolated Docker stack",
+        f"**Run Result:** {passed_count} passed, {failed_count} failed, {skipped_count} skipped "
+        f"({pass_rate:.1f}% of {executed_count} executed automated methods).", "",
+        "| Metric Category | Value | Source Artifact |", "|---|---|---|",
+        f"| Total Test Cases Specified | {total_cases} | `docs/test-cases.csv` |",
+        f"| Automated Test Methods | {automated_count} ({automation_rate:.1f}% of catalog) | `docs/traceability-matrix.md` |",
+        f"| Executed Automated Methods | {executed_count} ({executed_rate:.1f}%) | `{metadata['path']}` |",
+        f"| Passed / Failed / Skipped | {passed_count} / {failed_count} / {skipped_count} | `docs/execution-summary.md` |",
+        "| k6 Storefront Load Benchmark | Separate run; see benchmark artifact | `evidence/performance/k6-summary.json` |", "",
+    ]
+    replace_readme_summary("\n".join(readme_lines))
+    badge_color = "brightgreen" if failed_count == 0 and skipped_count == 0 else "yellow"
+    badge = (
+        f"[![Test Suite](https://img.shields.io/badge/Tests-{passed_count}%2F{executed_count}%20Passed-{badge_color}.svg)]"
+        "(docs/execution-summary.md)"
+    )
+    readme = README_PATH.read_text(encoding="utf-8")
+    readme, badge_replacements = re.subn(r"^\[!\[Test Suite\].*$", badge, readme, count=1, flags=re.MULTILINE)
+    if badge_replacements != 1:
+        raise ValueError("Could not locate the Test Suite badge in README.md")
+    README_PATH.write_text(readme, encoding="utf-8")
+
+    print(
+        f"Reconciled {executed_count}/{automated_count} automated methods: "
+        f"{passed_count} passed, {failed_count} failed, {skipped_count} skipped."
+    )
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except (ET.ParseError, FileNotFoundError, ValueError) as error:
+        print(f"ERROR: {error}", file=sys.stderr)
+        sys.exit(1)
