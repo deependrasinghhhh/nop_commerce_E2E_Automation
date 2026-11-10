@@ -149,6 +149,13 @@ pipeline {
 
             script {
                 try {
+                    sh 'mvn allure:report || true'
+                    archiveArtifacts artifacts: 'target/site/allure-maven-plugin/**/*', allowEmptyArchive: true
+                } catch (Throwable t) {
+                    echo "Notice: Maven allure:report generation skipped or failed: ${t.message}"
+                }
+
+                try {
                     allure includeProperties: false, jdk: '', results: [[path: 'target/allure-results']]
                     if (params.ENABLE_TREND_HISTORY) {
                         sh '''
@@ -158,8 +165,8 @@ pipeline {
                             fi
                         '''
                     }
-                } catch (Exception e) {
-                    echo "Notice: Allure Plugin step skipped or failed: ${e.message}"
+                } catch (Throwable t) {
+                    echo "Notice: Allure Plugin step skipped or not installed: ${t.message}"
                 }
             }
         }
