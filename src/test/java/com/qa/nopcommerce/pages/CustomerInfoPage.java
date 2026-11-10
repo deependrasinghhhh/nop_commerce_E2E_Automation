@@ -2,6 +2,8 @@ package com.qa.nopcommerce.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.Response;
+import com.microsoft.playwright.options.WaitForSelectorState;
 
 /**
  * Page Object representing My Account - Customer Info, Address Book CRUD, and Orders history.
@@ -101,17 +103,19 @@ public class CustomerInfoPage extends BasePage {
     }
 
     public void addNewAddress(String firstName, String lastName, String email,
-                              String countryLabel, String city, String address1,
+                              String countryLabel, String stateProvinceLabel, String city, String address1,
                               String zip, String phone) {
         click(addNewAddressButton);
-        fillAddressForm(firstName, lastName, email, countryLabel, city, address1, zip, phone);
+        fillAddressForm(firstName, lastName, email, countryLabel, stateProvinceLabel, city, address1, zip, phone);
         click(saveAddressButton);
     }
 
-    public void editAddressByStreet(String existingAddress1, String updatedCity, String updatedAddress1, String updatedZip) {
+    public void editAddressByStreet(String existingAddress1, String updatedStateProvince,
+                                    String updatedCity, String updatedAddress1, String updatedZip) {
         Locator card = getAddressCardByText(existingAddress1);
         Locator editBtn = card.locator("button.edit-address-button");
         click(editBtn);
+        selectAddressState(updatedStateProvince);
         fill(addressCityInput, updatedCity);
         fill(address1Input, updatedAddress1);
         fill(addressZipInput, updatedZip);
@@ -127,22 +131,52 @@ public class CustomerInfoPage extends BasePage {
     }
 
     private void fillAddressForm(String firstName, String lastName, String email,
-                                 String countryLabel, String city, String address1,
+                                 String countryLabel, String stateProvinceLabel, String city, String address1,
                                  String zip, String phone) {
         fill(addressFirstNameInput, firstName);
         fill(addressLastNameInput, lastName);
         fill(addressEmailInput, email);
-        addressCountryDropdown.selectOption(new com.microsoft.playwright.options.SelectOption().setLabel(countryLabel));
-        page.waitForTimeout(500);
-        try {
-            if (addressStateDropdown.count() > 0) {
-                addressStateDropdown.selectOption(new com.microsoft.playwright.options.SelectOption().setIndex(1));
-            }
-        } catch (Exception ignored) {}
+        Response statesResponse = page.waitForResponse(
+                response -> response.url().contains("/country/getstatesbycountryid") && response.ok(),
+                () -> addressCountryDropdown.selectOption(
+                        new com.microsoft.playwright.options.SelectOption().setLabel(countryLabel)));
+        String responseFailure = statesResponse.finished();
+        if (responseFailure != null) {
+            throw new IllegalStateException("Could not load state/province options for " + countryLabel
+                    + ": " + responseFailure);
+        }
+        page.locator("#states-loading-progress").waitFor(new Locator.WaitForOptions()
+                .setState(WaitForSelectorState.HIDDEN)
+                .setTimeout(15_000));
+        if ("United States of America".equals(countryLabel) || (stateProvinceLabel != null && !stateProvinceLabel.isBlank())) {
+            selectAddressState(stateProvinceLabel);
+        }
         fill(addressCityInput, city);
         fill(address1Input, address1);
         fill(addressZipInput, zip);
         fill(addressPhoneInput, phone);
+    }
+
+    private void selectAddressState(String stateProvinceLabel) {
+        if (stateProvinceLabel == null || stateProvinceLabel.isBlank()) {
+            throw new IllegalArgumentException("A state/province label is required for this address.");
+        }
+
+        Locator requestedState = addressStateDropdown.locator("option")
+                .filter(new Locator.FilterOptions().setHasText(stateProvinceLabel)).first();
+        requestedState.waitFor(new Locator.WaitForOptions()
+                .setState(WaitForSelectorState.ATTACHED)
+                .setTimeout(15_000));
+
+        String stateValue = requestedState.getAttribute("value");
+        if (stateValue == null || stateValue.isBlank() || "0".equals(stateValue)) {
+            throw new IllegalStateException("The requested state/province is not selectable: " + stateProvinceLabel);
+        }
+
+        addressStateDropdown.selectOption(stateValue);
+        if (!stateValue.equals(addressStateDropdown.inputValue())) {
+            throw new IllegalStateException("State/province selection did not persist: " + stateProvinceLabel);
+        }
     }
 
     public Locator getAddressCardByText(String text) {

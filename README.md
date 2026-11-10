@@ -5,26 +5,23 @@
 [![TestNG](https://img.shields.io/badge/TestNG-7.10.2-red.svg)](https://testng.org/)
 [![Allure](https://img.shields.io/badge/Allure-2.29.0-yellow.svg)](https://allurereport.org/)
 [![k6](https://img.shields.io/badge/k6-0.54.0-purple.svg)](https://k6.io/)
-[![Test Suite](https://img.shields.io/badge/Tests-61%2F61%20Passed%20(100%25)-brightgreen.svg)](docs/execution-summary.md)
+[![Test Suite](https://img.shields.io/badge/Tests-61%2F61%20Passed-brightgreen.svg)](docs/execution-summary.md)
 
 Production-grade Quality Engineering and End-to-End Test Automation framework targeting an isolated **nopCommerce 4.90.8** (.NET 9 + MSSQL 2022) environment.
 
-## Reconciled Execution Summary (`2026-11-10 00:07:24 UTC`)
+## Reconciled Execution Summary (`2026-11-10 16:39:42 UTC`)
+
+**Execution Window:** `2026-11-10T16:37:29Z to 2026-11-10T16:39:42Z (133.00s)`
+**Target AUT:** nopCommerce 4.90.8, isolated Docker stack
+**Run Result:** 61 passed, 0 failed, 0 skipped (100.0% of 61 executed automated methods).
 
 | Metric Category | Value | Source Artifact |
 |---|---|---|
-| **Reconciled Run Timestamp** | `2026-11-10 00:07:24 UTC` (`109.15s` duration) | `evidence/surefire-reports/testng-results.xml` |
-| **Total Test Cases Specified** | `108` | `docs/test-cases.csv` |
-| **Automated Test Methods (1:1 Mapped)** | `61` (`56.5%` of total catalog) | `docs/traceability-matrix.md` |
-| **Executed — Passed** | `61 / 61` (`100.0%` of automated scope) | `docs/execution-summary.md` |
-| **Executed — Failed / Skipped** | `0 Failed / 0 Skipped` | `docs/test-closure-report.md` |
-| **Storefront Smoke Gate (`SmokeTest`)** | `3 / 3 Passed` | `src/test/java/com/qa/nopcommerce/tests/smoke/SmokeTest.java` |
-| **Storefront UI (`Auth`, `Catalog`, `Cart`, `Checkout`, `Customer`, `Admin`)** | `39 / 39 Passed` | `src/test/java/com/qa/nopcommerce/tests/ui/` |
-| **API Endpoint Integration (`ApiEndpointTest`)** | `6 / 6 Passed` | `src/test/java/com/qa/nopcommerce/tests/api/ApiEndpointTest.java` |
-| **Database Persistence (`DatabaseVerificationTest`)** | `4 / 4 Passed` | `src/test/java/com/qa/nopcommerce/tests/db/DatabaseVerificationTest.java` |
-| **WCAG 2.1 AA Accessibility (`AccessibilityTest`)** | `5 / 5 Passed` | `src/test/java/com/qa/nopcommerce/tests/a11y/AccessibilityTest.java` |
-| **Non-Functional & SLA (`NonFunctionalTest`)** | `4 / 4 Passed` | `src/test/java/com/qa/nopcommerce/tests/nfr/NonFunctionalTest.java` |
-| **k6 Storefront Load Benchmark** | `120` iterations (`481` reqs, `960/960` checks, `p95 = 892.6ms`) | `evidence/performance/k6-summary.json` |
+| Total Test Cases Specified | 108 | `docs/test-cases.csv` |
+| Automated Test Methods | 61 (56.5% of catalog) | `docs/traceability-matrix.md` |
+| Executed Automated Methods | 61 (100.0%) | `evidence/surefire-reports/testng-results.xml` |
+| Passed / Failed / Skipped | 61 / 0 / 0 | `docs/execution-summary.md` |
+| k6 Storefront Load Benchmark | Separate run; see benchmark artifact | `evidence/performance/k6-summary.json` |
 
 ## Required Secrets & Environment Variables
 

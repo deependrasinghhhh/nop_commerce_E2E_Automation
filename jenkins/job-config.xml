@@ -49,6 +49,5 @@
       <spec></spec>
     </com.cloudbees.jenkins.GitHubPushTrigger>
   </triggers>
-  <authToken>nopcommerce-qa-trigger-token</authToken>
   <disabled>false</disabled>
 </flow-definition>

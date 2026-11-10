@@ -3,11 +3,13 @@ services:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: nopcommerce_mssql
     environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=${DB_PASSWORD:-NopCommerce@2026!}
-      - MSSQL_PID=Developer
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in the environment or .env file}
+      MSSQL_PID: Developer
     ports:
-      - "1433:1433"
+      - "127.0.0.1:1433:1433"
+    networks:
+      - qa
     volumes:
       - nopcommerce_db_data:/var/opt/mssql
       - ./seed:/docker-seed:ro
@@ -26,10 +28,13 @@ services:
       nopcommerce_database:
         condition: service_healthy
     ports:
-      - "5000:80"
+      - "127.0.0.1:5000:80"
+    networks:
+      - qa
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=http://+:80
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:80
+      ConnectionStrings__ConnectionString: "Data Source=nopcommerce_database;Initial Catalog=nopcommerce_db;Integrated Security=False;Persist Security Info=False;User ID=${DB_USER:-sa};Password=${DB_PASSWORD:?Set DB_PASSWORD in the environment or .env file};Trust Server Certificate=True"
     volumes:
       - nopcommerce_app_data:/app/App_Data
       - ./seed:/docker-seed:ro
@@ -46,3 +51,8 @@ volumes:
     driver: local
   nopcommerce_app_data:
     driver: local
+
+networks:
+  qa:
+    name: docker_qa-network
+    external: true

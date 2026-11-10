@@ -17,9 +17,9 @@ pipeline {
         MAVEN_HOME = '/usr/share/maven'
         PATH = "/usr/lib/jvm/java-21-openjdk-amd64/bin:/usr/share/maven/bin:${env.PATH}"
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = '0'
-        BASE_URL = 'http://host.docker.internal:5000'
-        ADMIN_URL = 'http://host.docker.internal:5000/Admin'
-        DB_HOST = 'host.docker.internal'
+        BASE_URL = 'http://nopcommerce_web'
+        ADMIN_URL = 'http://nopcommerce_web/Admin'
+        DB_HOST = 'nopcommerce_database'
         TEST_ENV_NAME = 'jenkins-ci-docker'
     }
 
@@ -97,9 +97,10 @@ pipeline {
             }
             steps {
                 sh '''
-                    mkdir -p target/allure-results
+                    rm -rf .ci/allure-history
                     if [ -d "${JENKINS_HOME}/allure-history/${JOB_NAME}/history" ]; then
-                        cp -r "${JENKINS_HOME}/allure-history/${JOB_NAME}/history" target/allure-results/history
+                        mkdir -p .ci/allure-history
+                        cp -r "${JENKINS_HOME}/allure-history/${JOB_NAME}/history" .ci/allure-history/history
                         echo "Restored Allure trend history from previous CI build."
                     fi
                 '''
@@ -125,11 +126,7 @@ pipeline {
                             -DthreadCount="${THREAD_COUNT}" \
                             -DbaseUrl="${BASE_URL}" \
                             -DadminUrl="${ADMIN_URL}" \
-                            -DdbHost="${DB_HOST}" \
-                            -DadminEmail="${ADMIN_EMAIL}" \
-                            -DadminPassword="${ADMIN_PASSWORD}" \
-                            -DdbUser="${DB_USER}" \
-                            -DdbPassword="${DB_PASSWORD}"
+                            -DdbHost="${DB_HOST}"
                     '''
                 }
             }
@@ -145,6 +142,15 @@ pipeline {
 
     post {
         always {
+            script {
+                if (params.ENABLE_TREND_HISTORY && fileExists('.ci/allure-history/history')) {
+                    sh '''
+                        mkdir -p target/allure-results/history
+                        cp -r .ci/allure-history/history/. target/allure-results/history/
+                        echo "Copied Allure trend history into the current results after Maven clean."
+                    '''
+                }
+            }
             echo "=== Archiving Test Artifacts and Generating Allure Reports ==="
             archiveArtifacts artifacts: 'target/surefire-reports/**/*, evidence/reports/**/*, evidence/failures/**/*, target/allure-results/**/*', allowEmptyArchive: true
 
