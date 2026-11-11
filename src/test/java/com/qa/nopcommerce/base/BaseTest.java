@@ -61,6 +61,7 @@ public abstract class BaseTest {
 
     @AfterMethod(alwaysRun = true)
     public void tearDown() {
+        PlaywrightFactory.stopTracing();
         PlaywrightFactory.closeContext();
     }
 

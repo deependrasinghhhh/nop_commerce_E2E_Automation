@@ -215,22 +215,35 @@ public class PlaywrightFactory {
 
     /**
      * Stops active Playwright tracing and exports the zip archive to {@code tracePath}.
+     * If {@code tracePath} is null or blank, active tracing is stopped and discarded without exporting.
      */
     public static void stopTracing(String tracePath) {
         BrowserContext context = tlContext.get();
         if (context != null && ConfigReader.isRecordTrace() && !Boolean.TRUE.equals(tlTraceStopped.get())) {
             try {
-                java.nio.file.Path path = Paths.get(tracePath);
-                if (path.getParent() != null) {
-                    java.nio.file.Files.createDirectories(path.getParent());
+                if (tracePath != null && !tracePath.trim().isEmpty()) {
+                    java.nio.file.Path path = Paths.get(tracePath);
+                    if (path.getParent() != null) {
+                        java.nio.file.Files.createDirectories(path.getParent());
+                    }
+                    context.tracing().stop(new Tracing.StopOptions().setPath(path));
+                    log.info("Saved Playwright execution trace to {}", tracePath);
+                } else {
+                    context.tracing().stop();
+                    log.debug("Stopped and discarded Playwright execution trace");
                 }
-                context.tracing().stop(new Tracing.StopOptions().setPath(path));
                 tlTraceStopped.set(true);
-                log.info("Saved Playwright execution trace to {}", tracePath);
             } catch (Exception e) {
-                log.warn("Could not save execution trace to {}: {}", tracePath, e.getMessage());
+                log.warn("Could not stop execution trace: {}", e.getMessage());
             }
         }
+    }
+
+    /**
+     * Stops active Playwright tracing and discards recorded trace data without exporting to disk.
+     */
+    public static void stopTracing() {
+        stopTracing(null);
     }
 
     public static Playwright getPlaywright() {
@@ -251,9 +264,11 @@ public class PlaywrightFactory {
 
     /**
      * Closes current test's Page and isolated BrowserContext.
+     * Any unstopped Playwright tracing is stopped and discarded without saving, preventing
+     * test-trace.zip generation and parallel trace collisions for passed/skipped tests.
      */
     public static void closeContext() {
-        closeContext("test");
+        closeContext(null);
     }
 
     public static void closeContext(String testName) {
@@ -274,16 +289,12 @@ public class PlaywrightFactory {
         if (context != null) {
             try {
                 if (ConfigReader.isRecordTrace() && !Boolean.TRUE.equals(tlTraceStopped.get())) {
-                    String tracePath = "evidence/traces/" + sanitizeFileName(testName) + "-trace.zip";
-                    java.nio.file.Path path = Paths.get(tracePath);
-                    if (path.getParent() != null) {
-                        java.nio.file.Files.createDirectories(path.getParent());
-                    }
-                    context.tracing().stop(new Tracing.StopOptions().setPath(path));
+                    context.tracing().stop();
                     tlTraceStopped.set(true);
+                    log.debug("Stopped and discarded Playwright execution trace during context close");
                 }
             } catch (Exception e) {
-                log.debug("Trace already stopped or unavailable for {}: {}", testName, e.getMessage());
+                log.debug("Trace already stopped or unavailable: {}", e.getMessage());
             } finally {
                 try {
                     context.close();
