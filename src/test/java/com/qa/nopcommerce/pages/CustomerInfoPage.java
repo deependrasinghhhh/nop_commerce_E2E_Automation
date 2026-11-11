@@ -64,6 +64,10 @@ public class CustomerInfoPage extends BasePage {
         return firstNameInput.inputValue();
     }
 
+    public String getFirstNameValue() {
+        return firstNameInput.inputValue();
+    }
+
     public String getLastName() {
         return lastNameInput.inputValue();
     }
@@ -72,12 +76,8 @@ public class CustomerInfoPage extends BasePage {
         return emailInput.inputValue();
     }
 
-    public Locator getFirstNameInput() {
-        return firstNameInput;
-    }
-
-    public Locator getEmailInput() {
-        return emailInput;
+    public String getEmailValue() {
+        return emailInput.inputValue();
     }
 
     public void updateName(String firstName, String lastName) {
@@ -179,15 +179,24 @@ public class CustomerInfoPage extends BasePage {
         }
     }
 
-    public Locator getAddressCardByText(String text) {
-        return addressItems.filter(new Locator.FilterOptions().setHasText(text)).first();
+    public boolean isAddressCardVisible(String text) {
+        return isVisible(addressItems.filter(new Locator.FilterOptions().setHasText(text)).first());
     }
 
-    public Locator getAddressItems() {
-        return addressItems;
+    public boolean addressCardContainsText(String addressText, String expectedContent) {
+        Locator card = addressItems.filter(new Locator.FilterOptions().setHasText(addressText)).first();
+        return getText(card).contains(expectedContent);
     }
 
-    public Locator getNoAddressesMessage() {
-        return noAddressesMessage;
+    public String getNoAddressesText() {
+        return getText(noAddressesMessage);
+    }
+
+    public boolean hasNoAddresses() {
+        return isVisible(noAddressesMessage) && getText(noAddressesMessage).contains("No addresses");
+    }
+
+    public String getPageTitleText() {
+        return getText(pageTitle);
     }
 }

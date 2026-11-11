@@ -1,6 +1,5 @@
 package com.qa.nopcommerce.tests.ui;
 
-import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import com.qa.nopcommerce.annotation.TestCase;
 import com.qa.nopcommerce.base.BaseTest;
 import com.qa.nopcommerce.database.DatabaseManager;
@@ -12,10 +11,10 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 @Epic("Storefront Core")
 @Feature("Customer Profile, Address CRUD & Product Reviews")
@@ -29,8 +28,7 @@ public class CustomerAccountTest extends BaseTest {
         registerPage.selectGender("male");
         registerPage.fillRegistrationForm("Alex", "CustomerQA", email, "Isolated QA Org", password, password);
         registerPage.clickRegisterButton();
-        PlaywrightAssertions.assertThat(getPage().locator(".result"))
-                .hasText(Pattern.compile(".*Your registration completed.*"));
+        Assert.assertTrue(registerPage.isRegistrationSuccess(), "Expected registration to complete successfully");
         return email;
     }
 
@@ -44,12 +42,12 @@ public class CustomerAccountTest extends BaseTest {
         navigateTo("/customer/info");
         CustomerInfoPage infoPage = new CustomerInfoPage(getPage());
 
-        PlaywrightAssertions.assertThat(getPage()).hasURL(Pattern.compile(".*customer/info.*"));
-        PlaywrightAssertions.assertThat(infoPage.getFirstNameInput()).hasValue("Alex");
-        PlaywrightAssertions.assertThat(infoPage.getEmailInput()).hasValue(email);
+        Assert.assertTrue(getPage().url().contains("customer/info"), "Expected URL to contain customer/info");
+        Assert.assertEquals(infoPage.getFirstNameValue(), "Alex", "Expected first name to be Alex");
+        Assert.assertEquals(infoPage.getEmailValue(), email, "Expected email to match registered email");
 
         infoPage.updateName("Alexander", "UpdatedQA");
-        PlaywrightAssertions.assertThat(infoPage.getFirstNameInput()).hasValue("Alexander");
+        Assert.assertEquals(infoPage.getFirstNameValue(), "Alexander", "Expected updated first name Alexander");
     }
 
     @Test(groups = {"ui", "customer", "address"})
@@ -63,7 +61,7 @@ public class CustomerAccountTest extends BaseTest {
 
         navigateTo("/customer/addresses");
         CustomerInfoPage infoPage = new CustomerInfoPage(getPage());
-        PlaywrightAssertions.assertThat(getPage()).hasURL(Pattern.compile(".*customer/addresses.*"));
+        Assert.assertTrue(getPage().url().contains("customer/addresses"), "Expected URL to contain customer/addresses");
 
         // 1. Create Address
         infoPage.addNewAddress(
@@ -77,16 +75,16 @@ public class CustomerAccountTest extends BaseTest {
                 "78701",
                 "5125550199"
         );
-        PlaywrightAssertions.assertThat(infoPage.getAddressCardByText(initialStreet)).isVisible();
+        Assert.assertTrue(infoPage.isAddressCardVisible(initialStreet), "Expected initial address card to be visible");
 
         // 2. Edit Address
         infoPage.editAddressByStreet(initialStreet, "Washington", "Seattle", updatedStreet, "98101");
-        PlaywrightAssertions.assertThat(infoPage.getAddressCardByText(updatedStreet)).isVisible();
-        PlaywrightAssertions.assertThat(infoPage.getAddressCardByText(updatedStreet)).containsText("Seattle");
+        Assert.assertTrue(infoPage.isAddressCardVisible(updatedStreet), "Expected updated address card to be visible");
+        Assert.assertTrue(infoPage.addressCardContainsText(updatedStreet, "Seattle"), "Expected updated address to contain Seattle");
 
         // 3. Delete Address (TC-CUST-003 cleanup)
         infoPage.deleteAddressByStreet(updatedStreet);
-        PlaywrightAssertions.assertThat(infoPage.getNoAddressesMessage()).containsText("No addresses");
+        Assert.assertTrue(infoPage.getNoAddressesText().contains("No addresses"), "Expected no addresses text");
     }
 
     @Test(groups = {"ui", "customer", "address"})
@@ -110,10 +108,10 @@ public class CustomerAccountTest extends BaseTest {
                 "80202",
                 "3035550144"
         );
-        PlaywrightAssertions.assertThat(infoPage.getAddressCardByText(street)).isVisible();
+        Assert.assertTrue(infoPage.isAddressCardVisible(street), "Expected address card to be visible");
 
         infoPage.deleteAddressByStreet(street);
-        PlaywrightAssertions.assertThat(infoPage.getNoAddressesMessage()).containsText("No addresses");
+        Assert.assertTrue(infoPage.getNoAddressesText().contains("No addresses"), "Expected no addresses text");
     }
 
     @Test(groups = {"ui", "customer"})
@@ -124,8 +122,10 @@ public class CustomerAccountTest extends BaseTest {
         registerIsolatedCustomer("nop_orders");
         navigateTo("/order/history");
 
-        PlaywrightAssertions.assertThat(getPage()).hasURL(Pattern.compile(".*order/history.*"));
-        PlaywrightAssertions.assertThat(getPage().locator(".page-title h1")).containsText("My account - Orders");
+        CustomerInfoPage infoPage = new CustomerInfoPage(getPage());
+        Assert.assertTrue(getPage().url().contains("order/history"), "Expected URL to contain order/history");
+        Assert.assertTrue(infoPage.getPageTitleText().contains("My account - Orders"),
+                "Expected page title to contain My account - Orders");
     }
 
     @Test(groups = {"ui", "customer", "reviews"})
@@ -144,11 +144,9 @@ public class CustomerAccountTest extends BaseTest {
 
             productPage.submitProductReview(reviewTitle, reviewBody);
 
-            PlaywrightAssertions.assertThat(productPage.getReviewResultNotification())
-                    .containsText(Pattern.compile(".*Product review is successfully added.*"));
-            PlaywrightAssertions.assertThat(productPage.getReviewListItems().filter(
-                    new com.microsoft.playwright.Locator.FilterOptions().setHasText(reviewTitle)
-            ).first()).isVisible();
+            Assert.assertTrue(productPage.getReviewResultNotificationText().contains("Product review is successfully added"),
+                    "Expected review successfully added notification");
+            Assert.assertTrue(productPage.isReviewPresent(reviewTitle), "Expected submitted review title in review list");
         } finally {
             DatabaseManager.deleteProductReviewByTitle(reviewTitle);
         }
@@ -163,7 +161,7 @@ public class CustomerAccountTest extends BaseTest {
         ProductDetailsPage productPage = new ProductDetailsPage(getPage());
         productPage.openProductReviewsSection();
 
-        PlaywrightAssertions.assertThat(productPage.getReviewValidationError())
-                .containsText(Pattern.compile(".*Only registered users can write reviews.*"));
+        Assert.assertTrue(productPage.getReviewValidationErrorText().contains("Only registered users can write reviews"),
+                "Expected error message that only registered users can write reviews");
     }
 }

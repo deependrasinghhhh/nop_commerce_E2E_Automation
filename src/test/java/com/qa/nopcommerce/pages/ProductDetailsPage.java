@@ -138,19 +138,15 @@ public class ProductDetailsPage extends BasePage {
         click(submitReviewButton);
     }
 
-    public Locator getReviewResultNotification() {
-        return reviewResultNotification;
+    public String getReviewResultNotificationText() {
+        return getText(reviewResultNotification);
     }
 
-    public Locator getReviewListItems() {
-        return reviewListItems;
+    public boolean isReviewPresent(String reviewTitle) {
+        return isVisible(reviewListItems.filter(new Locator.FilterOptions().setHasText(reviewTitle)).first());
     }
 
-    public Locator getReviewValidationError() {
-        return reviewValidationError;
-    }
-
-    public Locator getSubmitReviewButton() {
-        return submitReviewButton;
+    public String getReviewValidationErrorText() {
+        return getText(reviewValidationError);
     }
 }
