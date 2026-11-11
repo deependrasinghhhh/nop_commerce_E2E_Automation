@@ -1,6 +1,5 @@
 package com.qa.nopcommerce.tests.ui;
 
-import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import com.qa.nopcommerce.annotation.TestCase;
 import com.qa.nopcommerce.base.BaseTest;
 import com.qa.nopcommerce.pages.CartPage;
@@ -11,9 +10,8 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import java.util.regex.Pattern;
 
 @Epic("Storefront Core")
 @Feature("Order Placement & Checkout Flow")
@@ -29,15 +27,15 @@ public class CheckoutTest extends BaseTest {
         navigateTo(SIMPLE_PRODUCT_SLUG);
         ProductDetailsPage productPage = new ProductDetailsPage(getPage());
         productPage.clickAddToCart();
-        PlaywrightAssertions.assertThat(productPage.getNotificationBanner()).isVisible();
+        Assert.assertTrue(productPage.isNotificationBannerVisible(), "Expected notification banner");
 
         navigateTo("/cart");
         CartPage cartPage = new CartPage(getPage());
         cartPage.acceptTermsOfService();
         cartPage.proceedToCheckout();
 
-        PlaywrightAssertions.assertThat(getPage())
-                .hasURL(Pattern.compile(".*(checkout|login).*"));
+        Assert.assertTrue(getPage().url().matches(".*(checkout|login).*"),
+                "Expected URL to contain checkout or login");
     }
 
     @Test(groups = {"ui", "checkout"})
@@ -48,7 +46,7 @@ public class CheckoutTest extends BaseTest {
         navigateTo(SIMPLE_PRODUCT_SLUG);
         ProductDetailsPage productPage = new ProductDetailsPage(getPage());
         productPage.clickAddToCart();
-        PlaywrightAssertions.assertThat(productPage.getNotificationBanner()).isVisible();
+        Assert.assertTrue(productPage.isNotificationBannerVisible(), "Expected notification banner");
 
         navigateTo("/cart");
         CartPage cartPage = new CartPage(getPage());
@@ -56,8 +54,8 @@ public class CheckoutTest extends BaseTest {
 
         checkoutPage.clickCheckoutAsGuest();
 
-        PlaywrightAssertions.assertThat(getPage().locator("#BillingNewAddress_CountryId, #billing-buttons-container").first())
-                .isVisible();
+        Assert.assertTrue(checkoutPage.isBillingStepVisible(),
+                "Expected billing address form or container to be visible");
     }
 
     @Test(groups = {"ui", "checkout"})
@@ -68,14 +66,14 @@ public class CheckoutTest extends BaseTest {
         navigateTo(SIMPLE_PRODUCT_SLUG);
         ProductDetailsPage productPage = new ProductDetailsPage(getPage());
         productPage.clickAddToCart();
-        PlaywrightAssertions.assertThat(productPage.getNotificationBanner()).isVisible();
+        Assert.assertTrue(productPage.isNotificationBannerVisible(), "Expected notification banner");
 
         navigateTo("/cart");
         CartPage cartPage = new CartPage(getPage());
         CheckoutPage checkoutPage = cartPage.proceedToCheckout();
         checkoutPage.clickCheckoutAsGuest();
 
-        PlaywrightAssertions.assertThat(getPage().locator("#checkout-steps, .checkout-page").first())
-                .isVisible();
+        Assert.assertTrue(checkoutPage.isCheckoutStepVisible(),
+                "Expected checkout steps container to be visible");
     }
 }

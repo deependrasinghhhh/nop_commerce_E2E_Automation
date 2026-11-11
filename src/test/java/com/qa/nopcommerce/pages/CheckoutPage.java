@@ -70,6 +70,14 @@ public class CheckoutPage extends BasePage {
         }
     }
 
+    public boolean isBillingStepVisible() {
+        return isVisible(billingCountryDropdown) || isVisible(page.locator("#billing-buttons-container"));
+    }
+
+    public boolean isCheckoutStepVisible() {
+        return isVisible(page.locator("#checkout-steps, .checkout-page"));
+    }
+
     public void fillBillingAddress(String country, String city, String address1, String zip, String phone) {
         billingCountryDropdown.selectOption(new com.microsoft.playwright.options.SelectOption().setLabel(country));
         fill(billingCityInput, city);

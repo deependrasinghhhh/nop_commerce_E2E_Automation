@@ -97,10 +97,6 @@ public class ProductDetailsPage extends BasePage {
         }
     }
 
-    public Locator getNotificationBanner() {
-        return notificationBanner;
-    }
-
     public String getNotificationText() {
         return getText(notificationBanner);
     }
