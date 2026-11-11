@@ -58,7 +58,7 @@ public class CategoryPage extends BasePage {
         click(sub);
     }
 
-    public Locator getProductItems() {
-        return productItems;
+    public boolean hasProducts() {
+        return getProductCount() > 0;
     }
 }

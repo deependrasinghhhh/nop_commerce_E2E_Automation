@@ -83,6 +83,11 @@ public class HomePage extends BasePage {
         return isVisible(loginLink);
     }
 
+    public boolean isCategoryMenuVisible(String categorySlug) {
+        Locator menu = page.locator(".header-menu, .top-menu");
+        return isVisible(menu.locator(String.format("a[href*='/%s']", categorySlug)).first());
+    }
+
     public CategoryPage navigateToCategory(String categoryName) {
         Locator catLink = topMenu.locator(String.format("a:has-text('%s')", categoryName)).first();
         click(catLink);

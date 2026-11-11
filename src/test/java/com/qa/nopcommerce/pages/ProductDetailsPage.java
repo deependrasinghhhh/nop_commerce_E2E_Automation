@@ -58,12 +58,12 @@ public class ProductDetailsPage extends BasePage {
         return getText(productPrice);
     }
 
-    public Locator getProductNameHeading() {
-        return productName;
+    public boolean isProductPriceVisible() {
+        return isVisible(productPrice);
     }
 
-    public Locator getProductPriceLocator() {
-        return productPrice;
+    public boolean isProductImageGalleryVisible() {
+        return isVisible(page.locator(".gallery .picture img"));
     }
 
     public void setQuantity(int qty) {
