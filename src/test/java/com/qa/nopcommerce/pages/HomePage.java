@@ -33,12 +33,24 @@ public class HomePage extends BasePage {
         this.customerInfoLink = page.locator("a.ico-account");
         this.logoutLink = page.locator("a.ico-logout");
         this.currencyDropdown = page.locator("#customerCurrency");
-        this.topMenu = page.locator(".top-menu.notmobile");
+        this.topMenu = page.locator(".top-menu.notmobile, .header-menu, .top-menu").first();
         this.featuredProductsGrid = page.locator(".product-grid.home-page-product-grid");
     }
 
-    public Locator getLogo() {
-        return logo;
+    public boolean isLogoVisible() {
+        return isVisible(logo);
+    }
+
+    public boolean isTopMenuVisible() {
+        return isVisible(topMenu);
+    }
+
+    public boolean isSearchInputVisible() {
+        return isVisible(searchInput);
+    }
+
+    public boolean isCartLinkVisible() {
+        return isVisible(cartLink);
     }
 
     public void search(String keyword) {
@@ -96,21 +108,5 @@ public class HomePage extends BasePage {
 
     public void selectCurrency(String currencyText) {
         currencyDropdown.selectOption(currencyText);
-    }
-
-    public Locator getFeaturedProductsGrid() {
-        return featuredProductsGrid;
-    }
-
-    public Locator getSearchInput() {
-        return searchInput;
-    }
-
-    public Locator getCartLink() {
-        return cartLink;
-    }
-
-    public Locator getWishlistLink() {
-        return wishlistLink;
     }
 }

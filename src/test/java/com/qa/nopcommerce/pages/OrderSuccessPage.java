@@ -35,8 +35,4 @@ public class OrderSuccessPage extends BasePage {
         click(continueButton);
         return new HomePage(page);
     }
-
-    public Locator getCompletedTitle() {
-        return completedTitle;
-    }
 }

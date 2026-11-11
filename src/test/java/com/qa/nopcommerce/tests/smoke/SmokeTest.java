@@ -1,15 +1,18 @@
 package com.qa.nopcommerce.tests.smoke;
 
-import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import com.qa.nopcommerce.annotation.TestCase;
 import com.qa.nopcommerce.base.BaseTest;
 import com.qa.nopcommerce.config.ConfigReader;
+import com.qa.nopcommerce.pages.AdminLoginPage;
+import com.qa.nopcommerce.pages.HomePage;
+import com.qa.nopcommerce.pages.SearchPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.regex.Pattern;
@@ -27,17 +30,11 @@ public class SmokeTest extends BaseTest {
 
         PlaywrightAssertions.assertThat(getPage()).hasTitle(Pattern.compile(".*(nopCommerce|Your store).*"));
 
-        Locator logo = getPage().locator(".header-logo");
-        PlaywrightAssertions.assertThat(logo).isVisible();
-
-        Locator topMenu = getPage().locator(".header-menu, .top-menu").first();
-        PlaywrightAssertions.assertThat(topMenu).isVisible();
-
-        Locator searchInput = getPage().locator("#small-searchterms");
-        PlaywrightAssertions.assertThat(searchInput).isVisible();
-
-        Locator shoppingCartLink = getPage().locator("#topcartlink a");
-        PlaywrightAssertions.assertThat(shoppingCartLink).isVisible();
+        HomePage homePage = new HomePage(getPage());
+        Assert.assertTrue(homePage.isLogoVisible(), "Homepage logo should be visible");
+        Assert.assertTrue(homePage.isTopMenuVisible(), "Top navigation menu should be visible");
+        Assert.assertTrue(homePage.isSearchInputVisible(), "Top search input should be visible");
+        Assert.assertTrue(homePage.isCartLinkVisible(), "Shopping cart header link should be visible");
     }
 
     @Test(groups = {"smoke"})
@@ -47,16 +44,13 @@ public class SmokeTest extends BaseTest {
     public void testStorefrontSearchBoxInput() {
         navigateTo("/");
 
-        Locator searchInput = getPage().locator("#small-searchterms");
-        searchInput.fill("computer");
-
-        Locator searchButton = getPage().locator("button.search-box-button");
-        searchButton.click();
+        HomePage homePage = new HomePage(getPage());
+        homePage.search("computer");
 
         PlaywrightAssertions.assertThat(getPage()).hasURL(Pattern.compile(".*search.*q=computer.*"));
 
-        Locator searchResults = getPage().locator(".search-results");
-        PlaywrightAssertions.assertThat(searchResults).isVisible();
+        SearchPage searchPage = new SearchPage(getPage());
+        Assert.assertTrue(searchPage.isSearchResultsVisible(), "Search results should be visible");
     }
 
     @Test(groups = {"smoke"})
@@ -68,13 +62,9 @@ public class SmokeTest extends BaseTest {
 
         PlaywrightAssertions.assertThat(getPage()).hasTitle(Pattern.compile(".*(Your store|nopCommerce).*Login.*"));
 
-        Locator emailInput = getPage().locator("#Email");
-        PlaywrightAssertions.assertThat(emailInput).isVisible();
-
-        Locator passwordInput = getPage().locator("#Password");
-        PlaywrightAssertions.assertThat(passwordInput).isVisible();
-
-        Locator loginButton = getPage().locator("button.login-button, button[type='submit']").first();
-        PlaywrightAssertions.assertThat(loginButton).isVisible();
+        AdminLoginPage adminLoginPage = new AdminLoginPage(getPage());
+        Assert.assertTrue(adminLoginPage.isEmailInputVisible(), "Admin login email input should be visible");
+        Assert.assertTrue(adminLoginPage.isPasswordInputVisible(), "Admin login password input should be visible");
+        Assert.assertTrue(adminLoginPage.isLoginButtonVisible(), "Admin login button should be visible");
     }
 }

@@ -43,11 +43,15 @@ public class AdminLoginPage extends BasePage {
         return isVisible(errorMessage);
     }
 
-    public Locator getEmailInput() {
-        return emailInput;
+    public boolean isEmailInputVisible() {
+        return isVisible(emailInput);
     }
 
-    public Locator getPasswordInput() {
-        return passwordInput;
+    public boolean isPasswordInputVisible() {
+        return isVisible(passwordInput);
+    }
+
+    public boolean isLoginButtonVisible() {
+        return isVisible(loginButton);
     }
 }

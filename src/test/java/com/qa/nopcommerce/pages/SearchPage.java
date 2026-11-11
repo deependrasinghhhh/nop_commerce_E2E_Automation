@@ -42,4 +42,8 @@ public class SearchPage extends BasePage {
     public boolean hasSearchResults() {
         return getSearchResultCount() > 0;
     }
+
+    public boolean isSearchResultsVisible() {
+        return isVisible(searchResults);
+    }
 }
