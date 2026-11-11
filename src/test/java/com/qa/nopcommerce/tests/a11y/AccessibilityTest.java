@@ -5,6 +5,7 @@ import com.deque.html.axecore.results.AxeResults;
 import com.deque.html.axecore.results.Rule;
 import com.qa.nopcommerce.annotation.TestCase;
 import com.qa.nopcommerce.base.BaseTest;
+import com.qa.nopcommerce.config.ConfigReader;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -20,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,6 +43,76 @@ public class AccessibilityTest extends BaseTest {
         }
     }
 
+    /**
+     * Asserts that no accessibility violations meet or exceed the configured impact threshold.
+     * Severity ranking: minor (1) < moderate (2) < serious (3) < critical (4).
+     * Violations with null, blank, or unknown impact count as meeting the threshold and are reported as UNKNOWN.
+     */
+    private void assertAccessibilityViolations(AxeResults results) {
+        Assert.assertNotNull(results, "Axe analysis results must not be null");
+        String threshold = ConfigReader.getA11yFailOnImpact();
+        int thresholdRank = getSeverityRank(threshold);
+
+        List<Rule> violations = results.getViolations();
+        if (violations == null || violations.isEmpty()) {
+            log.info("No accessibility violations detected");
+            return;
+        }
+
+        log.info("Total WCAG violations detected: {}", violations.size());
+
+        List<String> offendingViolations = new ArrayList<>();
+        for (Rule rule : violations) {
+            String rawImpact = rule.getImpact();
+            int ruleRank = getSeverityRank(rawImpact);
+            if (ruleRank >= thresholdRank) {
+                String displayImpact = getDisplayImpact(rawImpact);
+                int nodeCount = (rule.getNodes() != null) ? rule.getNodes().size() : 0;
+                offendingViolations.add(String.format("Rule ID: %s, Impact: %s, Nodes: %d",
+                        rule.getId(), displayImpact, nodeCount));
+            }
+        }
+
+        if (!offendingViolations.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(String.format("Accessibility scan failed: %d violation(s) met or exceeded impact threshold '%s':%n",
+                    offendingViolations.size(), threshold));
+            for (String violation : offendingViolations) {
+                sb.append("  - ").append(violation).append("\n");
+            }
+            Assert.fail(sb.toString().trim());
+        }
+    }
+
+    private static int getSeverityRank(String impact) {
+        if (impact == null || impact.isBlank()) {
+            return Integer.MAX_VALUE;
+        }
+        switch (impact.trim().toLowerCase()) {
+            case "minor":
+                return 1;
+            case "moderate":
+                return 2;
+            case "serious":
+                return 3;
+            case "critical":
+                return 4;
+            default:
+                return Integer.MAX_VALUE;
+        }
+    }
+
+    private static String getDisplayImpact(String rawImpact) {
+        if (rawImpact == null || rawImpact.isBlank()) {
+            return "UNKNOWN";
+        }
+        String lower = rawImpact.trim().toLowerCase();
+        if (Arrays.asList("minor", "moderate", "serious", "critical").contains(lower)) {
+            return lower;
+        }
+        return "UNKNOWN";
+    }
+
     @Test(groups = {"a11y"})
     @TestCase(value = "TC-A11Y-001", requirementId = "REQ-A11Y-001")
     @Severity(SeverityLevel.CRITICAL)
@@ -52,9 +124,7 @@ public class AccessibilityTest extends BaseTest {
                 .analyze();
 
         saveAxeReport("homepage", axeResults);
-        List<Rule> violations = axeResults.getViolations();
-        log.info("Homepage WCAG violations detected: {}", violations.size());
-        Assert.assertNotNull(axeResults, "Axe analysis results must not be null");
+        assertAccessibilityViolations(axeResults);
     }
 
     @Test(groups = {"a11y"})
@@ -68,7 +138,7 @@ public class AccessibilityTest extends BaseTest {
                 .analyze();
 
         saveAxeReport("register-page", axeResults);
-        Assert.assertNotNull(axeResults, "Axe analysis results must not be null");
+        assertAccessibilityViolations(axeResults);
     }
 
     @Test(groups = {"a11y"})
@@ -82,7 +152,7 @@ public class AccessibilityTest extends BaseTest {
                 .analyze();
 
         saveAxeReport("login-page", axeResults);
-        Assert.assertNotNull(axeResults, "Axe analysis results must not be null");
+        assertAccessibilityViolations(axeResults);
     }
 
     @Test(groups = {"a11y"})
@@ -96,7 +166,7 @@ public class AccessibilityTest extends BaseTest {
                 .analyze();
 
         saveAxeReport("cart-page", axeResults);
-        Assert.assertNotNull(axeResults, "Axe analysis results must not be null");
+        assertAccessibilityViolations(axeResults);
     }
 
     @Test(groups = {"a11y"})
@@ -110,6 +180,6 @@ public class AccessibilityTest extends BaseTest {
                 .analyze();
 
         saveAxeReport("category-desktops-page", axeResults);
-        Assert.assertNotNull(axeResults, "Axe analysis results must not be null");
+        assertAccessibilityViolations(axeResults);
     }
 }
