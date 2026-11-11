@@ -18,7 +18,7 @@
     "name" : "axe"
   },
   "url" : "http://127.0.0.1:5000/desktops",
-  "timestamp" : "2026-11-10T19:10:08.359Z",
+  "timestamp" : "2026-11-11T10:24:44.936Z",
   "passes" : [ {
     "id" : "aria-allowed-attr",
     "description" : "Ensures ARIA attributes are allowed for an element's role",
@@ -6672,7 +6672,7 @@
     "impact" : "",
     "tags" : [ "cat.text-alternatives", "wcag2a", "wcag111", "section508", "section508.22.a", "ACT" ],
     "nodes" : [ {
-      "html" : "<img alt=\"Your store name\" src=\"http://localhost:80/Themes/DefaultClean/Content/images/logo.png\">",
+      "html" : "<img alt=\"Your store name\" src=\"http://127.0.0.1:5000/Themes/DefaultClean/Content/images/logo.png\">",
       "target" : [ "img[alt=\"Your store name\"]" ],
       "impact" : null,
       "any" : [ {
@@ -6692,7 +6692,7 @@
       } ],
       "failureSummary" : null
     }, {
-      "html" : "<img alt=\"Picture of Build your own computer\" src=\"http://localhost:80/images/thumbs/0000020_build-your-own-computer_415.jpeg\" title=\"Show details for Build your own computer\">",
+      "html" : "<img alt=\"Picture of Build your own computer\" src=\"http://127.0.0.1:5000/images/thumbs/0000020_build-your-own-computer_415.jpeg\" title=\"Show details for Build your own computer\">",
       "target" : [ "a[href$=\"build-your-own-computer\"] > img" ],
       "impact" : null,
       "any" : [ {
@@ -6942,7 +6942,7 @@
       } ],
       "failureSummary" : null
     }, {
-      "html" : "<a href=\"/\">\n    <img alt=\"Your store name\" src=\"http://localhost:80/Themes/DefaultClean/Content/images/logo.png\">\n</a>",
+      "html" : "<a href=\"/\">\n    <img alt=\"Your store name\" src=\"http://127.0.0.1:5000/Themes/DefaultClean/Content/images/logo.png\">\n</a>",
       "target" : [ ".header-logo > a[href=\"/\"]" ],
       "impact" : null,
       "any" : [ {
@@ -7786,7 +7786,7 @@
       } ],
       "failureSummary" : null
     }, {
-      "html" : "<a href=\"/build-your-own-computer\" title=\"Show details for Build your own computer\">\n                <img alt=\"Picture of Build your own computer\" src=\"http://localhost:80/images/thumbs/0000020_build-your-own-computer_415.jpeg\" title=\"Show details for Build your own computer\">\n            </a>",
+      "html" : "<a href=\"/build-your-own-computer\" title=\"Show details for Build your own computer\">\n                <img alt=\"Picture of Build your own computer\" src=\"http://127.0.0.1:5000/images/thumbs/0000020_build-your-own-computer_415.jpeg\" title=\"Show details for Build your own computer\">\n            </a>",
       "target" : [ ".picture > a[href$=\"build-your-own-computer\"]" ],
       "impact" : null,
       "any" : [ {
@@ -9102,7 +9102,7 @@
     "impact" : "",
     "tags" : [ "cat.keyboard", "wcag2a", "wcag412" ],
     "nodes" : [ {
-      "html" : "<img alt=\"Your store name\" src=\"http://localhost:80/Themes/DefaultClean/Content/images/logo.png\">",
+      "html" : "<img alt=\"Your store name\" src=\"http://127.0.0.1:5000/Themes/DefaultClean/Content/images/logo.png\">",
       "target" : [ "img[alt=\"Your store name\"]" ],
       "impact" : null,
       "any" : [ {
@@ -9382,7 +9382,7 @@
       "none" : [ ],
       "failureSummary" : null
     }, {
-      "html" : "<img alt=\"Picture of Build your own computer\" src=\"http://localhost:80/images/thumbs/0000020_build-your-own-computer_415.jpeg\" title=\"Show details for Build your own computer\">",
+      "html" : "<img alt=\"Picture of Build your own computer\" src=\"http://127.0.0.1:5000/images/thumbs/0000020_build-your-own-computer_415.jpeg\" title=\"Show details for Build your own computer\">",
       "target" : [ "a[href$=\"build-your-own-computer\"] > img" ],
       "impact" : null,
       "any" : [ {

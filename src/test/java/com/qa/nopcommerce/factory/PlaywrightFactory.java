@@ -1,6 +1,7 @@
 package com.qa.nopcommerce.factory;
 
 import com.microsoft.playwright.*;
+import com.microsoft.playwright.options.ViewportSize;
 import com.qa.nopcommerce.config.ConfigReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +70,7 @@ public class PlaywrightFactory {
             }
 
             // NEVER reuse browser.contexts().get(0); always create a fresh isolated context
-            BrowserContext context = browser.newContext(buildContextOptions(ignoreHttpsErrors));
+            BrowserContext context = browser.newContext(buildContextOptions(ignoreHttpsErrors, headless));
             tlContext.set(context);
             startTracingIfEnabled(context);
 
@@ -88,7 +89,7 @@ public class PlaywrightFactory {
         }
 
         // --- Fresh isolated BrowserContext per test method ---
-        BrowserContext context = browser.newContext(buildContextOptions(ignoreHttpsErrors));
+        BrowserContext context = browser.newContext(buildContextOptions(ignoreHttpsErrors, headless));
         tlContext.set(context);
         startTracingIfEnabled(context);
 
@@ -99,10 +100,16 @@ public class PlaywrightFactory {
         return page;
     }
 
-    private static Browser.NewContextOptions buildContextOptions(boolean ignoreHttpsErrors) {
+    private static Browser.NewContextOptions buildContextOptions(boolean ignoreHttpsErrors, boolean headless) {
         Browser.NewContextOptions options = new Browser.NewContextOptions()
-                .setViewportSize(1920, 1080)
                 .setIgnoreHTTPSErrors(ignoreHttpsErrors);
+        if (headless) {
+            options.setViewportSize(1920, 1080);
+        } else {
+            // In headed mode, let the OS browser window dictate the viewport so fixed
+            // 1920x1080 emulation does not overflow smaller screens or shift UI right.
+            options.setViewportSize((ViewportSize) null);
+        }
 
         if (ConfigReader.isRecordVideo()) {
             java.nio.file.Path videoDir = Paths.get("evidence/videos/");
@@ -147,7 +154,7 @@ public class PlaywrightFactory {
             }
 
             case "chrome": {
-                List<String> chromeArgs = buildChromiumArgs(customArgs);
+                List<String> chromeArgs = buildChromiumArgs(customArgs, headless);
                 log.info("Launching Google Chrome (channel=chrome, headless={}, args={})", headless, chromeArgs);
                 return playwright.chromium().launch(new BrowserType.LaunchOptions()
                         .setChannel("chrome")
@@ -158,7 +165,7 @@ public class PlaywrightFactory {
 
             case "msedge":
             case "edge": {
-                List<String> edgeArgs = buildChromiumArgs(customArgs);
+                List<String> edgeArgs = buildChromiumArgs(customArgs, headless);
                 log.info("Launching Microsoft Edge (channel=msedge, headless={}, args={})", headless, edgeArgs);
                 return playwright.chromium().launch(new BrowserType.LaunchOptions()
                         .setChannel("msedge")
@@ -169,7 +176,7 @@ public class PlaywrightFactory {
 
             case "chromium":
             default: {
-                List<String> chromiumArgs = buildChromiumArgs(customArgs);
+                List<String> chromiumArgs = buildChromiumArgs(customArgs, headless);
                 log.info("Launching Chromium (channel={}, headless={}, args={})",
                         useChannel ? channel : "default", headless, chromiumArgs);
                 BrowserType.LaunchOptions options = new BrowserType.LaunchOptions()
@@ -184,13 +191,13 @@ public class PlaywrightFactory {
         }
     }
 
-    private static List<String> buildChromiumArgs(List<String> customArgs) {
+    private static List<String> buildChromiumArgs(List<String> customArgs, boolean headless) {
         List<String> args = new ArrayList<>();
         args.add("--disable-dev-shm-usage");
         args.add("--no-sandbox");
         args.add("--disable-gpu");
         args.add("--disable-extensions");
-        args.add("--window-size=1920,1080");
+        args.add(headless ? "--window-size=1920,1080" : "--start-maximized");
         if (customArgs != null) {
             args.addAll(customArgs);
         }

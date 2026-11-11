@@ -40,7 +40,7 @@ services:
       - ./seed:/docker-seed:ro
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "wget -q --spider http://localhost:80/ || exit 1"]
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:80/keepalive/index || exit 1"]
       interval: 15s
       timeout: 10s
       retries: 6

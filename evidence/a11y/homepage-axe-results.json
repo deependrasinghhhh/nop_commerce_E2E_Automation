@@ -18,7 +18,7 @@
     "name" : "axe"
   },
   "url" : "http://127.0.0.1:5000/",
-  "timestamp" : "2026-11-10T19:10:12.201Z",
+  "timestamp" : "2026-11-11T10:24:47.023Z",
   "passes" : [ {
     "id" : "aria-allowed-attr",
     "description" : "Ensures ARIA attributes are allowed for an element's role",
@@ -261,8 +261,8 @@
       } ],
       "failureSummary" : null
     }, {
-      "html" : "<div class=\"swiper-wrapper\" style=\"cursor: grab; height: 21px;\" id=\"swiper-wrapper-d9ff87653bf11516\" aria-live=\"off\">",
-      "target" : [ "#swiper-wrapper-d9ff87653bf11516" ],
+      "html" : "<div class=\"swiper-wrapper\" style=\"cursor: grab; height: 505px;\" id=\"swiper-wrapper-aadf92238ea6a1d7\" aria-live=\"off\">",
+      "target" : [ "#swiper-wrapper-aadf92238ea6a1d7" ],
       "impact" : null,
       "any" : [ {
         "id" : "aria-allowed-attr",
@@ -313,7 +313,7 @@
       } ],
       "failureSummary" : null
     }, {
-      "html" : "<a href=\"http://localhost:5000/\" aria-label=\"Sample slide name\">\n        <img class=\"slider-img\" src=\"http://localhost:80/images/thumbs/0000079_banner_1.webp\" alt=\"Sample slide name\" title=\"\" loading=\"lazy\">\n            </a>",
+      "html" : "<a href=\"http://localhost:5000/\" aria-label=\"Sample slide name\">\n        <img class=\"slider-img\" src=\"http://127.0.0.1:5000/images/thumbs/0000079_banner_1.webp\" alt=\"Sample slide name\" title=\"\" loading=\"lazy\">\n            </a>",
       "target" : [ ":root" ],
       "impact" : null,
       "any" : [ {
@@ -365,7 +365,7 @@
       } ],
       "failureSummary" : null
     }, {
-      "html" : "<a href=\"http://localhost:5000/\" aria-label=\"Sample slide name\">\n        <img class=\"slider-img\" src=\"http://localhost:80/images/thumbs/0000080_banner_2.webp\" alt=\"Sample slide name\" title=\"\" loading=\"lazy\">\n            </a>",
+      "html" : "<a href=\"http://localhost:5000/\" aria-label=\"Sample slide name\">\n        <img class=\"slider-img\" src=\"http://127.0.0.1:5000/images/thumbs/0000080_banner_2.webp\" alt=\"Sample slide name\" title=\"\" loading=\"lazy\">\n            </a>",
       "target" : [ ":root" ],
       "impact" : null,
       "any" : [ {
@@ -3869,8 +3869,8 @@
       "none" : [ ],
       "failureSummary" : null
     }, {
-      "html" : "<div class=\"swiper-wrapper\" style=\"cursor: grab; height: 21px;\" id=\"swiper-wrapper-d9ff87653bf11516\" aria-live=\"off\">",
-      "target" : [ "#swiper-wrapper-d9ff87653bf11516" ],
+      "html" : "<div class=\"swiper-wrapper\" style=\"cursor: grab; height: 505px;\" id=\"swiper-wrapper-aadf92238ea6a1d7\" aria-live=\"off\">",
+      "target" : [ "#swiper-wrapper-aadf92238ea6a1d7" ],
       "impact" : null,
       "any" : [ ],
       "all" : [ {
@@ -3921,7 +3921,7 @@
       "none" : [ ],
       "failureSummary" : null
     }, {
-      "html" : "<a href=\"http://localhost:5000/\" aria-label=\"Sample slide name\">\n        <img class=\"slider-img\" src=\"http://localhost:80/images/thumbs/0000079_banner_1.webp\" alt=\"Sample slide name\" title=\"\" loading=\"lazy\">\n            </a>",
+      "html" : "<a href=\"http://localhost:5000/\" aria-label=\"Sample slide name\">\n        <img class=\"slider-img\" src=\"http://127.0.0.1:5000/images/thumbs/0000079_banner_1.webp\" alt=\"Sample slide name\" title=\"\" loading=\"lazy\">\n            </a>",
       "target" : [ ":root" ],
       "impact" : null,
       "any" : [ ],
@@ -3973,7 +3973,7 @@
       "none" : [ ],
       "failureSummary" : null
     }, {
-      "html" : "<a href=\"http://localhost:5000/\" aria-label=\"Sample slide name\">\n        <img class=\"slider-img\" src=\"http://localhost:80/images/thumbs/0000080_banner_2.webp\" alt=\"Sample slide name\" title=\"\" loading=\"lazy\">\n            </a>",
+      "html" : "<a href=\"http://localhost:5000/\" aria-label=\"Sample slide name\">\n        <img class=\"slider-img\" src=\"http://127.0.0.1:5000/images/thumbs/0000080_banner_2.webp\" alt=\"Sample slide name\" title=\"\" loading=\"lazy\">\n            </a>",
       "target" : [ ":root" ],
       "impact" : null,
       "any" : [ ],
@@ -4395,8 +4395,8 @@
       "none" : [ ],
       "failureSummary" : null
     }, {
-      "html" : "<div class=\"swiper-wrapper\" style=\"cursor: grab; height: 21px;\" id=\"swiper-wrapper-d9ff87653bf11516\" aria-live=\"off\">",
-      "target" : [ "#swiper-wrapper-d9ff87653bf11516" ],
+      "html" : "<div class=\"swiper-wrapper\" style=\"cursor: grab; height: 505px;\" id=\"swiper-wrapper-aadf92238ea6a1d7\" aria-live=\"off\">",
+      "target" : [ "#swiper-wrapper-aadf92238ea6a1d7" ],
       "impact" : null,
       "any" : [ {
         "id" : "aria-valid-attr",
@@ -4423,7 +4423,7 @@
       "none" : [ ],
       "failureSummary" : null
     }, {
-      "html" : "<a href=\"http://localhost:5000/\" aria-label=\"Sample slide name\">\n        <img class=\"slider-img\" src=\"http://localhost:80/images/thumbs/0000079_banner_1.webp\" alt=\"Sample slide name\" title=\"\" loading=\"lazy\">\n            </a>",
+      "html" : "<a href=\"http://localhost:5000/\" aria-label=\"Sample slide name\">\n        <img class=\"slider-img\" src=\"http://127.0.0.1:5000/images/thumbs/0000079_banner_1.webp\" alt=\"Sample slide name\" title=\"\" loading=\"lazy\">\n            </a>",
       "target" : [ ":root" ],
       "impact" : null,
       "any" : [ {
@@ -4451,7 +4451,7 @@
       "none" : [ ],
       "failureSummary" : null
     }, {
-      "html" : "<a href=\"http://localhost:5000/\" aria-label=\"Sample slide name\">\n        <img class=\"slider-img\" src=\"http://localhost:80/images/thumbs/0000080_banner_2.webp\" alt=\"Sample slide name\" title=\"\" loading=\"lazy\">\n            </a>",
+      "html" : "<a href=\"http://localhost:5000/\" aria-label=\"Sample slide name\">\n        <img class=\"slider-img\" src=\"http://127.0.0.1:5000/images/thumbs/0000080_banner_2.webp\" alt=\"Sample slide name\" title=\"\" loading=\"lazy\">\n            </a>",
       "target" : [ ":root" ],
       "impact" : null,
       "any" : [ {
@@ -5224,6 +5224,27 @@
           "fontSize" : "13.5pt (18px)",
           "fontWeight" : "normal",
           "expectedContrastRatio" : "4.5:1"
+        },
+        "relatedNodes" : [ ]
+      } ],
+      "all" : [ ],
+      "none" : [ ],
+      "failureSummary" : null
+    }, {
+      "html" : "<h2>Welcome to our store</h2>",
+      "target" : [ ".topic-block-title > h2" ],
+      "impact" : null,
+      "any" : [ {
+        "id" : "color-contrast",
+        "impact" : "serious",
+        "message" : "Element has sufficient color contrast of 9.73",
+        "data" : {
+          "fgColor" : "#444444",
+          "bgColor" : "#ffffff",
+          "contrastRatio" : 9.73,
+          "fontSize" : "22.5pt (30px)",
+          "fontWeight" : "normal",
+          "expectedContrastRatio" : "3:1"
         },
         "relatedNodes" : [ ]
       } ],
@@ -6819,14 +6840,14 @@
       "none" : [ ],
       "failureSummary" : null
     }, {
-      "html" : "<div class=\"swiper-wrapper\" style=\"cursor: grab; height: 21px;\" id=\"swiper-wrapper-d9ff87653bf11516\" aria-live=\"off\">",
-      "target" : [ "#swiper-wrapper-d9ff87653bf11516" ],
+      "html" : "<div class=\"swiper-wrapper\" style=\"cursor: grab; height: 505px;\" id=\"swiper-wrapper-aadf92238ea6a1d7\" aria-live=\"off\">",
+      "target" : [ "#swiper-wrapper-aadf92238ea6a1d7" ],
       "impact" : null,
       "any" : [ {
         "id" : "duplicate-id",
         "impact" : "minor",
         "message" : "Document has no static elements that share the same id attribute",
-        "data" : "swiper-wrapper-d9ff87653bf11516",
+        "data" : "swiper-wrapper-aadf92238ea6a1d7",
         "relatedNodes" : [ ]
       } ],
       "all" : [ ],
@@ -7249,7 +7270,7 @@
     "impact" : "",
     "tags" : [ "cat.text-alternatives", "wcag2a", "wcag111", "section508", "section508.22.a", "ACT" ],
     "nodes" : [ {
-      "html" : "<img alt=\"Your store name\" src=\"http://localhost:80/Themes/DefaultClean/Content/images/logo.png\">",
+      "html" : "<img alt=\"Your store name\" src=\"http://127.0.0.1:5000/Themes/DefaultClean/Content/images/logo.png\">",
       "target" : [ "img[alt=\"Your store name\"]" ],
       "impact" : null,
       "any" : [ {
@@ -7269,7 +7290,7 @@
       } ],
       "failureSummary" : null
     }, {
-      "html" : "<img class=\"slider-img\" src=\"http://localhost:80/images/thumbs/0000079_banner_1.webp\" alt=\"Sample slide name\" title=\"\" loading=\"lazy\">",
+      "html" : "<img class=\"slider-img\" src=\"http://127.0.0.1:5000/images/thumbs/0000079_banner_1.webp\" alt=\"Sample slide name\" title=\"\" loading=\"lazy\">",
       "target" : [ ":root > .slider-img[alt=\"Sample slide name\"][title=\"\"]" ],
       "impact" : null,
       "any" : [ {
@@ -7289,7 +7310,7 @@
       } ],
       "failureSummary" : null
     }, {
-      "html" : "<img class=\"slider-img\" src=\"http://localhost:80/images/thumbs/0000080_banner_2.webp\" alt=\"Sample slide name\" title=\"\" loading=\"lazy\">",
+      "html" : "<img class=\"slider-img\" src=\"http://127.0.0.1:5000/images/thumbs/0000080_banner_2.webp\" alt=\"Sample slide name\" title=\"\" loading=\"lazy\">",
       "target" : [ ":root > .slider-img[alt=\"Sample slide name\"][title=\"\"]" ],
       "impact" : null,
       "any" : [ {
@@ -7309,7 +7330,7 @@
       } ],
       "failureSummary" : null
     }, {
-      "html" : "<img alt=\"Picture for category Electronics\" src=\"http://localhost:80/images/thumbs/0000005_electronics_450.jpeg\" title=\"Show products in category Electronics\">",
+      "html" : "<img alt=\"Picture for category Electronics\" src=\"http://127.0.0.1:5000/images/thumbs/0000005_electronics_450.jpeg\" title=\"Show products in category Electronics\">",
       "target" : [ "a[href$=\"electronics\"] > img" ],
       "impact" : null,
       "any" : [ {
@@ -7335,7 +7356,7 @@
       } ],
       "failureSummary" : null
     }, {
-      "html" : "<img alt=\"Picture for category Apparel\" src=\"http://localhost:80/images/thumbs/0000009_apparel_450.jpeg\" title=\"Show products in category Apparel\">",
+      "html" : "<img alt=\"Picture for category Apparel\" src=\"http://127.0.0.1:5000/images/thumbs/0000009_apparel_450.jpeg\" title=\"Show products in category Apparel\">",
       "target" : [ "img[alt=\"Picture for category Apparel\"]" ],
       "impact" : null,
       "any" : [ {
@@ -7361,7 +7382,7 @@
       } ],
       "failureSummary" : null
     }, {
-      "html" : "<img alt=\"Picture for category Digital downloads\" src=\"http://localhost:80/images/thumbs/0000013_digital-downloads_450.jpeg\" title=\"Show products in category Digital downloads\">",
+      "html" : "<img alt=\"Picture for category Digital downloads\" src=\"http://127.0.0.1:5000/images/thumbs/0000013_digital-downloads_450.jpeg\" title=\"Show products in category Digital downloads\">",
       "target" : [ "a[href$=\"digital-downloads\"] > img" ],
       "impact" : null,
       "any" : [ {
@@ -7387,7 +7408,7 @@
       } ],
       "failureSummary" : null
     }, {
-      "html" : "<img alt=\"Picture of Build your own computer\" src=\"http://localhost:80/images/thumbs/0000020_build-your-own-computer_415.jpeg\" title=\"Show details for Build your own computer\">",
+      "html" : "<img alt=\"Picture of Build your own computer\" src=\"http://127.0.0.1:5000/images/thumbs/0000020_build-your-own-computer_415.jpeg\" title=\"Show details for Build your own computer\">",
       "target" : [ "a[href$=\"build-your-own-computer\"] > img" ],
       "impact" : null,
       "any" : [ {
@@ -7413,7 +7434,7 @@
       } ],
       "failureSummary" : null
     }, {
-      "html" : "<img alt=\"Picture of Apple MacBook Pro\" src=\"http://localhost:80/images/thumbs/0000024_apple-macbook-pro_415.jpeg\" title=\"Show details for Apple MacBook Pro\">",
+      "html" : "<img alt=\"Picture of Apple MacBook Pro\" src=\"http://127.0.0.1:5000/images/thumbs/0000024_apple-macbook-pro_415.jpeg\" title=\"Show details for Apple MacBook Pro\">",
       "target" : [ "img[alt=\"Picture of Apple MacBook Pro\"]" ],
       "impact" : null,
       "any" : [ {
@@ -7439,7 +7460,7 @@
       } ],
       "failureSummary" : null
     }, {
-      "html" : "<img alt=\"Picture of HTC smartphone\" src=\"http://localhost:80/images/thumbs/0000041_htc-smartphone_415.jpeg\" title=\"Show details for HTC smartphone\">",
+      "html" : "<img alt=\"Picture of HTC smartphone\" src=\"http://127.0.0.1:5000/images/thumbs/0000041_htc-smartphone_415.jpeg\" title=\"Show details for HTC smartphone\">",
       "target" : [ "img[alt=\"Picture of HTC smartphone\"]" ],
       "impact" : null,
       "any" : [ {
@@ -7465,7 +7486,7 @@
       } ],
       "failureSummary" : null
     }, {
-      "html" : "<img alt=\"Picture of $25 Virtual Gift Card\" src=\"http://localhost:80/images/thumbs/0000073_25-virtual-gift-card_415.jpeg\" title=\"Show details for $25 Virtual Gift Card\">",
+      "html" : "<img alt=\"Picture of $25 Virtual Gift Card\" src=\"http://127.0.0.1:5000/images/thumbs/0000073_25-virtual-gift-card_415.jpeg\" title=\"Show details for $25 Virtual Gift Card\">",
       "target" : [ "a[href$=\"25-virtual-gift-card\"] > img" ],
       "impact" : null,
       "any" : [ {
@@ -7824,7 +7845,7 @@
       } ],
       "failureSummary" : null
     }, {
-      "html" : "<a href=\"/\">\n    <img alt=\"Your store name\" src=\"http://localhost:80/Themes/DefaultClean/Content/images/logo.png\">\n</a>",
+      "html" : "<a href=\"/\">\n    <img alt=\"Your store name\" src=\"http://127.0.0.1:5000/Themes/DefaultClean/Content/images/logo.png\">\n</a>",
       "target" : [ "a[href=\"/\"]" ],
       "impact" : null,
       "any" : [ {
@@ -7984,7 +8005,7 @@
       } ],
       "failureSummary" : null
     }, {
-      "html" : "<a href=\"http://localhost:5000/\" aria-label=\"Sample slide name\">\n        <img class=\"slider-img\" src=\"http://localhost:80/images/thumbs/0000079_banner_1.webp\" alt=\"Sample slide name\" title=\"\" loading=\"lazy\">\n            </a>",
+      "html" : "<a href=\"http://localhost:5000/\" aria-label=\"Sample slide name\">\n        <img class=\"slider-img\" src=\"http://127.0.0.1:5000/images/thumbs/0000079_banner_1.webp\" alt=\"Sample slide name\" title=\"\" loading=\"lazy\">\n            </a>",
       "target" : [ ":root" ],
       "impact" : null,
       "any" : [ {
@@ -8010,7 +8031,7 @@
       } ],
       "failureSummary" : null
     }, {
-      "html" : "<a href=\"http://localhost:5000/\" aria-label=\"Sample slide name\">\n        <img class=\"slider-img\" src=\"http://localhost:80/images/thumbs/0000080_banner_2.webp\" alt=\"Sample slide name\" title=\"\" loading=\"lazy\">\n            </a>",
+      "html" : "<a href=\"http://localhost:5000/\" aria-label=\"Sample slide name\">\n        <img class=\"slider-img\" src=\"http://127.0.0.1:5000/images/thumbs/0000080_banner_2.webp\" alt=\"Sample slide name\" title=\"\" loading=\"lazy\">\n            </a>",
       "target" : [ ":root" ],
       "impact" : null,
       "any" : [ {
@@ -8122,7 +8143,7 @@
       } ],
       "failureSummary" : null
     }, {
-      "html" : "<a href=\"/electronics\" title=\"Show products in category Electronics\">\n                            <img alt=\"Picture for category Electronics\" src=\"http://localhost:80/images/thumbs/0000005_electronics_450.jpeg\" title=\"Show products in category Electronics\">\n                        </a>",
+      "html" : "<a href=\"/electronics\" title=\"Show products in category Electronics\">\n                            <img alt=\"Picture for category Electronics\" src=\"http://127.0.0.1:5000/images/thumbs/0000005_electronics_450.jpeg\" title=\"Show products in category Electronics\">\n                        </a>",
       "target" : [ ".picture > a[href$=\"electronics\"]" ],
       "impact" : null,
       "any" : [ {
@@ -8174,7 +8195,7 @@
       } ],
       "failureSummary" : null
     }, {
-      "html" : "<a href=\"/apparel\" title=\"Show products in category Apparel\">\n                            <img alt=\"Picture for category Apparel\" src=\"http://localhost:80/images/thumbs/0000009_apparel_450.jpeg\" title=\"Show products in category Apparel\">\n                        </a>",
+      "html" : "<a href=\"/apparel\" title=\"Show products in category Apparel\">\n                            <img alt=\"Picture for category Apparel\" src=\"http://127.0.0.1:5000/images/thumbs/0000009_apparel_450.jpeg\" title=\"Show products in category Apparel\">\n                        </a>",
       "target" : [ ".picture > a[href$=\"apparel\"]" ],
       "impact" : null,
       "any" : [ {
@@ -8252,7 +8273,7 @@
       } ],
       "failureSummary" : null
     }, {
-      "html" : "<a href=\"/build-your-own-computer\" title=\"Show details for Build your own computer\">\n                <img alt=\"Picture of Build your own computer\" src=\"http://localhost:80/images/thumbs/0000020_build-your-own-computer_415.jpeg\" title=\"Show details for Build your own computer\">\n            </a>",
+      "html" : "<a href=\"/build-your-own-computer\" title=\"Show details for Build your own computer\">\n                <img alt=\"Picture of Build your own computer\" src=\"http://127.0.0.1:5000/images/thumbs/0000020_build-your-own-computer_415.jpeg\" title=\"Show details for Build your own computer\">\n            </a>",
       "target" : [ ".picture > a[href$=\"build-your-own-computer\"]" ],
       "impact" : null,
       "any" : [ {
@@ -8298,7 +8319,7 @@
       } ],
       "failureSummary" : null
     }, {
-      "html" : "<a href=\"/apple-macbook-pro\" title=\"Show details for Apple MacBook Pro\">\n                <img alt=\"Picture of Apple MacBook Pro\" src=\"http://localhost:80/images/thumbs/0000024_apple-macbook-pro_415.jpeg\" title=\"Show details for Apple MacBook Pro\">\n            </a>",
+      "html" : "<a href=\"/apple-macbook-pro\" title=\"Show details for Apple MacBook Pro\">\n                <img alt=\"Picture of Apple MacBook Pro\" src=\"http://127.0.0.1:5000/images/thumbs/0000024_apple-macbook-pro_415.jpeg\" title=\"Show details for Apple MacBook Pro\">\n            </a>",
       "target" : [ ".picture > a[href$=\"apple-macbook-pro\"]" ],
       "impact" : null,
       "any" : [ {
@@ -8344,7 +8365,7 @@
       } ],
       "failureSummary" : null
     }, {
-      "html" : "<a href=\"/htc-smartphone\" title=\"Show details for HTC smartphone\">\n                <img alt=\"Picture of HTC smartphone\" src=\"http://localhost:80/images/thumbs/0000041_htc-smartphone_415.jpeg\" title=\"Show details for HTC smartphone\">\n            </a>",
+      "html" : "<a href=\"/htc-smartphone\" title=\"Show details for HTC smartphone\">\n                <img alt=\"Picture of HTC smartphone\" src=\"http://127.0.0.1:5000/images/thumbs/0000041_htc-smartphone_415.jpeg\" title=\"Show details for HTC smartphone\">\n            </a>",
       "target" : [ ".picture > a[href$=\"htc-smartphone\"]" ],
       "impact" : null,
       "any" : [ {
@@ -8390,7 +8411,7 @@
       } ],
       "failureSummary" : null
     }, {
-      "html" : "<a href=\"/25-virtual-gift-card\" title=\"Show details for $25 Virtual Gift Card\">\n                <img alt=\"Picture of $25 Virtual Gift Card\" src=\"http://localhost:80/images/thumbs/0000073_25-virtual-gift-card_415.jpeg\" title=\"Show details for $25 Virtual Gift Card\">\n            </a>",
+      "html" : "<a href=\"/25-virtual-gift-card\" title=\"Show details for $25 Virtual Gift Card\">\n                <img alt=\"Picture of $25 Virtual Gift Card\" src=\"http://127.0.0.1:5000/images/thumbs/0000073_25-virtual-gift-card_415.jpeg\" title=\"Show details for $25 Virtual Gift Card\">\n            </a>",
       "target" : [ ".picture > a[href$=\"25-virtual-gift-card\"]" ],
       "impact" : null,
       "any" : [ {
@@ -9334,7 +9355,7 @@
     "impact" : "",
     "tags" : [ "cat.keyboard", "wcag2a", "wcag412" ],
     "nodes" : [ {
-      "html" : "<img alt=\"Your store name\" src=\"http://localhost:80/Themes/DefaultClean/Content/images/logo.png\">",
+      "html" : "<img alt=\"Your store name\" src=\"http://127.0.0.1:5000/Themes/DefaultClean/Content/images/logo.png\">",
       "target" : [ "img[alt=\"Your store name\"]" ],
       "impact" : null,
       "any" : [ {
@@ -9460,7 +9481,7 @@
       "none" : [ ],
       "failureSummary" : null
     }, {
-      "html" : "<img class=\"slider-img\" src=\"http://localhost:80/images/thumbs/0000079_banner_1.webp\" alt=\"Sample slide name\" title=\"\" loading=\"lazy\">",
+      "html" : "<img class=\"slider-img\" src=\"http://127.0.0.1:5000/images/thumbs/0000079_banner_1.webp\" alt=\"Sample slide name\" title=\"\" loading=\"lazy\">",
       "target" : [ ":root > .slider-img[alt=\"Sample slide name\"][title=\"\"]" ],
       "impact" : null,
       "any" : [ {
@@ -9474,7 +9495,7 @@
       "none" : [ ],
       "failureSummary" : null
     }, {
-      "html" : "<img class=\"slider-img\" src=\"http://localhost:80/images/thumbs/0000080_banner_2.webp\" alt=\"Sample slide name\" title=\"\" loading=\"lazy\">",
+      "html" : "<img class=\"slider-img\" src=\"http://127.0.0.1:5000/images/thumbs/0000080_banner_2.webp\" alt=\"Sample slide name\" title=\"\" loading=\"lazy\">",
       "target" : [ ":root > .slider-img[alt=\"Sample slide name\"][title=\"\"]" ],
       "impact" : null,
       "any" : [ {
@@ -9516,7 +9537,7 @@
       "none" : [ ],
       "failureSummary" : null
     }, {
-      "html" : "<img alt=\"Picture for category Electronics\" src=\"http://localhost:80/images/thumbs/0000005_electronics_450.jpeg\" title=\"Show products in category Electronics\">",
+      "html" : "<img alt=\"Picture for category Electronics\" src=\"http://127.0.0.1:5000/images/thumbs/0000005_electronics_450.jpeg\" title=\"Show products in category Electronics\">",
       "target" : [ "a[href$=\"electronics\"] > img" ],
       "impact" : null,
       "any" : [ {
@@ -9530,7 +9551,7 @@
       "none" : [ ],
       "failureSummary" : null
     }, {
-      "html" : "<img alt=\"Picture for category Apparel\" src=\"http://localhost:80/images/thumbs/0000009_apparel_450.jpeg\" title=\"Show products in category Apparel\">",
+      "html" : "<img alt=\"Picture for category Apparel\" src=\"http://127.0.0.1:5000/images/thumbs/0000009_apparel_450.jpeg\" title=\"Show products in category Apparel\">",
       "target" : [ "img[alt=\"Picture for category Apparel\"]" ],
       "impact" : null,
       "any" : [ {
@@ -9544,7 +9565,7 @@
       "none" : [ ],
       "failureSummary" : null
     }, {
-      "html" : "<img alt=\"Picture for category Digital downloads\" src=\"http://localhost:80/images/thumbs/0000013_digital-downloads_450.jpeg\" title=\"Show products in category Digital downloads\">",
+      "html" : "<img alt=\"Picture for category Digital downloads\" src=\"http://127.0.0.1:5000/images/thumbs/0000013_digital-downloads_450.jpeg\" title=\"Show products in category Digital downloads\">",
       "target" : [ "a[href$=\"digital-downloads\"] > img" ],
       "impact" : null,
       "any" : [ {
@@ -9558,7 +9579,7 @@
       "none" : [ ],
       "failureSummary" : null
     }, {
-      "html" : "<img alt=\"Picture of Build your own computer\" src=\"http://localhost:80/images/thumbs/0000020_build-your-own-computer_415.jpeg\" title=\"Show details for Build your own computer\">",
+      "html" : "<img alt=\"Picture of Build your own computer\" src=\"http://127.0.0.1:5000/images/thumbs/0000020_build-your-own-computer_415.jpeg\" title=\"Show details for Build your own computer\">",
       "target" : [ "a[href$=\"build-your-own-computer\"] > img" ],
       "impact" : null,
       "any" : [ {
@@ -9614,7 +9635,7 @@
       "none" : [ ],
       "failureSummary" : null
     }, {
-      "html" : "<img alt=\"Picture of Apple MacBook Pro\" src=\"http://localhost:80/images/thumbs/0000024_apple-macbook-pro_415.jpeg\" title=\"Show details for Apple MacBook Pro\">",
+      "html" : "<img alt=\"Picture of Apple MacBook Pro\" src=\"http://127.0.0.1:5000/images/thumbs/0000024_apple-macbook-pro_415.jpeg\" title=\"Show details for Apple MacBook Pro\">",
       "target" : [ "img[alt=\"Picture of Apple MacBook Pro\"]" ],
       "impact" : null,
       "any" : [ {
@@ -9670,7 +9691,7 @@
       "none" : [ ],
       "failureSummary" : null
     }, {
-      "html" : "<img alt=\"Picture of HTC smartphone\" src=\"http://localhost:80/images/thumbs/0000041_htc-smartphone_415.jpeg\" title=\"Show details for HTC smartphone\">",
+      "html" : "<img alt=\"Picture of HTC smartphone\" src=\"http://127.0.0.1:5000/images/thumbs/0000041_htc-smartphone_415.jpeg\" title=\"Show details for HTC smartphone\">",
       "target" : [ "img[alt=\"Picture of HTC smartphone\"]" ],
       "impact" : null,
       "any" : [ {
@@ -9726,7 +9747,7 @@
       "none" : [ ],
       "failureSummary" : null
     }, {
-      "html" : "<img alt=\"Picture of $25 Virtual Gift Card\" src=\"http://localhost:80/images/thumbs/0000073_25-virtual-gift-card_415.jpeg\" title=\"Show details for $25 Virtual Gift Card\">",
+      "html" : "<img alt=\"Picture of $25 Virtual Gift Card\" src=\"http://127.0.0.1:5000/images/thumbs/0000073_25-virtual-gift-card_415.jpeg\" title=\"Show details for $25 Virtual Gift Card\">",
       "target" : [ "a[href$=\"25-virtual-gift-card\"] > img" ],
       "impact" : null,
       "any" : [ {
@@ -10310,27 +10331,6 @@
       "all" : [ ],
       "none" : [ ],
       "failureSummary" : "Fix any of the following:\n  Element's background color could not be determined due to a background image"
-    }, {
-      "html" : "<h2>Welcome to our store</h2>",
-      "target" : [ ".topic-block-title > h2" ],
-      "impact" : "serious",
-      "any" : [ {
-        "id" : "color-contrast",
-        "impact" : "serious",
-        "message" : "Element's background color could not be determined because it is overlapped by another element",
-        "data" : {
-          "fgColor" : "#444444",
-          "contrastRatio" : 0,
-          "fontSize" : "22.5pt (30px)",
-          "fontWeight" : "normal",
-          "messageKey" : "bgOverlap",
-          "expectedContrastRatio" : "3:1"
-        },
-        "relatedNodes" : [ ]
-      } ],
-      "all" : [ ],
-      "none" : [ ],
-      "failureSummary" : "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
     }, {
       "html" : "<button type=\"button\" class=\"button-2 add-to-compare-list-button\" title=\"Add to compare list\" onclick=\"AjaxCart.addproducttocomparelist('/compareproducts/add/1');return false;\">Add to compare list</button>",
       "target" : [ "article[data-productid=\"1\"] > .details > .add-info > .buttons > .add-to-compare-list-button.button-2[title=\"Add to compare list\"]" ],

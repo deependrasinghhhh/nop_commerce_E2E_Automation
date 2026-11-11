@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="TestSuite" time="135.208" tests="61" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="TestSuite" time="118.77" tests="61" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="26"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -10,13 +10,12 @@
     <property name="user.variant" value=""/>
     <property name="java.vendor.url" value="https://java.oracle.com/"/>
     <property name="user.timezone" value="Asia/Calcutta"/>
-    <property name="suiteXmlFile" value="src/test/resources/suites/regression.xml"/>
     <property name="os.name" value="Windows 11"/>
     <property name="java.vm.specification.version" value="26"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="IN"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-26.0.2\bin"/>
-    <property name="sun.java.command" value="C:\Users\Deependra Singh\AppData\Local\Temp\surefire6269845176669966799\surefirebooter-20261110220727265_3.jar C:\Users\Deependra Singh\AppData\Local\Temp\surefire6269845176669966799 2026-11-10T22-07-26_824-jvmRun1 surefire-20261110220727265_1tmp surefire_0-20261110220727265_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\Deependra Singh\AppData\Local\Temp\surefire17821878576011086846\surefirebooter-20261111155257865_3.jar C:\Users\Deependra Singh\AppData\Local\Temp\surefire17821878576011086846 2026-11-11T15-52-57_413-jvmRun1 surefire-20261111155257865_1tmp surefire_0-20261111155257865_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="C:\Users\Deependra Singh\OneDrive\Desktop\E2E_Automation_nopcommerce\target\test-classes;C:\Users\Deependra Singh\OneDrive\Desktop\E2E_Automation_nopcommerce\target\classes;C:\Users\Deependra Singh\.m2\repository\com\microsoft\playwright\playwright\1.49.0\playwright-1.49.0.jar;C:\Users\Deependra Singh\.m2\repository\com\google\code\gson\gson\2.11.0\gson-2.11.0.jar;C:\Users\Deependra Singh\.m2\repository\com\google\errorprone\error_prone_annotations\2.27.0\error_prone_annotations-2.27.0.jar;C:\Users\Deependra Singh\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\Deependra Singh\.m2\repository\com\microsoft\playwright\driver\1.49.0\driver-1.49.0.jar;C:\Users\Deependra Singh\.m2\repository\com\microsoft\playwright\driver-bundle\1.49.0\driver-bundle-1.49.0.jar;C:\Users\Deependra Singh\.m2\repository\org\testng\testng\7.10.2\testng-7.10.2.jar;C:\Users\Deependra Singh\.m2\repository\org\slf4j\slf4j-api\1.7.36\slf4j-api-1.7.36.jar;C:\Users\Deependra Singh\.m2\repository\com\beust\jcommander\1.82\jcommander-1.82.jar;C:\Users\Deependra Singh\.m2\repository\org\webjars\jquery\3.7.1\jquery-3.7.1.jar;C:\Users\Deependra Singh\.m2\repository\com\deque\html\axe-core\playwright\4.6.0\playwright-4.6.0.jar;C:\Users\Deependra Singh\.m2\repository\commons-codec\commons-codec\1.15\commons-codec-1.15.jar;C:\Users\Deependra Singh\.m2\repository\org\apache\commons\commons-compress\1.22\commons-compress-1.22.jar;C:\Users\Deependra Singh\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.14.1\jackson-annotations-2.14.1.jar;C:\Users\Deependra Singh\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.14.1\jackson-databind-2.14.1.jar;C:\Users\Deependra Singh\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.14.1\jackson-core-2.14.1.jar;C:\Users\Deependra Singh\.m2\repository\commons-io\commons-io\2.11.0\commons-io-2.11.0.jar;C:\Users\Deependra Singh\.m2\repository\com\deque\html\axe-core\dequeutilites\4.6.0\dequeutilites-4.6.0.jar;C:\Users\Deependra Singh\.m2\repository\com\microsoft\sqlserver\mssql-jdbc\12.8.1.jre11\mssql-jdbc-12.8.1.jre11.jar;C:\Users\Deependra Singh\.m2\repository\com\zaxxer\HikariCP\5.1.0\HikariCP-5.1.0.jar;C:\Users\Deependra Singh\.m2\repository\io\github\cdimascio\dotenv-java\3.0.0\dotenv-java-3.0.0.jar;C:\Users\Deependra Singh\.m2\repository\org\slf4j\slf4j-simple\2.0.16\slf4j-simple-2.0.16.jar;C:\Users\Deependra Singh\.m2\repository\io\qameta\allure\allure-testng\2.29.0\allure-testng-2.29.0.jar;C:\Users\Deependra Singh\.m2\repository\io\qameta\allure\allure-java-commons\2.29.0\allure-java-commons-2.29.0.jar;C:\Users\Deependra Singh\.m2\repository\io\qameta\allure\allure-model\2.29.0\allure-model-2.29.0.jar;C:\Users\Deependra Singh\.m2\repository\io\qameta\allure\allure-test-filter\2.29.0\allure-test-filter-2.29.0.jar;C:\Users\Deependra Singh\.m2\repository\org\aspectj\aspectjweaver\1.9.22\aspectjweaver-1.9.22.jar;"/>
     <property name="allure.results.directory" value="C:\Users\Deependra Singh\OneDrive\Desktop\E2E_Automation_nopcommerce\target/allure-results"/>
@@ -25,7 +24,6 @@
     <property name="user.language" value="en"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="java.version.date" value="2026-07-21"/>
-    <property name="suiteFile" value="src/test/resources/suites/regression.xml"/>
     <property name="java.home" value="C:\Program Files\Java\jdk-26.0.2"/>
     <property name="file.separator" value="\"/>
     <property name="basedir" value="C:\Users\Deependra Singh\OneDrive\Desktop\E2E_Automation_nopcommerce"/>
@@ -33,7 +31,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\Deependra Singh\AppData\Local\Temp\surefire6269845176669966799\surefirebooter-20261110220727265_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\Deependra Singh\AppData\Local\Temp\surefire17821878576011086846\surefirebooter-20261111155257865_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="26.0.2+10-55"/>
@@ -54,7 +52,7 @@
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
     <property name="sun.os.patch.level" value=""/>
     <property name="native.encoding" value="Cp1252"/>
-    <property name="java.library.path" value="C:\Program Files\Java\jdk-26.0.2\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\WindowsApps\OpenAI.CodexPrimaryRuntime.v26-1105-1297-0_26.1105.1297.0_x64__3k8sg7r9htsxt\dependencies\native\powershell;C:\Users\Deependra Singh\.codex\tmp\arg0-windows\codex-arg0zGemiD;C:\Program Files\WindowsApps\OpenAI.CodexPrimaryRuntime.v26-1105-1297-0_26.1105.1297.0_x64__3k8sg7r9htsxt\dependencies\native\powershell;C:\Program Files\WindowsApps\OpenAI.CodexPrimaryRuntime.v26-1105-1297-0_26.1105.1297.0_x64__3k8sg7r9htsxt\dependencies\native\libheif\libheif\bin;C:\Program Files\WindowsApps\OpenAI.CodexPrimaryRuntime.v26-1105-1297-0_26.1105.1297.0_x64__3k8sg7r9htsxt\dependencies\native\jxrlib\jxrlib\bin;C:\Program Files\WindowsApps\OpenAI.CodexPrimaryRuntime.v26-1105-1297-0_26.1105.1297.0_x64__3k8sg7r9htsxt\dependencies\native\poppler\Library\bin;C:\Program Files\WindowsApps\OpenAI.CodexPrimaryRuntime.v26-1105-1297-0_26.1105.1297.0_x64__3k8sg7r9htsxt\dependencies\bin\override;C:\Python312\Scripts\;C:\Python312\;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files\THINSTUFF\TSX-Gateway\;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\MinGW\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Java\jdk-18.0.2\bin;C:\Program Files\MongoDB\Server\6.0\bin;C:\Program Files\mongosh\mongosh-1.10.1-win32-x64\bin;C:\ProgramData\chocolatey\bin;C:\Program Files\nodejs\;c:\Users\Deependra Singh\AppData\Local\Programs\cursor\resources\app\bin;C:\Program Files\Docker\Docker\resources\bin;C:\Program Files\dotnet\;C:\Program Files\Common Files\Autodesk Shared\;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files\GitHub CLI\;C:\Program Files\Git\cmd;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Users\Deependra Singh\.tools\apache-maven-3.9.6\bin;C:\Users\Deependra Singh\AppData\Local\Programs\OpenAI\Codex\bin;C:\Users\Deependra Singh\.kimi-code\bin;C:\Users\Deependra Singh\AppData\Local\Microsoft\WindowsApps;C:\Users\Deependra Singh\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.2.1\bin;C:\Program Files\JetBrains\PyCharm Community Edition 2022.2.1\bin;C:\Users\Deependra Singh\AppData\Local\GitHubDesktop\bin;C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.1\bin;C:\Users\Deependra Singh\AppData\Roaming\npm;C:\Users\Deependra Singh\AppData\Local\Programs\cursor\resources\app\bin;C:\Users\Deependra Singh\AppData\Local\Programs\Ollama;C:\Users\Deependra Singh\AppData\Local\Programs\Antigravity IDE\bin;C:\Program Files\JetBrains\IntelliJ IDEA 2026.2.0.1\bin;C:\Users\Deependra Singh\AppData\Local\Microsoft\WindowsApps;C:\Program Files\WindowsApps\OpenAI.CodexPrimaryRuntime.v26-1105-1297-0_26.1105.1297.0_x64__3k8sg7r9htsxt\dependencies\bin\fallback;C:\Program Files\WindowsApps\OpenAI.CodexPrimaryRuntime.v26-1105-1297-0_26.1105.1297.0_x64__3k8sg7r9htsxt\dependencies\node\bin;C:\Program Files\WindowsApps\OpenAI.CodexPrimaryRuntime.v26-1105-1297-0_26.1105.1297.0_x64__3k8sg7r9htsxt\dependencies\native\git\cmd;C:\Program Files\WindowsApps\OpenAI.Codex_26.1103.4239.0_x64__2p2nqsd0c76g0\app\resources;."/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk-26.0.2\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:/Users/Deependra Singh/.gemini/antigravity/bin;C:\Python312\Scripts\;C:\Python312\;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files\THINSTUFF\TSX-Gateway\;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\MinGW\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Java\jdk-18.0.2\bin;C:\Program Files\MongoDB\Server\6.0\bin;C:\Program Files\mongosh\mongosh-1.10.1-win32-x64\bin;C:\ProgramData\chocolatey\bin;C:\Program Files\nodejs\;c:\Users\Deependra Singh\AppData\Local\Programs\cursor\resources\app\bin;C:\Program Files\Docker\Docker\resources\bin;C:\Program Files\dotnet\;C:\Program Files\Common Files\Autodesk Shared\;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files\GitHub CLI\;C:\Program Files\Git\cmd;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Users\Deependra Singh\.tools\apache-maven-3.9.6\bin;C:\Users\Deependra Singh\AppData\Local\Programs\OpenAI\Codex\bin;C:\Users\Deependra Singh\.kimi-code\bin;C:\Users\Deependra Singh\AppData\Local\Microsoft\WindowsApps;C:\Users\Deependra Singh\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.2.1\bin;C:\Program Files\JetBrains\PyCharm Community Edition 2022.2.1\bin;C:\Users\Deependra Singh\AppData\Local\GitHubDesktop\bin;C:\Program Files\MongoDB\Server\6.0\bin;;C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.1\bin;C:\Users\Deependra Singh\AppData\Roaming\npm;C:\Users\Deependra Singh\AppData\Local\Programs\cursor\resources\app\bin;C:\Users\Deependra Singh\AppData\Local\Programs\Ollama;C:\Users\Deependra Singh\AppData\Local\Programs\Antigravity IDE\bin;C:\Program Files\JetBrains\IntelliJ IDEA 2026.2.0.1\bin;C:\Users\Deependra Singh\AppData\Local\Microsoft\WindowsApps;."/>
     <property name="java.vm.info" value="mixed mode, sharing"/>
     <property name="stderr.encoding" value="Cp1252"/>
     <property name="java.vendor" value="Oracle Corporation"/>
@@ -63,70 +61,70 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="70.0"/>
   </properties>
-  <testcase name="testAdminPortalEndpoint" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="1.032">
+  <testcase name="testAdminPortalEndpoint" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="1.467">
     <system-err><![CDATA[SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
 SLF4J: Defaulting to no-operation (NOP) logger implementation
 SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
 ]]></system-err>
   </testcase>
-  <testcase name="testCustomerLoginEndpoint" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.066"/>
-  <testcase name="testCustomerRegisterEndpoint" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.173"/>
-  <testcase name="testNonExistentRouteHandling" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.129"/>
-  <testcase name="testPostWithoutAntiForgeryTokenRejection" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.106"/>
-  <testcase name="testStorefrontRootEndpoint" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.32"/>
-  <testcase name="testAdminLoginPageRendering" classname="com.qa.nopcommerce.tests.smoke.SmokeTest" time="0.496"/>
-  <testcase name="testHomePageTitleAndHeaderRendering" classname="com.qa.nopcommerce.tests.smoke.SmokeTest" time="2.618"/>
-  <testcase name="testStorefrontSearchBoxInput" classname="com.qa.nopcommerce.tests.smoke.SmokeTest" time="1.168"/>
-  <testcase name="testCustomerLoginBlankEmail" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="1.127"/>
-  <testcase name="testCustomerLoginInvalidPassword" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="1.0"/>
-  <testcase name="testCustomerLoginValidCredentials" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.322"/>
-  <testcase name="testCustomerLogout" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="1.835"/>
-  <testcase name="testRegistrationMalformedEmailValidation" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.671"/>
-  <testcase name="testRegistrationMandatoryFieldValidation" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.696"/>
-  <testcase name="testRegistrationPasswordMismatch" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.237"/>
-  <testcase name="testValidCustomerRegistration" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="1.576"/>
-  <testcase name="testCategoryNavigation" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="1.299"/>
-  <testcase name="testProductDetailsRendering" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.043"/>
-  <testcase name="testProductImageGalleryDisplay" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.722"/>
-  <testcase name="testProductSorting" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="2.016"/>
-  <testcase name="testSearchWithNonExistentKeyword" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.496"/>
-  <testcase name="testShortSearchTermNotice" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.368"/>
-  <testcase name="testTopMenuCategoriesRendering" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.361"/>
-  <testcase name="testCheckoutBillingAddressForm" classname="com.qa.nopcommerce.tests.ui.CheckoutTest" time="3.898"/>
-  <testcase name="testCheckoutInitiation" classname="com.qa.nopcommerce.tests.ui.CheckoutTest" time="2.487"/>
-  <testcase name="testCheckoutPaymentMethodOptions" classname="com.qa.nopcommerce.tests.ui.CheckoutTest" time="3.261"/>
-  <testcase name="testAddProductToCart" classname="com.qa.nopcommerce.tests.ui.CartTest" time="4.182"/>
-  <testcase name="testAddProductToWishlistAndVerifyCounter" classname="com.qa.nopcommerce.tests.ui.CartTest" time="2.792"/>
-  <testcase name="testApplyInvalidCouponCode" classname="com.qa.nopcommerce.tests.ui.CartTest" time="4.287"/>
-  <testcase name="testApplyValidCouponCode" classname="com.qa.nopcommerce.tests.ui.CartTest" time="1.007"/>
-  <testcase name="testMoveItemFromWishlistToShoppingCart" classname="com.qa.nopcommerce.tests.ui.CartTest" time="0.523"/>
-  <testcase name="testRemoveItemFromCart" classname="com.qa.nopcommerce.tests.ui.CartTest" time="6.098"/>
-  <testcase name="testUpdateCartItemQuantity" classname="com.qa.nopcommerce.tests.ui.CartTest" time="0.837"/>
-  <testcase name="testViewShoppingCart" classname="com.qa.nopcommerce.tests.ui.CartTest" time="3.94"/>
-  <testcase name="testCustomerAddressCreateEditAndDelete" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="6.038"/>
-  <testcase name="testCustomerInfoPageRendering" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="2.58"/>
-  <testcase name="testCustomerOrdersPage" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="1.473"/>
-  <testcase name="testDeleteCustomerAddressFromAddressBook" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="4.52"/>
-  <testcase name="testProductReviewBlockedForUnauthenticatedGuest" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="0.699"/>
-  <testcase name="testSubmitProductReviewAsRegisteredUser" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="5.394"/>
-  <testcase name="testAdminCatalogCategoriesPage" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="5.705"/>
-  <testcase name="testAdminCatalogProductsPage" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="2.513"/>
-  <testcase name="testAdminCustomersPage" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="3.546"/>
-  <testcase name="testAdminDashboardElements" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="2.696"/>
-  <testcase name="testAdminLoginInvalidPassword" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="2.539"/>
-  <testcase name="testAdminLoginValidCredentials" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="1.935"/>
-  <testcase name="testAdminSalesOrdersPage" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="4.027"/>
-  <testcase name="testCartPageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="3.616"/>
-  <testcase name="testCategoryPageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="3.228"/>
-  <testcase name="testHomePageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="3.204"/>
-  <testcase name="testLoginPageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="1.666"/>
-  <testcase name="testRegisterPageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="1.533"/>
-  <testcase name="testCartItemPersistenceInDatabase" classname="com.qa.nopcommerce.tests.db.DatabaseVerificationTest" time="0.043"/>
-  <testcase name="testCustomerRecordPersistenceInDatabase" classname="com.qa.nopcommerce.tests.db.DatabaseVerificationTest" time="0.012"/>
-  <testcase name="testDatabaseConnectionHealth" classname="com.qa.nopcommerce.tests.db.DatabaseVerificationTest" time="0.006"/>
-  <testcase name="testOrderRecordPersistenceInDatabase" classname="com.qa.nopcommerce.tests.db.DatabaseVerificationTest" time="0.013"/>
-  <testcase name="testMobileNavigationMenuTrigger" classname="com.qa.nopcommerce.tests.nfr.NonFunctionalTest" time="1.136"/>
-  <testcase name="testNo500InternalServerErrorsOnAssets" classname="com.qa.nopcommerce.tests.nfr.NonFunctionalTest" time="2.671"/>
-  <testcase name="testPageLoadPerformanceSla" classname="com.qa.nopcommerce.tests.nfr.NonFunctionalTest" time="3.369"/>
-  <testcase name="testResponsiveViewportLayout" classname="com.qa.nopcommerce.tests.nfr.NonFunctionalTest" time="1.186"/>
+  <testcase name="testCustomerLoginEndpoint" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.225"/>
+  <testcase name="testCustomerRegisterEndpoint" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.267"/>
+  <testcase name="testNonExistentRouteHandling" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.163"/>
+  <testcase name="testPostWithoutAntiForgeryTokenRejection" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.094"/>
+  <testcase name="testStorefrontRootEndpoint" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.519"/>
+  <testcase name="testAdminLoginPageRendering" classname="com.qa.nopcommerce.tests.smoke.SmokeTest" time="1.132"/>
+  <testcase name="testHomePageTitleAndHeaderRendering" classname="com.qa.nopcommerce.tests.smoke.SmokeTest" time="3.093"/>
+  <testcase name="testStorefrontSearchBoxInput" classname="com.qa.nopcommerce.tests.smoke.SmokeTest" time="2.426"/>
+  <testcase name="testCustomerLoginBlankEmail" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="1.027"/>
+  <testcase name="testCustomerLoginInvalidPassword" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.066"/>
+  <testcase name="testCustomerLoginValidCredentials" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.526"/>
+  <testcase name="testCustomerLogout" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="1.421"/>
+  <testcase name="testRegistrationMalformedEmailValidation" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.682"/>
+  <testcase name="testRegistrationMandatoryFieldValidation" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.521"/>
+  <testcase name="testRegistrationPasswordMismatch" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="1.188"/>
+  <testcase name="testValidCustomerRegistration" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="1.713"/>
+  <testcase name="testCategoryNavigation" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="1.102"/>
+  <testcase name="testProductDetailsRendering" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="1.353"/>
+  <testcase name="testProductImageGalleryDisplay" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.14"/>
+  <testcase name="testProductSorting" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="1.032"/>
+  <testcase name="testSearchWithNonExistentKeyword" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.24"/>
+  <testcase name="testShortSearchTermNotice" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.915"/>
+  <testcase name="testTopMenuCategoriesRendering" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.355"/>
+  <testcase name="testAddProductToCart" classname="com.qa.nopcommerce.tests.ui.CartTest" time="0.788"/>
+  <testcase name="testAddProductToWishlistAndVerifyCounter" classname="com.qa.nopcommerce.tests.ui.CartTest" time="3.138"/>
+  <testcase name="testApplyInvalidCouponCode" classname="com.qa.nopcommerce.tests.ui.CartTest" time="1.662"/>
+  <testcase name="testApplyValidCouponCode" classname="com.qa.nopcommerce.tests.ui.CartTest" time="1.133"/>
+  <testcase name="testMoveItemFromWishlistToShoppingCart" classname="com.qa.nopcommerce.tests.ui.CartTest" time="2.556"/>
+  <testcase name="testRemoveItemFromCart" classname="com.qa.nopcommerce.tests.ui.CartTest" time="0.667"/>
+  <testcase name="testUpdateCartItemQuantity" classname="com.qa.nopcommerce.tests.ui.CartTest" time="3.914"/>
+  <testcase name="testViewShoppingCart" classname="com.qa.nopcommerce.tests.ui.CartTest" time="1.705"/>
+  <testcase name="testCheckoutBillingAddressForm" classname="com.qa.nopcommerce.tests.ui.CheckoutTest" time="2.669"/>
+  <testcase name="testCheckoutInitiation" classname="com.qa.nopcommerce.tests.ui.CheckoutTest" time="3.002"/>
+  <testcase name="testCheckoutPaymentMethodOptions" classname="com.qa.nopcommerce.tests.ui.CheckoutTest" time="1.454"/>
+  <testcase name="testCustomerAddressCreateEditAndDelete" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="6.19"/>
+  <testcase name="testCustomerInfoPageRendering" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="0.253"/>
+  <testcase name="testCustomerOrdersPage" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="1.921"/>
+  <testcase name="testDeleteCustomerAddressFromAddressBook" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="0.801"/>
+  <testcase name="testProductReviewBlockedForUnauthenticatedGuest" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="1.002"/>
+  <testcase name="testSubmitProductReviewAsRegisteredUser" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="2.657"/>
+  <testcase name="testAdminCatalogCategoriesPage" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="3.217"/>
+  <testcase name="testAdminCatalogProductsPage" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="2.7"/>
+  <testcase name="testAdminCustomersPage" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="2.454"/>
+  <testcase name="testAdminDashboardElements" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="2.026"/>
+  <testcase name="testAdminLoginInvalidPassword" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="0.752"/>
+  <testcase name="testAdminLoginValidCredentials" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="2.041"/>
+  <testcase name="testAdminSalesOrdersPage" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="2.79"/>
+  <testcase name="testCartPageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="2.671"/>
+  <testcase name="testCategoryPageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="2.042"/>
+  <testcase name="testHomePageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="1.924"/>
+  <testcase name="testLoginPageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="1.331"/>
+  <testcase name="testRegisterPageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="1.623"/>
+  <testcase name="testCartItemPersistenceInDatabase" classname="com.qa.nopcommerce.tests.db.DatabaseVerificationTest" time="0.025"/>
+  <testcase name="testCustomerRecordPersistenceInDatabase" classname="com.qa.nopcommerce.tests.db.DatabaseVerificationTest" time="0.01"/>
+  <testcase name="testDatabaseConnectionHealth" classname="com.qa.nopcommerce.tests.db.DatabaseVerificationTest" time="0.005"/>
+  <testcase name="testOrderRecordPersistenceInDatabase" classname="com.qa.nopcommerce.tests.db.DatabaseVerificationTest" time="0.011"/>
+  <testcase name="testMobileNavigationMenuTrigger" classname="com.qa.nopcommerce.tests.nfr.NonFunctionalTest" time="0.921"/>
+  <testcase name="testNo500InternalServerErrorsOnAssets" classname="com.qa.nopcommerce.tests.nfr.NonFunctionalTest" time="0.734"/>
+  <testcase name="testPageLoadPerformanceSla" classname="com.qa.nopcommerce.tests.nfr.NonFunctionalTest" time="0.752"/>
+  <testcase name="testResponsiveViewportLayout" classname="com.qa.nopcommerce.tests.nfr.NonFunctionalTest" time="1.055"/>
 </testsuite>

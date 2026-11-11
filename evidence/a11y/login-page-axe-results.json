@@ -18,7 +18,7 @@
     "name" : "axe"
   },
   "url" : "http://127.0.0.1:5000/login",
-  "timestamp" : "2026-11-10T19:10:17.356Z",
+  "timestamp" : "2026-11-11T10:24:48.902Z",
   "passes" : [ {
     "id" : "aria-allowed-attr",
     "description" : "Ensures ARIA attributes are allowed for an element's role",
@@ -5566,7 +5566,7 @@
     "impact" : "",
     "tags" : [ "cat.text-alternatives", "wcag2a", "wcag111", "section508", "section508.22.a", "ACT" ],
     "nodes" : [ {
-      "html" : "<img alt=\"Your store name\" src=\"http://localhost:80/Themes/DefaultClean/Content/images/logo.png\">",
+      "html" : "<img alt=\"Your store name\" src=\"http://127.0.0.1:5000/Themes/DefaultClean/Content/images/logo.png\">",
       "target" : [ "img" ],
       "impact" : null,
       "any" : [ {
@@ -5833,7 +5833,7 @@
       } ],
       "failureSummary" : null
     }, {
-      "html" : "<a href=\"/\">\n    <img alt=\"Your store name\" src=\"http://localhost:80/Themes/DefaultClean/Content/images/logo.png\">\n</a>",
+      "html" : "<a href=\"/\">\n    <img alt=\"Your store name\" src=\"http://127.0.0.1:5000/Themes/DefaultClean/Content/images/logo.png\">\n</a>",
       "target" : [ "a[href=\"/\"]" ],
       "impact" : null,
       "any" : [ {
@@ -6701,7 +6701,7 @@
     "impact" : "",
     "tags" : [ "cat.keyboard", "wcag2a", "wcag412" ],
     "nodes" : [ {
-      "html" : "<img alt=\"Your store name\" src=\"http://localhost:80/Themes/DefaultClean/Content/images/logo.png\">",
+      "html" : "<img alt=\"Your store name\" src=\"http://127.0.0.1:5000/Themes/DefaultClean/Content/images/logo.png\">",
       "target" : [ "img" ],
       "impact" : null,
       "any" : [ {
