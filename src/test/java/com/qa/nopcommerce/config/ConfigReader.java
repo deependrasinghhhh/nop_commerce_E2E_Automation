@@ -301,4 +301,29 @@ public class ConfigReader {
     public static String getTestEnvName() {
         return get("testEnvName", "isolated-docker");
     }
+
+    private static final List<String> VALID_A11Y_IMPACTS = Arrays.asList("minor", "moderate", "serious", "critical");
+
+    /**
+     * Resolves the accessibility impact failure threshold with configuration cascade:
+     * System Property -> Env Var -> .env -> config.properties -> default 'critical'.
+     * Allowed values: minor, moderate, serious, critical (case-insensitive).
+     *
+     * @return the normalized lowercase impact threshold
+     * @throws IllegalArgumentException if the configured value is not recognized
+     */
+    public static String getA11yFailOnImpact() {
+        String rawValue = get("a11y.failOnImpact", "critical");
+        if (rawValue == null || rawValue.isBlank()) {
+            rawValue = "critical";
+        }
+        String normalized = rawValue.trim().toLowerCase();
+        if (!VALID_A11Y_IMPACTS.contains(normalized)) {
+            throw new IllegalArgumentException(String.format(
+                    "Invalid accessibility failure impact '%s'. Allowed values are: %s (case-insensitive).",
+                    rawValue, VALID_A11Y_IMPACTS
+            ));
+        }
+        return normalized;
+    }
 }
