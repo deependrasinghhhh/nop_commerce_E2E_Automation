@@ -50,7 +50,7 @@ public class AdminDashboardPage extends BasePage {
         return new AdminLoginPage(page);
     }
 
-    public Locator getDashboardHeader() {
-        return dashboardHeader;
+    public boolean isHeaderVisible() {
+        return isVisible(dashboardHeader);
     }
 }

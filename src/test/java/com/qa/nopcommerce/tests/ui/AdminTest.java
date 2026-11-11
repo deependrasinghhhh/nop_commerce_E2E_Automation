@@ -4,8 +4,12 @@ import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import com.qa.nopcommerce.annotation.TestCase;
 import com.qa.nopcommerce.base.BaseTest;
 import com.qa.nopcommerce.config.ConfigReader;
+import com.qa.nopcommerce.pages.AdminCategoryListPage;
+import com.qa.nopcommerce.pages.AdminCustomerListPage;
 import com.qa.nopcommerce.pages.AdminDashboardPage;
 import com.qa.nopcommerce.pages.AdminLoginPage;
+import com.qa.nopcommerce.pages.AdminOrderListPage;
+import com.qa.nopcommerce.pages.AdminProductListPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -40,7 +44,7 @@ public class AdminTest extends BaseTest {
                 ConfigReader.getAdminPassword()
         );
 
-        PlaywrightAssertions.assertThat(dashboardPage.getDashboardHeader()).isVisible();
+        Assert.assertTrue(dashboardPage.isHeaderVisible(), "Expected admin dashboard header to be visible");
     }
 
     @Test(groups = {"ui", "admin"})
@@ -51,7 +55,7 @@ public class AdminTest extends BaseTest {
         loginAsAdmin();
         AdminDashboardPage dashboardPage = new AdminDashboardPage(getPage());
 
-        PlaywrightAssertions.assertThat(dashboardPage.getDashboardHeader()).isVisible();
+        Assert.assertTrue(dashboardPage.isDashboardLoaded(), "Expected admin dashboard to load");
     }
 
     @Test(groups = {"ui", "admin"})
@@ -63,7 +67,9 @@ public class AdminTest extends BaseTest {
         navigateTo("/Admin/Product/List");
 
         PlaywrightAssertions.assertThat(getPage()).hasURL(Pattern.compile(".*Product/List.*"));
-        PlaywrightAssertions.assertThat(getPage().locator("#products-grid, .content-header h1").first()).isVisible();
+        AdminProductListPage productListPage = new AdminProductListPage(getPage());
+        productListPage.waitForGrid();
+        Assert.assertTrue(productListPage.isGridVisible(), "Expected products grid to be visible");
     }
 
     @Test(groups = {"ui", "admin"})
@@ -75,7 +81,9 @@ public class AdminTest extends BaseTest {
         navigateTo("/Admin/Order/List");
 
         PlaywrightAssertions.assertThat(getPage()).hasURL(Pattern.compile(".*Order/List.*"));
-        PlaywrightAssertions.assertThat(getPage().locator("#orders-grid, .content-header h1").first()).isVisible();
+        AdminOrderListPage orderListPage = new AdminOrderListPage(getPage());
+        orderListPage.waitForGrid();
+        Assert.assertTrue(orderListPage.isGridVisible(), "Expected orders grid to be visible");
     }
 
     @Test(groups = {"ui", "admin"})
@@ -87,7 +95,9 @@ public class AdminTest extends BaseTest {
         navigateTo("/Admin/Category/List");
 
         PlaywrightAssertions.assertThat(getPage()).hasURL(Pattern.compile(".*Category/List.*"));
-        PlaywrightAssertions.assertThat(getPage().locator("#categories-grid, .content-header h1").first()).isVisible();
+        AdminCategoryListPage categoryListPage = new AdminCategoryListPage(getPage());
+        categoryListPage.waitForGrid();
+        Assert.assertTrue(categoryListPage.isGridVisible(), "Expected categories grid to be visible");
     }
 
     @Test(groups = {"ui", "admin"})
@@ -99,7 +109,9 @@ public class AdminTest extends BaseTest {
         navigateTo("/Admin/Customer/List");
 
         PlaywrightAssertions.assertThat(getPage()).hasURL(Pattern.compile(".*Customer/List.*"));
-        PlaywrightAssertions.assertThat(getPage().locator("#customers-grid, .content-header h1").first()).isVisible();
+        AdminCustomerListPage customerListPage = new AdminCustomerListPage(getPage());
+        customerListPage.waitForGrid();
+        Assert.assertTrue(customerListPage.isGridVisible(), "Expected customers grid to be visible");
     }
 
     @Test(groups = {"ui", "admin"})
