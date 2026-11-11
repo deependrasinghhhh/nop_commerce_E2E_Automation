@@ -88,6 +88,15 @@ public class ProductDetailsPage extends BasePage {
         click(addToWishlistButton);
     }
 
+    public boolean isNotificationBannerVisible() {
+        try {
+            notificationBanner.waitFor(new Locator.WaitForOptions().setTimeout(5000));
+            return notificationBanner.isVisible();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public Locator getNotificationBanner() {
         return notificationBanner;
     }

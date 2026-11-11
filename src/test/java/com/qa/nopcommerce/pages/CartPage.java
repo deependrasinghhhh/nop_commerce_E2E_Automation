@@ -43,16 +43,24 @@ public class CartPage extends BasePage {
         this.emptyCartMessage = page.locator(".no-data");
     }
 
-    public Locator getCartRows() {
-        return cartRows;
-    }
-
     public int getCartItemCount() {
         return cartRows.count();
     }
 
+    public boolean isCheckoutButtonVisible() {
+        return isVisible(checkoutButton);
+    }
+
+    public String getItemQuantity(int rowIndex) {
+        return cartRows.nth(rowIndex).locator("input.qty-input").inputValue();
+    }
+
     public List<String> getCartProductNames() {
         return page.locator("table.cart .product-name").allInnerTexts();
+    }
+
+    public boolean containsProduct(String productName) {
+        return getCartProductNames().stream().anyMatch(name -> name.contains(productName));
     }
 
     public void updateQuantity(int rowIndex, int newQty) {
@@ -97,20 +105,20 @@ public class CartPage extends BasePage {
         }
     }
 
-    public Locator getCouponMessage() {
-        return couponMessage;
+    public String getCouponMessageText() {
+        return getText(couponMessage);
     }
 
-    public Locator getDiscountRowSummary() {
-        return discountRowSummary;
+    public boolean isCouponMessageDisplayed() {
+        return isVisible(couponMessage);
     }
 
-    public Locator getSubTotalSummary() {
-        return subTotalSummary;
+    public boolean isDiscountApplied() {
+        return isVisible(discountRowSummary);
     }
 
-    public Locator getEmptyCartMessage() {
-        return emptyCartMessage;
+    public String getEmptyCartText() {
+        return getText(emptyCartMessage);
     }
 
     public void acceptTermsOfService() {
@@ -131,15 +139,7 @@ public class CartPage extends BasePage {
         return getText(orderTotal);
     }
 
-    public Locator getOrderTotalLocator() {
-        return orderTotal;
-    }
-
     public boolean isCartEmpty() {
         return isVisible(emptyCartMessage) && getText(emptyCartMessage).contains("empty");
-    }
-
-    public Locator getCheckoutButton() {
-        return checkoutButton;
     }
 }

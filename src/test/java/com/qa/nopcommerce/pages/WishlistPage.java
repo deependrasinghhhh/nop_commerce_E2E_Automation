@@ -27,20 +27,20 @@ public class WishlistPage extends BasePage {
         this.headerWishlistQty = page.locator("span.wishlist-qty");
     }
 
-    public Locator getWishlistRows() {
-        return wishlistRows;
+    public int getWishlistItemCount() {
+        return wishlistRows.count();
     }
 
-    public Locator getHeaderWishlistQty() {
-        return headerWishlistQty;
+    public String getHeaderWishlistQuantityText() {
+        return getText(headerWishlistQty);
     }
 
-    public Locator getEmptyWishlistMessage() {
-        return emptyWishlistMessage;
+    public String getEmptyWishlistText() {
+        return getText(emptyWishlistMessage);
     }
 
-    public Locator getProductLinkByName(String productName) {
-        return wishlistTable.locator(String.format("a.product-name:has-text('%s')", productName));
+    public boolean isProductInWishlist(String productName) {
+        return isVisible(wishlistTable.locator(String.format("a.product-name:has-text('%s')", productName)));
     }
 
     public CartPage moveProductToCart(String productName) {

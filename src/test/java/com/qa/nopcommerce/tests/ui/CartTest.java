@@ -1,11 +1,10 @@
 package com.qa.nopcommerce.tests.ui;
 
-import com.microsoft.playwright.Locator;
-import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import com.qa.nopcommerce.annotation.TestCase;
 import com.qa.nopcommerce.base.BaseTest;
 import com.qa.nopcommerce.config.ConfigReader;
 import com.qa.nopcommerce.database.DatabaseManager;
+import com.qa.nopcommerce.pages.AdminDiscountPage;
 import com.qa.nopcommerce.pages.AdminLoginPage;
 import com.qa.nopcommerce.pages.CartPage;
 import com.qa.nopcommerce.pages.ProductDetailsPage;
@@ -15,10 +14,10 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 @Epic("Storefront Core")
 @Feature("Shopping Cart, Wishlist & Coupon Operations")
@@ -37,8 +36,8 @@ public class CartTest extends BaseTest {
             ProductDetailsPage productPage = new ProductDetailsPage(getPage());
             productPage.clickAddToCart();
 
-            PlaywrightAssertions.assertThat(productPage.getNotificationBanner())
-                    .hasText(Pattern.compile(".*The product has been added to your shopping cart.*"));
+            Assert.assertTrue(productPage.getNotificationText().contains("The product has been added to your shopping cart"),
+                    "Expected add to cart notification banner");
         } finally {
             navigateTo("/cart");
             new CartPage(getPage()).clearCart();
@@ -54,13 +53,13 @@ public class CartTest extends BaseTest {
             navigateTo(TEST_PRODUCT_SLUG);
             ProductDetailsPage productPage = new ProductDetailsPage(getPage());
             productPage.clickAddToCart();
-            PlaywrightAssertions.assertThat(productPage.getNotificationBanner()).isVisible();
+            Assert.assertTrue(productPage.isNotificationBannerVisible(), "Expected notification banner");
 
             navigateTo("/cart");
             CartPage cartPage = new CartPage(getPage());
 
-            PlaywrightAssertions.assertThat(cartPage.getCartRows()).hasCount(1);
-            PlaywrightAssertions.assertThat(cartPage.getCheckoutButton()).isVisible();
+            Assert.assertEquals(cartPage.getCartItemCount(), 1, "Expected 1 item in cart");
+            Assert.assertTrue(cartPage.isCheckoutButtonVisible(), "Expected checkout button to be visible");
         } finally {
             new CartPage(getPage()).clearCart();
         }
@@ -75,15 +74,14 @@ public class CartTest extends BaseTest {
             navigateTo(TEST_PRODUCT_SLUG);
             ProductDetailsPage productPage = new ProductDetailsPage(getPage());
             productPage.clickAddToCart();
-            PlaywrightAssertions.assertThat(productPage.getNotificationBanner()).isVisible();
+            Assert.assertTrue(productPage.isNotificationBannerVisible(), "Expected notification banner");
 
             navigateTo("/cart");
             CartPage cartPage = new CartPage(getPage());
-            PlaywrightAssertions.assertThat(cartPage.getCartRows()).hasCount(1);
+            Assert.assertEquals(cartPage.getCartItemCount(), 1, "Expected 1 item in cart");
 
             cartPage.updateQuantity(0, 3);
-            Locator qtyInput = getPage().locator("table.cart tbody tr input.qty-input").first();
-            PlaywrightAssertions.assertThat(qtyInput).hasValue("3");
+            Assert.assertEquals(cartPage.getItemQuantity(0), "3", "Expected quantity to be updated to 3");
         } finally {
             new CartPage(getPage()).clearCart();
         }
@@ -97,15 +95,15 @@ public class CartTest extends BaseTest {
         navigateTo(TEST_PRODUCT_SLUG);
         ProductDetailsPage productPage = new ProductDetailsPage(getPage());
         productPage.clickAddToCart();
-        PlaywrightAssertions.assertThat(productPage.getNotificationBanner()).isVisible();
+        Assert.assertTrue(productPage.isNotificationBannerVisible(), "Expected notification banner");
 
         navigateTo("/cart");
         CartPage cartPage = new CartPage(getPage());
-        PlaywrightAssertions.assertThat(cartPage.getCartRows()).hasCount(1);
+        Assert.assertEquals(cartPage.getCartItemCount(), 1, "Expected 1 item in cart");
 
         cartPage.removeItem(0);
-        PlaywrightAssertions.assertThat(cartPage.getEmptyCartMessage())
-                .containsText("Your Shopping Cart is empty!");
+        Assert.assertTrue(cartPage.getEmptyCartText().contains("Your Shopping Cart is empty!"),
+                "Expected empty cart message");
     }
 
     @Test(groups = {"ui", "cart", "wishlist"})
@@ -122,16 +120,17 @@ public class CartTest extends BaseTest {
             productPage.setQuantity(1);
             productPage.clickAddToWishlist();
 
-            PlaywrightAssertions.assertThat(productPage.getNotificationBanner())
-                    .hasText(Pattern.compile(".*The product has been added to your wishlist.*"));
+            Assert.assertTrue(productPage.getNotificationText().contains("The product has been added to your wishlist"),
+                    "Expected add to wishlist notification banner");
 
             WishlistPage wishlistPage = new WishlistPage(getPage());
-            PlaywrightAssertions.assertThat(wishlistPage.getHeaderWishlistQty())
-                    .containsText("(1)");
+            Assert.assertTrue(wishlistPage.getHeaderWishlistQuantityText().contains("(1)"),
+                    "Expected wishlist header quantity (1)");
 
             navigateTo("/wishlist");
-            PlaywrightAssertions.assertThat(wishlistPage.getWishlistRows()).hasCount(1);
-            PlaywrightAssertions.assertThat(wishlistPage.getProductLinkByName(TEST_PRODUCT_NAME)).isVisible();
+            Assert.assertEquals(wishlistPage.getWishlistItemCount(), 1, "Expected 1 item in wishlist");
+            Assert.assertTrue(wishlistPage.isProductInWishlist(TEST_PRODUCT_NAME),
+                    "Expected product link in wishlist");
         } finally {
             navigateTo("/wishlist");
             new WishlistPage(getPage()).clearWishlist();
@@ -148,21 +147,21 @@ public class CartTest extends BaseTest {
             ProductDetailsPage productPage = new ProductDetailsPage(getPage());
             productPage.setQuantity(1);
             productPage.clickAddToWishlist();
-            PlaywrightAssertions.assertThat(productPage.getNotificationBanner()).isVisible();
+            Assert.assertTrue(productPage.isNotificationBannerVisible(), "Expected notification banner");
 
             navigateTo("/wishlist");
             WishlistPage wishlistPage = new WishlistPage(getPage());
-            PlaywrightAssertions.assertThat(wishlistPage.getWishlistRows()).hasCount(1);
+            Assert.assertEquals(wishlistPage.getWishlistItemCount(), 1, "Expected 1 item in wishlist");
 
             CartPage cartPage = wishlistPage.moveProductToCart(TEST_PRODUCT_NAME);
-            PlaywrightAssertions.assertThat(getPage()).hasURL(Pattern.compile(".*/cart.*"));
-            PlaywrightAssertions.assertThat(cartPage.getCartRows()).hasCount(1);
-            PlaywrightAssertions.assertThat(getPage().locator("table.cart a.product-name"))
-                    .containsText(TEST_PRODUCT_NAME);
+            Assert.assertTrue(getPage().url().contains("/cart"), "Expected URL to contain /cart");
+            Assert.assertEquals(cartPage.getCartItemCount(), 1, "Expected 1 item in cart");
+            Assert.assertTrue(cartPage.containsProduct(TEST_PRODUCT_NAME),
+                    "Expected cart to contain product " + TEST_PRODUCT_NAME);
 
             navigateTo("/wishlist");
-            PlaywrightAssertions.assertThat(wishlistPage.getEmptyWishlistMessage())
-                    .containsText("The wishlist is empty!");
+            Assert.assertTrue(wishlistPage.getEmptyWishlistText().contains("The wishlist is empty!"),
+                    "Expected empty wishlist message");
         } finally {
             navigateTo("/wishlist");
             new WishlistPage(getPage()).clearWishlist();
@@ -186,30 +185,26 @@ public class CartTest extends BaseTest {
             adminLogin.login(ConfigReader.getAdminEmail(), ConfigReader.getAdminPassword());
 
             navigateTo("/Admin/Discount/Create");
-            getPage().locator("#Name").fill(discountName);
-            getPage().locator("#UsePercentage").check();
-            getPage().locator("#DiscountPercentage").fill("10");
-            getPage().locator("#RequiresCouponCode").check();
-            getPage().locator("#CouponCode").fill(isolatedCouponCode);
-            getPage().locator("button[name='save']").click();
-            PlaywrightAssertions.assertThat(getPage().locator(".alert-success"))
-                    .containsText("The new discount has been added successfully");
+            AdminDiscountPage discountPage = new AdminDiscountPage(getPage());
+            discountPage.createPercentageDiscount(discountName, 10, isolatedCouponCode);
+            Assert.assertTrue(discountPage.isDiscountCreatedSuccessfully(),
+                    "Expected new discount added successfully alert");
 
             // 2. Add isolated test item to storefront cart and apply the valid coupon code
             navigateTo(TEST_PRODUCT_SLUG);
             ProductDetailsPage productPage = new ProductDetailsPage(getPage());
             productPage.clickAddToCart();
-            PlaywrightAssertions.assertThat(productPage.getNotificationBanner()).isVisible();
+            Assert.assertTrue(productPage.isNotificationBannerVisible(), "Expected notification banner");
 
             navigateTo("/cart");
             CartPage cartPage = new CartPage(getPage());
-            PlaywrightAssertions.assertThat(cartPage.getCartRows()).hasCount(1);
+            Assert.assertEquals(cartPage.getCartItemCount(), 1, "Expected 1 item in cart");
 
             cartPage.applyCouponCode(isolatedCouponCode);
 
-            PlaywrightAssertions.assertThat(cartPage.getCouponMessage())
-                    .containsText("The coupon code was applied");
-            PlaywrightAssertions.assertThat(cartPage.getDiscountRowSummary()).isVisible();
+            Assert.assertTrue(cartPage.getCouponMessageText().contains("The coupon code was applied"),
+                    "Expected coupon applied message");
+            Assert.assertTrue(cartPage.isDiscountApplied(), "Expected discount row summary to be visible");
         } finally {
             try {
                 navigateTo("/cart");
@@ -230,14 +225,14 @@ public class CartTest extends BaseTest {
             navigateTo(TEST_PRODUCT_SLUG);
             ProductDetailsPage productPage = new ProductDetailsPage(getPage());
             productPage.clickAddToCart();
-            PlaywrightAssertions.assertThat(productPage.getNotificationBanner()).isVisible();
+            Assert.assertTrue(productPage.isNotificationBannerVisible(), "Expected notification banner");
 
             navigateTo("/cart");
             CartPage cartPage = new CartPage(getPage());
-            PlaywrightAssertions.assertThat(cartPage.getCartRows()).hasCount(1);
+            Assert.assertEquals(cartPage.getCartItemCount(), 1, "Expected 1 item in cart");
 
             cartPage.applyCouponCode("INVALID_DISCOUNT_CODE_999");
-            PlaywrightAssertions.assertThat(cartPage.getCouponMessage()).isVisible();
+            Assert.assertTrue(cartPage.isCouponMessageDisplayed(), "Expected coupon error message to be displayed");
         } finally {
             navigateTo("/cart");
             new CartPage(getPage()).clearCart();
