@@ -75,6 +75,14 @@ public class HomePage extends BasePage {
         click(logoutLink);
     }
 
+    public boolean isCustomerLoggedIn() {
+        return isVisible(customerInfoLink) || isVisible(logoutLink);
+    }
+
+    public boolean isLoginLinkVisible() {
+        return isVisible(loginLink);
+    }
+
     public CategoryPage navigateToCategory(String categoryName) {
         Locator catLink = topMenu.locator(String.format("a:has-text('%s')", categoryName)).first();
         click(catLink);

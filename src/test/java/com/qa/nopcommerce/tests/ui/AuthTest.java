@@ -1,6 +1,5 @@
 package com.qa.nopcommerce.tests.ui;
 
-import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import com.qa.nopcommerce.annotation.TestCase;
 import com.qa.nopcommerce.base.BaseTest;
 import com.qa.nopcommerce.config.ConfigReader;
@@ -16,7 +15,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 @Epic("Storefront Core")
 @Feature("Authentication & Account Lifecycle")
@@ -36,8 +34,7 @@ public class AuthTest extends BaseTest {
         registerPage.fillRegistrationForm("Alex", "QA Tester", uniqueEmail, "QA Corp", dynamicPassword, dynamicPassword);
         registerPage.clickRegisterButton();
 
-        PlaywrightAssertions.assertThat(getPage().locator(".result"))
-                .hasText(Pattern.compile(".*Your registration completed.*"));
+        Assert.assertTrue(registerPage.isRegistrationSuccess(), "Expected registration to complete successfully");
     }
 
     @Test(groups = {"ui", "auth"})
@@ -50,10 +47,10 @@ public class AuthTest extends BaseTest {
 
         registerPage.clickRegisterButton();
 
-        PlaywrightAssertions.assertThat(getPage().locator("#FirstName-error")).isVisible();
-        PlaywrightAssertions.assertThat(getPage().locator("#LastName-error")).isVisible();
-        PlaywrightAssertions.assertThat(getPage().locator("#Email-error")).isVisible();
-        PlaywrightAssertions.assertThat(getPage().locator("#ConfirmPassword-error, #Password-error").first()).isVisible();
+        Assert.assertTrue(registerPage.isFirstNameErrorVisible(), "Expected FirstName error");
+        Assert.assertTrue(registerPage.isLastNameErrorVisible(), "Expected LastName error");
+        Assert.assertTrue(registerPage.isEmailErrorVisible(), "Expected Email error");
+        Assert.assertTrue(registerPage.isPasswordOrConfirmErrorVisible(), "Expected Password or ConfirmPassword error");
     }
 
     @Test(groups = {"ui", "auth"})
@@ -68,7 +65,7 @@ public class AuthTest extends BaseTest {
         registerPage.fillRegistrationForm("Alex", "QA Tester", "invalid-email-format", "QA Corp", dynamicPassword, dynamicPassword);
         registerPage.clickRegisterButton();
 
-        PlaywrightAssertions.assertThat(getPage().locator("#Email-error")).isVisible();
+        Assert.assertTrue(registerPage.isEmailErrorVisible(), "Expected Email format error");
     }
 
     @Test(groups = {"ui", "auth"})
@@ -84,8 +81,8 @@ public class AuthTest extends BaseTest {
                 "PassA_" + uniqueSuffix, "PassB_" + uniqueSuffix);
         registerPage.clickRegisterButton();
 
-        PlaywrightAssertions.assertThat(getPage().locator("#ConfirmPassword-error"))
-                .containsText("The password and confirmation password do not match.");
+        Assert.assertTrue(registerPage.getConfirmPasswordError().contains("The password and confirmation password do not match."),
+                "Expected password mismatch confirmation error");
     }
 
     @Test(groups = {"ui", "auth", "smoke"})
@@ -98,7 +95,8 @@ public class AuthTest extends BaseTest {
 
         loginPage.login(ConfigReader.getAdminEmail(), ConfigReader.getAdminPassword());
 
-        PlaywrightAssertions.assertThat(getPage().locator("a.ico-account, a.ico-logout").first()).isVisible();
+        HomePage homePage = new HomePage(getPage());
+        Assert.assertTrue(homePage.isCustomerLoggedIn(), "Expected customer account or logout link to be visible");
     }
 
     @Test(groups = {"ui", "auth"})
@@ -127,8 +125,8 @@ public class AuthTest extends BaseTest {
 
         loginPage.login("", "Invalid_" + UUID.randomUUID().toString().substring(0, 8));
 
-        PlaywrightAssertions.assertThat(getPage().locator("#Email-error"))
-                .containsText("Please enter your email");
+        Assert.assertTrue(loginPage.getEmailError().contains("Please enter your email"),
+                "Expected please enter your email error");
     }
 
     @Test(groups = {"ui", "auth"})
@@ -143,6 +141,6 @@ public class AuthTest extends BaseTest {
         HomePage homePage = new HomePage(getPage());
         homePage.clickLogout();
 
-        PlaywrightAssertions.assertThat(getPage().locator("a.ico-login").first()).isVisible();
+        Assert.assertTrue(homePage.isLoginLinkVisible(), "Expected login link to be visible after logout");
     }
 }

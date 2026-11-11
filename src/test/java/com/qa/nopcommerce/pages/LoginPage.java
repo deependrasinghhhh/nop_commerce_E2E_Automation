@@ -40,6 +40,10 @@ public class LoginPage extends BasePage {
         click(loginButton);
     }
 
+    public boolean isEmailErrorVisible() {
+        return isVisible(emailError);
+    }
+
     public String getEmailError() {
         return getText(emailError);
     }

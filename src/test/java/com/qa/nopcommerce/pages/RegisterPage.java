@@ -91,6 +91,26 @@ public class RegisterPage extends BasePage {
         return new HomePage(page);
     }
 
+    public boolean isFirstNameErrorVisible() {
+        return isVisible(firstNameError);
+    }
+
+    public boolean isLastNameErrorVisible() {
+        return isVisible(lastNameError);
+    }
+
+    public boolean isEmailErrorVisible() {
+        return isVisible(emailError);
+    }
+
+    public boolean isPasswordOrConfirmErrorVisible() {
+        return isVisible(passwordError) || isVisible(confirmPasswordError);
+    }
+
+    public boolean isConfirmPasswordErrorVisible() {
+        return isVisible(confirmPasswordError);
+    }
+
     public String getFirstNameError() {
         return getText(firstNameError);
     }
