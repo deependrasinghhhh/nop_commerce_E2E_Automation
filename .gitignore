@@ -12,6 +12,7 @@ reports/*.html
 evidence/screenshots/
 evidence/traces/
 evidence/failures/
+evidence/videos/
 *.log
 
 ### Environment & Secrets ###
