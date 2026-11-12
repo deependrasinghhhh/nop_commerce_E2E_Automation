@@ -180,12 +180,12 @@ public class CustomerInfoPage extends BasePage {
     }
 
     public boolean isAddressCardVisible(String text) {
-        return isVisible(addressItems.filter(new Locator.FilterOptions().setHasText(text)).first());
+        return waitForVisible(addressItems.filter(new Locator.FilterOptions().setHasText(text)).first());
     }
 
     public boolean addressCardContainsText(String addressText, String expectedContent) {
         Locator card = addressItems.filter(new Locator.FilterOptions().setHasText(addressText)).first();
-        return getText(card).contains(expectedContent);
+        return waitForTextContains(card, expectedContent);
     }
 
     public String getNoAddressesText() {
@@ -193,7 +193,7 @@ public class CustomerInfoPage extends BasePage {
     }
 
     public boolean hasNoAddresses() {
-        return isVisible(noAddressesMessage) && getText(noAddressesMessage).contains("No addresses");
+        return waitForTextContains(noAddressesMessage, "No addresses");
     }
 
     public String getPageTitleText() {

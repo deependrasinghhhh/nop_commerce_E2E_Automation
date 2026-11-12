@@ -26,11 +26,12 @@ public class AdminDashboardPage extends BasePage {
     }
 
     public boolean isDashboardLoaded() {
-        return isVisible(dashboardHeader) && getText(dashboardHeader).contains("Dashboard");
+        return waitForVisible(dashboardHeader) && getText(dashboardHeader).contains("Dashboard");
     }
 
     public int getStatisticsCardCount() {
-        return statCards.count();
+        waitForMinCount(statCards, 1);
+        return safeCount(statCards);
     }
 
     public void openCatalogMenu() {
@@ -51,6 +52,6 @@ public class AdminDashboardPage extends BasePage {
     }
 
     public boolean isHeaderVisible() {
-        return isVisible(dashboardHeader);
+        return waitForVisible(dashboardHeader);
     }
 }

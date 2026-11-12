@@ -28,11 +28,19 @@ public class WishlistPage extends BasePage {
     }
 
     public int getWishlistItemCount() {
-        return wishlistRows.count();
+        return safeCount(wishlistRows);
+    }
+
+    public boolean hasWishlistItemCount(int expectedCount) {
+        return waitForCount(wishlistRows, expectedCount);
     }
 
     public String getHeaderWishlistQuantityText() {
         return getText(headerWishlistQty);
+    }
+
+    public boolean hasHeaderWishlistQuantity(String expectedText) {
+        return waitForTextContains(headerWishlistQty, expectedText);
     }
 
     public String getEmptyWishlistText() {
@@ -40,7 +48,7 @@ public class WishlistPage extends BasePage {
     }
 
     public boolean isProductInWishlist(String productName) {
-        return isVisible(wishlistTable.locator(String.format("a.product-name:has-text('%s')", productName)));
+        return waitForVisible(wishlistTable.locator(String.format("a.product-name:has-text('%s')", productName)));
     }
 
     public CartPage moveProductToCart(String productName) {
@@ -48,22 +56,31 @@ public class WishlistPage extends BasePage {
         Locator addToCartCheckbox = row.locator("input[name='addtocart']");
         addToCartCheckbox.check();
         click(addToCartButton);
+        waitForLoad();
         return new CartPage(page);
     }
 
     public void removeProductFromWishlist(String productName) {
+        int before = safeCount(wishlistRows);
         Locator row = page.locator("table.cart tbody tr").filter(new Locator.FilterOptions().setHasText(productName)).first();
         Locator removeBtn = row.locator("button.remove-btn");
         if (isVisible(removeBtn)) {
             click(removeBtn);
+            if (before > 0) {
+                waitForCountLessThan(wishlistRows, before);
+            }
+            waitForLoad();
         }
     }
 
     public void clearWishlist() {
-        while (wishlistRows.count() > 0) {
+        waitForLoad();
+        while (safeCount(wishlistRows) > 0) {
+            int before = safeCount(wishlistRows);
             Locator removeBtn = wishlistRows.first().locator("button.remove-btn");
-            if (isVisible(removeBtn)) {
+            if (waitForVisible(removeBtn, 5000)) {
                 click(removeBtn);
+                waitForCountLessThan(wishlistRows, before);
                 waitForLoad();
             } else {
                 break;

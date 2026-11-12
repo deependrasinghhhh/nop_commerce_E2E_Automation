@@ -24,7 +24,7 @@ public class OrderSuccessPage extends BasePage {
     }
 
     public boolean isOrderSuccessful() {
-        return isVisible(completedTitle) && getText(completedTitle).contains("successfully processed");
+        return waitForTextContains(completedTitle, "successfully processed");
     }
 
     public String getOrderNumber() {

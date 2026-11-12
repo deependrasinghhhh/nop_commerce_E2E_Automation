@@ -24,7 +24,7 @@ public class AdminCustomerListPage extends BasePage {
     }
 
     public boolean isGridVisible() {
-        return isVisible(customersGrid);
+        return waitForVisible(customersGrid);
     }
 
     public int getCustomerRowCount() {

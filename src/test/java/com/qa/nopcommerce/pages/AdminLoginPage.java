@@ -40,18 +40,18 @@ public class AdminLoginPage extends BasePage {
     }
 
     public boolean isErrorMessageDisplayed() {
-        return isVisible(errorMessage);
+        return waitForVisible(errorMessage);
     }
 
     public boolean isEmailInputVisible() {
-        return isVisible(emailInput);
+        return waitForVisible(emailInput);
     }
 
     public boolean isPasswordInputVisible() {
-        return isVisible(passwordInput);
+        return waitForVisible(passwordInput);
     }
 
     public boolean isLoginButtonVisible() {
-        return isVisible(loginButton);
+        return waitForVisible(loginButton);
     }
 }

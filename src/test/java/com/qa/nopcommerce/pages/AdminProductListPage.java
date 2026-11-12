@@ -24,7 +24,7 @@ public class AdminProductListPage extends BasePage {
     }
 
     public boolean isGridVisible() {
-        return isVisible(productsGrid);
+        return waitForVisible(productsGrid);
     }
 
     public void searchProduct(String productName) {

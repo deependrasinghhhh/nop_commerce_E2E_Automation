@@ -44,15 +44,26 @@ public class CartPage extends BasePage {
     }
 
     public int getCartItemCount() {
-        return cartRows.count();
+        return safeCount(cartRows);
+    }
+
+    public boolean hasCartItemCount(int expectedCount) {
+        return waitForCount(cartRows, expectedCount);
     }
 
     public boolean isCheckoutButtonVisible() {
-        return isVisible(checkoutButton);
+        return waitForVisible(checkoutButton);
     }
 
     public String getItemQuantity(int rowIndex) {
         return cartRows.nth(rowIndex).locator("input.qty-input").inputValue();
+    }
+
+    public boolean hasItemQuantity(int rowIndex, String expectedQuantity) {
+        return waitForCondition(() -> cartRows.count() > rowIndex
+                && expectedQuantity.equals(cartRows.nth(rowIndex)
+                        .locator("input.qty-input")
+                        .inputValue(new Locator.InputValueOptions().setTimeout(1000))));
     }
 
     public List<String> getCartProductNames() {
@@ -60,7 +71,7 @@ public class CartPage extends BasePage {
     }
 
     public boolean containsProduct(String productName) {
-        return getCartProductNames().stream().anyMatch(name -> name.contains(productName));
+        return waitForCondition(() -> getCartProductNames().stream().anyMatch(name -> name.contains(productName)));
     }
 
     public void updateQuantity(int rowIndex, int newQty) {
@@ -76,16 +87,23 @@ public class CartPage extends BasePage {
     }
 
     public void removeItem(int rowIndex) {
+        int before = safeCount(cartRows);
         Locator removeBtn = cartRows.nth(rowIndex).locator("button.remove-btn");
         click(removeBtn);
+        if (before > 0) {
+            waitForCountLessThan(cartRows, before);
+        }
         waitForLoad();
     }
 
     public void clearCart() {
-        while (cartRows.count() > 0) {
+        waitForLoad();
+        while (safeCount(cartRows) > 0) {
+            int before = safeCount(cartRows);
             Locator removeBtn = cartRows.first().locator("button.remove-btn");
-            if (isVisible(removeBtn)) {
+            if (waitForVisible(removeBtn, 5000)) {
                 click(removeBtn);
+                waitForCountLessThan(cartRows, before);
                 waitForLoad();
             } else {
                 break;
@@ -110,11 +128,11 @@ public class CartPage extends BasePage {
     }
 
     public boolean isCouponMessageDisplayed() {
-        return isVisible(couponMessage);
+        return waitForVisible(couponMessage);
     }
 
     public boolean isDiscountApplied() {
-        return isVisible(discountRowSummary);
+        return waitForVisible(discountRowSummary);
     }
 
     public String getEmptyCartText() {
@@ -140,6 +158,6 @@ public class CartPage extends BasePage {
     }
 
     public boolean isCartEmpty() {
-        return isVisible(emptyCartMessage) && getText(emptyCartMessage).contains("empty");
+        return waitForVisible(emptyCartMessage) && getText(emptyCartMessage).contains("empty");
     }
 }

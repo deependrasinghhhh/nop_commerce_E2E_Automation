@@ -22,7 +22,7 @@ public class AdminOrderListPage extends BasePage {
     }
 
     public boolean isGridVisible() {
-        return isVisible(ordersGrid);
+        return waitForVisible(ordersGrid);
     }
 
     public int getOrderRowCount() {

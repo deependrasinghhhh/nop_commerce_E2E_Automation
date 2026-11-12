@@ -92,23 +92,23 @@ public class RegisterPage extends BasePage {
     }
 
     public boolean isFirstNameErrorVisible() {
-        return isVisible(firstNameError);
+        return waitForVisible(firstNameError);
     }
 
     public boolean isLastNameErrorVisible() {
-        return isVisible(lastNameError);
+        return waitForVisible(lastNameError);
     }
 
     public boolean isEmailErrorVisible() {
-        return isVisible(emailError);
+        return waitForVisible(emailError);
     }
 
     public boolean isPasswordOrConfirmErrorVisible() {
-        return isVisible(passwordError) || isVisible(confirmPasswordError);
+        return waitForVisible(passwordError.or(confirmPasswordError));
     }
 
     public boolean isConfirmPasswordErrorVisible() {
-        return isVisible(confirmPasswordError);
+        return waitForVisible(confirmPasswordError);
     }
 
     public String getFirstNameError() {
@@ -136,6 +136,6 @@ public class RegisterPage extends BasePage {
     }
 
     public boolean isRegistrationSuccess() {
-        return isVisible(resultMessage) && getText(resultMessage).contains("Your registration completed");
+        return waitForTextContains(resultMessage, "Your registration completed");
     }
 }

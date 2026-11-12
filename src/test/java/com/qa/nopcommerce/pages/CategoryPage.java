@@ -30,7 +30,7 @@ public class CategoryPage extends BasePage {
     }
 
     public int getProductCount() {
-        return productItems.count();
+        return safeCount(productItems);
     }
 
     public List<String> getProductTitles() {
@@ -59,6 +59,6 @@ public class CategoryPage extends BasePage {
     }
 
     public boolean hasProducts() {
-        return getProductCount() > 0;
+        return waitForMinCount(productItems, 1);
     }
 }

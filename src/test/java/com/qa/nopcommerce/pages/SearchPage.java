@@ -24,11 +24,11 @@ public class SearchPage extends BasePage {
     }
 
     public boolean isNoResultVisible() {
-        return isVisible(noResult);
+        return waitForVisible(noResult);
     }
 
     public boolean isWarningVisible() {
-        return isVisible(warning);
+        return waitForVisible(warning);
     }
 
     public String getWarningText() {
@@ -36,14 +36,14 @@ public class SearchPage extends BasePage {
     }
 
     public int getSearchResultCount() {
-        return page.locator(".search-results .product-item").count();
+        return safeCount(page.locator(".search-results .product-item"));
     }
 
     public boolean hasSearchResults() {
-        return getSearchResultCount() > 0;
+        return waitForMinCount(page.locator(".search-results .product-item"), 1);
     }
 
     public boolean isSearchResultsVisible() {
-        return isVisible(searchResults);
+        return waitForVisible(searchResults);
     }
 }

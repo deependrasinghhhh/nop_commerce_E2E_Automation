@@ -41,7 +41,7 @@ public class LoginPage extends BasePage {
     }
 
     public boolean isEmailErrorVisible() {
-        return isVisible(emailError);
+        return waitForVisible(emailError);
     }
 
     public String getEmailError() {
@@ -53,7 +53,7 @@ public class LoginPage extends BasePage {
     }
 
     public boolean isErrorMessageDisplayed() {
-        return isVisible(validationSummaryError);
+        return waitForVisible(validationSummaryError);
     }
 
     public void clickForgotPassword() {

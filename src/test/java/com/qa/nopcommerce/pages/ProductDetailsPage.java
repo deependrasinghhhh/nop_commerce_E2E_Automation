@@ -59,11 +59,11 @@ public class ProductDetailsPage extends BasePage {
     }
 
     public boolean isProductPriceVisible() {
-        return isVisible(productPrice);
+        return waitForVisible(productPrice);
     }
 
     public boolean isProductImageGalleryVisible() {
-        return isVisible(page.locator(".gallery .picture img"));
+        return waitForVisible(page.locator(".gallery .picture img"));
     }
 
     public void setQuantity(int qty) {
@@ -89,12 +89,7 @@ public class ProductDetailsPage extends BasePage {
     }
 
     public boolean isNotificationBannerVisible() {
-        try {
-            notificationBanner.waitFor(new Locator.WaitForOptions().setTimeout(5000));
-            return notificationBanner.isVisible();
-        } catch (Exception e) {
-            return false;
-        }
+        return waitForVisible(notificationBanner);
     }
 
     public String getNotificationText() {
@@ -143,7 +138,7 @@ public class ProductDetailsPage extends BasePage {
     }
 
     public boolean isReviewPresent(String reviewTitle) {
-        return isVisible(reviewListItems.filter(new Locator.FilterOptions().setHasText(reviewTitle)).first());
+        return waitForVisible(reviewListItems.filter(new Locator.FilterOptions().setHasText(reviewTitle)).first());
     }
 
     public String getReviewValidationErrorText() {

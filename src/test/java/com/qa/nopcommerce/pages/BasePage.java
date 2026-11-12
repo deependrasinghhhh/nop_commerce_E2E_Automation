@@ -43,9 +43,11 @@ public abstract class BasePage {
         locator.click();
     }
 
+    protected static final double DEFAULT_WAIT_TIMEOUT_MS = 15_000;
+
     protected String getText(Locator locator) {
         try {
-            locator.first().waitFor(new Locator.WaitForOptions().setTimeout(5000));
+            locator.first().waitFor(new Locator.WaitForOptions().setTimeout(DEFAULT_WAIT_TIMEOUT_MS));
             return locator.first().innerText().trim();
         } catch (Exception e) {
             return "";
@@ -57,6 +59,70 @@ public abstract class BasePage {
             return locator.first().isVisible();
         } catch (Exception e) {
             return false;
+        }
+    }
+
+    protected boolean waitForVisible(Locator locator) {
+        return waitForVisible(locator, DEFAULT_WAIT_TIMEOUT_MS);
+    }
+
+    protected boolean waitForVisible(Locator locator, double timeoutMs) {
+        try {
+            locator.first().waitFor(new Locator.WaitForOptions().setTimeout(timeoutMs));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    protected boolean waitForCondition(java.util.function.BooleanSupplier condition) {
+        return waitForCondition(condition, DEFAULT_WAIT_TIMEOUT_MS);
+    }
+
+    protected boolean waitForCondition(java.util.function.BooleanSupplier condition, double timeoutMs) {
+        try {
+            page.waitForCondition(() -> {
+                try {
+                    return condition.getAsBoolean();
+                } catch (com.microsoft.playwright.PlaywrightException e) {
+                    String msg = e.getMessage();
+                    if (msg != null && (msg.contains("Execution context was destroyed")
+                            || msg.contains("Cannot find context")
+                            || msg.contains("not attached"))) {
+                        return false;
+                    }
+                    throw e;
+                }
+            }, new Page.WaitForConditionOptions().setTimeout(timeoutMs));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    protected boolean waitForTextContains(Locator locator, String expectedSubstring) {
+        return waitForCondition(() -> locator.count() > 0
+                && locator.first().isVisible()
+                && locator.first().innerText().trim().contains(expectedSubstring));
+    }
+
+    protected boolean waitForCount(Locator locator, int expectedCount) {
+        return waitForCondition(() -> locator.count() == expectedCount);
+    }
+
+    protected boolean waitForMinCount(Locator locator, int minCount) {
+        return waitForCondition(() -> locator.count() >= minCount);
+    }
+
+    protected boolean waitForCountLessThan(Locator locator, int maxExclusive) {
+        return waitForCondition(() -> locator.count() < maxExclusive);
+    }
+
+    protected int safeCount(Locator locator) {
+        try {
+            return locator.count();
+        } catch (Exception e) {
+            return 0;
         }
     }
 }

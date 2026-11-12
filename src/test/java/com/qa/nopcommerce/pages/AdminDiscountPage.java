@@ -36,11 +36,11 @@ public class AdminDiscountPage extends BasePage {
     }
 
     public boolean isGridVisible() {
-        return isVisible(discountsGrid);
+        return waitForVisible(discountsGrid);
     }
 
     public int getDiscountRowCount() {
-        return discountsGrid.locator("tbody tr").count();
+        return safeCount(discountsGrid.locator("tbody tr"));
     }
 
     public void openCreateDiscountPage() {
@@ -68,7 +68,8 @@ public class AdminDiscountPage extends BasePage {
     }
 
     public boolean isDiscountCreatedSuccessfully() {
-        return isVisible(successAlert) && getText(successAlert).contains("The new discount has been added successfully");
+        return waitForVisible(successAlert)
+                && getText(successAlert).contains("The new discount has been added successfully");
     }
 
     public String getSuccessAlertText() {

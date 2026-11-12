@@ -24,7 +24,7 @@ public class AdminCategoryListPage extends BasePage {
     }
 
     public boolean isGridVisible() {
-        return isVisible(categoriesGrid);
+        return waitForVisible(categoriesGrid);
     }
 
     public int getCategoryRowCount() {

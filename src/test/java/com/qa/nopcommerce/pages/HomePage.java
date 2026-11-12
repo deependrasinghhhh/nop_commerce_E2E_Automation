@@ -38,19 +38,19 @@ public class HomePage extends BasePage {
     }
 
     public boolean isLogoVisible() {
-        return isVisible(logo);
+        return waitForVisible(logo);
     }
 
     public boolean isTopMenuVisible() {
-        return isVisible(topMenu);
+        return waitForVisible(topMenu);
     }
 
     public boolean isSearchInputVisible() {
-        return isVisible(searchInput);
+        return waitForVisible(searchInput);
     }
 
     public boolean isCartLinkVisible() {
-        return isVisible(cartLink);
+        return waitForVisible(cartLink);
     }
 
     public void search(String keyword) {
@@ -88,16 +88,16 @@ public class HomePage extends BasePage {
     }
 
     public boolean isCustomerLoggedIn() {
-        return isVisible(customerInfoLink) || isVisible(logoutLink);
+        return waitForVisible(customerInfoLink.or(logoutLink));
     }
 
     public boolean isLoginLinkVisible() {
-        return isVisible(loginLink);
+        return waitForVisible(loginLink);
     }
 
     public boolean isCategoryMenuVisible(String categorySlug) {
         Locator menu = page.locator(".header-menu, .top-menu");
-        return isVisible(menu.locator(String.format("a[href*='/%s']", categorySlug)).first());
+        return waitForVisible(menu.locator(String.format("a[href*='/%s']", categorySlug)).first());
     }
 
     public CategoryPage navigateToCategory(String categoryName) {
