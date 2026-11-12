@@ -1,5 +1,6 @@
 package com.qa.nopcommerce.tests.ui;
 
+import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import com.qa.nopcommerce.annotation.TestCase;
 import com.qa.nopcommerce.base.BaseTest;
 import com.qa.nopcommerce.pages.CartPage;
@@ -12,6 +13,8 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.util.regex.Pattern;
 
 @Epic("Storefront Core")
 @Feature("Order Placement & Checkout Flow")
@@ -34,8 +37,7 @@ public class CheckoutTest extends BaseTest {
         cartPage.acceptTermsOfService();
         cartPage.proceedToCheckout();
 
-        Assert.assertTrue(getPage().url().matches(".*(checkout|login).*"),
-                "Expected URL to contain checkout or login");
+        PlaywrightAssertions.assertThat(getPage()).hasURL(Pattern.compile(".*(checkout|login).*"));
     }
 
     @Test(groups = {"ui", "checkout"})

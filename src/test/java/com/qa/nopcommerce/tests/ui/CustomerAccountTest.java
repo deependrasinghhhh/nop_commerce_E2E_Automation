@@ -1,5 +1,6 @@
 package com.qa.nopcommerce.tests.ui;
 
+import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import com.qa.nopcommerce.annotation.TestCase;
 import com.qa.nopcommerce.base.BaseTest;
 import com.qa.nopcommerce.database.DatabaseManager;
@@ -15,6 +16,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 @Epic("Storefront Core")
 @Feature("Customer Profile, Address CRUD & Product Reviews")
@@ -42,7 +44,7 @@ public class CustomerAccountTest extends BaseTest {
         navigateTo("/customer/info");
         CustomerInfoPage infoPage = new CustomerInfoPage(getPage());
 
-        Assert.assertTrue(getPage().url().contains("customer/info"), "Expected URL to contain customer/info");
+        PlaywrightAssertions.assertThat(getPage()).hasURL(Pattern.compile(".*customer/info.*"));
         Assert.assertEquals(infoPage.getFirstNameValue(), "Alex", "Expected first name to be Alex");
         Assert.assertEquals(infoPage.getEmailValue(), email, "Expected email to match registered email");
 
@@ -61,7 +63,7 @@ public class CustomerAccountTest extends BaseTest {
 
         navigateTo("/customer/addresses");
         CustomerInfoPage infoPage = new CustomerInfoPage(getPage());
-        Assert.assertTrue(getPage().url().contains("customer/addresses"), "Expected URL to contain customer/addresses");
+        PlaywrightAssertions.assertThat(getPage()).hasURL(Pattern.compile(".*customer/addresses.*"));
 
         // 1. Create Address
         infoPage.addNewAddress(
@@ -123,7 +125,7 @@ public class CustomerAccountTest extends BaseTest {
         navigateTo("/order/history");
 
         CustomerInfoPage infoPage = new CustomerInfoPage(getPage());
-        Assert.assertTrue(getPage().url().contains("order/history"), "Expected URL to contain order/history");
+        PlaywrightAssertions.assertThat(getPage()).hasURL(Pattern.compile(".*order/history.*"));
         Assert.assertTrue(infoPage.getPageTitleText().contains("My account - Orders"),
                 "Expected page title to contain My account - Orders");
     }

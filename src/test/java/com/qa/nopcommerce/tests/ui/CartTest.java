@@ -1,5 +1,6 @@
 package com.qa.nopcommerce.tests.ui;
 
+import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import com.qa.nopcommerce.annotation.TestCase;
 import com.qa.nopcommerce.base.BaseTest;
 import com.qa.nopcommerce.config.ConfigReader;
@@ -18,6 +19,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 @Epic("Storefront Core")
 @Feature("Shopping Cart, Wishlist & Coupon Operations")
@@ -58,7 +60,7 @@ public class CartTest extends BaseTest {
             navigateTo("/cart");
             CartPage cartPage = new CartPage(getPage());
 
-            Assert.assertEquals(cartPage.getCartItemCount(), 1, "Expected 1 item in cart");
+            Assert.assertTrue(cartPage.hasCartItemCount(1), "Expected 1 item in cart");
             Assert.assertTrue(cartPage.isCheckoutButtonVisible(), "Expected checkout button to be visible");
         } finally {
             new CartPage(getPage()).clearCart();
@@ -78,10 +80,10 @@ public class CartTest extends BaseTest {
 
             navigateTo("/cart");
             CartPage cartPage = new CartPage(getPage());
-            Assert.assertEquals(cartPage.getCartItemCount(), 1, "Expected 1 item in cart");
+            Assert.assertTrue(cartPage.hasCartItemCount(1), "Expected 1 item in cart");
 
             cartPage.updateQuantity(0, 3);
-            Assert.assertEquals(cartPage.getItemQuantity(0), "3", "Expected quantity to be updated to 3");
+            Assert.assertTrue(cartPage.hasItemQuantity(0, "3"), "Expected quantity to be updated to 3");
         } finally {
             new CartPage(getPage()).clearCart();
         }
@@ -99,7 +101,7 @@ public class CartTest extends BaseTest {
 
         navigateTo("/cart");
         CartPage cartPage = new CartPage(getPage());
-        Assert.assertEquals(cartPage.getCartItemCount(), 1, "Expected 1 item in cart");
+        Assert.assertTrue(cartPage.hasCartItemCount(1), "Expected 1 item in cart");
 
         cartPage.removeItem(0);
         Assert.assertTrue(cartPage.getEmptyCartText().contains("Your Shopping Cart is empty!"),
@@ -124,11 +126,11 @@ public class CartTest extends BaseTest {
                     "Expected add to wishlist notification banner");
 
             WishlistPage wishlistPage = new WishlistPage(getPage());
-            Assert.assertTrue(wishlistPage.getHeaderWishlistQuantityText().contains("(1)"),
+            Assert.assertTrue(wishlistPage.hasHeaderWishlistQuantity("(1)"),
                     "Expected wishlist header quantity (1)");
 
             navigateTo("/wishlist");
-            Assert.assertEquals(wishlistPage.getWishlistItemCount(), 1, "Expected 1 item in wishlist");
+            Assert.assertTrue(wishlistPage.hasWishlistItemCount(1), "Expected 1 item in wishlist");
             Assert.assertTrue(wishlistPage.isProductInWishlist(TEST_PRODUCT_NAME),
                     "Expected product link in wishlist");
         } finally {
@@ -151,11 +153,11 @@ public class CartTest extends BaseTest {
 
             navigateTo("/wishlist");
             WishlistPage wishlistPage = new WishlistPage(getPage());
-            Assert.assertEquals(wishlistPage.getWishlistItemCount(), 1, "Expected 1 item in wishlist");
+            Assert.assertTrue(wishlistPage.hasWishlistItemCount(1), "Expected 1 item in wishlist");
 
             CartPage cartPage = wishlistPage.moveProductToCart(TEST_PRODUCT_NAME);
-            Assert.assertTrue(getPage().url().contains("/cart"), "Expected URL to contain /cart");
-            Assert.assertEquals(cartPage.getCartItemCount(), 1, "Expected 1 item in cart");
+            PlaywrightAssertions.assertThat(getPage()).hasURL(Pattern.compile(".*/cart.*"));
+            Assert.assertTrue(cartPage.hasCartItemCount(1), "Expected 1 item in cart");
             Assert.assertTrue(cartPage.containsProduct(TEST_PRODUCT_NAME),
                     "Expected cart to contain product " + TEST_PRODUCT_NAME);
 
@@ -198,7 +200,7 @@ public class CartTest extends BaseTest {
 
             navigateTo("/cart");
             CartPage cartPage = new CartPage(getPage());
-            Assert.assertEquals(cartPage.getCartItemCount(), 1, "Expected 1 item in cart");
+            Assert.assertTrue(cartPage.hasCartItemCount(1), "Expected 1 item in cart");
 
             cartPage.applyCouponCode(isolatedCouponCode);
 
@@ -229,7 +231,7 @@ public class CartTest extends BaseTest {
 
             navigateTo("/cart");
             CartPage cartPage = new CartPage(getPage());
-            Assert.assertEquals(cartPage.getCartItemCount(), 1, "Expected 1 item in cart");
+            Assert.assertTrue(cartPage.hasCartItemCount(1), "Expected 1 item in cart");
 
             cartPage.applyCouponCode("INVALID_DISCOUNT_CODE_999");
             Assert.assertTrue(cartPage.isCouponMessageDisplayed(), "Expected coupon error message to be displayed");

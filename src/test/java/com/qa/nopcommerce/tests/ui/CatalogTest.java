@@ -1,5 +1,6 @@
 package com.qa.nopcommerce.tests.ui;
 
+import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import com.qa.nopcommerce.annotation.TestCase;
 import com.qa.nopcommerce.base.BaseTest;
 import com.qa.nopcommerce.pages.CategoryPage;
@@ -13,6 +14,8 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.util.regex.Pattern;
 
 @Epic("Storefront Core")
 @Feature("Catalog Browsing, Search & Discovery")
@@ -79,8 +82,8 @@ public class CatalogTest extends BaseTest {
         homePage.search("xyznonexistentproduct999");
 
         SearchPage searchPage = new SearchPage(getPage());
-        Assert.assertTrue(getPage().url().contains("search"), "Expected search in URL");
-        Assert.assertTrue(getPage().url().contains("q=xyznonexistentproduct999"), "Expected query param in URL");
+        PlaywrightAssertions.assertThat(getPage()).hasURL(Pattern.compile(".*search.*"));
+        PlaywrightAssertions.assertThat(getPage()).hasURL(Pattern.compile(".*q=xyznonexistentproduct999.*"));
         Assert.assertTrue(searchPage.isNoResultVisible(), "Expected no-result message to be visible");
     }
 
