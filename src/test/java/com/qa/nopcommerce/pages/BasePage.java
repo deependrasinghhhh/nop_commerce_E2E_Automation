@@ -109,23 +109,36 @@ public abstract class BasePage {
     }
 
     protected boolean waitForCondition(BooleanSupplier condition, double timeoutMs) {
-        try {
-            page.waitForCondition(() -> {
-                try {
-                    return condition.getAsBoolean();
-                } catch (PlaywrightException e) {
-                    String msg = e.getMessage();
-                    if (msg != null && (msg.contains("Execution context was destroyed")
-                            || msg.contains("Cannot find context")
-                            || msg.contains("not attached"))) {
-                        return false;
-                    }
-                    throw e;
+        long timeoutNanos = (long) (Math.max(0.0, timeoutMs) * 1_000_000L);
+        long deadlineNanos = System.nanoTime() + timeoutNanos;
+        while (true) {
+            try {
+                if (page.isClosed()) {
+                    return false;
                 }
-            }, new Page.WaitForConditionOptions().setTimeout(timeoutMs));
-            return true;
-        } catch (Exception e) {
-            return false;
+                if (condition.getAsBoolean()) {
+                    return true;
+                }
+            } catch (PlaywrightException e) {
+                String msg = e.getMessage();
+                if (msg == null || (!msg.contains("Execution context was destroyed")
+                        && !msg.contains("Cannot find context")
+                        && !msg.contains("not attached"))) {
+                    return false;
+                }
+            } catch (Exception e) {
+                return false;
+            }
+            long remainingMs = (deadlineNanos - System.nanoTime()) / 1_000_000L;
+            if (remainingMs <= 0) {
+                return false;
+            }
+            try {
+                Thread.sleep(Math.min(100L, remainingMs));
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                return false;
+            }
         }
     }
 
@@ -134,8 +147,13 @@ public abstract class BasePage {
             int count = locator.count();
             for (int i = 0; i < count; i++) {
                 Locator nth = locator.nth(i);
-                if (nth.isVisible() && nth.innerText().trim().contains(expectedSubstring)) {
-                    return true;
+                try {
+                    if (nth.isVisible() && nth.innerText(new Locator.InnerTextOptions().setTimeout(1_000))
+                            .trim().contains(expectedSubstring)) {
+                        return true;
+                    }
+                } catch (com.microsoft.playwright.TimeoutError ignored) {
+                    // Element detached or re-rendered between visibility check and innerText; retry in poll loop.
                 }
             }
             return false;
