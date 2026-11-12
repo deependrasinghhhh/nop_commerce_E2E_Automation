@@ -17,6 +17,8 @@ public class AdminDiscountPage extends BasePage {
     private final Locator couponCodeInput;
     private final Locator saveButton;
     private final Locator successAlert;
+    private final Locator licenseTermsModal;
+    private final Locator acceptLicenseTermsButton;
 
     public AdminDiscountPage(Page page) {
         super(page);
@@ -29,6 +31,8 @@ public class AdminDiscountPage extends BasePage {
         this.couponCodeInput = page.locator("#CouponCode");
         this.saveButton = page.locator("button[name='save']");
         this.successAlert = page.locator(".alert-success");
+        this.licenseTermsModal = page.locator("#license-terms");
+        this.acceptLicenseTermsButton = page.locator("#accept-license-terms-button");
     }
 
     public void waitForGrid() {
@@ -43,13 +47,23 @@ public class AdminDiscountPage extends BasePage {
         return safeCount(discountsGrid.locator("tbody tr"));
     }
 
+    private void dismissLicenseTermsIfPresent() {
+        waitForLoad();
+        if (waitForVisible(acceptLicenseTermsButton, 2_500)) {
+            click(acceptLicenseTermsButton);
+            waitForCondition(() -> !isVisible(licenseTermsModal), 5_000);
+        }
+    }
+
     public void openCreateDiscountPage() {
+        dismissLicenseTermsIfPresent();
         if (isVisible(addNewButton)) {
             click(addNewButton);
         }
     }
 
     public void fillDiscountForm(String name, int percentage, String couponCode) {
+        dismissLicenseTermsIfPresent();
         fill(nameInput, name);
         usePercentageCheckbox.check();
         fill(discountPercentageInput, String.valueOf(percentage));
