@@ -91,7 +91,21 @@ public class CheckoutPage extends BasePage {
         fill(billingFirstNameInput, firstName);
         fill(billingLastNameInput, lastName);
         fill(billingEmailInput, email);
-        billingCountryDropdown.selectOption(new com.microsoft.playwright.options.SelectOption().setLabel(country));
+
+        String currentCountry = "";
+        try {
+            currentCountry = billingCountryDropdown.locator("option:checked").innerText().trim();
+        } catch (Exception ignored) {}
+
+        if (!country.equalsIgnoreCase(currentCountry)) {
+            billingCountryDropdown.selectOption(new com.microsoft.playwright.options.SelectOption().setLabel(country));
+            page.waitForFunction(
+                    "() => { const p = document.querySelector('#states-loading-progress'); " +
+                            "return !p || p.style.display === 'none' || getComputedStyle(p).display === 'none'; }",
+                    null,
+                    new Page.WaitForFunctionOptions().setTimeout(15_000));
+        }
+
         page.waitForFunction(
                 "state => { const select = document.querySelector('#BillingNewAddress_StateProvinceId'); " +
                         "return select && Array.from(select.options).some(option => option.textContent.trim() === state); }",
@@ -103,7 +117,7 @@ public class CheckoutPage extends BasePage {
                         "return select && select.selectedOptions.length === 1 && " +
                         "select.selectedOptions[0].textContent.trim() === state; }",
                 state,
-                new Page.WaitForFunctionOptions().setTimeout(5_000));
+                new Page.WaitForFunctionOptions().setTimeout(15_000));
         fill(billingCityInput, city);
         fill(billingAddress1Input, address1);
         fill(billingZipInput, zip);

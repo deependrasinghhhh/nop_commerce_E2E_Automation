@@ -142,7 +142,7 @@ public class CartPage extends BasePage {
 
     public void acceptTermsOfService() {
         try {
-            if (termsOfServiceCheckbox.isVisible(new Locator.IsVisibleOptions().setTimeout(2000))) {
+            if (waitForVisible(termsOfServiceCheckbox, 5000)) {
                 termsOfServiceCheckbox.check();
             }
         } catch (Exception ignored) {}

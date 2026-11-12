@@ -18,8 +18,7 @@
         </classes>
     </test>
 
-    <!-- Keep the complete regression stable on a single-host Docker AUT. The dedicated UI suite can still be run in parallel. -->
-    <test name="Storefront UI Tests" parallel="none">
+    <test name="Storefront UI Tests" parallel="classes" thread-count="2">
         <classes>
             <class name="com.qa.nopcommerce.tests.ui.AuthTest" />
             <class name="com.qa.nopcommerce.tests.ui.CatalogTest" />
