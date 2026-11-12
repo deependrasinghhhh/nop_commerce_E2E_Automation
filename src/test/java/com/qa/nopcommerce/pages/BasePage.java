@@ -133,10 +133,9 @@ public abstract class BasePage {
             if (remainingMs <= 0) {
                 return false;
             }
-            try {
-                Thread.sleep(Math.min(100L, remainingMs));
-            } catch (InterruptedException ie) {
-                Thread.currentThread().interrupt();
+            java.util.concurrent.locks.LockSupport.parkNanos(
+                    java.util.concurrent.TimeUnit.MILLISECONDS.toNanos(Math.min(100L, remainingMs)));
+            if (Thread.currentThread().isInterrupted()) {
                 return false;
             }
         }
