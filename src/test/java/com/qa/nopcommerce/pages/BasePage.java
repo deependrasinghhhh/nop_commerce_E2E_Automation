@@ -2,8 +2,12 @@ package com.qa.nopcommerce.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.PlaywrightException;
+import com.qa.nopcommerce.config.ConfigReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.function.BooleanSupplier;
 
 /**
  * Base Page providing common locator wrappers and navigation hooks.
@@ -43,12 +47,24 @@ public abstract class BasePage {
         locator.click();
     }
 
-    protected static final double DEFAULT_WAIT_TIMEOUT_MS = 15_000;
+    protected static double getDefaultWaitTimeoutMs() {
+        return Math.max(15_000, ConfigReader.getDefaultTimeout());
+    }
 
     protected String getText(Locator locator) {
         try {
-            locator.first().waitFor(new Locator.WaitForOptions().setTimeout(DEFAULT_WAIT_TIMEOUT_MS));
-            return locator.first().innerText().trim();
+            double timeoutMs = getDefaultWaitTimeoutMs();
+            if (!waitForAnyVisible(timeoutMs, locator)) {
+                return "";
+            }
+            int count = locator.count();
+            for (int i = 0; i < count; i++) {
+                Locator nth = locator.nth(i);
+                if (nth.isVisible()) {
+                    return nth.innerText().trim();
+                }
+            }
+            return "";
         } catch (Exception e) {
             return "";
         }
@@ -63,28 +79,41 @@ public abstract class BasePage {
     }
 
     protected boolean waitForVisible(Locator locator) {
-        return waitForVisible(locator, DEFAULT_WAIT_TIMEOUT_MS);
+        return waitForVisible(locator, getDefaultWaitTimeoutMs());
     }
 
     protected boolean waitForVisible(Locator locator, double timeoutMs) {
-        try {
-            locator.first().waitFor(new Locator.WaitForOptions().setTimeout(timeoutMs));
-            return true;
-        } catch (Exception e) {
+        return waitForAnyVisible(timeoutMs, locator);
+    }
+
+    protected boolean waitForAnyVisible(Locator... locators) {
+        return waitForAnyVisible(getDefaultWaitTimeoutMs(), locators);
+    }
+
+    protected boolean waitForAnyVisible(double timeoutMs, Locator... locators) {
+        return waitForCondition(() -> {
+            for (Locator locator : locators) {
+                int count = locator.count();
+                for (int i = 0; i < count; i++) {
+                    if (locator.nth(i).isVisible()) {
+                        return true;
+                    }
+                }
+            }
             return false;
-        }
+        }, timeoutMs);
     }
 
-    protected boolean waitForCondition(java.util.function.BooleanSupplier condition) {
-        return waitForCondition(condition, DEFAULT_WAIT_TIMEOUT_MS);
+    protected boolean waitForCondition(BooleanSupplier condition) {
+        return waitForCondition(condition, getDefaultWaitTimeoutMs());
     }
 
-    protected boolean waitForCondition(java.util.function.BooleanSupplier condition, double timeoutMs) {
+    protected boolean waitForCondition(BooleanSupplier condition, double timeoutMs) {
         try {
             page.waitForCondition(() -> {
                 try {
                     return condition.getAsBoolean();
-                } catch (com.microsoft.playwright.PlaywrightException e) {
+                } catch (PlaywrightException e) {
                     String msg = e.getMessage();
                     if (msg != null && (msg.contains("Execution context was destroyed")
                             || msg.contains("Cannot find context")
@@ -101,9 +130,16 @@ public abstract class BasePage {
     }
 
     protected boolean waitForTextContains(Locator locator, String expectedSubstring) {
-        return waitForCondition(() -> locator.count() > 0
-                && locator.first().isVisible()
-                && locator.first().innerText().trim().contains(expectedSubstring));
+        return waitForCondition(() -> {
+            int count = locator.count();
+            for (int i = 0; i < count; i++) {
+                Locator nth = locator.nth(i);
+                if (nth.isVisible() && nth.innerText().trim().contains(expectedSubstring)) {
+                    return true;
+                }
+            }
+            return false;
+        });
     }
 
     protected boolean waitForCount(Locator locator, int expectedCount) {

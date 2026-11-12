@@ -104,7 +104,7 @@ public class RegisterPage extends BasePage {
     }
 
     public boolean isPasswordOrConfirmErrorVisible() {
-        return waitForVisible(passwordError.or(confirmPasswordError));
+        return waitForAnyVisible(passwordError, confirmPasswordError);
     }
 
     public boolean isConfirmPasswordErrorVisible() {

@@ -88,7 +88,7 @@ public class HomePage extends BasePage {
     }
 
     public boolean isCustomerLoggedIn() {
-        return waitForVisible(customerInfoLink.or(logoutLink));
+        return waitForAnyVisible(customerInfoLink, logoutLink);
     }
 
     public boolean isLoginLinkVisible() {

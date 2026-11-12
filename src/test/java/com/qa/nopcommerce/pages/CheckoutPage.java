@@ -71,7 +71,7 @@ public class CheckoutPage extends BasePage {
     }
 
     public boolean isBillingStepVisible() {
-        return waitForVisible(billingCountryDropdown.or(page.locator("#billing-buttons-container")));
+        return waitForAnyVisible(billingCountryDropdown, page.locator("#billing-buttons-container"));
     }
 
     public boolean isCheckoutStepVisible() {
