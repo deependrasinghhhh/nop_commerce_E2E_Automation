@@ -24,7 +24,7 @@ The end-to-end QA rebuild of the nopCommerce 4.90.8 test automation framework ha
 2. **Robust Automation Architecture:** Production-grade Java 21 framework utilizing Playwright Java, TestNG parallel runners, custom `@TestCase` annotations, Page Object Model across 12 page classes, and automated screenshot/trace failure listeners.
 3. **Execution Gating & Environmental Reality:**
    - **API Integration Probing:** 6 automated tests executed via Playwright `APIRequestContext` — **100% Pass Rate**.
-   - **Database Verification:** 4 automated JDBC tests executed — **4 Skipped** due to containerized MSSQL service elevation constraints (documented in `ENV-001` and Risk `RSK-002`).
+   - **Database Verification:** 4 automated JDBC tests executed against containerized MSSQL — **4/4 Pass** (per `evidence/surefire-reports/testng-results.xml`).
    - **Public Storefront UI Gate:** Intercepted by Cloudflare Turnstile bot-detection challenges (`DEF-001`), properly diagnosed, captured in screenshots/traces, and retained in `evidence/failures/`.
    - **CI/CD Readiness:** Complete Declarative Jenkins pipeline (`jenkins/Jenkinsfile`), secondary GitHub Actions smoke gate (`.github/workflows/smoke-gate.yml`), k6 performance load script (`performance/k6/`), Postman collection (`postman/`), and QA management templates (`qa-management/`).
 
@@ -44,7 +44,7 @@ The automation framework itself is feature-complete, architecturally sound, and 
 | **Customer Account Management** | `REQ-CUST` (10 TCs) | Automated in `CustomerAccountTest.java` | `src/test/java/com/qa/nopcommerce/tests/ui/CustomerAccountTest.java` |
 | **Administration Portal** | `REQ-ADM` (12 TCs) | Automated in `AdminTest.java` | `src/test/java/com/qa/nopcommerce/tests/ui/AdminTest.java` |
 | **API & HTTP Probing** | `REQ-API` (8 TCs) | Executed & Verified (6/6 Pass) | `evidence/surefire-reports/TEST-TestSuite.xml` |
-| **Database Verification** | `REQ-DB` (4 TCs) | Executed (4 Skipped - Env) | `evidence/surefire-reports/TEST-TestSuite.xml` |
+| **Database Verification** | `REQ-DB` (4 TCs) | Executed & Verified (4/4 Pass) | `evidence/surefire-reports/testng-results.xml` |
 | **Accessibility Compliance** | `REQ-A11Y` (5 TCs) | Automated in `AccessibilityTest.java` | `src/test/java/com/qa/nopcommerce/tests/a11y/AccessibilityTest.java` |
 | **Non-Functional Performance** | `REQ-NFR` (5 TCs) | Automated in `NonFunctionalTest.java` | `evidence/performance/k6-summary.json` |
 

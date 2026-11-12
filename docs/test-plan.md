@@ -82,11 +82,10 @@ To avoid known Maven/Surefire group filtering friction (`-Dgroups` vs `suiteXmlF
 
 | Suite Name | XML Configuration File | Target Scope | Target Execution Time |
 |---|---|---|---|
-| **Smoke Suite** | `src/test/resources/suites/smoke.xml` | Critical P1 tests (Auth, Basic Search, Cart Add, Checkout baseline) | < 3 minutes |
-| **Regression Suite** | `src/test/resources/suites/regression.xml` | Full functional UI + Customer + Admin + DB tests | < 12 minutes |
+| **Smoke Suite** | `src/test/resources/suites/smoke.xml` | Critical P1 storefront smoke checks (homepage render, storefront search box, admin login page render) | < 3 minutes |
+| **Regression Suite** | `src/test/resources/suites/regression.xml` | Full functional UI + Customer + Admin + API + A11y + DB + NFR tests | < 12 minutes |
 | **API Protocol Suite** | `src/test/resources/suites/api.xml` | Fast HTTP route health, anti-forgery, form POSTs | < 45 seconds |
 | **Accessibility Suite** | `src/test/resources/suites/a11y.xml` | WCAG 2.1 AA automated axe scans | < 2 minutes |
-| **Full Validation Suite**| `src/test/resources/suites/full.xml` | End-to-end combination of all suites | < 15 minutes |
 
 ---
 
