@@ -112,7 +112,7 @@ public class CustomerInfoPage extends BasePage {
 
     public void editAddressByStreet(String existingAddress1, String updatedStateProvince,
                                     String updatedCity, String updatedAddress1, String updatedZip) {
-        Locator card = getAddressCardByText(existingAddress1);
+        Locator card = findAddressCardByText(existingAddress1);
         Locator editBtn = card.locator("button.edit-address-button");
         click(editBtn);
         selectAddressState(updatedStateProvince);
@@ -123,7 +123,7 @@ public class CustomerInfoPage extends BasePage {
     }
 
     public void deleteAddressByStreet(String address1Text) {
-        Locator card = getAddressCardByText(address1Text);
+        Locator card = findAddressCardByText(address1Text);
         Locator deleteBtn = card.locator("button.delete-address-button");
         page.onceDialog(dialog -> dialog.accept());
         click(deleteBtn);
@@ -179,13 +179,16 @@ public class CustomerInfoPage extends BasePage {
         }
     }
 
+    private Locator findAddressCardByText(String text) {
+        return addressItems.filter(new Locator.FilterOptions().setHasText(text)).first();
+    }
+
     public boolean isAddressCardVisible(String text) {
-        return waitForVisible(addressItems.filter(new Locator.FilterOptions().setHasText(text)).first());
+        return waitForVisible(findAddressCardByText(text));
     }
 
     public boolean addressCardContainsText(String addressText, String expectedContent) {
-        Locator card = addressItems.filter(new Locator.FilterOptions().setHasText(addressText)).first();
-        return waitForTextContains(card, expectedContent);
+        return waitForTextContains(findAddressCardByText(addressText), expectedContent);
     }
 
     public String getNoAddressesText() {
