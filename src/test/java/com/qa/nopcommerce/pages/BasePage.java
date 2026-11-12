@@ -124,7 +124,8 @@ public abstract class BasePage {
                 if (msg == null || (!msg.contains("Execution context was destroyed")
                         && !msg.contains("Cannot find context")
                         && !msg.contains("not attached"))) {
-                    return false;
+                    log.warn("Non-transient PlaywrightException encountered during condition wait: {}", e.getMessage(), e);
+                    throw e;
                 }
             } catch (Exception e) {
                 return false;

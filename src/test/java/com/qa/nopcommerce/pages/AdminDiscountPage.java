@@ -56,7 +56,6 @@ public class AdminDiscountPage extends BasePage {
     }
 
     public void openCreateDiscountPage() {
-        dismissLicenseTermsIfPresent();
         if (isVisible(addNewButton)) {
             click(addNewButton);
         }

@@ -9,12 +9,10 @@ import com.microsoft.playwright.Page;
 public class AdminOrderListPage extends BasePage {
 
     private final Locator ordersGrid;
-    private final Locator searchButton;
 
     public AdminOrderListPage(Page page) {
         super(page);
         this.ordersGrid = page.locator("table#orders-grid");
-        this.searchButton = page.locator("#search-orders");
     }
 
     public void waitForGrid() {

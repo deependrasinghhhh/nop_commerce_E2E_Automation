@@ -9,14 +9,10 @@ import com.microsoft.playwright.Page;
 public class AdminCategoryListPage extends BasePage {
 
     private final Locator categoriesGrid;
-    private final Locator searchCategoryNameInput;
-    private final Locator searchButton;
 
     public AdminCategoryListPage(Page page) {
         super(page);
         this.categoriesGrid = page.locator("table#categories-grid");
-        this.searchCategoryNameInput = page.locator("#SearchCategoryName");
-        this.searchButton = page.locator("#search-categories");
     }
 
     public void waitForGrid() {

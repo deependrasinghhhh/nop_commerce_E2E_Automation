@@ -9,14 +9,10 @@ import com.microsoft.playwright.Page;
 public class AdminCustomerListPage extends BasePage {
 
     private final Locator customersGrid;
-    private final Locator searchEmailInput;
-    private final Locator searchButton;
 
     public AdminCustomerListPage(Page page) {
         super(page);
         this.customersGrid = page.locator("table#customers-grid");
-        this.searchEmailInput = page.locator("#SearchEmail");
-        this.searchButton = page.locator("#search-customers");
     }
 
     public void waitForGrid() {
