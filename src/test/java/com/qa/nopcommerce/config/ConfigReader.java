@@ -229,7 +229,7 @@ public class ConfigReader {
     }
 
     public static double getDefaultTimeout() {
-        return Double.parseDouble(get("defaultTimeout", "45000"));
+        return Double.parseDouble(get("defaultTimeout", "60000"));
     }
 
     /**
