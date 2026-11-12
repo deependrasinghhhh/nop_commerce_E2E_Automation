@@ -1,8 +1,11 @@
 package com.qa.nopcommerce.tests.db;
 
 import com.qa.nopcommerce.annotation.TestCase;
+import com.qa.nopcommerce.base.BaseTest;
 import com.qa.nopcommerce.config.ConfigReader;
 import com.qa.nopcommerce.database.DatabaseManager;
+import com.qa.nopcommerce.pages.ProductDetailsPage;
+import com.qa.nopcommerce.pages.RegisterPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -15,10 +18,11 @@ import org.testng.annotations.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.UUID;
 
 @Epic("Database & Data Integrity")
 @Feature("MSSQL Persistence Verification")
-public class DatabaseVerificationTest {
+public class DatabaseVerificationTest extends BaseTest {
 
     private boolean isDbAvailable = false;
 
@@ -46,25 +50,57 @@ public class DatabaseVerificationTest {
     @Test(groups = {"db"})
     @TestCase(value = "TC-DB-002", requirementId = "REQ-DB-002")
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Verify order record exists in [Order] table after completed checkout")
+    @Description("Verify seeded database contains an active order with at least one persisted order item")
     public void testOrderRecordPersistenceInDatabase() {
         if (!isDbAvailable) {
             throw new SkipException("Environmental Blocker: MSSQL Database container unreachable at " + ConfigReader.getDbHost() + ":" + ConfigReader.getDbPort());
         }
-        boolean exists = DatabaseManager.orderExists(1);
-        Assert.assertTrue(exists, "Expected order record in [Order] table");
+        int ordersWithItems = DatabaseManager.getActiveOrderCountWithItems();
+        Assert.assertTrue(ordersWithItems > 0,
+                "Expected at least one active order joined to a persisted OrderItem row");
     }
 
     @Test(groups = {"db"})
     @TestCase(value = "TC-DB-003", requirementId = "REQ-DB-003")
     @Severity(SeverityLevel.NORMAL)
-    @Description("Verify shopping cart item count query in ShoppingCartItem table")
+    @Description("Verify adding a product for a unique registered customer persists a cart row in SQL Server")
     public void testCartItemPersistenceInDatabase() {
         if (!isDbAvailable) {
             throw new SkipException("Environmental Blocker: MSSQL Database container unreachable at " + ConfigReader.getDbHost() + ":" + ConfigReader.getDbPort());
         }
-        int itemCount = DatabaseManager.getShoppingCartItemCount(1);
-        Assert.assertTrue(itemCount >= 0, "Cart item count must be non-negative");
+        String email = "qa_db_cart_" + UUID.randomUUID().toString().replace("-", "") + "@example.com";
+        String password = "QaDb2026@" + UUID.randomUUID().toString().substring(0, 8);
+        int customerId = -1;
+        try {
+            navigateTo("/register");
+            RegisterPage registerPage = new RegisterPage(getPage());
+            registerPage.selectGender("male");
+            registerPage.fillRegistrationForm("Database", "Verification", email, "QA Automation", password, password);
+            registerPage.clickRegisterButton();
+            Assert.assertTrue(registerPage.isRegistrationSuccess(), "Expected isolated customer registration to succeed");
+
+            customerId = DatabaseManager.getCustomerIdByEmail(email);
+            int baselineCount = DatabaseManager.getShoppingCartItemCount(customerId);
+            Assert.assertEquals(baselineCount, 0, "Newly registered customer should have an empty cart");
+
+            navigateTo("/apple-icam");
+            ProductDetailsPage productPage = new ProductDetailsPage(getPage());
+            productPage.clickAddToCart();
+            Assert.assertTrue(productPage.getNotificationText().contains("The product has been added to your shopping cart"),
+                    "Expected successful add-to-cart notification");
+
+            int persistedCount = DatabaseManager.getShoppingCartItemCount(customerId);
+            Assert.assertEquals(persistedCount, baselineCount + 1,
+                    "Expected the application cart action to persist one ShoppingCartItem row");
+        } finally {
+            try {
+                if (customerId > 0) {
+                    DatabaseManager.deleteShoppingCartItemsForCustomer(customerId);
+                }
+            } finally {
+                DatabaseManager.softDeleteCustomerByEmail(email);
+            }
+        }
     }
 
     @Test(groups = {"db"})

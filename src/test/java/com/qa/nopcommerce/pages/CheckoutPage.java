@@ -12,6 +12,9 @@ public class CheckoutPage extends BasePage {
     private final Locator checkoutAsGuestButton;
 
     // Billing step
+    private final Locator billingFirstNameInput;
+    private final Locator billingLastNameInput;
+    private final Locator billingEmailInput;
     private final Locator billingCountryDropdown;
     private final Locator billingStateDropdown;
     private final Locator billingCityInput;
@@ -29,6 +32,7 @@ public class CheckoutPage extends BasePage {
 
     // Payment method step
     private final Locator paymentMethodCheckMoneyOrderRadio;
+    private final Locator paymentMethodOptions;
     private final Locator paymentMethodContinueButton;
 
     // Payment info step
@@ -41,6 +45,9 @@ public class CheckoutPage extends BasePage {
         super(page);
         this.checkoutAsGuestButton = page.locator("button.checkout-as-guest-button");
 
+        this.billingFirstNameInput = page.locator("#BillingNewAddress_FirstName");
+        this.billingLastNameInput = page.locator("#BillingNewAddress_LastName");
+        this.billingEmailInput = page.locator("#BillingNewAddress_Email");
         this.billingCountryDropdown = page.locator("#BillingNewAddress_CountryId");
         this.billingStateDropdown = page.locator("#BillingNewAddress_StateProvinceId");
         this.billingCityInput = page.locator("#BillingNewAddress_City");
@@ -55,6 +62,7 @@ public class CheckoutPage extends BasePage {
         this.shippingMethodContinueButton = page.locator("#shipping-method-buttons-container button.shipping-method-next-step-button");
 
         this.paymentMethodCheckMoneyOrderRadio = page.locator("input[value='Payments.CheckMoneyOrder']");
+        this.paymentMethodOptions = page.locator("input[name='paymentmethod']");
         this.paymentMethodContinueButton = page.locator("#payment-method-buttons-container button.payment-method-next-step-button");
 
         this.paymentInfoContinueButton = page.locator("#payment-info-buttons-container button.payment-info-next-step-button");
@@ -78,8 +86,24 @@ public class CheckoutPage extends BasePage {
         return waitForVisible(page.locator("#checkout-steps, .checkout-page"));
     }
 
-    public void fillBillingAddress(String country, String city, String address1, String zip, String phone) {
+    public void fillBillingAddress(String firstName, String lastName, String email, String country,
+                                   String state, String city, String address1, String zip, String phone) {
+        fill(billingFirstNameInput, firstName);
+        fill(billingLastNameInput, lastName);
+        fill(billingEmailInput, email);
         billingCountryDropdown.selectOption(new com.microsoft.playwright.options.SelectOption().setLabel(country));
+        page.waitForFunction(
+                "state => { const select = document.querySelector('#BillingNewAddress_StateProvinceId'); " +
+                        "return select && Array.from(select.options).some(option => option.textContent.trim() === state); }",
+                state,
+                new Page.WaitForFunctionOptions().setTimeout(15_000));
+        billingStateDropdown.selectOption(new com.microsoft.playwright.options.SelectOption().setLabel(state));
+        page.waitForFunction(
+                "state => { const select = document.querySelector('#BillingNewAddress_StateProvinceId'); " +
+                        "return select && select.selectedOptions.length === 1 && " +
+                        "select.selectedOptions[0].textContent.trim() === state; }",
+                state,
+                new Page.WaitForFunctionOptions().setTimeout(5_000));
         fill(billingCityInput, city);
         fill(billingAddress1Input, address1);
         fill(billingZipInput, zip);
@@ -98,9 +122,10 @@ public class CheckoutPage extends BasePage {
     }
 
     public void selectShippingMethodAndContinue() {
-        if (isVisible(shippingMethodGroundRadio)) {
-            shippingMethodGroundRadio.check();
+        if (!waitForVisible(shippingMethodGroundRadio, 15_000)) {
+            throw new IllegalStateException("Shipping method step did not expose a selectable Ground option");
         }
+        shippingMethodGroundRadio.check();
         click(shippingMethodContinueButton);
     }
 
@@ -109,6 +134,47 @@ public class CheckoutPage extends BasePage {
             paymentMethodCheckMoneyOrderRadio.check();
         }
         click(paymentMethodContinueButton);
+    }
+
+    public boolean isPaymentMethodOptionVisible() {
+        return waitForVisible(paymentMethodCheckMoneyOrderRadio);
+    }
+
+    public int getPaymentMethodOptionCount() {
+        return safeCount(paymentMethodOptions);
+    }
+
+    public void continueToPaymentMethod() {
+        boolean stepReady = waitForAnyVisible(15_000, shippingContinueButton,
+                shippingMethodGroundRadio, paymentMethodCheckMoneyOrderRadio);
+        if (!stepReady) {
+            throw new IllegalStateException("Checkout did not advance from billing to a shipping or payment step. " +
+                    "Visible billing validation messages: " + getBillingValidationMessages());
+        }
+
+        if (isVisible(shippingContinueButton)) {
+            click(shippingContinueButton);
+        }
+
+        boolean nextStepReady = waitForAnyVisible(15_000, paymentMethodCheckMoneyOrderRadio,
+                shippingMethodGroundRadio);
+        if (!nextStepReady) {
+            throw new IllegalStateException("Checkout did not expose a shipping method or payment method step");
+        }
+        if (isVisible(shippingMethodGroundRadio)) {
+            selectShippingMethodAndContinue();
+        }
+
+        if (!waitForVisible(paymentMethodCheckMoneyOrderRadio, 15_000)) {
+            throw new IllegalStateException("Payment method step did not expose Check / Money Order");
+        }
+    }
+
+    private String getBillingValidationMessages() {
+        return String.join("; ", page.locator(
+                "#checkout-step-billing .field-validation-error:visible, " +
+                        "#checkout-step-billing .validation-summary-errors:visible, " +
+                        "#checkout-step-billing .message-error:visible").allInnerTexts());
     }
 
     public void continuePaymentInfo() {

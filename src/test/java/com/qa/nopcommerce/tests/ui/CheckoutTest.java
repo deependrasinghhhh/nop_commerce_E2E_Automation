@@ -65,17 +65,30 @@ public class CheckoutTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify payment method step (Check / Money Order) is reachable after billing and shipping steps")
     public void testCheckoutPaymentMethodOptions() {
-        navigateTo(SIMPLE_PRODUCT_SLUG);
-        ProductDetailsPage productPage = new ProductDetailsPage(getPage());
-        productPage.clickAddToCart();
-        Assert.assertTrue(productPage.isNotificationBannerVisible(), "Expected notification banner");
+        String email = "qa_checkout_" + java.util.UUID.randomUUID().toString().replace("-", "") + "@example.com";
+        try {
+            navigateTo(SIMPLE_PRODUCT_SLUG);
+            ProductDetailsPage productPage = new ProductDetailsPage(getPage());
+            productPage.clickAddToCart();
+            Assert.assertTrue(productPage.isNotificationBannerVisible(), "Expected notification banner");
 
-        navigateTo("/cart");
-        CartPage cartPage = new CartPage(getPage());
-        CheckoutPage checkoutPage = cartPage.proceedToCheckout();
-        checkoutPage.clickCheckoutAsGuest();
+            navigateTo("/cart");
+            CartPage cartPage = new CartPage(getPage());
+            CheckoutPage checkoutPage = cartPage.proceedToCheckout();
+            checkoutPage.clickCheckoutAsGuest();
+            Assert.assertTrue(checkoutPage.isBillingStepVisible(), "Expected guest billing form to be visible");
 
-        Assert.assertTrue(checkoutPage.isCheckoutStepVisible(),
-                "Expected checkout steps container to be visible");
+            checkoutPage.fillBillingAddress("QA", "Checkout", email, "United States of America", "Texas",
+                    "Austin", "101 QA Automation Way", "78701", "5125550199");
+            checkoutPage.continueToPaymentMethod();
+
+            Assert.assertTrue(checkoutPage.isPaymentMethodOptionVisible(),
+                    "Expected Check / Money Order payment option to be visible after billing and shipping");
+            Assert.assertTrue(checkoutPage.getPaymentMethodOptionCount() >= 1,
+                    "Expected at least one enabled payment method option");
+        } finally {
+            navigateTo("/cart");
+            new CartPage(getPage()).clearCart();
+        }
     }
 }

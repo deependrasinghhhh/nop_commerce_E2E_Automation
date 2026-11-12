@@ -95,7 +95,9 @@ public class CatalogTest extends BaseTest {
         navigateTo("/search?q=a");
 
         SearchPage searchPage = new SearchPage(getPage());
-        Assert.assertTrue(searchPage.isWarningVisible(), "Expected search warning to be visible");
+        Assert.assertTrue(searchPage.isWarningVisible(), "Expected minimum-length warning to be visible");
+        Assert.assertTrue(searchPage.getWarningText().contains("minimum length is 3 characters"),
+                "Expected the minimum search length warning, received: " + searchPage.getWarningText());
     }
 
     @Test(groups = {"ui", "catalog"})
@@ -108,5 +110,7 @@ public class CatalogTest extends BaseTest {
 
         categoryPage.selectSortOption("10");
         Assert.assertTrue(categoryPage.hasProducts(), "Expected products to be displayed after sorting");
+        Assert.assertTrue(categoryPage.waitForProductPricesAscending(),
+                "Expected product prices to eventually appear in ascending order after selecting Price: Low to High");
     }
 }

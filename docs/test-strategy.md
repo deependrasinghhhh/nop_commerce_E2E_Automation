@@ -41,7 +41,7 @@ This Test Strategy defines the architectural approach, quality gates, execution 
 |---|---|---|---|
 | **Storefront & Admin UI** | Playwright Java + TestNG | Full end-to-end user workflows, catalog browsing, cart mutations, checkout | PR Smokes & Nightly Regression |
 | **HTTP Protocol & Form** | Playwright `APIRequestContext` | Response headers, status codes (200/302/400), anti-forgery token extraction | Every CI build (fast gate) |
-| **Database Verification** | JDBC (Microsoft SQL Server) | Read-only state verification (`[Customer]`, `[Order]`, `[ShoppingCartItem]`) | Post-UI transactional tests |
+| **Database Verification** | JDBC (Microsoft SQL Server) | Read-only assertions over customer, order/item, and storefront-created cart state; cleanup is limited to unique test data | Post-UI transactional tests |
 | **Accessibility** | Deque axe-core Playwright | WCAG 2.1 AA compliance scans on primary templates (`/`, `/register`, `/cart`) | Weekly / Release gate |
 | **Performance Profiling**| k6 | Local Docker container HTTP throughput & response latency baselines | Milestone release verification |
 

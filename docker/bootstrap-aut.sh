@@ -5,12 +5,22 @@ set -euo pipefail
 export MSYS_NO_PATHCONV=1
 
 if [[ -z "${DB_PASSWORD:-}" && -f .env ]]; then
-    set -a
-    # Local .env files use simple KEY=value entries, compatible with shell sourcing.
-    # CI supplies these values directly through its secret environment variables.
-    # shellcheck disable=SC1091
-    . ./.env
-    set +a
+    # Parse only the settings this bootstrap needs; never execute .env as shell code.
+    while IFS= read -r line || [[ -n "${line}" ]]; do
+        [[ "${line}" =~ ^[[:space:]]*($|#) ]] && continue
+        if [[ "${line}" =~ ^[[:space:]]*(DB_USER|DB_PASSWORD|BASE_URL)[[:space:]]*=[[:space:]]*(.*)$ ]]; then
+            key="${BASH_REMATCH[1]}"
+            value="${BASH_REMATCH[2]%$'\r'}"
+            if [[ "${value}" == \"*\" ]]; then
+                value="${value:1:${#value}-2}"
+            elif [[ "${value}" == \'*\' ]]; then
+                value="${value:1:${#value}-2}"
+            fi
+            if [[ -z "${!key:-}" ]]; then
+                export "${key}=${value}"
+            fi
+        fi
+    done < .env
 fi
 
 export DB_USER="${DB_USER:-sa}"

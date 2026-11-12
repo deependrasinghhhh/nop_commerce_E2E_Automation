@@ -1,7 +1,7 @@
 # Requirements Traceability Matrix (RTM)
 
-**Reconciliation Timestamp:** 2026-11-11 10:24:57 UTC
-**Execution Window:** 2026-11-11T10:23:01Z to 2026-11-11T10:24:57Z (116.00s)
+**Reconciliation Timestamp:** 2026-11-12 10:15:57 UTC
+**Execution Window:** 2026-11-12T10:11:03Z to 2026-11-12T10:15:57Z (294.00s)
 **Target AUT:** nopCommerce 4.90.8 (.NET 9, Isolated Docker Stack `http://127.0.0.1:5000`)
 
 > **Evidence Notice:** Reconciled from `docs/test-cases.csv`, Java `@TestCase` annotations, and `evidence/surefire-reports/testng-results.xml`.
@@ -75,7 +75,7 @@
 | TC-CHK-005 | REQ-CHK-003 | UI | Billing Address Missing Mandatory Phone | P2 | NO | Manual / Planned Scope | NOT RUN (Manual Scope) |
 | TC-CHK-006 | REQ-CHK-004 | UI | Select Shipping Method - Ground | P1 | NO | Manual / Planned Scope | NOT RUN (Manual Scope) |
 | TC-CHK-007 | REQ-CHK-004 | UI | Select Shipping Method - Next Day Air | P2 | NO | Manual / Planned Scope | NOT RUN (Manual Scope) |
-| TC-CHK-008 | REQ-CHK-005 | UI | Verify Checkout Steps & Payment Method Options | P1 | YES | [CheckoutTest#testCheckoutPaymentMethodOptions](../src/test/java/com/qa/nopcommerce/tests/ui/CheckoutTest.java) | PASS |
+| TC-CHK-008 | REQ-CHK-005 | UI | Verify Guest Checkout Exposes a Payment Method Option | P1 | YES | [CheckoutTest#testCheckoutPaymentMethodOptions](../src/test/java/com/qa/nopcommerce/tests/ui/CheckoutTest.java) | PASS |
 | TC-CHK-009 | REQ-CHK-005 | UI | Verify Payment Information Instructions | P2 | NO | Manual / Planned Scope | NOT RUN (Manual Scope) |
 | TC-CHK-010 | REQ-CHK-006 | UI | Confirm and Finalize Guest Order Placement | P1 | NO | Manual / Planned Scope | NOT RUN (Manual Scope) |
 | TC-CHK-011 | REQ-CHK-007 | UI | Checkout with Authenticated User and Saved Address | P1 | NO | Manual / Planned Scope | NOT RUN (Manual Scope) |
@@ -112,8 +112,8 @@
 | TC-API-009 | REQ-API-004 | API | HTTP POST Login without Anti-Forgery Token Rejection | P2 | YES | [ApiEndpointTest#testPostWithoutAntiForgeryTokenRejection](../src/test/java/com/qa/nopcommerce/tests/api/ApiEndpointTest.java) | PASS |
 | TC-API-010 | REQ-API-005 | API | Security Headers Presence on HTTP Responses | P3 | NO | Manual / Planned Scope | NOT RUN (Manual Scope) |
 | TC-DB-001 | REQ-DB-001 | DB | Verify Customer Persistence in Database | P1 | YES | [DatabaseVerificationTest#testCustomerRecordPersistenceInDatabase](../src/test/java/com/qa/nopcommerce/tests/db/DatabaseVerificationTest.java) | PASS |
-| TC-DB-002 | REQ-DB-002 | DB | Verify Order Persistence in Database | P1 | YES | [DatabaseVerificationTest#testOrderRecordPersistenceInDatabase](../src/test/java/com/qa/nopcommerce/tests/db/DatabaseVerificationTest.java) | PASS |
-| TC-DB-003 | REQ-DB-003 | DB | Verify ShoppingCartItem State in Database | P2 | YES | [DatabaseVerificationTest#testCartItemPersistenceInDatabase](../src/test/java/com/qa/nopcommerce/tests/db/DatabaseVerificationTest.java) | PASS |
+| TC-DB-002 | REQ-DB-002 | DB | Verify Active Order and Order Item Rows in Seeded Database | P1 | YES | [DatabaseVerificationTest#testOrderRecordPersistenceInDatabase](../src/test/java/com/qa/nopcommerce/tests/db/DatabaseVerificationTest.java) | PASS |
+| TC-DB-003 | REQ-DB-003 | DB | Verify Storefront Cart Item Persistence in Database | P2 | YES | [DatabaseVerificationTest#testCartItemPersistenceInDatabase](../src/test/java/com/qa/nopcommerce/tests/db/DatabaseVerificationTest.java) | PASS |
 | TC-DB-004 | REQ-DB-004 | DB | Verify Database Connection Health & Query Execution | P2 | YES | [DatabaseVerificationTest#testDatabaseConnectionHealth](../src/test/java/com/qa/nopcommerce/tests/db/DatabaseVerificationTest.java) | PASS |
 | TC-DB-005 | REQ-DB-002 | DB | Verify Customer Address Record Persistence | P2 | NO | Manual / Planned Scope | NOT RUN (Manual Scope) |
 | TC-A11Y-001 | REQ-A11Y-001 | A11Y | Storefront Home Page Automated Accessibility Scan | P2 | YES | [AccessibilityTest#testHomePageAccessibility](../src/test/java/com/qa/nopcommerce/tests/a11y/AccessibilityTest.java) | PASS |

@@ -49,14 +49,19 @@ public abstract class BaseTest {
 
     /**
      * Navigates the current page to the given path (absolute URL or relative to baseUrl).
-     * Uses {@code DOMCONTENTLOADED} rather than {@code networkidle} to avoid stalling
-     * on long-polling or analytics requests.
+     * Waits for the navigation response to commit. Page readiness is established by
+     * Playwright's auto-waiting locator actions and assertions, avoiding document-event
+     * stalls caused by long-running or third-party resources.
      */
     public void navigateTo(String path) {
+        navigateTo(path, WaitUntilState.COMMIT);
+    }
+
+    public void navigateTo(String path, WaitUntilState waitUntil) {
         String baseUrl = ConfigReader.getBaseUrl();
         String targetUrl = path.startsWith("http") ? path : baseUrl + (path.startsWith("/") ? path : "/" + path);
         log.info("Navigating to: {}", targetUrl);
-        getPage().navigate(targetUrl, new Page.NavigateOptions().setWaitUntil(WaitUntilState.DOMCONTENTLOADED));
+        getPage().navigate(targetUrl, new Page.NavigateOptions().setWaitUntil(waitUntil));
     }
 
     @AfterMethod(alwaysRun = true)

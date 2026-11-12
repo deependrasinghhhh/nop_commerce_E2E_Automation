@@ -3,6 +3,7 @@ package com.qa.nopcommerce.pages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -155,6 +156,14 @@ public class CartPage extends BasePage {
 
     public String getOrderTotal() {
         return getText(orderTotal);
+    }
+
+    public BigDecimal getOrderTotalAmount() {
+        String normalized = getOrderTotal().replaceAll("[^0-9,.-]", "").replace(",", "");
+        if (normalized.isBlank()) {
+            throw new IllegalStateException("Cart order total was empty or not numeric");
+        }
+        return new BigDecimal(normalized);
     }
 
     public boolean isCartEmpty() {

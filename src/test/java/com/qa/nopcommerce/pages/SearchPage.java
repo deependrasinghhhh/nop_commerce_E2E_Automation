@@ -19,7 +19,7 @@ public class SearchPage extends BasePage {
         this.searchInput = page.locator("#q, #small-searchterms");
         this.searchButton = page.locator("button.search-button, button.search-box-button");
         this.noResult = page.locator(".no-result");
-        this.warning = page.locator(".warning, .no-result");
+        this.warning = page.locator(".warning");
         this.searchResults = page.locator(".search-results, .products-wrapper");
     }
 

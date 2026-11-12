@@ -56,7 +56,7 @@ TC-CHK-004,REQ-CHK-003,UI,P2,Billing Address Missing Mandatory City,Isolated nop
 TC-CHK-005,REQ-CHK-003,UI,P2,Billing Address Missing Mandatory Phone,Isolated nopCommerce 4.90.8 container active,Execute automated scenario,Assertion passes,Automated
 TC-CHK-006,REQ-CHK-004,UI,P1,Select Shipping Method - Ground,Isolated nopCommerce 4.90.8 container active,Execute automated scenario,Assertion passes,Automated
 TC-CHK-007,REQ-CHK-004,UI,P2,Select Shipping Method - Next Day Air,Isolated nopCommerce 4.90.8 container active,Execute automated scenario,Assertion passes,Automated
-TC-CHK-008,REQ-CHK-005,UI,P1,Verify Checkout Steps & Payment Method Options,Isolated nopCommerce 4.90.8 container active,Execute automated scenario,Assertion passes,Automated
+TC-CHK-008,REQ-CHK-005,UI,P1,Verify Guest Checkout Exposes a Payment Method Option,Isolated nopCommerce 4.90.8 container active,Complete guest billing and shipping steps,Check / Money Order payment option is visible,Automated
 TC-CHK-009,REQ-CHK-005,UI,P2,Verify Payment Information Instructions,Isolated nopCommerce 4.90.8 container active,Execute automated scenario,Assertion passes,Automated
 TC-CHK-010,REQ-CHK-006,UI,P1,Confirm and Finalize Guest Order Placement,Isolated nopCommerce 4.90.8 container active,Execute automated scenario,Assertion passes,Automated
 TC-CHK-011,REQ-CHK-007,UI,P1,Checkout with Authenticated User and Saved Address,Isolated nopCommerce 4.90.8 container active,Execute automated scenario,Assertion passes,Automated
@@ -93,8 +93,8 @@ TC-API-008,REQ-API-003,API,P2,Anti-Forgery Token Issuance in Registration Form,I
 TC-API-009,REQ-API-004,API,P2,HTTP POST Login without Anti-Forgery Token Rejection,Isolated nopCommerce 4.90.8 container active,Execute automated scenario,Assertion passes,Automated
 TC-API-010,REQ-API-005,API,P3,Security Headers Presence on HTTP Responses,Isolated nopCommerce 4.90.8 container active,Execute automated scenario,Assertion passes,Automated
 TC-DB-001,REQ-DB-001,DB,P1,Verify Customer Persistence in Database,Isolated nopCommerce 4.90.8 container active,Execute automated scenario,Assertion passes,Automated
-TC-DB-002,REQ-DB-002,DB,P1,Verify Order Persistence in Database,Isolated nopCommerce 4.90.8 container active,Execute automated scenario,Assertion passes,Automated
-TC-DB-003,REQ-DB-003,DB,P2,Verify ShoppingCartItem State in Database,Isolated nopCommerce 4.90.8 container active,Execute automated scenario,Assertion passes,Automated
+TC-DB-002,REQ-DB-002,DB,P1,Verify Active Order and Order Item Rows in Seeded Database,Isolated nopCommerce 4.90.8 container active,Execute automated scenario,At least one non-deleted order joins to a persisted OrderItem row,Automated
+TC-DB-003,REQ-DB-003,DB,P2,Verify Storefront Cart Item Persistence in Database,Isolated nopCommerce 4.90.8 container active,Register a unique customer and add one product,Exactly one new ShoppingCartItem row exists for that customer,Automated
 TC-DB-004,REQ-DB-004,DB,P2,Verify Database Connection Health & Query Execution,Isolated nopCommerce 4.90.8 container active,Execute automated scenario,Assertion passes,Automated
 TC-DB-005,REQ-DB-002,DB,P2,Verify Customer Address Record Persistence,Isolated nopCommerce 4.90.8 container active,Execute automated scenario,Assertion passes,Automated
 TC-A11Y-001,REQ-A11Y-001,A11Y,P2,Storefront Home Page Automated Accessibility Scan,Isolated nopCommerce 4.90.8 container active,Execute automated scenario,Assertion passes,Automated

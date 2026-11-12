@@ -110,7 +110,7 @@ public class ApiEndpointTest {
     @Test(groups = {"api"})
     @TestCase(value = "TC-API-009", requirementId = "REQ-API-004")
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Verify state-modifying POST request without anti-forgery token is rejected (400 or 302)")
+    @Description("Verify state-modifying POST request without anti-forgery token is rejected with HTTP 400")
     public void testPostWithoutAntiForgeryTokenRejection() {
         com.microsoft.playwright.options.FormData formData = com.microsoft.playwright.options.FormData.create()
                 .set("Email", "unauthorized@example.com")
@@ -120,7 +120,7 @@ public class ApiEndpointTest {
                 .setForm(formData));
 
         int status = response.status();
-        Assert.assertTrue(status == 400 || status == 405 || status == 302,
-                "Expected anti-forgery POST rejection status (400/405/302), received: " + status);
+        Assert.assertEquals(status, 400,
+                "Expected HTTP 400 anti-forgery rejection, received: " + status);
     }
 }

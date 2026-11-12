@@ -3,6 +3,7 @@ package com.qa.nopcommerce.pages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -35,6 +36,34 @@ public class CategoryPage extends BasePage {
 
     public List<String> getProductTitles() {
         return page.locator(".product-title a").allInnerTexts();
+    }
+
+    public List<String> getProductPrices() {
+        return page.locator(".product-item .prices .actual-price").allInnerTexts();
+    }
+
+    public boolean waitForProductPricesAscending() {
+        return waitForCondition(() -> {
+            List<String> displayedPrices = getProductPrices();
+            if (displayedPrices.size() < 2) {
+                return false;
+            }
+            List<BigDecimal> prices = displayedPrices.stream().map(CategoryPage::parsePrice).toList();
+            for (int index = 1; index < prices.size(); index++) {
+                if (prices.get(index - 1).compareTo(prices.get(index)) > 0) {
+                    return false;
+                }
+            }
+            return true;
+        }, 15_000);
+    }
+
+    private static BigDecimal parsePrice(String text) {
+        String normalized = text.replaceAll("[^0-9,.-]", "").replace(",", "");
+        if (normalized.isBlank()) {
+            throw new IllegalArgumentException("Product price was empty or not numeric: " + text);
+        }
+        return new BigDecimal(normalized);
     }
 
     public ProductDetailsPage selectProductByName(String productName) {

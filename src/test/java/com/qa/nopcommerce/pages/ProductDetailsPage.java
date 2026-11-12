@@ -71,9 +71,7 @@ public class ProductDetailsPage extends BasePage {
     }
 
     public void clickAddToCart() {
-        try {
-            page.waitForFunction("() => typeof window.AjaxCart !== 'undefined' && typeof window.jQuery !== 'undefined'", null, new Page.WaitForFunctionOptions().setTimeout(10000));
-        } catch (Exception ignored) {}
+        waitForCartScripts();
         click(addToCartButton);
     }
 
@@ -82,10 +80,15 @@ public class ProductDetailsPage extends BasePage {
     }
 
     public void clickAddToWishlist() {
-        try {
-            page.waitForFunction("() => typeof window.AjaxCart !== 'undefined' && typeof window.jQuery !== 'undefined'", null, new Page.WaitForFunctionOptions().setTimeout(10000));
-        } catch (Exception ignored) {}
+        waitForCartScripts();
         click(addToWishlistButton);
+    }
+
+    private void waitForCartScripts() {
+        page.waitForFunction(
+                "() => typeof window.AjaxCart !== 'undefined' && typeof window.jQuery !== 'undefined'",
+                null,
+                new Page.WaitForFunctionOptions().setTimeout(10_000));
     }
 
     public boolean isNotificationBannerVisible() {

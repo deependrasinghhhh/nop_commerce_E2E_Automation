@@ -18,6 +18,7 @@ import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -201,12 +202,16 @@ public class CartTest extends BaseTest {
             navigateTo("/cart");
             CartPage cartPage = new CartPage(getPage());
             Assert.assertTrue(cartPage.hasCartItemCount(1), "Expected 1 item in cart");
+            BigDecimal totalBeforeCoupon = cartPage.getOrderTotalAmount();
 
             cartPage.applyCouponCode(isolatedCouponCode);
 
             Assert.assertTrue(cartPage.getCouponMessageText().contains("The coupon code was applied"),
                     "Expected coupon applied message");
             Assert.assertTrue(cartPage.isDiscountApplied(), "Expected discount row summary to be visible");
+            BigDecimal totalAfterCoupon = cartPage.getOrderTotalAmount();
+            Assert.assertTrue(totalAfterCoupon.compareTo(totalBeforeCoupon) < 0,
+                    "Expected coupon to reduce total from " + totalBeforeCoupon + " to " + totalAfterCoupon);
         } finally {
             try {
                 navigateTo("/cart");

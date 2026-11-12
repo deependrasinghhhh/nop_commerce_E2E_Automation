@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.OptionalInt;
 
 /**
  * Thread-safe Database Manager providing pooled JDBC verification and isolated test-data
@@ -108,9 +109,27 @@ public class DatabaseManager {
                 }
             }
         } catch (SQLException e) {
-            log.error("Database query failed for customerExists: {}", e.getMessage());
+            throw new IllegalStateException("Database query failed for customerExists", e);
         }
-        return false;
+        throw new IllegalStateException("Customer existence query returned no result row");
+    }
+
+    public static OptionalInt findCustomerIdByEmail(String email) {
+        String sql = "SELECT TOP (1) Id FROM Customer WHERE Email = ? AND Deleted = 0 ORDER BY Id DESC";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next() ? OptionalInt.of(rs.getInt("Id")) : OptionalInt.empty();
+            }
+        } catch (SQLException e) {
+            throw new IllegalStateException("Database query failed for findCustomerIdByEmail", e);
+        }
+    }
+
+    public static int getCustomerIdByEmail(String email) {
+        return findCustomerIdByEmail(email).orElseThrow(() ->
+                new IllegalStateException("No active customer found for email " + email));
     }
 
     public static boolean orderExists(int orderId) {
@@ -124,9 +143,38 @@ public class DatabaseManager {
                 }
             }
         } catch (SQLException e) {
-            log.error("Database query failed for orderExists: {}", e.getMessage());
+            throw new IllegalStateException("Database query failed for orderExists", e);
         }
-        return false;
+        throw new IllegalStateException("Order existence query returned no result row");
+    }
+
+    public static int getActiveOrderCount() {
+        String sql = "SELECT COUNT(1) AS TotalCount FROM [Order] WHERE Deleted = 0";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("TotalCount");
+            }
+            throw new IllegalStateException("Active order count query returned no result row");
+        } catch (SQLException e) {
+            throw new IllegalStateException("Database query failed for getActiveOrderCount", e);
+        }
+    }
+
+    public static int getActiveOrderCountWithItems() {
+        String sql = "SELECT COUNT(DISTINCT o.Id) AS TotalCount " +
+                "FROM [Order] o INNER JOIN OrderItem oi ON oi.OrderId = o.Id WHERE o.Deleted = 0";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("TotalCount");
+            }
+            throw new IllegalStateException("Active order-with-items query returned no result row");
+        } catch (SQLException e) {
+            throw new IllegalStateException("Database query failed for getActiveOrderCountWithItems", e);
+        }
     }
 
     public static int getShoppingCartItemCount(int customerId) {
@@ -140,9 +188,34 @@ public class DatabaseManager {
                 }
             }
         } catch (SQLException e) {
-            log.error("Database query failed for getShoppingCartItemCount: {}", e.getMessage());
+            throw new IllegalStateException("Database query failed for getShoppingCartItemCount", e);
         }
-        return 0;
+        throw new IllegalStateException("Shopping cart item count query returned no result row");
+    }
+
+    public static int deleteShoppingCartItemsForCustomer(int customerId) {
+        String sql = "DELETE FROM ShoppingCartItem WHERE CustomerId = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, customerId);
+            return stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new IllegalStateException("Database cleanup failed for ShoppingCartItem", e);
+        }
+    }
+
+    public static int softDeleteCustomerByEmail(String email) {
+        if (email == null || email.isBlank()) {
+            return 0;
+        }
+        String sql = "UPDATE Customer SET Deleted = 1 WHERE Email = ? AND Deleted = 0";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            return stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new IllegalStateException("Database cleanup failed for isolated customer", e);
+        }
     }
 
     public static boolean addressExistsForCustomer(String customerEmail, String address1) {
@@ -160,9 +233,9 @@ public class DatabaseManager {
                 }
             }
         } catch (SQLException e) {
-            log.error("Database query failed for addressExistsForCustomer: {}", e.getMessage());
+            throw new IllegalStateException("Database query failed for addressExistsForCustomer", e);
         }
-        return false;
+        throw new IllegalStateException("Address existence query returned no result row");
     }
 
     /**
@@ -178,8 +251,8 @@ public class DatabaseManager {
             stmt.setString(1, reviewTitle);
             int removed = stmt.executeUpdate();
             log.info("Cleaned up {} isolated ProductReview row(s) with title '{}'", removed, reviewTitle);
-        } catch (Exception e) {
-            log.debug("Skipping DB review cleanup for '{}': {}", reviewTitle, e.getMessage());
+        } catch (SQLException e) {
+            throw new IllegalStateException("Database cleanup failed for isolated ProductReview", e);
         }
     }
 
@@ -196,8 +269,8 @@ public class DatabaseManager {
             stmt.setString(1, couponCode);
             int removed = stmt.executeUpdate();
             log.info("Cleaned up {} isolated Discount row(s) with couponCode '{}'", removed, couponCode);
-        } catch (Exception e) {
-            log.debug("Skipping DB discount cleanup for '{}': {}", couponCode, e.getMessage());
+        } catch (SQLException e) {
+            throw new IllegalStateException("Database cleanup failed for isolated Discount", e);
         }
     }
 }

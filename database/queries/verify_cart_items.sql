@@ -1,6 +1,6 @@
 -- verify_cart_items.sql
 -- Traceable to REQ-DB-003 / TC-DB-003
--- Asserts shopping cart items reflect updated quantity in ShoppingCartItem table
+-- Reads ShoppingCartItem rows created through the storefront for an isolated customer.
 SELECT 
     sci.Id AS CartItemId,
     sci.CustomerId,

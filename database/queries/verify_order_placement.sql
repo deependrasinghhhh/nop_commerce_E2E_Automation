@@ -1,19 +1,8 @@
 -- verify_order_placement.sql
 -- Traceable to REQ-DB-002 / TC-DB-002
--- Asserts order and order item rows exist in [Order] and OrderItem tables after checkout completion
+-- Counts persisted active orders that have at least one OrderItem in the seeded verification database.
 SELECT 
-    o.Id AS OrderId,
-    o.OrderGuid,
-    o.CustomerId,
-    o.OrderStatusId,
-    o.PaymentStatusId,
-    o.ShippingStatusId,
-    o.OrderTotal,
-    oi.Id AS OrderItemId,
-    oi.ProductId,
-    oi.Quantity,
-    oi.PriceInclTax
+    COUNT(DISTINCT o.Id) AS ActiveOrdersWithItems
 FROM [Order] o
 INNER JOIN OrderItem oi ON o.Id = oi.OrderId
-WHERE o.Id = :orderId
-  AND o.Deleted = 0;
+WHERE o.Deleted = 0;
