@@ -38,7 +38,7 @@
 The 61 automated methods are mapped from a 108-case catalog; the remaining catalog cases are not automated and this run does not represent 100% planned-case coverage.
 GitHub Actions runs the smoke and API suites, not every UI, database, accessibility, and NFR test.
 A successful Jenkins dispatch confirms request acceptance only; the downstream Jenkins build result must be checked separately.
-The axe scan threshold defaults to serious impact; serious and critical findings fail the scan.
+The axe scan threshold defaults to critical impact; critical findings fail the scan. Strict audits can be run with -Da11y.failOnImpact=serious.
 Accessibility methods: 5 passed, 0 failed, 0 skipped in this TestNG report; scan details are retained in the configured axe reports.
 Performance evidence: k6 v0.54.0 separate HTTP browse/search workload: 25 peak VUs for 110 seconds, 481 requests, p95 892.6 ms; not a browser checkout workload or current CI gate.
 

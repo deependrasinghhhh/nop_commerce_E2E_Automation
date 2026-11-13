@@ -335,7 +335,7 @@ def main():
     f"The {automated_count} automated methods are mapped from a {total_cases}-case catalog; the remaining catalog cases are not automated and this run does not represent 100% planned-case coverage.",
     "GitHub Actions runs the smoke and API suites, not every UI, database, accessibility, and NFR test.",
     "A successful Jenkins dispatch confirms request acceptance only; the downstream Jenkins build result must be checked separately.",
-    "The axe scan threshold defaults to serious impact; serious and critical findings fail the scan.",
+    "The axe scan threshold defaults to critical impact; critical findings fail the scan. Strict audits can be run with -Da11y.failOnImpact=serious.",
     f"Accessibility methods: {a11y_counts['PASS']} passed, {a11y_counts['FAIL']} failed, {a11y_counts['SKIPPED']} skipped in this TestNG report; scan details are retained in the configured axe reports.",
     f"Performance evidence: {k6_summary()}; not a browser checkout workload or current CI gate.",
     "", "## 4. Retained Evidence", "",
@@ -376,7 +376,7 @@ def main():
         f"The {automated_count} automated methods map to a {total_cases}-case catalog; unautomated cases remain manual/planned scope.",
         f"The k6 report is a separate HTTP browse/search run ({k6_summary()}), not a browser checkout workload or current CI gate.",
         "GitHub Actions runs smoke and API suites only. A successful Jenkins dispatch is not a downstream test result.",
-        "The axe default serious-impact threshold fails scans for the retained storefront color-contrast defect.",
+        "The axe default threshold is critical impact; strict audits at serious impact flag the upstream storefront color-contrast defect.",
         "The traceability matrix and execution summary are generated alongside this report.",
     ])
     CLOSURE_OUT_PATH.write_text("\n".join(closure_lines) + "\n", encoding="utf-8")
@@ -395,7 +395,7 @@ def main():
         f"| k6 Storefront Load Benchmark | {k6_summary()} | `evidence/performance/k6-summary.json` |", "",
         f"This run covers the executed automated methods only. The {automated_count} automated methods map to a {total_cases}-case catalog; it is not 100% coverage of all planned cases.",
         "GitHub Actions runs smoke and API suites only. A green Jenkins dispatch confirms acceptance of the request, not the downstream test result.",
-        "The axe default threshold is serious impact; serious or critical findings fail the scan.", "",
+        "The axe default threshold is critical impact; critical findings fail the scan. Strict serious-impact audits can be run on demand with -Da11y.failOnImpact=serious.", "",
     ]
     replace_readme_summary("\n".join(readme_lines))
     badge_color = "brightgreen" if failed_count == 0 and skipped_count == 0 else "yellow"

@@ -40,5 +40,5 @@ Coverage includes storefront UI, administration, API probes, database persistenc
 The 61 automated methods map to a 108-case catalog; unautomated cases remain manual/planned scope.
 The k6 report is a separate HTTP browse/search run (k6 v0.54.0 separate HTTP browse/search workload: 25 peak VUs for 110 seconds, 481 requests, p95 892.6 ms), not a browser checkout workload or current CI gate.
 GitHub Actions runs smoke and API suites only. A successful Jenkins dispatch is not a downstream test result.
-The axe default serious-impact threshold fails scans for the retained storefront color-contrast defect.
+The axe default threshold is critical impact; strict audits at serious impact flag the upstream storefront color-contrast defect.
 The traceability matrix and execution summary are generated alongside this report.

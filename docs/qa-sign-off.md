@@ -5,7 +5,7 @@
 ## 1. Document Control
 
 | Attribute | Value |
-|---|---|
+| --- | --- |
 | Project | nopCommerce E2E QA Automation Rebuild |
 | AUT | nopCommerce 4.90.8 (.NET 9) on isolated Docker stack (`http://127.0.0.1:5000`) |
 | Report Date | 2026-11-13 |
@@ -18,6 +18,7 @@
 ## 2. Current Execution and Scope
 
 The latest full regression execution was reconciled directly from TestNG output in `evidence/surefire-reports/testng-results.xml` into [execution-summary.md](execution-summary.md) and [traceability-matrix.md](traceability-matrix.md):
+
 - **Automated Scope**: Exactly **61 automated test methods** mapped across 10 functional and non-functional requirements domains.
 - **Execution Pass Rate**: **61/61 Passed (100.0%)**, 0 Failed, 0 Skipped across all tiers (Smoke, Auth, Catalog, Cart, Checkout, Customer Account, Admin, API Probing, Database Persistence, Accessibility Scans, and NFR Performance/Responsive SLAs).
 - **Test Catalog Coverage**: The comprehensive test catalog contains 108 cases (`docs/test-cases.csv`); 61 automated methods are actively implemented and passing (56.5% of full planned lifecycle; 100% of automated scope).
@@ -29,7 +30,7 @@ The automation architecture utilizes `PlaywrightFactory` with `ThreadLocal` brow
 ## 3. Findings & Environmental Observations
 
 | ID | Finding | Classification | Status & Impact |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | **DEF-A11Y-001** | Upstream Storefront Theme Color-Contrast Flaw | Upstream AUT CSS Defect | **Documented Known Defect**. The nopCommerce 4.90.8 native theme has white text on `#4ab2f1` primary buttons/links (contrast ratio `2.35:1` vs. `4.5:1` required by WCAG 2.1 AA). The automation gate defaults to `critical` to maintain reliable continuous integration gating without masking defects. Strict accessibility audits can be triggered on-demand via `mvn test -Pa11y -Da11y.failOnImpact=serious`. |
 | **DEF-001 (Historical)** | Public Demo Bot-Gating / Cloudflare Challenges | Historical Environmental Constraint | **Resolved / Bypassed**. The framework strictly tests against the local containerized AUT stack (`http://127.0.0.1:5000`); public `demo.nopcommerce.com` URLs are rejected at configuration load time. |
 | **DATA-001** | Customer Account Database Retention | Test Data Lifecycle Management | **Resolved**. `DatabaseManager.java` implements transactional cascade cleanup (`deleteCustomerCascade`) for dynamic test-generated accounts, ensuring repeated test runs do not pollute database state. |
