@@ -1,6 +1,6 @@
 # Jenkins CI Pipeline
 
-`Jenkinsfile` runs the configured TestNG suite against the isolated Docker AUT, publishes test and Allure reports, and reconciles the RTM. The GitHub Actions trigger workflow dispatches a build through authenticated Jenkins API access on pushes to `main` or manual dispatch; it does not run against pull-request branches or wait for the Jenkins build to finish. The GitHub Actions smoke/API workflow remains the pull-request test gate.
+`Jenkinsfile` runs the configured TestNG suite against the isolated Docker AUT, publishes test and Allure reports, and reconciles the RTM. The GitHub Actions trigger workflow dispatches a build through authenticated Jenkins API access on pushes to `main` or manual dispatch; it does not run against pull-request branches or wait for the Jenkins build to finish. A green dispatch job proves only that Jenkins accepted the request, not that the requested Jenkins suite passed. Verify the downstream Jenkins build result separately. The GitHub Actions smoke/API workflow remains the pull-request test gate and does not run every UI, database, accessibility, or NFR test.
 
 ## Jenkins prerequisites
 

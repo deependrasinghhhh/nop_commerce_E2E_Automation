@@ -2,9 +2,9 @@
 
 > **Document ID:** STRAT-NOP-4.90.8  
 > **Target AUT:** nopCommerce 4.90.8 on ASP.NET Core (.NET 9)  
-> **Technology Stack:** Java 21 LTS · Playwright Java 1.63.0 · TestNG · Maven · Docker (MSSQL 2022)  
+> **Technology Stack:** Java 21 · Playwright Java 1.49.0 · TestNG 7.10.2 · Maven · Docker (MSSQL 2022)
 > **Sign-off / Governance:** Self-assessed by the project author acting as QA Lead. No other reviewer or external stakeholder was involved.  
-> **Base Evaluation Date:** October 2026  
+> **Base Evaluation Date:** 2026-11-13
 
 ---
 
@@ -13,7 +13,7 @@
 This Test Strategy defines the architectural approach, quality gates, execution tiers, and tooling principles for the end-to-end automation of nopCommerce 4.90.8. It operates under a strict **Evidence Contract**: all quality metrics, pass rates, and performance benchmarks must originate from retained, machine-generated artifacts (`evidence/`), never manual estimates.
 
 ### 1.1 Testing Objectives
-1. **Critical Path Safeguarding:** Guarantee core commercial journeys (Registration, Login, Catalog, Cart, and multi-step Checkout) remain 100% functional through automated smoke and regression gates.
+1. **Critical Path Safeguarding:** Exercise the automated Registration, Login, Catalog, Cart, and Checkout journeys without implying coverage of every case in the test catalog.
 2. **Multi-Layer Validation:** Validate functionality across three distinct tiers:
    * **Presentation Layer (UI):** Cross-browser user workflows with Playwright Java.
    * **Protocol Layer (HTTP):** Fast route health, status codes, and anti-forgery form POST validations via Playwright `APIRequestContext`.
@@ -42,17 +42,16 @@ This Test Strategy defines the architectural approach, quality gates, execution 
 | **Storefront & Admin UI** | Playwright Java + TestNG | Full end-to-end user workflows, catalog browsing, cart mutations, checkout | PR Smokes & Nightly Regression |
 | **HTTP Protocol & Form** | Playwright `APIRequestContext` | Response headers, status codes (200/302/400), anti-forgery token extraction | Every CI build (fast gate) |
 | **Database Verification** | JDBC (Microsoft SQL Server) | Read-only assertions over customer, order/item, and storefront-created cart state; cleanup is limited to unique test data | Post-UI transactional tests |
-| **Accessibility** | Deque axe-core Playwright | WCAG 2.1 AA compliance scans on primary templates (`/`, `/register`, `/cart`) | Weekly / Release gate |
-| **Performance Profiling**| k6 | Local Docker container HTTP throughput & response latency baselines | Milestone release verification |
+| **Accessibility** | Deque axe-core Playwright | WCAG 2.1 A/AA scans on five storefront pages; serious and critical impact fail by default | Explicit suite run; not part of the current GitHub Actions gate |
+| **Performance Profiling**| k6 | Separate HTTP browse/search request workload against the local AUT | Manual benchmark; not a current CI gate |
 
 ---
 
 ## 3. Automation Framework Architecture
 
 ### 3.1 Design Patterns
-* **Page Object Model (POM):** Clean separation between page structure (locators, component actions) and test assertions. Page classes return either `this` (fluent chaining) or the subsequent landing page object.
-* **Component-Based Modularity:** Reusable global components (Header, TopNav, MiniCart, Footer, ConfirmationBar) are modeled as distinct reusable objects shared across pages.
-* **Factory Pattern:** Centralized `DriverFactory` / `BrowserFactory` managing browser instance lifecycles based on configuration (`chromium`, `firefox`, `webkit`).
+* **Page Object Model (POM):** Page classes such as `CartPage`, `CheckoutPage`, and `CustomerInfoPage` own page-specific locators and actions; tests perform assertions. The repository does not define shared Header/TopNav/MiniCart page-component classes.
+* **Playwright lifecycle:** `PlaywrightFactory` owns thread-local Playwright, Browser, BrowserContext, and Page instances. It creates a fresh isolated context and page for each test method; no `DriverFactory` or separate `BrowserFactory` is used.
 
 ### 3.2 Thread-Safe Concurrency Architecture
 Because Playwright Java instances are strictly **not thread-safe**, sharing instances across TestNG threads leads to non-deterministic race conditions and JVM crashes. The framework enforces strict thread isolation:
@@ -70,7 +69,7 @@ public class PlaywrightFactory {
 
 ### 3.3 Synchronization & Locator Discipline
 * **Zero Hardcoded Sleeps:** `Thread.sleep()` is categorically forbidden.
-* **Auto-Waiting Assertions:** All verifications use Playwright's `PlaywrightAssertions.assertThat(locator)` which leverages smart auto-retrying with exponential backoff up to the configured timeout (default: 5000 ms).
+* **Auto-Waiting Assertions:** Playwright locator actions and `PlaywrightAssertions.assertThat(locator)` use the configured timeout (45,000 ms in `config.properties`).
 * **Resilient User-Facing Locators:** Locators prioritize accessible roles and labels:
   1. `page.getByRole(...)`
   2. `page.getByLabel(...)`
@@ -83,14 +82,14 @@ public class PlaywrightFactory {
 ## 4. Traceability & Evidence Mechanism
 
 1. **Custom Test Case Annotation:**  
-   Every `@Test` method is decorated with `@TestCase("TC-...")`, mapping directly to the System Requirements Specification (`docs/requirements.md`) and the test catalog (`docs/test-cases.csv`):
+   Automated methods use `@TestCase(value = "TC-...", requirementId = "REQ-...")`, mapped to the requirements and catalog:
    ```java
    @Test(groups = {"smoke", "regression"})
-   @TestCase("TC-AUTH-001")
+   @TestCase(value = "TC-AUTH-001", requirementId = "REQ-AUTH-001")
    public void testSuccessfulUserRegistration() { ... }
    ```
 2. **Automated Evidence Reconciliation:**  
-   A dedicated Java utility/TestNG listener scans the Surefire XML outputs post-execution, cross-referencing `@TestCase` IDs against the master CSV. It generates:
+   `scripts/reconcile_rtm.py` cross-references the Java annotations, catalog CSV, and the latest TestNG XML report. It generates:
    * Real Execution Summary (Pass / Fail / Skipped / Not Run)
    * Real Requirements Traceability Matrix (RTM) coverage percentages
 3. **Artifact Retention Policy:**  
@@ -100,7 +99,7 @@ public class PlaywrightFactory {
 
 ## 5. Test Data Management Strategy
 
-1. **Dynamic Unique Data:** To prevent collisions during parallel or re-runs, customer emails and test identifiers are generated dynamically using UUID/timestamp builders (e.g., `qa_user_1728638400@testmail.com`).
+1. **Dynamic Unique Data:** Customer tests use UUID-based email addresses. Test-created accounts and their test-owned data are deleted transactionally by exact generated email, including when a test fails; cleanup failures are logged and suppressed onto the original test failure.
 2. **Deterministic Seed Data:** Catalog browsing and search tests rely on the default nopCommerce 4.90.8 sample catalog (e.g., `"Build your own computer"`, `"Apple MacBook Pro"`).
 3. **Credential Security:**  
    * **Zero hardcoded credentials in version control.**
@@ -130,12 +129,23 @@ public class PlaywrightFactory {
 
 | Category | Component / Tool | Version / Spec | Role in Engagement |
 |---|---|---|---|
-| **Runtime** | Java SE | 21 LTS | Primary compilation & execution runtime |
-| **Build & Dep** | Apache Maven | 3.9+ | Dependency resolution, build lifecycle, Surefire runner |
-| **Automation** | Playwright Java | 1.63.0 (latest stable) | Browser automation, APIRequestContext client |
-| **Test Runner** | TestNG | 7.11.0 | Suite organization, grouping, parallel execution |
-| **Accessibility** | Deque axe-core | 4.4.1+ (via Maven) | Automated WCAG 2.1 AA DOM scanning |
+| **Compiler target** | Java SE | 21 (`maven.compiler.release`) | Compilation target |
+| **Build & Dep** | Apache Maven | 3.9.6 in the recorded local environment | Dependency resolution, build lifecycle, Surefire runner |
+| **Automation** | Playwright Java | 1.49.0 | Browser automation and `APIRequestContext` |
+| **Test Runner** | TestNG | 7.10.2 | Suite organization, grouping, parallel execution |
+| **Accessibility** | Axe Playwright Java binding | 4.6.0 | axe-core DOM scans using WCAG 2.1 A/AA tags |
 | **Database** | Microsoft SQL Server | 2022 Developer | Primary persistence engine for containerized AUT |
-| **Performance** | k6 | Latest stable CLI | HTTP route load and latency baseline benchmarking |
-| **Reporting** | TestNG Native + Allure | 2.29.0 (AspectJ 1.9.22) | Primary execution reports + failure attachments |
-| **CI/CD** | Jenkins + GitHub Actions | Jenkinsfile / YAML | Primary full pipeline (Jenkins), secondary smoke gate (GHA) |
+| **Database client / pool** | Microsoft JDBC / HikariCP | 12.8.1.jre11 / 5.1.0 | JDBC verification and cleanup |
+| **Performance** | k6 | 0.54.0 in the retained benchmark | Separate HTTP browse/search run |
+| **Reporting** | Allure / AspectJ | 2.29.0 / 1.9.22 | Allure results and TestNG attachments |
+| **CI/CD** | Jenkins + GitHub Actions | Jenkinsfile / workflow YAML | Jenkins-selected TestNG suite; GitHub smoke and API gates |
+
+## 8. Current Coverage, CI, and Known Findings
+
+The test catalog contains **108 cases**, of which **61 automated methods** currently have `@TestCase` mappings (56.5% catalog automation). This is not 100% coverage of the planned catalog; the remaining cases are unautomated/manual scope. Execution counts are generated from TestNG reports and reconciled by `scripts/reconcile_rtm.py`.
+
+The GitHub Actions workflow runs the selected smoke suite and a separate API suite. It does not execute the full UI regression, database, accessibility, or NFR suites. A green dispatch workflow for Jenkins confirms only that Jenkins accepted the build request; it does not wait for or verify the downstream test result.
+
+The retained k6 summary is a separate **HTTP storefront browse/search** run (25 peak VUs, 110 seconds, 481 requests, reported p95 892.6 ms). It is not a browser checkout workload and is not a current CI gate.
+
+The axe scans retain full rule and node data. The default failure threshold is `serious`, configurable through `a11y.failOnImpact` / `A11Y_FAIL_ON_IMPACT`; reports are written under `a11y.reportDirectory` (default `evidence/a11y`). The current saved scans show serious `color-contrast` findings, including white text on `#4ab2f1` at 2.35:1 where 4.5:1 is expected for normal text. The automation repository contains no nopCommerce storefront CSS to repair this product defect; scans must fail/report it rather than exclude the rule.

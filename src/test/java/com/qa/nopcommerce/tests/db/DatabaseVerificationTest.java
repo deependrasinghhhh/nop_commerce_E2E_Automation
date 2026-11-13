@@ -70,8 +70,7 @@ public class DatabaseVerificationTest extends BaseTest {
         }
         String email = "qa_db_cart_" + UUID.randomUUID().toString().replace("-", "") + "@example.com";
         String password = "QaDb2026@" + UUID.randomUUID().toString().substring(0, 8);
-        int customerId = -1;
-        try {
+        runWithCleanup("database verification customer " + email, () -> {
             navigateTo("/register");
             RegisterPage registerPage = new RegisterPage(getPage());
             registerPage.selectGender("male");
@@ -79,7 +78,7 @@ public class DatabaseVerificationTest extends BaseTest {
             registerPage.clickRegisterButton();
             Assert.assertTrue(registerPage.isRegistrationSuccess(), "Expected isolated customer registration to succeed");
 
-            customerId = DatabaseManager.getCustomerIdByEmail(email);
+            int customerId = DatabaseManager.getCustomerIdByEmail(email);
             int baselineCount = DatabaseManager.getShoppingCartItemCount(customerId);
             Assert.assertEquals(baselineCount, 0, "Newly registered customer should have an empty cart");
 
@@ -92,15 +91,9 @@ public class DatabaseVerificationTest extends BaseTest {
             int persistedCount = DatabaseManager.getShoppingCartItemCount(customerId);
             Assert.assertEquals(persistedCount, baselineCount + 1,
                     "Expected the application cart action to persist one ShoppingCartItem row");
-        } finally {
-            try {
-                if (customerId > 0) {
-                    DatabaseManager.deleteShoppingCartItemsForCustomer(customerId);
-                }
-            } finally {
-                DatabaseManager.softDeleteCustomerByEmail(email);
-            }
-        }
+        }, () -> DatabaseManager.findCustomerIdByEmail(email).ifPresent(
+                customerId -> DatabaseManager.deleteShoppingCartItemsForCustomer(customerId)),
+                () -> DatabaseManager.deleteIsolatedCustomerByEmail(email));
     }
 
     @Test(groups = {"db"})

@@ -3,6 +3,7 @@ package com.qa.nopcommerce.tests.ui;
 import com.qa.nopcommerce.annotation.TestCase;
 import com.qa.nopcommerce.base.BaseTest;
 import com.qa.nopcommerce.config.ConfigReader;
+import com.qa.nopcommerce.database.DatabaseManager;
 import com.qa.nopcommerce.pages.HomePage;
 import com.qa.nopcommerce.pages.LoginPage;
 import com.qa.nopcommerce.pages.RegisterPage;
@@ -25,16 +26,18 @@ public class AuthTest extends BaseTest {
     @Severity(SeverityLevel.BLOCKER)
     @Description("Verify valid customer registration with all mandatory fields completed")
     public void testValidCustomerRegistration() {
-        navigateTo("/register");
-        RegisterPage registerPage = new RegisterPage(getPage());
-
-        String uniqueEmail = "nop_qa_" + UUID.randomUUID().toString().substring(0, 8) + "@example.com";
+        String uniqueEmail = "nop_qa_" + UUID.randomUUID().toString().replace("-", "") + "@example.com";
         String dynamicPassword = "QaAuth@" + UUID.randomUUID().toString().substring(0, 8);
-        registerPage.selectGender("male");
-        registerPage.fillRegistrationForm("Alex", "QA Tester", uniqueEmail, "QA Corp", dynamicPassword, dynamicPassword);
-        registerPage.clickRegisterButton();
-
-        Assert.assertTrue(registerPage.isRegistrationSuccess(), "Expected registration to complete successfully");
+        runWithCleanup("registration customer " + uniqueEmail, () -> {
+            navigateTo("/register");
+            RegisterPage registerPage = new RegisterPage(getPage());
+            registerPage.selectGender("male");
+            registerPage.fillRegistrationForm(
+                    "Alex", "QA Tester", uniqueEmail, "QA Corp", dynamicPassword, dynamicPassword);
+            registerPage.clickRegisterButton();
+            Assert.assertTrue(registerPage.isRegistrationSuccess(),
+                    "Expected registration to complete successfully");
+        }, () -> DatabaseManager.deleteIsolatedCustomerByEmail(uniqueEmail));
     }
 
     @Test(groups = {"ui", "auth"})

@@ -2,6 +2,7 @@
 """Reconcile test-case annotations and generate reports from one TestNG run."""
 
 import csv
+import json
 import os
 import re
 import shutil
@@ -22,6 +23,8 @@ RTM_OUT_PATH = ROOT_DIR / "docs" / "traceability-matrix.md"
 SUMMARY_OUT_PATH = ROOT_DIR / "docs" / "execution-summary.md"
 CLOSURE_OUT_PATH = ROOT_DIR / "docs" / "test-closure-report.md"
 README_PATH = ROOT_DIR / "README.md"
+POM_PATH = ROOT_DIR / "pom.xml"
+K6_SUMMARY_PATH = ROOT_DIR / "evidence" / "performance" / "k6-summary.json"
 
 CLASS_LABELS = {
     "SmokeTest": "Storefront Smoke Gate",
@@ -168,6 +171,42 @@ def percent(numerator, denominator):
     return (numerator / denominator * 100) if denominator else 0.0
 
 
+def stack_summary():
+    pom = ET.parse(POM_PATH).getroot()
+    namespace = {"m": "http://maven.apache.org/POM/4.0.0"}
+    properties = pom.find("m:properties", namespace)
+    if properties is None:
+        raise ValueError(f"Could not find Maven properties in {POM_PATH}")
+
+    def property_value(name):
+        element = properties.find(f"m:{name}", namespace)
+        if element is None or not element.text:
+            raise ValueError(f"Could not find Maven property '{name}' in {POM_PATH}")
+        return element.text.strip()
+
+    k6_report = json.loads(K6_SUMMARY_PATH.read_text(encoding="utf-8"))
+    k6_version = k6_report["benchmark_metadata"]["tool"].removeprefix("k6 ")
+    return (
+        f"Java {property_value('maven.compiler.release')} | "
+        f"Playwright Java {property_value('playwright.version')} | "
+        f"TestNG {property_value('testng.version')} | "
+        f"Allure {property_value('allure.version')} | "
+        f"Axe Playwright {property_value('axe.playwright.version')} | k6 {k6_version}"
+    )
+
+
+def k6_summary():
+    report = json.loads(K6_SUMMARY_PATH.read_text(encoding="utf-8"))
+    metadata = report["benchmark_metadata"]
+    request_metrics = report["metrics"]["http_reqs"]
+    latency_metrics = report["metrics"]["http_req_duration"]
+    return (
+        f"{metadata['tool']} separate HTTP browse/search workload: "
+        f"{metadata['vus_peak']} peak VUs for {metadata['duration_seconds']} seconds, "
+        f"{request_metrics['count']} requests, p95 {latency_metrics['p95_ms']} ms"
+    )
+
+
 def replace_readme_summary(section):
     readme = README_PATH.read_text(encoding="utf-8")
     pattern = re.compile(
@@ -254,6 +293,13 @@ def main():
         report.write(f"- **Executed:** {executed_count}/{automated_count} automated methods ({executed_rate:.1f}%)\n")
         report.write(f"- **Passed / Failed / Skipped:** {passed_count} / {failed_count} / {skipped_count} ({pass_rate:.1f}% pass rate of executed)\n")
         report.write(f"- **Not Executed / Manual Scope:** {not_run_count}\n\n")
+        report.write(
+            f"The {automated_count} automated methods are mapped from a {total_cases}-case catalog; "
+            "this is not full coverage of all planned cases.\n"
+        )
+        report.write(
+            f"**Performance evidence:** {k6_summary()}; not a browser checkout workload or current CI gate.\n\n"
+        )
         report.write("## 2. Granular Traceability Table\n\n")
         report.write("| Test Case ID | Req ID | Scope | Title | Priority | Automated | Implementation | Execution Status |\n")
         report.write("|--------------|--------|-------|-------|----------|-----------|----------------|------------------|\n")
@@ -268,7 +314,7 @@ def main():
         f"**Reconciled Run Timestamp:** {timestamp}",
         f"**Execution Window:** {window}",
         "**Target AUT:** nopCommerce 4.90.8 (.NET 9, Isolated Docker Stack `http://127.0.0.1:5000`)",
-        "**Stack:** Java 21 LTS | Playwright Java 1.49.0 | TestNG 7.10.2 | Allure 2.29.0 | Axe-core 4.10.0 | k6 0.54.0", "",
+        f"**Stack:** {stack_summary()}", "",
         "## 1. Execution Overview", "",
         "| Metric | Count | Percentage |", "|---|---:|---:|",
         f"| Total Specified Test Cases | {total_cases} | 100.0% |",
@@ -283,13 +329,21 @@ def main():
     ]
     for label, counts, _ in suite_rows(class_counts):
         summary_lines.append(f"| {label} | {counts['PASS']} | {counts['FAIL']} | {counts['SKIPPED']} |")
+    a11y_counts = class_counts.get("AccessibilityTest", Counter())
     summary_lines.extend([
-        "", "## 3. Retained Evidence", "",
-        f"- TestNG XML: `{EVIDENCE_XML.relative_to(ROOT_DIR).as_posix()}`",
-        "- TestNG HTML report: `evidence/surefire-reports/index.html`",
-        "- k6 benchmark: `evidence/performance/k6-summary.json` (separate load-test run)",
-        "- Accessibility results: `evidence/a11y/`", "",
-        "## 4. Traceability Integrity", "",
+    "", "## 3. Scope and Gate Notes", "",
+    f"The {automated_count} automated methods are mapped from a {total_cases}-case catalog; the remaining catalog cases are not automated and this run does not represent 100% planned-case coverage.",
+    "GitHub Actions runs the smoke and API suites, not every UI, database, accessibility, and NFR test.",
+    "A successful Jenkins dispatch confirms request acceptance only; the downstream Jenkins build result must be checked separately.",
+    "The axe scan threshold defaults to serious impact; serious and critical findings fail the scan.",
+    f"Accessibility methods: {a11y_counts['PASS']} passed, {a11y_counts['FAIL']} failed, {a11y_counts['SKIPPED']} skipped in this TestNG report; scan details are retained in the configured axe reports.",
+    f"Performance evidence: {k6_summary()}; not a browser checkout workload or current CI gate.",
+    "", "## 4. Retained Evidence", "",
+    f"- TestNG XML: `{EVIDENCE_XML.relative_to(ROOT_DIR).as_posix()}`",
+    "- TestNG HTML report: `evidence/surefire-reports/index.html`",
+    "- k6 benchmark: `evidence/performance/k6-summary.json`",
+    "- Accessibility results: `evidence/a11y/`", "",
+    "## 5. Traceability Integrity", "",
         f"- Duplicate test-case IDs: {len(duplicate_ids)}",
         f"- Orphan test-case IDs: {len(orphan_ids)}",
         f"- Pass rate: {passed_count}/{executed_count} executed automated methods.",
@@ -319,7 +373,10 @@ def main():
     closure_lines.extend([
         "", "## Scope and Artifacts", "",
         "Coverage includes storefront UI, administration, API probes, database persistence, accessibility, and non-functional checks.",
-        "The k6 benchmark is a separate run and is documented in `evidence/performance/k6-summary.json`.",
+        f"The {automated_count} automated methods map to a {total_cases}-case catalog; unautomated cases remain manual/planned scope.",
+        f"The k6 report is a separate HTTP browse/search run ({k6_summary()}), not a browser checkout workload or current CI gate.",
+        "GitHub Actions runs smoke and API suites only. A successful Jenkins dispatch is not a downstream test result.",
+        "The axe default serious-impact threshold fails scans for the retained storefront color-contrast defect.",
         "The traceability matrix and execution summary are generated alongside this report.",
     ])
     CLOSURE_OUT_PATH.write_text("\n".join(closure_lines) + "\n", encoding="utf-8")
@@ -335,7 +392,10 @@ def main():
         f"| Automated Test Methods | {automated_count} ({automation_rate:.1f}% of catalog) | `docs/traceability-matrix.md` |",
         f"| Executed Automated Methods | {executed_count} ({executed_rate:.1f}%) | `{metadata['path']}` |",
         f"| Passed / Failed / Skipped | {passed_count} / {failed_count} / {skipped_count} | `docs/execution-summary.md` |",
-        "| k6 Storefront Load Benchmark | Separate run; see benchmark artifact | `evidence/performance/k6-summary.json` |", "",
+        f"| k6 Storefront Load Benchmark | {k6_summary()} | `evidence/performance/k6-summary.json` |", "",
+        f"This run covers the executed automated methods only. The {automated_count} automated methods map to a {total_cases}-case catalog; it is not 100% coverage of all planned cases.",
+        "GitHub Actions runs smoke and API suites only. A green Jenkins dispatch confirms acceptance of the request, not the downstream test result.",
+        "The axe default threshold is serious impact; serious or critical findings fail the scan.", "",
     ]
     replace_readme_summary("\n".join(readme_lines))
     badge_color = "brightgreen" if failed_count == 0 and skipped_count == 0 else "yellow"

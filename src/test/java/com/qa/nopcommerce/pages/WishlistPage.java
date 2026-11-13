@@ -28,7 +28,7 @@ public class WishlistPage extends BasePage {
     }
 
     public int getWishlistItemCount() {
-        return safeCount(wishlistRows);
+        return getCount(wishlistRows);
     }
 
     public boolean hasWishlistItemCount(int expectedCount) {
@@ -61,7 +61,7 @@ public class WishlistPage extends BasePage {
     }
 
     public void removeProductFromWishlist(String productName) {
-        int before = safeCount(wishlistRows);
+        int before = getCount(wishlistRows);
         Locator row = page.locator("table.cart tbody tr").filter(new Locator.FilterOptions().setHasText(productName)).first();
         Locator removeBtn = row.locator("button.remove-btn");
         if (isVisible(removeBtn)) {
@@ -75,8 +75,8 @@ public class WishlistPage extends BasePage {
 
     public void clearWishlist() {
         waitForLoad();
-        while (safeCount(wishlistRows) > 0) {
-            int before = safeCount(wishlistRows);
+        while (getCount(wishlistRows) > 0) {
+            int before = getCount(wishlistRows);
             Locator removeBtn = wishlistRows.first().locator("button.remove-btn");
             if (waitForVisible(removeBtn, 5000)) {
                 click(removeBtn);

@@ -18,7 +18,7 @@
     "name" : "axe"
   },
   "url" : "http://127.0.0.1:5000/desktops",
-  "timestamp" : "2026-11-11T10:24:44.936Z",
+  "timestamp" : "2026-11-13T10:52:35.752Z",
   "passes" : [ {
     "id" : "aria-allowed-attr",
     "description" : "Ensures ARIA attributes are allowed for an element's role",

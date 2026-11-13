@@ -70,11 +70,14 @@ public class CheckoutPage extends BasePage {
     }
 
     public void clickCheckoutAsGuest() {
-        try {
-            checkoutAsGuestButton.waitFor(new Locator.WaitForOptions().setTimeout(4000));
-            checkoutAsGuestButton.click();
-        } catch (Exception ignored) {
-            // Already past login / guest prompt, or prompt not displayed
+        boolean checkoutStateReady = waitForAnyVisible(checkoutAsGuestButton, billingCountryDropdown,
+                page.locator("#billing-buttons-container"));
+        if (!checkoutStateReady) {
+            throw new IllegalStateException(
+                    "Checkout did not render the guest checkout action or billing form");
+        }
+        if (isVisible(checkoutAsGuestButton)) {
+            click(checkoutAsGuestButton);
         }
     }
 
@@ -92,10 +95,7 @@ public class CheckoutPage extends BasePage {
         fill(billingLastNameInput, lastName);
         fill(billingEmailInput, email);
 
-        String currentCountry = "";
-        try {
-            currentCountry = billingCountryDropdown.locator("option:checked").innerText().trim();
-        } catch (Exception ignored) {}
+        String currentCountry = billingCountryDropdown.locator("option:checked").innerText().trim();
 
         if (!country.equalsIgnoreCase(currentCountry)) {
             billingCountryDropdown.selectOption(new com.microsoft.playwright.options.SelectOption().setLabel(country));
@@ -155,7 +155,7 @@ public class CheckoutPage extends BasePage {
     }
 
     public int getPaymentMethodOptionCount() {
-        return safeCount(paymentMethodOptions);
+        return getCount(paymentMethodOptions);
     }
 
     public void continueToPaymentMethod() {

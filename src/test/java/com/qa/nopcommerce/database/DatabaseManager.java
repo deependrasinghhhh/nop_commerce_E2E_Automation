@@ -11,7 +11,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.OptionalInt;
+import java.util.regex.Pattern;
 
 /**
  * Thread-safe Database Manager providing pooled JDBC verification and isolated test-data
@@ -22,6 +25,11 @@ import java.util.OptionalInt;
  */
 public class DatabaseManager {
     private static final Logger log = LoggerFactory.getLogger(DatabaseManager.class);
+    private static final Pattern ISOLATED_CUSTOMER_EMAIL = Pattern.compile(
+            "^(?:nop_(?:qa|profile|addr|deladdr|orders|reviewer)_[0-9a-f]{8}|"
+                    + "nop_(?:qa|profile|addr|deladdr|orders|reviewer)_[0-9a-f]{32}|"
+                    + "qa_db_cart_[0-9a-f]{32})@example\\.com$",
+            Pattern.CASE_INSENSITIVE);
     private static volatile HikariDataSource dataSource;
 
     private DatabaseManager() {
@@ -212,7 +220,98 @@ public class DatabaseManager {
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, email);
-            return stmt.executeUpdate();
+            int deleted = stmt.executeUpdate();
+            log.info("Soft-deleted {} isolated customer record(s) for email '{}'", deleted, email);
+            return deleted;
+        } catch (SQLException e) {
+            throw new IllegalStateException("Database cleanup failed for isolated customer", e);
+        }
+    }
+
+    /**
+     * Physically removes one account created by an isolated customer test.
+     * The email allowlist prevents this cleanup path from targeting seeded accounts.
+     */
+    public static int deleteIsolatedCustomerByEmail(String email) {
+        if (email == null || email.isBlank()) {
+            return 0;
+        }
+        if (!ISOLATED_CUSTOMER_EMAIL.matcher(email).matches()) {
+            throw new IllegalArgumentException("Refusing isolated-customer cleanup for an unrecognized test email.");
+        }
+
+        String customerIdSql = "SELECT TOP (1) Id FROM Customer WHERE Email = ? ORDER BY Id DESC";
+        String addressIdsSql = "SELECT Address_Id FROM CustomerAddresses WHERE Customer_Id = ?";
+        String deleteGenericAttributesSql =
+                "DELETE FROM GenericAttribute WHERE KeyGroup = 'Customer' AND EntityId = ?";
+        String deleteCustomWishlistSql = "DELETE FROM CustomWishlist WHERE CustomerId = ?";
+        String deleteCustomerSql = "DELETE FROM Customer WHERE Id = ?";
+        String deleteOrphanAddressSql = "DELETE FROM Address WHERE Id = ? " +
+                "AND NOT EXISTS (SELECT 1 FROM Customer WHERE BillingAddress_Id = ? OR ShippingAddress_Id = ?) " +
+                "AND NOT EXISTS (SELECT 1 FROM [Order] WHERE BillingAddressId = ? " +
+                "OR PickupAddressId = ? OR ShippingAddressId = ?) " +
+                "AND NOT EXISTS (SELECT 1 FROM Affiliate WHERE AddressId = ?)";
+
+        try (Connection connection = getConnection()) {
+            connection.setAutoCommit(false);
+            try {
+                int customerId;
+                try (PreparedStatement statement = connection.prepareStatement(customerIdSql)) {
+                    statement.setString(1, email);
+                    try (ResultSet result = statement.executeQuery()) {
+                        if (!result.next()) {
+                            connection.commit();
+                            return 0;
+                        }
+                        customerId = result.getInt("Id");
+                    }
+                }
+
+                List<Integer> addressIds = new ArrayList<>();
+                try (PreparedStatement statement = connection.prepareStatement(addressIdsSql)) {
+                    statement.setInt(1, customerId);
+                    try (ResultSet result = statement.executeQuery()) {
+                        while (result.next()) {
+                            addressIds.add(result.getInt("Address_Id"));
+                        }
+                    }
+                }
+
+                try (PreparedStatement statement = connection.prepareStatement(deleteGenericAttributesSql)) {
+                    statement.setInt(1, customerId);
+                    statement.executeUpdate();
+                }
+                try (PreparedStatement statement = connection.prepareStatement(deleteCustomWishlistSql)) {
+                    statement.setInt(1, customerId);
+                    statement.executeUpdate();
+                }
+                int deletedCustomers;
+                try (PreparedStatement statement = connection.prepareStatement(deleteCustomerSql)) {
+                    statement.setInt(1, customerId);
+                    deletedCustomers = statement.executeUpdate();
+                }
+                try (PreparedStatement statement = connection.prepareStatement(deleteOrphanAddressSql)) {
+                    for (int addressId : addressIds) {
+                        for (int parameter = 1; parameter <= 7; parameter++) {
+                            statement.setInt(parameter, addressId);
+                        }
+                        statement.addBatch();
+                    }
+                    statement.executeBatch();
+                }
+
+                connection.commit();
+                log.info("Deleted {} isolated customer record(s) and removed eligible orphan addresses for '{}'",
+                        deletedCustomers, email);
+                return deletedCustomers;
+            } catch (SQLException | RuntimeException e) {
+                try {
+                    connection.rollback();
+                } catch (SQLException rollbackFailure) {
+                    e.addSuppressed(rollbackFailure);
+                }
+                throw e;
+            }
         } catch (SQLException e) {
             throw new IllegalStateException("Database cleanup failed for isolated customer", e);
         }

@@ -1,9 +1,9 @@
 # Test Execution Summary
 
-**Reconciled Run Timestamp:** 2026-11-12 10:15:57 UTC
-**Execution Window:** 2026-11-12T10:11:03Z to 2026-11-12T10:15:57Z (294.00s)
+**Reconciled Run Timestamp:** 2026-11-13 10:52:44 UTC
+**Execution Window:** 2026-11-13T10:51:46Z to 2026-11-13T10:52:44Z (58.00s)
 **Target AUT:** nopCommerce 4.90.8 (.NET 9, Isolated Docker Stack `http://127.0.0.1:5000`)
-**Stack:** Java 21 LTS | Playwright Java 1.49.0 | TestNG 7.10.2 | Allure 2.29.0 | Axe-core 4.10.0 | k6 0.54.0
+**Stack:** Java 21 | Playwright Java 1.49.0 | TestNG 7.10.2 | Allure 2.29.0 | Axe Playwright 4.6.0 | k6 v0.54.0
 
 ## 1. Execution Overview
 
@@ -33,14 +33,23 @@
 | WCAG 2.1 AA Accessibility | 5 | 0 | 0 |
 | Non-Functional & Responsive SLA | 4 | 0 | 0 |
 
-## 3. Retained Evidence
+## 3. Scope and Gate Notes
+
+The 61 automated methods are mapped from a 108-case catalog; the remaining catalog cases are not automated and this run does not represent 100% planned-case coverage.
+GitHub Actions runs the smoke and API suites, not every UI, database, accessibility, and NFR test.
+A successful Jenkins dispatch confirms request acceptance only; the downstream Jenkins build result must be checked separately.
+The axe scan threshold defaults to serious impact; serious and critical findings fail the scan.
+Accessibility methods: 5 passed, 0 failed, 0 skipped in this TestNG report; scan details are retained in the configured axe reports.
+Performance evidence: k6 v0.54.0 separate HTTP browse/search workload: 25 peak VUs for 110 seconds, 481 requests, p95 892.6 ms; not a browser checkout workload or current CI gate.
+
+## 4. Retained Evidence
 
 - TestNG XML: `evidence/surefire-reports/testng-results.xml`
 - TestNG HTML report: `evidence/surefire-reports/index.html`
-- k6 benchmark: `evidence/performance/k6-summary.json` (separate load-test run)
+- k6 benchmark: `evidence/performance/k6-summary.json`
 - Accessibility results: `evidence/a11y/`
 
-## 4. Traceability Integrity
+## 5. Traceability Integrity
 
 - Duplicate test-case IDs: 0
 - Orphan test-case IDs: 0

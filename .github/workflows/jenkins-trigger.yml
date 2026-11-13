@@ -65,6 +65,6 @@ jobs:
 
           echo "Jenkins build-dispatch HTTP status: $STATUS"
           case "$STATUS" in
-            200|201|202) echo "Jenkins accepted the build request for $SUITE on $BROWSER." ;;
+            200|201|202) echo "Jenkins accepted the build request for $SUITE on $BROWSER. This workflow does not wait for or verify the Jenkins test result." ;;
             *) echo "::error::Jenkins rejected the build request (HTTP $STATUS)."; exit 1 ;;
           esac

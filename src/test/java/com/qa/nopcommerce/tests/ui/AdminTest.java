@@ -117,7 +117,7 @@ public class AdminTest extends BaseTest {
     @Test(groups = {"ui", "admin"})
     @TestCase(value = "TC-ADM-008", requirementId = "REQ-ADM-001")
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Verify administration login rejects invalid password and admin logout terminates session")
+    @Description("Verify administration login rejects an invalid password and displays an authentication error")
     public void testAdminLoginInvalidPassword() {
         navigateTo(ConfigReader.getAdminUrl());
         AdminLoginPage adminLoginPage = new AdminLoginPage(getPage());

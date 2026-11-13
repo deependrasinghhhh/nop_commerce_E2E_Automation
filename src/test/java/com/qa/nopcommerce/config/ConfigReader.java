@@ -326,4 +326,12 @@ public class ConfigReader {
         }
         return normalized;
     }
+
+    public static String getA11yReportDirectory() {
+        String directory = get("a11y.reportDirectory", "evidence/a11y");
+        if (directory == null || directory.isBlank()) {
+            throw new IllegalArgumentException("Accessibility report directory must not be blank.");
+        }
+        return directory.trim();
+    }
 }

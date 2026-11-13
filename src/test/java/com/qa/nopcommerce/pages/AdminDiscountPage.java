@@ -44,7 +44,7 @@ public class AdminDiscountPage extends BasePage {
     }
 
     public int getDiscountRowCount() {
-        return safeCount(discountsGrid.locator("tbody tr"));
+        return getCount(discountsGrid.locator("tbody tr"));
     }
 
     private void dismissLicenseTermsIfPresent() {

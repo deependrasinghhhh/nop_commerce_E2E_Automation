@@ -45,7 +45,7 @@ public class CartPage extends BasePage {
     }
 
     public int getCartItemCount() {
-        return safeCount(cartRows);
+        return getCount(cartRows);
     }
 
     public boolean hasCartItemCount(int expectedCount) {
@@ -79,16 +79,14 @@ public class CartPage extends BasePage {
         Locator qtyInput = cartRows.nth(rowIndex).locator("input.qty-input");
         fill(qtyInput, String.valueOf(newQty));
         qtyInput.press("Enter");
-        try {
-            if (updateCartButton.isVisible(new Locator.IsVisibleOptions().setTimeout(1000))) {
-                click(updateCartButton);
-            }
-        } catch (Exception ignored) {}
+        if (updateCartButton.count() > 0 && updateCartButton.isVisible()) {
+            click(updateCartButton);
+        }
         waitForLoad();
     }
 
     public void removeItem(int rowIndex) {
-        int before = safeCount(cartRows);
+        int before = getCount(cartRows);
         Locator removeBtn = cartRows.nth(rowIndex).locator("button.remove-btn");
         click(removeBtn);
         if (before > 0) {
@@ -99,15 +97,27 @@ public class CartPage extends BasePage {
 
     public void clearCart() {
         waitForLoad();
-        while (safeCount(cartRows) > 0) {
-            int before = safeCount(cartRows);
+        while (true) {
+            int before = cartRows.count();
+            if (before == 0) {
+                return;
+            }
             Locator removeBtn = cartRows.first().locator("button.remove-btn");
-            if (waitForVisible(removeBtn, 5000)) {
-                click(removeBtn);
-                waitForCountLessThan(cartRows, before);
-                waitForLoad();
-            } else {
-                break;
+            if (!removeBtn.isVisible()) {
+                throw new IllegalStateException(String.format(
+                        "Unable to clear cart: remove button is not visible for the first of %d cart row(s)", before));
+            }
+            click(removeBtn);
+            if (!waitForCountLessThan(cartRows, before)) {
+                throw new IllegalStateException(String.format(
+                        "Unable to clear cart: removing the first item did not reduce cart row count from %d", before));
+            }
+            waitForLoad();
+            int after = cartRows.count();
+            if (after >= before) {
+                throw new IllegalStateException(String.format(
+                        "Unable to clear cart: cart row count did not decrease after removal (before=%d, after=%d)",
+                        before, after));
             }
         }
     }
@@ -125,7 +135,7 @@ public class CartPage extends BasePage {
     }
 
     public String getCouponMessageText() {
-        return getText(couponMessage);
+        return getOptionalText(couponMessage);
     }
 
     public boolean isCouponMessageDisplayed() {
@@ -141,11 +151,18 @@ public class CartPage extends BasePage {
     }
 
     public void acceptTermsOfService() {
+        if (!waitForVisible(checkoutButton)) {
+            throw new IllegalStateException("Checkout button did not become visible on the cart page");
+        }
+        int checkboxCount = termsOfServiceCheckbox.count();
+        if (checkboxCount == 0) {
+            return;
+        }
         try {
-            if (waitForVisible(termsOfServiceCheckbox, 5000)) {
-                termsOfServiceCheckbox.check();
-            }
-        } catch (Exception ignored) {}
+            termsOfServiceCheckbox.first().check();
+        } catch (com.microsoft.playwright.PlaywrightException e) {
+            throw new IllegalStateException("Unable to accept the Terms of Service checkbox on the cart page", e);
+        }
     }
 
     public CheckoutPage proceedToCheckout() {

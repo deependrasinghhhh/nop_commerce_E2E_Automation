@@ -18,7 +18,7 @@
     "name" : "axe"
   },
   "url" : "http://127.0.0.1:5000/",
-  "timestamp" : "2026-11-11T10:24:47.023Z",
+  "timestamp" : "2026-11-13T10:52:37.103Z",
   "passes" : [ {
     "id" : "aria-allowed-attr",
     "description" : "Ensures ARIA attributes are allowed for an element's role",
@@ -261,8 +261,8 @@
       } ],
       "failureSummary" : null
     }, {
-      "html" : "<div class=\"swiper-wrapper\" style=\"cursor: grab; height: 505px;\" id=\"swiper-wrapper-aadf92238ea6a1d7\" aria-live=\"off\">",
-      "target" : [ "#swiper-wrapper-aadf92238ea6a1d7" ],
+      "html" : "<div class=\"swiper-wrapper\" style=\"cursor: grab; height: 505px;\" id=\"swiper-wrapper-8ad89d7271c4c44e\" aria-live=\"off\">",
+      "target" : [ "#swiper-wrapper-8ad89d7271c4c44e" ],
       "impact" : null,
       "any" : [ {
         "id" : "aria-allowed-attr",
@@ -3869,8 +3869,8 @@
       "none" : [ ],
       "failureSummary" : null
     }, {
-      "html" : "<div class=\"swiper-wrapper\" style=\"cursor: grab; height: 505px;\" id=\"swiper-wrapper-aadf92238ea6a1d7\" aria-live=\"off\">",
-      "target" : [ "#swiper-wrapper-aadf92238ea6a1d7" ],
+      "html" : "<div class=\"swiper-wrapper\" style=\"cursor: grab; height: 505px;\" id=\"swiper-wrapper-8ad89d7271c4c44e\" aria-live=\"off\">",
+      "target" : [ "#swiper-wrapper-8ad89d7271c4c44e" ],
       "impact" : null,
       "any" : [ ],
       "all" : [ {
@@ -4395,8 +4395,8 @@
       "none" : [ ],
       "failureSummary" : null
     }, {
-      "html" : "<div class=\"swiper-wrapper\" style=\"cursor: grab; height: 505px;\" id=\"swiper-wrapper-aadf92238ea6a1d7\" aria-live=\"off\">",
-      "target" : [ "#swiper-wrapper-aadf92238ea6a1d7" ],
+      "html" : "<div class=\"swiper-wrapper\" style=\"cursor: grab; height: 505px;\" id=\"swiper-wrapper-8ad89d7271c4c44e\" aria-live=\"off\">",
+      "target" : [ "#swiper-wrapper-8ad89d7271c4c44e" ],
       "impact" : null,
       "any" : [ {
         "id" : "aria-valid-attr",
@@ -6840,14 +6840,14 @@
       "none" : [ ],
       "failureSummary" : null
     }, {
-      "html" : "<div class=\"swiper-wrapper\" style=\"cursor: grab; height: 505px;\" id=\"swiper-wrapper-aadf92238ea6a1d7\" aria-live=\"off\">",
-      "target" : [ "#swiper-wrapper-aadf92238ea6a1d7" ],
+      "html" : "<div class=\"swiper-wrapper\" style=\"cursor: grab; height: 505px;\" id=\"swiper-wrapper-8ad89d7271c4c44e\" aria-live=\"off\">",
+      "target" : [ "#swiper-wrapper-8ad89d7271c4c44e" ],
       "impact" : null,
       "any" : [ {
         "id" : "duplicate-id",
         "impact" : "minor",
         "message" : "Document has no static elements that share the same id attribute",
-        "data" : "swiper-wrapper-aadf92238ea6a1d7",
+        "data" : "swiper-wrapper-8ad89d7271c4c44e",
         "relatedNodes" : [ ]
       } ],
       "all" : [ ],

@@ -3,6 +3,8 @@ package com.qa.nopcommerce.tests.a11y;
 import com.deque.html.axecore.playwright.AxeBuilder;
 import com.deque.html.axecore.results.AxeResults;
 import com.deque.html.axecore.results.Rule;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.qa.nopcommerce.annotation.TestCase;
 import com.qa.nopcommerce.base.BaseTest;
 import com.qa.nopcommerce.config.ConfigReader;
@@ -17,9 +19,8 @@ import org.testng.annotations.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,13 +34,14 @@ public class AccessibilityTest extends BaseTest {
             .enable(SerializationFeature.INDENT_OUTPUT);
 
     private void saveAxeReport(String pageName, AxeResults results) {
+        Path reportDirectory = Paths.get(ConfigReader.getA11yReportDirectory());
+        Path reportFile = reportDirectory.resolve(pageName + "-axe-results.json");
         try {
-            Files.createDirectories(Paths.get("evidence/a11y"));
-            String fileName = "evidence/a11y/" + pageName + "-axe-results.json";
-            OBJECT_MAPPER.writeValue(new File(fileName), results);
-            log.info("Saved accessibility scan results to {}", fileName);
+            java.nio.file.Files.createDirectories(reportDirectory);
+            OBJECT_MAPPER.writeValue(reportFile.toFile(), results);
+            log.info("Saved accessibility scan results to {}", reportFile);
         } catch (IOException e) {
-            log.warn("Failed to write axe report for {}: {}", pageName, e.getMessage());
+            throw new IllegalStateException("Failed to write accessibility report to " + reportFile, e);
         }
     }
 
@@ -68,8 +70,9 @@ public class AccessibilityTest extends BaseTest {
             if (ruleRank >= thresholdRank) {
                 String displayImpact = getDisplayImpact(rawImpact);
                 int nodeCount = (rule.getNodes() != null) ? rule.getNodes().size() : 0;
-                offendingViolations.add(String.format("Rule ID: %s, Impact: %s, Nodes: %d",
-                        rule.getId(), displayImpact, nodeCount));
+                offendingViolations.add(String.format(
+                        "Rule ID: %s, Impact: %s, Nodes: %d%n%s",
+                        rule.getId(), displayImpact, nodeCount, formatViolation(rule)));
             }
         }
 
@@ -81,6 +84,15 @@ public class AccessibilityTest extends BaseTest {
                 sb.append("  - ").append(violation).append("\n");
             }
             Assert.fail(sb.toString().trim());
+        }
+    }
+
+    private static String formatViolation(Rule rule) {
+        try {
+            JsonNode violation = OBJECT_MAPPER.valueToTree(rule);
+            return OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(violation);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException("Unable to format axe violation details for rule " + rule.getId(), e);
         }
     }
 

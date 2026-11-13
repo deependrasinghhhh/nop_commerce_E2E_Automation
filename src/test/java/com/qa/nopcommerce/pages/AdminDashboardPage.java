@@ -31,7 +31,7 @@ public class AdminDashboardPage extends BasePage {
 
     public int getStatisticsCardCount() {
         waitForMinCount(statCards, 1);
-        return safeCount(statCards);
+        return getCount(statCards);
     }
 
     public void openCatalogMenu() {

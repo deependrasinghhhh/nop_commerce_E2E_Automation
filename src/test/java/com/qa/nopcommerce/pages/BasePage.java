@@ -52,30 +52,22 @@ public abstract class BasePage {
     }
 
     protected String getText(Locator locator) {
-        try {
-            double timeoutMs = getDefaultWaitTimeoutMs();
-            if (!waitForAnyVisible(timeoutMs, locator)) {
-                return "";
+        return locator.first().innerText().trim();
+    }
+
+    protected String getOptionalText(Locator locator) {
+        int count = locator.count();
+        for (int i = 0; i < count; i++) {
+            Locator candidate = locator.nth(i);
+            if (candidate.isVisible()) {
+                return candidate.innerText().trim();
             }
-            int count = locator.count();
-            for (int i = 0; i < count; i++) {
-                Locator nth = locator.nth(i);
-                if (nth.isVisible()) {
-                    return nth.innerText().trim();
-                }
-            }
-            return "";
-        } catch (Exception e) {
-            return "";
         }
+        return "";
     }
 
     protected boolean isVisible(Locator locator) {
-        try {
-            return locator.first().isVisible();
-        } catch (Exception e) {
-            return false;
-        }
+        return locator.first().isVisible();
     }
 
     protected boolean waitForVisible(Locator locator) {
@@ -114,7 +106,7 @@ public abstract class BasePage {
         while (true) {
             try {
                 if (page.isClosed()) {
-                    return false;
+                    throw new IllegalStateException("Cannot wait for a page condition because the Playwright page is closed");
                 }
                 if (condition.getAsBoolean()) {
                     return true;
@@ -127,8 +119,6 @@ public abstract class BasePage {
                     log.warn("Non-transient PlaywrightException encountered during condition wait: {}", e.getMessage(), e);
                     throw e;
                 }
-            } catch (Exception e) {
-                return false;
             }
             long remainingMs = (deadlineNanos - System.nanoTime()) / 1_000_000L;
             if (remainingMs <= 0) {
@@ -172,11 +162,7 @@ public abstract class BasePage {
         return waitForCondition(() -> locator.count() < maxExclusive);
     }
 
-    protected int safeCount(Locator locator) {
-        try {
-            return locator.count();
-        } catch (Exception e) {
-            return 0;
-        }
+    protected int getCount(Locator locator) {
+        return locator.count();
     }
 }

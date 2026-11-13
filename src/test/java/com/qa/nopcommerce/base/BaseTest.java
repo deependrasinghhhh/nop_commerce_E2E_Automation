@@ -64,6 +64,40 @@ public abstract class BaseTest {
         getPage().navigate(targetUrl, new Page.NavigateOptions().setWaitUntil(waitUntil));
     }
 
+    protected final void runWithCleanup(String description, Runnable action, Runnable... cleanupActions) {
+        Throwable actionFailure = null;
+        try {
+            action.run();
+        } catch (RuntimeException | Error failure) {
+            actionFailure = failure;
+            throw failure;
+        } finally {
+            Throwable cleanupFailure = null;
+            for (Runnable cleanupAction : cleanupActions) {
+                try {
+                    cleanupAction.run();
+                } catch (RuntimeException | Error failure) {
+                    if (cleanupFailure == null) {
+                        cleanupFailure = failure;
+                    } else {
+                        cleanupFailure.addSuppressed(failure);
+                    }
+                }
+            }
+
+            if (cleanupFailure != null) {
+                log.error("Cleanup failed for {}", description, cleanupFailure);
+                if (actionFailure != null) {
+                    actionFailure.addSuppressed(cleanupFailure);
+                } else if (cleanupFailure instanceof RuntimeException) {
+                    throw (RuntimeException) cleanupFailure;
+                } else {
+                    throw (Error) cleanupFailure;
+                }
+            }
+        }
+    }
+
     @AfterMethod(alwaysRun = true)
     public void tearDown() {
         PlaywrightFactory.stopTracing();

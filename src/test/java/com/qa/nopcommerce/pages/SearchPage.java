@@ -36,7 +36,7 @@ public class SearchPage extends BasePage {
     }
 
     public int getSearchResultCount() {
-        return safeCount(page.locator(".search-results .product-item"));
+        return getCount(page.locator(".search-results .product-item"));
     }
 
     public boolean hasSearchResults() {

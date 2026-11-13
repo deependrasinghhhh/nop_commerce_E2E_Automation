@@ -50,7 +50,7 @@ public class NonFunctionalTest extends BaseTest {
     @Test(groups = {"nfr"})
     @TestCase(value = "TC-NFR-003", requirementId = "REQ-NFR-002")
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Verify page load performance SLA: DOMContentLoaded within 15000ms threshold")
+    @Description("Verify homepage navigation commit plus header visibility completes within 15000ms")
     public void testPageLoadPerformanceSla() {
         long startTime = System.currentTimeMillis();
         navigateTo("/");

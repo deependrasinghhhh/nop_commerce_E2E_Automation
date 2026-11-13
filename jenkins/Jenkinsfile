@@ -87,7 +87,7 @@ pipeline {
         stage('Playwright Driver Setup') {
             steps {
                 echo "=== Ensuring Playwright Browser Binaries & System Dependencies ==="
-                sh "mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args=\"install ${params.BROWSER}\" || mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args=\"install --with-deps ${params.BROWSER}\" || true"
+                sh "mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args=\"install ${params.BROWSER}\" || mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args=\"install --with-deps ${params.BROWSER}\""
             }
         }
 
