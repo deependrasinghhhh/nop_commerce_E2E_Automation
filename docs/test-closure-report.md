@@ -1,7 +1,7 @@
 # Test Closure Report — nopCommerce 4.90.8 Quality Engineering
 
-**Reconciled Run Timestamp:** 2026-11-13 10:52:44 UTC
-**Execution Window:** 2026-11-13T10:51:46Z to 2026-11-13T10:52:44Z (58.00s)
+**Reconciled Run Timestamp:** 2026-11-14 16:30:03 UTC
+**Execution Window:** 2026-11-14T16:28:16Z to 2026-11-14T16:30:03Z (107.00s)
 **Target AUT:** nopCommerce 4.90.8 (.NET 9, Isolated Docker Stack `http://127.0.0.1:5000`)
 
 > Metrics below are generated from `evidence/surefire-reports/testng-results.xml` and the current test-case annotations.

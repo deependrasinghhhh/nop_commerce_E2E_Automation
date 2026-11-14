@@ -175,8 +175,7 @@ public class PlaywrightFactory {
                         .setArgs(edgeArgs));
             }
 
-            case "chromium":
-            default: {
+            case "chromium": {
                 List<String> chromiumArgs = buildChromiumArgs(customArgs, headless);
                 log.info("Launching Chromium (channel={}, headless={}, args={})",
                         useChannel ? channel : "default", headless, chromiumArgs);
@@ -189,6 +188,11 @@ public class PlaywrightFactory {
                 }
                 return playwright.chromium().launch(options);
             }
+
+            default:
+                throw new IllegalArgumentException(String.format(
+                        "Unsupported browser '%s'. Supported values are: chromium, chrome, firefox, webkit, safari, edge, msedge",
+                        browserName));
         }
     }
 

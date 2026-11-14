@@ -92,9 +92,15 @@ def parse_testng_time(value):
 
 def load_execution_report():
     if TARGET_XML.is_file():
-        if EVIDENCE_DIR.exists():
-            shutil.rmtree(EVIDENCE_DIR)
-        shutil.copytree(TARGET_XML.parent, EVIDENCE_DIR)
+        EVIDENCE_DIR.mkdir(parents=True, exist_ok=True)
+        for item in TARGET_XML.parent.iterdir():
+            dest = EVIDENCE_DIR / item.name
+            if item.is_file():
+                shutil.copy2(item, dest)
+            elif item.is_dir():
+                if dest.exists():
+                    shutil.rmtree(dest)
+                shutil.copytree(item, dest)
         report_path = EVIDENCE_XML
     elif EVIDENCE_XML.is_file():
         report_path = EVIDENCE_XML

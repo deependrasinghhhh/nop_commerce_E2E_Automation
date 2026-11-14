@@ -13,9 +13,9 @@ Production-grade Quality Engineering and End-to-End Test Automation framework fo
 
 ---
 
-## Reconciled Execution Summary (`2026-11-13 10:52:44 UTC`)
+## Reconciled Execution Summary (`2026-11-14 16:30:03 UTC`)
 
-**Execution Window:** `2026-11-13T10:51:46Z to 2026-11-13T10:52:44Z (58.00s)`
+**Execution Window:** `2026-11-14T16:28:16Z to 2026-11-14T16:30:03Z (107.00s)`
 **Target AUT:** nopCommerce 4.90.8, isolated Docker stack
 **Run Result:** 61 passed, 0 failed, 0 skipped (100.0% of 61 executed automated methods).
 

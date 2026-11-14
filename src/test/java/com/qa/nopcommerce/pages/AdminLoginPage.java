@@ -25,9 +25,7 @@ public class AdminLoginPage extends BasePage {
         fill(emailInput, email);
         fill(passwordInput, password);
         click(loginButton);
-        try {
-            page.waitForLoadState();
-        } catch (Exception ignored) {}
+        waitForLoad();
         return new AdminDashboardPage(page);
     }
 

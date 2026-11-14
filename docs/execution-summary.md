@@ -1,7 +1,7 @@
 # Test Execution Summary
 
-**Reconciled Run Timestamp:** 2026-11-13 10:52:44 UTC
-**Execution Window:** 2026-11-13T10:51:46Z to 2026-11-13T10:52:44Z (58.00s)
+**Reconciled Run Timestamp:** 2026-11-14 16:30:03 UTC
+**Execution Window:** 2026-11-14T16:28:16Z to 2026-11-14T16:30:03Z (107.00s)
 **Target AUT:** nopCommerce 4.90.8 (.NET 9, Isolated Docker Stack `http://127.0.0.1:5000`)
 **Stack:** Java 21 | Playwright Java 1.49.0 | TestNG 7.10.2 | Allure 2.29.0 | Axe Playwright 4.6.0 | k6 v0.54.0
 

@@ -52,10 +52,10 @@ public class NonFunctionalTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify homepage navigation commit plus header visibility completes within 15000ms")
     public void testPageLoadPerformanceSla() {
-        long startTime = System.currentTimeMillis();
+        long startNano = System.nanoTime();
         navigateTo("/");
         PlaywrightAssertions.assertThat(getPage().locator(".header-logo")).isVisible();
-        long duration = System.currentTimeMillis() - startTime;
+        long duration = (System.nanoTime() - startNano) / 1_000_000;
 
         log.info("Homepage navigation took {} ms", duration);
         Assert.assertTrue(duration < 15000, "Homepage load time exceeded maximum 15s SLA: " + duration + "ms");

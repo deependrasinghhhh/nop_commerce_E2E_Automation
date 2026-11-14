@@ -64,27 +64,39 @@ public class WishlistPage extends BasePage {
         int before = getCount(wishlistRows);
         Locator row = page.locator("table.cart tbody tr").filter(new Locator.FilterOptions().setHasText(productName)).first();
         Locator removeBtn = row.locator("button.remove-btn");
-        if (isVisible(removeBtn)) {
-            click(removeBtn);
-            if (before > 0) {
-                waitForCountLessThan(wishlistRows, before);
-            }
-            waitForLoad();
+        if (!isVisible(removeBtn)) {
+            throw new IllegalStateException(String.format(
+                    "Unable to remove product '%s' from wishlist: remove button is not visible", productName));
         }
+        click(removeBtn);
+        if (before > 0 && !waitForCountLessThan(wishlistRows, before)) {
+            throw new IllegalStateException(String.format(
+                    "Wishlist row count did not decrease from %d after removing product '%s'", before, productName));
+        }
+        waitForLoad();
     }
 
     public void clearWishlist() {
         waitForLoad();
+        int maxAttempts = 20;
+        int attempts = 0;
         while (getCount(wishlistRows) > 0) {
+            if (++attempts > maxAttempts) {
+                throw new IllegalStateException(String.format(
+                        "Unable to clear wishlist: exceeded %d removal attempts with items still remaining", maxAttempts));
+            }
             int before = getCount(wishlistRows);
             Locator removeBtn = wishlistRows.first().locator("button.remove-btn");
-            if (waitForVisible(removeBtn, 5000)) {
-                click(removeBtn);
-                waitForCountLessThan(wishlistRows, before);
-                waitForLoad();
-            } else {
-                break;
+            if (!waitForVisible(removeBtn, 5000)) {
+                throw new IllegalStateException(String.format(
+                        "Unable to clear wishlist: remove button not visible for row (remaining rows: %d)", before));
             }
+            click(removeBtn);
+            if (!waitForCountLessThan(wishlistRows, before)) {
+                throw new IllegalStateException(String.format(
+                        "Unable to clear wishlist: row count did not decrease from %d after clicking remove", before));
+            }
+            waitForLoad();
         }
     }
 }
