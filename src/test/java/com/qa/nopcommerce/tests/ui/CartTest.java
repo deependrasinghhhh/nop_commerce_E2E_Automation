@@ -218,7 +218,10 @@ public class CartTest extends BaseTest {
                 CartPage cleanupCart = new CartPage(getPage());
                 cleanupCart.removeAppliedCouponIfPresent();
                 cleanupCart.clearCart();
-            } catch (Exception ignored) {}
+            } catch (Exception e) {
+                log.warn("Best-effort UI cleanup failed for isolated coupon '{}': {}",
+                        isolatedCouponCode, e.getMessage(), e);
+            }
             DatabaseManager.deleteDiscountCouponByCode(isolatedCouponCode);
         }
     }

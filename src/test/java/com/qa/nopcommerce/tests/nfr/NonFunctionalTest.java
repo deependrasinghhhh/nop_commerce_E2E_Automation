@@ -26,13 +26,17 @@ public class NonFunctionalTest extends BaseTest {
     public void testResponsiveViewportLayout() {
         getPage().setViewportSize(1920, 1080);
         navigateTo("/");
-        Locator topMenuDesktop = getPage().locator(".top-menu.notmobile, .header-menu").first();
-        PlaywrightAssertions.assertThat(topMenuDesktop).isVisible();
+        Locator desktopMenu = getPage().locator(".header-menu .menu");
+        PlaywrightAssertions.assertThat(desktopMenu).isVisible();
 
         getPage().setViewportSize(375, 667);
         navigateTo("/");
-        Locator searchBox = getPage().locator("#small-searchterms, .search-box").first();
+        Locator searchBox = getPage().locator("#small-searchterms");
         PlaywrightAssertions.assertThat(searchBox).isVisible();
+        Boolean hasHorizontalOverflow = (Boolean) getPage().evaluate(
+                "() => document.documentElement.scrollWidth > window.innerWidth");
+        Assert.assertFalse(Boolean.TRUE.equals(hasHorizontalOverflow),
+                "Mobile viewport (375x667) must not cause horizontal overflow");
     }
 
     @Test(groups = {"nfr"})
@@ -43,8 +47,8 @@ public class NonFunctionalTest extends BaseTest {
         getPage().setViewportSize(375, 667);
         navigateTo("/");
 
-        Locator mobileMenu = getPage().locator(".menu-toggle, .menu__toggle, .responsive-nav-button, .mobile-menu").first();
-        PlaywrightAssertions.assertThat(mobileMenu).isVisible();
+        Locator mobileMenuTrigger = getPage().locator(".header-menu #menu-1.menu__toggle");
+        PlaywrightAssertions.assertThat(mobileMenuTrigger).isVisible();
     }
 
     @Test(groups = {"nfr"})

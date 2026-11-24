@@ -1,7 +1,7 @@
 # nopCommerce E2E Test Automation Framework
 
 [![Java](https://img.shields.io/badge/Java-21%20LTS-orange.svg)](https://www.oracle.com/java/)
-[![Playwright](https://img.shields.io/badge/Playwright%20Java-1.48.0-green.svg)](https://playwright.dev/java/)
+[![Playwright](https://img.shields.io/badge/Playwright%20Java-1.49.0-green.svg)](https://playwright.dev/java/)
 [![TestNG](https://img.shields.io/badge/TestNG-7.10.2-red.svg)](https://testng.org/)
 [![Allure](https://img.shields.io/badge/Allure-2.29.0-yellow.svg)](https://allurereport.org/)
 [![Axe-core](https://img.shields.io/badge/Axe--core-WCAG%202.1%20AA-blue.svg)](https://www.deque.com/axe/)
@@ -13,9 +13,9 @@ Production-grade Quality Engineering and End-to-End Test Automation framework fo
 
 ---
 
-## Reconciled Execution Summary (`2026-11-14 16:30:03 UTC`)
+## Reconciled Execution Summary (`2026-11-24 19:14:06 UTC`)
 
-**Execution Window:** `2026-11-14T16:28:16Z to 2026-11-14T16:30:03Z (107.00s)`
+**Execution Window:** `2026-11-24T19:12:24Z to 2026-11-24T19:14:06Z (102.00s)`
 **Target AUT:** nopCommerce 4.90.8, isolated Docker stack
 **Run Result:** 61 passed, 0 failed, 0 skipped (100.0% of 61 executed automated methods).
 
@@ -101,13 +101,13 @@ flowchart TD
 | **Authentication & Identity** | `AuthTest.java` | 8 | Valid registration, duplicate email rejection, required field validation, invalid email syntax, password confirmation mismatch, valid login, invalid password, empty credentials, session logout. |
 | **Catalog Browsing & Search** | `CatalogTest.java` | 7 | Top menu navigation, category desktop rendering, product details display, image gallery triggers, non-existent search handling, 3-character search warning, price sorting (low-to-high). |
 | **Shopping Cart & Wishlist** | `CartTest.java` | 8 | Add simple product, add with options/attributes, update cart quantity & recalculate total, remove cart item, add to wishlist, migrate wishlist item to cart, apply valid discount coupon code & verify total reduction, invalid coupon rejection. |
-| **Checkout Flow** | `CheckoutTest.java` | 3 | Guest checkout initiation, billing address validation, full end-to-end checkout (billing address, Ground shipping, Check/Money Order payment method, order confirmation, order number generation). |
-| **Customer Account Management** | `CustomerAccountTest.java` | 6 | Customer info view, address book management (create, edit, delete address), order history list display, registered customer review submission, guest review restrictions. |
-| **Administration Portal** | `AdminTest.java` | 7 | Admin authentication, dashboard metrics & navigation, product catalog grid search, orders table display, categories list verification, customer list verification, admin invalid login validation. |
+| **Checkout Flow** | `CheckoutTest.java` | 3 | Terms of Service enforcement, guest checkout initiation, and billing/shipping progression through Check / Money Order payment method availability (`TC-CHK-008`; order confirmation stays `Planned`). |
+| **Customer Account Management** | `CustomerAccountTest.java` | 6 | Customer info view/update, address book management (create, edit, delete address), order history page load, registered customer review submission, guest review restrictions. |
+| **Administration Portal** | `AdminTest.java` | 7 | Admin authentication, dashboard metrics & navigation, product catalog grid, orders table display, categories list verification, customer list verification, admin invalid login validation. |
 | **API Endpoint Probing** | `ApiEndpointTest.java` | 6 | Root endpoint HTTP 200, register endpoint health, login endpoint health, 404 route handling, admin portal endpoint status, anti-forgery CSRF token enforcement (HTTP 400 Bad Request). |
-| **Database Persistence** | `DatabaseVerificationTest.java` | 4 | JDBC connectivity health check (`SELECT 1`), customer record persistence in `Customer` table, shopping cart row persistence in `ShoppingCartItem`, order & order-items persistence in `[Order]`. |
-| **Accessibility Compliance** | `AccessibilityTest.java` | 5 | Automated WCAG 2.1 AA scans with axe-core across Homepage, Registration, Login, Shopping Cart, and Category pages with configurable impact thresholds. |
-| **Non-Functional & SLA** | `NonFunctionalTest.java` | 4 | Navigation page load time SLA (< 3000ms), mobile responsive layout (390x844), mobile hamburger drawer expansion, zero HTTP 500 server errors on page assets. |
+| **Database Persistence** | `DatabaseVerificationTest.java` | 4 | JDBC connectivity health check (`SELECT 1`), customer record persistence in `Customer` table, shopping cart row persistence in `ShoppingCartItem`, seeded order & order-items verification in `[Order]`. |
+| **Accessibility Compliance** | `AccessibilityTest.java` | 5 | Automated WCAG 2.1 AA scans with axe-core across Homepage, Registration, Login, Shopping Cart, and Category pages with configurable impact thresholds (`RSK-012` documents upstream `DEF-A11Y-001` contrast debt). |
+| **Non-Functional & SLA** | `NonFunctionalTest.java` | 4 | Homepage load + header visibility SLA (`< 15000ms` via `System.nanoTime()`), desktop (`1920x1080`) & mobile (`375x667`) responsive layout + zero overflow check, mobile menu trigger, zero HTTP 500 server errors on page assets. |
 
 ---
 
@@ -263,24 +263,23 @@ Required environment variables or `.env` entries:
 
 ```text
 ├── src/test/java/com/qa/nopcommerce/
-│   ├── base/           # BaseTest lifecycle hooks, context management, tracing & teardown
+│   ├── annotation/     # @TestCase annotation mapping tests to requirements & CSV catalog
+│   ├── base/           # BaseTest lifecycle hooks, context management, tracing & cleanup
 │   ├── config/         # ConfigReader with 5-tier cascade and validation
-│   ├── database/       # DatabaseManager for JDBC pooling, SQL queries & customer cleanup
+│   ├── database/       # DatabaseManager for HikariCP JDBC pooling, SQL queries & customer cleanup
 │   ├── factory/        # PlaywrightFactory for ThreadLocal browser and page instances
 │   ├── listeners/      # TestListener (Allure/screenshots) & ThreadCountListener (parallelism)
-│   ├── models/         # Test data models (Customer, etc.)
 │   ├── pages/          # 18 Page Object implementations with auto-wait actions
-│   ├── tests/          # 11 Test classes across UI, API, DB, Smoke, A11y, and NFR
-│   └── utils/          # AxeScanner, AllureAttachmentUtil, TestDataGenerator
+│   └── tests/          # 11 Test classes across UI, API, DB, Smoke, A11y, and NFR
 ├── src/test/resources/
 │   ├── config/         # config.properties repository defaults
 │   └── suites/         # 7 TestNG XML suite definitions
 ├── docker/             # Docker Compose, bootstrap script, and database baseline backup
 ├── jenkins/            # Jenkinsfile and declarative pipeline job configurations
 ├── .github/workflows/  # GitHub Actions CI gate definitions
-├── docs/               # Requirements, test strategy, RTM, and sign-off documentation
-├── evidence/           # Retained Surefire XML/HTML reports and Axe scan outputs
-└── scripts/            # Python reconciliation script for RTM documentation
+├── docs/               # Requirements, risk register, test strategy, RTM, and sign-off docs
+├── evidence/           # Retained Surefire XML/HTML reports (sanitized) and Axe scan outputs
+└── scripts/            # Python reconciliation & evidence-scrubbing script for RTM docs
 ```
 
 ---

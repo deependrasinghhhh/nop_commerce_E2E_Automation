@@ -134,23 +134,68 @@ public class TestListener implements ITestListener {
         if (t == null) {
             return "Uncategorized Failure";
         }
-        String msg = (t.getClass().getName() + ": " + (t.getMessage() != null ? t.getMessage() : "")).toLowerCase();
-        if (msg.contains("missing required secret") || msg.contains("secret") || msg.contains("credentials")) {
-            return "Secret & Credential Configuration Error";
-        }
-        if (msg.contains("environmental blocker") || msg.contains("unreachable") || msg.contains("connection refused") || msg.contains("econnrefused")) {
+        if (t instanceof org.testng.SkipException) {
             return "Environmental / Infrastructure Blocker";
         }
-        if (msg.contains("sql") || msg.contains("hikari") || msg.contains("database")) {
+        if (hasCause(t, java.sql.SQLException.class)
+                || hasCauseByClassName(t, "com.zaxxer.hikari.pool.HikariPool$PoolInitializationException")) {
             return "Database Connectivity / Persistence Failure";
         }
-        if (msg.contains("timeout") || msg.contains("waiting for locator")) {
-            return "UI Locator Timeout / Synchronization Failure";
+        if (hasCause(t, java.net.ConnectException.class)
+                || hasCause(t, java.net.UnknownHostException.class)
+                || hasCause(t, java.net.SocketTimeoutException.class)) {
+            return "Environmental / Infrastructure Blocker";
         }
-        if (msg.contains("assertionerror") || msg.contains("expected")) {
+        if (hasCause(t, IllegalStateException.class) && hasMessageContaining(t, "Missing required secret")) {
+            return "Secret & Credential Configuration Error";
+        }
+        if (t instanceof AssertionError) {
             return "Functional Product Assertion Defect";
         }
+        if (hasCause(t, com.microsoft.playwright.TimeoutError.class)) {
+            return "UI Locator Timeout / Synchronization Failure";
+        }
         return "Runtime Execution Error";
+    }
+
+    private static boolean hasCause(Throwable root, Class<? extends Throwable> type) {
+        Throwable cursor = root;
+        for (int depth = 0; cursor != null && depth < 20; depth++) {
+            if (type.isInstance(cursor)) {
+                return true;
+            }
+            cursor = cursor.getCause();
+        }
+        return false;
+    }
+
+    private static boolean hasCauseByClassName(Throwable root, String className) {
+        Throwable cursor = root;
+        for (int depth = 0; cursor != null && depth < 20; depth++) {
+            if (className.equals(cursor.getClass().getName())) {
+                return true;
+            }
+            cursor = cursor.getCause();
+        }
+        return false;
+    }
+
+    private static boolean hasMessageContaining(Throwable root, String needle) {
+        Throwable cursor = root;
+        for (int depth = 0; cursor != null && depth < 20; depth++) {
+            String msg = cursor.getMessage();
+            if (msg != null && msg.contains(needle)) {
+                return true;
+            }
+            cursor = cursor.getCause();
+        }
+        return false;
+    }
+
+    private static String resolvePlaywrightVersion() {
+        Package pkg = com.microsoft.playwright.Playwright.class.getPackage();
+        String version = (pkg != null) ? pkg.getImplementationVersion() : null;
+        return (version != null && !version.isBlank()) ? version : "unknown";
     }
 
     private void writeAllureRunMetadata(ITestContext context) {
@@ -167,7 +212,7 @@ public class TestListener implements ITestListener {
             envProps.setProperty("Suite.Name", context.getSuite().getName());
             envProps.setProperty("OS", System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ")");
             envProps.setProperty("Java.Version", System.getProperty("java.version"));
-            envProps.setProperty("Playwright.Version", "1.49.0");
+            envProps.setProperty("Playwright.Version", resolvePlaywrightVersion());
             envProps.setProperty("Run.Timestamp.UTC", Instant.now().toString());
 
             Path envFile = ALLURE_RESULTS_DIR.resolve("environment.properties");

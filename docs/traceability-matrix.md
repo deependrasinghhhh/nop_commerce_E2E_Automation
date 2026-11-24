@@ -1,7 +1,7 @@
 # Requirements Traceability Matrix (RTM)
 
-**Reconciliation Timestamp:** 2026-11-14 16:30:03 UTC
-**Execution Window:** 2026-11-14T16:28:16Z to 2026-11-14T16:30:03Z (107.00s)
+**Reconciliation Timestamp:** 2026-11-24 19:14:06 UTC
+**Execution Window:** 2026-11-24T19:12:24Z to 2026-11-24T19:14:06Z (102.00s)
 **Target AUT:** nopCommerce 4.90.8 (.NET 9, Isolated Docker Stack `http://127.0.0.1:5000`)
 
 > **Evidence Notice:** Reconciled from `docs/test-cases.csv`, Java `@TestCase` annotations, and `evidence/surefire-reports/testng-results.xml`.

@@ -116,7 +116,9 @@ public class PlaywrightFactory {
             java.nio.file.Path videoDir = Paths.get("evidence/videos/");
             try {
                 java.nio.file.Files.createDirectories(videoDir);
-            } catch (Exception ignored) {}
+            } catch (Exception e) {
+                throw new IllegalStateException("Failed to create video recording directory: " + videoDir, e);
+            }
             options.setRecordVideoDir(videoDir);
         }
         return options;
@@ -273,10 +275,6 @@ public class PlaywrightFactory {
      * test-trace.zip generation and parallel trace collisions for passed/skipped tests.
      */
     public static void closeContext() {
-        closeContext(null);
-    }
-
-    public static void closeContext(String testName) {
         Page page = tlPage.get();
         if (page != null) {
             try {
@@ -343,9 +341,5 @@ public class PlaywrightFactory {
             }
         }
         log.info("Playwright session shut down for thread {}", Thread.currentThread().getName());
-    }
-
-    private static String sanitizeFileName(String name) {
-        return name == null ? "test" : name.replaceAll("[^a-zA-Z0-9._-]", "_");
     }
 }

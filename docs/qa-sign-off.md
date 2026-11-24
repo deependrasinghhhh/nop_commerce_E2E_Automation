@@ -9,7 +9,7 @@
 | Project | nopCommerce E2E QA Automation Rebuild |
 | AUT | nopCommerce 4.90.8 (.NET 9) on isolated Docker stack (`http://127.0.0.1:5000`) |
 | Report Date | 2026-11-13 |
-| Automation Stack | Java 21 LTS · Playwright Java 1.48.0 · TestNG 7.10.2 · Axe-Playwright 1.0.0 · Allure 2.29.0 · Maven 3.9.6 |
+| Automation Stack | Java 21 LTS · Playwright Java 1.49.0 · TestNG 7.10.2 · Axe-Playwright 4.6.0 · Allure 2.29.0 · Maven 3.9.6 |
 | Author / QA Lead | Deependra Singh |
 | Sign-Off Verdict | **PASS — 61/61 Automated Tests Clean (100% Pass Rate) with Documented Upstream Finding (DEF-A11Y-001)** |
 

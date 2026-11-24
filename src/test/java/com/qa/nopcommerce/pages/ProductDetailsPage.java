@@ -116,15 +116,10 @@ public class ProductDetailsPage extends BasePage {
     }
 
     public void openProductReviewsSection() {
-        try {
-            addReviewLink.waitFor(new Locator.WaitForOptions().setTimeout(5000));
-            click(addReviewLink);
-        } catch (Exception e) {
-            log.debug("Add review link not immediately visible: {}", e.getMessage());
-            if (isVisible(addReviewLink)) {
-                click(addReviewLink);
-            }
+        if (!waitForVisible(addReviewLink)) {
+            throw new IllegalStateException("Add product review link is not visible on product details page");
         }
+        click(addReviewLink);
     }
 
     public void submitProductReview(String title, String reviewBody) {

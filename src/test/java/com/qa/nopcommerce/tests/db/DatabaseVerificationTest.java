@@ -17,6 +17,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
@@ -31,7 +33,26 @@ public class DatabaseVerificationTest extends BaseTest {
         // Fails fast with IllegalStateException if DB_USER / DB_PASSWORD secrets are missing
         isDbAvailable = DatabaseManager.isDatabaseAccessible();
         if (!isDbAvailable) {
-            System.out.println("[DB-ENV] MSSQL database container is currently offline or unreachable. Database verification tests will record environmental blocker status.");
+            log.warn("MSSQL database container is offline or unreachable at {}:{}; DB verification tests will {} in this environment.",
+                    ConfigReader.getDbHost(), ConfigReader.getDbPort(),
+                    isCiEnvironment() ? "fail" : "skip");
+        }
+    }
+
+    private static boolean isCiEnvironment() {
+        return "true".equalsIgnoreCase(System.getenv("CI"))
+                || "true".equalsIgnoreCase(System.getProperty("db.failIfUnavailable"));
+    }
+
+    private void requireDatabaseAvailable() {
+        if (!isDbAvailable) {
+            String message = String.format(
+                    "Environmental Blocker: MSSQL Database container unreachable at %s:%d",
+                    ConfigReader.getDbHost(), ConfigReader.getDbPort());
+            if (isCiEnvironment()) {
+                Assert.fail(message);
+            }
+            throw new SkipException(message);
         }
     }
 
@@ -40,9 +61,7 @@ public class DatabaseVerificationTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify customer record persists in Customer table")
     public void testCustomerRecordPersistenceInDatabase() {
-        if (!isDbAvailable) {
-            throw new SkipException("Environmental Blocker: MSSQL Database container unreachable at " + ConfigReader.getDbHost() + ":" + ConfigReader.getDbPort());
-        }
+        requireDatabaseAvailable();
         boolean exists = DatabaseManager.customerExists(ConfigReader.getAdminEmail());
         Assert.assertTrue(exists, "Expected customer record for configured admin account in Customer table");
     }
@@ -52,9 +71,7 @@ public class DatabaseVerificationTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify seeded database contains an active order with at least one persisted order item")
     public void testOrderRecordPersistenceInDatabase() {
-        if (!isDbAvailable) {
-            throw new SkipException("Environmental Blocker: MSSQL Database container unreachable at " + ConfigReader.getDbHost() + ":" + ConfigReader.getDbPort());
-        }
+        requireDatabaseAvailable();
         int ordersWithItems = DatabaseManager.getActiveOrderCountWithItems();
         Assert.assertTrue(ordersWithItems > 0,
                 "Expected at least one active order joined to a persisted OrderItem row");
@@ -65,9 +82,7 @@ public class DatabaseVerificationTest extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify adding a product for a unique registered customer persists a cart row in SQL Server")
     public void testCartItemPersistenceInDatabase() {
-        if (!isDbAvailable) {
-            throw new SkipException("Environmental Blocker: MSSQL Database container unreachable at " + ConfigReader.getDbHost() + ":" + ConfigReader.getDbPort());
-        }
+        requireDatabaseAvailable();
         String email = "qa_db_cart_" + UUID.randomUUID().toString().replace("-", "") + "@example.com";
         String password = "QaDb2026@" + UUID.randomUUID().toString().substring(0, 8);
         runWithCleanup("database verification customer " + email, () -> {
@@ -101,14 +116,15 @@ public class DatabaseVerificationTest extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify database connection executes read-only validation query successfully")
     public void testDatabaseConnectionHealth() {
-        if (!isDbAvailable) {
-            throw new SkipException("Environmental Blocker: MSSQL Database container unreachable at " + ConfigReader.getDbHost() + ":" + ConfigReader.getDbPort());
-        }
-        try (Connection conn = DatabaseManager.getConnection()) {
-            Assert.assertNotNull(conn);
-            Assert.assertFalse(conn.isClosed());
+        requireDatabaseAvailable();
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("SELECT 1");
+             ResultSet rs = stmt.executeQuery()) {
+            Assert.assertFalse(conn.isClosed(), "Expected open database connection");
+            Assert.assertTrue(rs.next(), "Expected validation query to return a row");
+            Assert.assertEquals(rs.getInt(1), 1, "Expected SELECT 1 validation query result");
         } catch (SQLException e) {
-            Assert.fail("Failed to establish database connection: " + e.getMessage());
+            Assert.fail("Failed to execute database health check query: " + e.getMessage());
         }
     }
 }

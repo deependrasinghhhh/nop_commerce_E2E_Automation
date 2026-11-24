@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -72,14 +71,7 @@ public class DatabaseManager {
     }
 
     public static Connection getConnection() throws SQLException {
-        String dbUser = ConfigReader.getDbUser();
-        String dbPassword = ConfigReader.getDbPassword();
-        try {
-            return getDataSource().getConnection();
-        } catch (Exception e) {
-            log.warn("HikariCP connection checkout failed ({}), attempting direct JDBC connection", e.getMessage());
-            return DriverManager.getConnection(getJdbcUrl(), dbUser, dbPassword);
-        }
+        return getDataSource().getConnection();
     }
 
     public static synchronized void closePool() {

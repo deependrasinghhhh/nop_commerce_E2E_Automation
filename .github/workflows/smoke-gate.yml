@@ -13,6 +13,9 @@ on:
         default: 'true'
         type: string
 
+permissions:
+  contents: read
+
 env:
   BASE_URL: http://127.0.0.1:5000
   ADMIN_URL: http://127.0.0.1:5000/Admin

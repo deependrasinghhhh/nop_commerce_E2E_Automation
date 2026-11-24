@@ -2,11 +2,14 @@
 """Reconcile test-case annotations and generate reports from one TestNG run."""
 
 import csv
+import getpass
 import json
 import os
 import re
 import shutil
+import socket
 import sys
+import tempfile
 import xml.etree.ElementTree as ET
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
@@ -17,8 +20,10 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 CSV_PATH = ROOT_DIR / "docs" / "test-cases.csv"
 JAVA_SRC_DIR = ROOT_DIR / "src" / "test" / "java"
 EVIDENCE_DIR = ROOT_DIR / "evidence" / "surefire-reports"
+EVIDENCE_REPORTS_DIR = ROOT_DIR / "evidence" / "reports"
 EVIDENCE_XML = EVIDENCE_DIR / "testng-results.xml"
 TARGET_XML = ROOT_DIR / "target" / "surefire-reports" / "testng-results.xml"
+REPORT_TEXT_SUFFIXES = {".xml", ".html", ".txt"}
 RTM_OUT_PATH = ROOT_DIR / "docs" / "traceability-matrix.md"
 SUMMARY_OUT_PATH = ROOT_DIR / "docs" / "execution-summary.md"
 CLOSURE_OUT_PATH = ROOT_DIR / "docs" / "test-closure-report.md"
@@ -90,19 +95,111 @@ def parse_testng_time(value):
     return parsed
 
 
+def sanitize_report_text(text):
+    """Scrub developer machine paths, usernames, hostnames, and PATH dumps from retained reports."""
+    home_dir = Path.home()
+    temp_dir = Path(tempfile.gettempdir())
+    replacements = [
+        (str(temp_dir), "/tmp"),
+        (temp_dir.as_posix(), "/tmp"),
+        (str(ROOT_DIR), "/workspace/nopcommerce-qa-java"),
+        (ROOT_DIR.as_posix(), "/workspace/nopcommerce-qa-java"),
+        (str(home_dir), "/home/qa-runner"),
+        (home_dir.as_posix(), "/home/qa-runner"),
+    ]
+    java_home = os.environ.get("JAVA_HOME")
+    if java_home:
+        replacements.append((java_home, "/opt/java/openjdk"))
+        replacements.append((Path(java_home).as_posix(), "/opt/java/openjdk"))
+
+    # Match AppData\Local\Temp before stripping user home directories
+    text = re.sub(r"[A-Za-z]:\\Users\\[^\\;\"'<>\r\n]+\\AppData\\Local\\Temp", "/tmp", text, flags=re.IGNORECASE)
+    text = re.sub(r"[A-Za-z]:/Users/[^/;\"'<>\r\n]+/AppData/Local/Temp", "/tmp", text, flags=re.IGNORECASE)
+
+    for raw, clean in replacements:
+        if raw:
+            text = re.sub(re.escape(raw), clean, text, flags=re.IGNORECASE)
+
+    # Generic fallback patterns for previously generated Windows paths/usernames
+    text = re.sub(
+        r"[A-Za-z]:\\Users\\[^\\;\"'<>\r\n]+\\(?:OneDrive\\Desktop\\)?E2E_Automation_nopcommerce",
+        "/workspace/nopcommerce-qa-java",
+        text,
+        flags=re.IGNORECASE,
+    )
+    text = re.sub(
+        r"[A-Za-z]:/Users/[^/;\"'<>\r\n]+/(?:OneDrive/Desktop/)?E2E_Automation_nopcommerce",
+        "/workspace/nopcommerce-qa-java",
+        text,
+        flags=re.IGNORECASE,
+    )
+    text = re.sub(r"[A-Za-z]:\\Users\\[^\\;\"'<>\r\n]+", "/home/qa-runner", text, flags=re.IGNORECASE)
+    text = re.sub(r"[A-Za-z]:/Users/[^/;\"'<>\r\n]+", "/home/qa-runner", text, flags=re.IGNORECASE)
+    text = re.sub(r"/home/qa-runner/AppData/Local/Temp", "/tmp", text, flags=re.IGNORECASE)
+    text = re.sub(r"[A-Za-z]:\\Program Files\\Java\\jdk-[^\\;\"'<>\r\n]+", "/opt/java/openjdk", text, flags=re.IGNORECASE)
+
+    # Normalize Surefire XML host/user/library-path metadata
+    text = re.sub(r'hostname="[^"]*"', 'hostname="ci-runner"', text)
+    text = re.sub(r'(<property name="user\.name" value=")[^"]*(")', r'\1qa-runner\2', text)
+    text = re.sub(r'(<property name="java\.library\.path" value=")[^"]*(")', r'\1[REDACTED]\2', text)
+    text = re.sub(r'(<property name="sun\.java\.command" value=")[^"]*surefirebooter[^"]*(")',
+                  r'\1/tmp/surefirebooter.jar\2', text)
+
+    # Clean forward slashes inside normalized workspace/home paths
+    text = re.sub(
+        r"(/(?:workspace/nopcommerce-qa-java|home/qa-runner|opt/java/openjdk|tmp))([\\/][^\"'<>;\r\n]*)",
+        lambda m: m.group(1) + m.group(2).replace("\\", "/"),
+        text,
+    )
+
+    try:
+        current_user = getpass.getuser()
+        if current_user and len(current_user) >= 3:
+            text = text.replace(current_user, "qa-runner")
+    except Exception:
+        pass
+    try:
+        current_host = socket.gethostname()
+        if current_host and len(current_host) >= 3:
+            text = text.replace(current_host, "ci-runner")
+    except Exception:
+        pass
+    return text
+
+
+def sync_sanitized_tree(src_dir, dst_dir):
+    dst_dir.mkdir(parents=True, exist_ok=True)
+    for item in src_dir.iterdir():
+        dest = dst_dir / item.name
+        if item.is_file():
+            if item.suffix.lower() in REPORT_TEXT_SUFFIXES:
+                raw = item.read_text(encoding="utf-8", errors="replace")
+                dest.write_text(sanitize_report_text(raw), encoding="utf-8", newline="\n")
+            else:
+                shutil.copy2(item, dest)
+        elif item.is_dir():
+            sync_sanitized_tree(item, dest)
+
+
+def scrub_existing_reports():
+    for report_dir in (EVIDENCE_DIR, EVIDENCE_REPORTS_DIR):
+        if not report_dir.is_dir():
+            continue
+        for item in report_dir.rglob("*"):
+            if item.is_file() and item.suffix.lower() in REPORT_TEXT_SUFFIXES:
+                raw = item.read_text(encoding="utf-8", errors="replace")
+                cleaned = sanitize_report_text(raw)
+                if cleaned != raw:
+                    item.write_text(cleaned, encoding="utf-8", newline="\n")
+
+
 def load_execution_report():
     if TARGET_XML.is_file():
-        EVIDENCE_DIR.mkdir(parents=True, exist_ok=True)
-        for item in TARGET_XML.parent.iterdir():
-            dest = EVIDENCE_DIR / item.name
-            if item.is_file():
-                shutil.copy2(item, dest)
-            elif item.is_dir():
-                if dest.exists():
-                    shutil.rmtree(dest)
-                shutil.copytree(item, dest)
+        sync_sanitized_tree(TARGET_XML.parent, EVIDENCE_DIR)
+        scrub_existing_reports()
         report_path = EVIDENCE_XML
     elif EVIDENCE_XML.is_file():
+        scrub_existing_reports()
         report_path = EVIDENCE_XML
     else:
         raise FileNotFoundError(
@@ -238,6 +335,17 @@ def main():
         raise ValueError(f"Orphan @TestCase IDs not in docs/test-cases.csv: {orphan_ids}")
     if duplicate_ids:
         raise ValueError(f"Duplicate @TestCase IDs across Java classes: {duplicate_ids}")
+
+    mismatched_statuses = []
+    for case in test_cases:
+        csv_status = case.get("ExecutionStatus", "").strip()
+        is_implemented = case["TestCaseID"] in code_map
+        if is_implemented and csv_status != "Automated":
+            mismatched_statuses.append(f"{case['TestCaseID']} (code exists, CSV ExecutionStatus={csv_status!r})")
+        elif not is_implemented and csv_status == "Automated":
+            mismatched_statuses.append(f"{case['TestCaseID']} (no code, CSV ExecutionStatus='Automated')")
+    if mismatched_statuses:
+        raise ValueError(f"CSV ExecutionStatus drift detected in docs/test-cases.csv: {mismatched_statuses}")
 
     total_cases = len(test_cases)
     automated_count = len(code_map)
