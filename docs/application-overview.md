@@ -1,7 +1,9 @@
 # Application Overview — nopCommerce 4.90.8
 
-> **Discovery Date:** 2026-10-11
-> **Milestone:** 0 — Discovery
+> **Historical Snapshot Notice:** This is the Milestone 0 Discovery baseline recorded on **2026-10-11** before implementation began. Tooling versions and reporting status evolved during implementation (e.g., the implemented automation framework pins **Playwright Java `1.49.0`**, **TestNG `7.10.2`**, **Allure `2.29.0`**, and `mssql/server:2022-CU27-ubuntu-22.04` — see [README.md](../README.md) and [test-strategy.md](test-strategy.md) for current implemented state).
+>
+> **Discovery Date:** 2026-10-11  
+> **Milestone:** 0 — Discovery  
 > **Author:** Project Author (self-assessed; no external reviewer)
 
 ---

@@ -1,9 +1,11 @@
 package com.qa.nopcommerce.tests.db;
 
+import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.WaitUntilState;
 import com.qa.nopcommerce.annotation.TestCase;
-import com.qa.nopcommerce.base.BaseTest;
 import com.qa.nopcommerce.config.ConfigReader;
 import com.qa.nopcommerce.database.DatabaseManager;
+import com.qa.nopcommerce.factory.PlaywrightFactory;
 import com.qa.nopcommerce.pages.ProductDetailsPage;
 import com.qa.nopcommerce.pages.RegisterPage;
 import io.qameta.allure.Description;
@@ -11,8 +13,11 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.SkipException;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -24,8 +29,9 @@ import java.util.UUID;
 
 @Epic("Database & Data Integrity")
 @Feature("MSSQL Persistence Verification")
-public class DatabaseVerificationTest extends BaseTest {
+public class DatabaseVerificationTest {
 
+    private static final Logger log = LoggerFactory.getLogger(DatabaseVerificationTest.class);
     private boolean isDbAvailable = false;
 
     @BeforeClass(alwaysRun = true)
@@ -36,6 +42,14 @@ public class DatabaseVerificationTest extends BaseTest {
             log.warn("MSSQL database container is offline or unreachable at {}:{}; DB verification tests will {} in this environment.",
                     ConfigReader.getDbHost(), ConfigReader.getDbPort(),
                     isCiEnvironment() ? "fail" : "skip");
+        }
+    }
+
+    @AfterMethod(alwaysRun = true)
+    public void tearDownBrowserIfStarted() {
+        if (PlaywrightFactory.getPlaywright() != null) {
+            PlaywrightFactory.stopTracing();
+            PlaywrightFactory.quit();
         }
     }
 
@@ -54,6 +68,12 @@ public class DatabaseVerificationTest extends BaseTest {
             }
             throw new SkipException(message);
         }
+    }
+
+    private static void navigatePageTo(Page page, String path) {
+        String baseUrl = ConfigReader.getBaseUrl();
+        String targetUrl = path.startsWith("http") ? path : baseUrl + (path.startsWith("/") ? path : "/" + path);
+        page.navigate(targetUrl, new Page.NavigateOptions().setWaitUntil(WaitUntilState.COMMIT));
     }
 
     @Test(groups = {"db"})
@@ -85,9 +105,10 @@ public class DatabaseVerificationTest extends BaseTest {
         requireDatabaseAvailable();
         String email = "qa_db_cart_" + UUID.randomUUID().toString().replace("-", "") + "@example.com";
         String password = "QaDb2026@" + UUID.randomUUID().toString().substring(0, 8);
-        runWithCleanup("database verification customer " + email, () -> {
-            navigateTo("/register");
-            RegisterPage registerPage = new RegisterPage(getPage());
+        try {
+            Page page = PlaywrightFactory.initBrowser(ConfigReader.getBrowser(), ConfigReader.isHeadless());
+            navigatePageTo(page, "/register");
+            RegisterPage registerPage = new RegisterPage(page);
             registerPage.selectGender("male");
             registerPage.fillRegistrationForm("Database", "Verification", email, "QA Automation", password, password);
             registerPage.clickRegisterButton();
@@ -97,8 +118,8 @@ public class DatabaseVerificationTest extends BaseTest {
             int baselineCount = DatabaseManager.getShoppingCartItemCount(customerId);
             Assert.assertEquals(baselineCount, 0, "Newly registered customer should have an empty cart");
 
-            navigateTo("/apple-icam");
-            ProductDetailsPage productPage = new ProductDetailsPage(getPage());
+            navigatePageTo(page, "/apple-icam");
+            ProductDetailsPage productPage = new ProductDetailsPage(page);
             productPage.clickAddToCart();
             Assert.assertTrue(productPage.getNotificationText().contains("The product has been added to your shopping cart"),
                     "Expected successful add-to-cart notification");
@@ -106,13 +127,18 @@ public class DatabaseVerificationTest extends BaseTest {
             int persistedCount = DatabaseManager.getShoppingCartItemCount(customerId);
             Assert.assertEquals(persistedCount, baselineCount + 1,
                     "Expected the application cart action to persist one ShoppingCartItem row");
-        }, () -> DatabaseManager.findCustomerIdByEmail(email).ifPresent(
-                customerId -> DatabaseManager.deleteShoppingCartItemsForCustomer(customerId)),
-                () -> DatabaseManager.deleteIsolatedCustomerByEmail(email));
+            int persistedQty = DatabaseManager.getShoppingCartItemQuantity(customerId, "apple-icam");
+            Assert.assertEquals(persistedQty, 1,
+                    "Expected ShoppingCartItem quantity=1 for product 'apple-icam' and ShoppingCartTypeId=1");
+        } finally {
+            DatabaseManager.findCustomerIdByEmail(email).ifPresent(
+                    DatabaseManager::deleteShoppingCartItemsForCustomer);
+            DatabaseManager.deleteIsolatedCustomerByEmail(email);
+        }
     }
 
     @Test(groups = {"db"})
-    @TestCase(value = "TC-DB-004", requirementId = "REQ-DB-004")
+    @TestCase(value = "TC-DB-004", requirementId = "REQ-DB-006")
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify database connection executes read-only validation query successfully")
     public void testDatabaseConnectionHealth() {

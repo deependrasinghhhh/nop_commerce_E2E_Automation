@@ -9,18 +9,22 @@ import com.microsoft.playwright.Page;
 public class AdminProductListPage extends BasePage {
 
     private final Locator productsGrid;
+    private final Locator gridProcessingOverlay;
     private final Locator searchProductNameInput;
     private final Locator searchButton;
 
     public AdminProductListPage(Page page) {
         super(page);
         this.productsGrid = page.locator("table#products-grid");
+        this.gridProcessingOverlay = page.locator("#products-grid_processing");
         this.searchProductNameInput = page.locator("#SearchProductName");
         this.searchButton = page.locator("#search-products");
     }
 
     public void waitForGrid() {
-        productsGrid.waitFor();
+        waitForVisible(productsGrid);
+        waitForCondition(() -> gridProcessingOverlay.count() == 0 || !isVisible(gridProcessingOverlay), 15_000);
+        waitForLoad();
     }
 
     public boolean isGridVisible() {
@@ -30,7 +34,8 @@ public class AdminProductListPage extends BasePage {
     public void searchProduct(String productName) {
         fill(searchProductNameInput, productName);
         click(searchButton);
-        waitForGrid();
+        waitForCondition(() -> gridProcessingOverlay.count() == 0 || !isVisible(gridProcessingOverlay), 15_000);
+        waitForTextContains(productsGrid.locator("tbody"), productName);
     }
 
     public int getProductRowCount() {

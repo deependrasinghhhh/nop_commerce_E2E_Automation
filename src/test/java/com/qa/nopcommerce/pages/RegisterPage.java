@@ -128,6 +128,7 @@ public class RegisterPage extends BasePage {
     }
 
     public String getConfirmPasswordError() {
+        waitForVisible(confirmPasswordError);
         return getText(confirmPasswordError);
     }
 

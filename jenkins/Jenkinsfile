@@ -1,6 +1,19 @@
 // Jenkinsfile - Declarative CI/CD Automation Pipeline
 // Stack: Java 21 LTS · Playwright Java · TestNG · Maven · Docker Compose
 
+def runWithToolchain(String cmd) {
+    sh """
+        if [ -d /usr/lib/jvm/java-21-openjdk-amd64 ]; then
+            export JAVA_HOME='/usr/lib/jvm/java-21-openjdk-amd64'
+            export PATH="\${JAVA_HOME}/bin:\${PATH}"
+        fi
+        if [ -d /usr/share/maven/bin ]; then
+            export PATH="/usr/share/maven/bin:\${PATH}"
+        fi
+        ${cmd}
+    """
+}
+
 pipeline {
     agent any
 
@@ -13,9 +26,6 @@ pipeline {
     }
 
     environment {
-        JAVA_HOME = '/usr/lib/jvm/java-21-openjdk-amd64'
-        MAVEN_HOME = '/usr/share/maven'
-        PATH = "/usr/lib/jvm/java-21-openjdk-amd64/bin:/usr/share/maven/bin:${env.PATH}"
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = '0'
         BASE_URL = 'http://nopcommerce_web'
         ADMIN_URL = 'http://nopcommerce_web/Admin'
@@ -34,8 +44,9 @@ pipeline {
         stage('Checkout & Toolchain Verification') {
             steps {
                 echo "=== Checkout Repository & Toolchain Verification ==="
-                sh 'java -version'
-                sh 'mvn -version'
+                script {
+                    runWithToolchain('java -version && mvn -version')
+                }
             }
         }
 
@@ -72,7 +83,7 @@ pipeline {
                             ;;
                     esac
                     for i in $(seq 1 30); do
-                        if curl -s -f "${BASE_URL}/" > /dev/null; then
+                        if curl -fsSL "${BASE_URL}/" 2>/dev/null | grep -qi "small-searchterms"; then
                             echo "AUT is active and responding on ${BASE_URL}"
                             exit 0
                         fi
@@ -87,7 +98,9 @@ pipeline {
         stage('Playwright Driver Setup') {
             steps {
                 echo "=== Ensuring Playwright Browser Binaries & System Dependencies ==="
-                sh "mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args=\"install ${params.BROWSER}\" || mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args=\"install --with-deps ${params.BROWSER}\""
+                script {
+                    runWithToolchain("mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args=\"install --with-deps ${params.BROWSER}\"")
+                }
             }
         }
 
@@ -116,26 +129,21 @@ pipeline {
                     string(credentialsId: 'nop-db-user', variable: 'DB_USER'),
                     string(credentialsId: 'nop-db-password', variable: 'DB_PASSWORD')
                 ]) {
-                    sh '''
-                        rm -rf evidence/failures/* evidence/reports/* || true
-                        mvn clean test \
-                            -DsuiteFile="src/test/resources/${SUITE}" \
-                            -DsuiteXmlFile="src/test/resources/${SUITE}" \
-                            -DbrowserName="${BROWSER}" \
-                            -Dheadless="${HEADLESS}" \
-                            -DthreadCount="${THREAD_COUNT}" \
-                            -DbaseUrl="${BASE_URL}" \
-                            -DadminUrl="${ADMIN_URL}" \
-                            -DdbHost="${DB_HOST}"
-                    '''
+                    script {
+                        runWithToolchain('''
+                            rm -rf evidence/failures/* evidence/traces/* evidence/reports/* || true
+                            mvn clean test \
+                                -DsuiteFile="src/test/resources/${SUITE}" \
+                                -DsuiteXmlFile="src/test/resources/${SUITE}" \
+                                -Dbrowser="${BROWSER}" \
+                                -Dheadless="${HEADLESS}" \
+                                -DthreadCount="${THREAD_COUNT}" \
+                                -DbaseUrl="${BASE_URL}" \
+                                -DadminUrl="${ADMIN_URL}" \
+                                -DdbHost="${DB_HOST}"
+                        ''')
+                    }
                 }
-            }
-        }
-
-        stage('RTM Traceability Matrix Sync') {
-            steps {
-                echo "=== Running RTM Reconciliation Script ==="
-                sh 'python3 scripts/reconcile_rtm.py'
             }
         }
     }
@@ -143,6 +151,9 @@ pipeline {
     post {
         always {
             script {
+                echo "=== Running RTM Traceability Verification ==="
+                sh 'python3 scripts/reconcile_rtm.py --verify-only'
+
                 if (params.ENABLE_TREND_HISTORY && fileExists('.ci/allure-history/history')) {
                     sh '''
                         mkdir -p target/allure-results/history
@@ -152,16 +163,17 @@ pipeline {
                 }
             }
             echo "=== Archiving Test Artifacts and Generating Allure Reports ==="
-            archiveArtifacts artifacts: 'target/surefire-reports/**/*, evidence/reports/**/*, evidence/failures/**/*, target/allure-results/**/*', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'target/surefire-reports/**/*, target/a11y-reports/**/*, evidence/a11y/**/*, evidence/failures/**/*, evidence/traces/**/*, target/allure-results/**/*, docs/*.md', allowEmptyArchive: true
 
             script {
                 try {
-                    sh 'mvn allure:report || true'
+                    runWithToolchain('mvn allure:report || true')
                     archiveArtifacts artifacts: 'target/site/allure-maven-plugin/**/*', allowEmptyArchive: true
                 } catch (Throwable t) {
                     echo "Notice: Maven allure:report generation skipped or failed: ${t.message}"
                 }
 
+                boolean pluginHistorySaved = false
                 try {
                     allure includeProperties: false, jdk: '', results: [[path: 'target/allure-results']]
                     if (params.ENABLE_TREND_HISTORY) {
@@ -171,9 +183,19 @@ pipeline {
                                 cp -r allure-report/history "${JENKINS_HOME}/allure-history/${JOB_NAME}/"
                             fi
                         '''
+                        pluginHistorySaved = true
                     }
                 } catch (Throwable t) {
                     echo "Notice: Allure Plugin step skipped or not installed: ${t.message}"
+                }
+
+                if (!pluginHistorySaved && params.ENABLE_TREND_HISTORY) {
+                    sh '''
+                        if [ -d "target/site/allure-maven-plugin/history" ]; then
+                            mkdir -p "${JENKINS_HOME}/allure-history/${JOB_NAME}"
+                            cp -r target/site/allure-maven-plugin/history "${JENKINS_HOME}/allure-history/${JOB_NAME}/"
+                        fi
+                    '''
                 }
             }
         }

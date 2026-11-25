@@ -3,10 +3,15 @@ package com.qa.nopcommerce.listeners;
 import com.microsoft.playwright.Page;
 import com.qa.nopcommerce.annotation.TestCase;
 import com.qa.nopcommerce.config.ConfigReader;
+import com.qa.nopcommerce.database.DatabaseManager;
 import com.qa.nopcommerce.factory.PlaywrightFactory;
 import io.qameta.allure.Allure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.IInvokedMethod;
+import org.testng.IInvokedMethodListener;
+import org.testng.ISuite;
+import org.testng.ISuiteListener;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
@@ -22,24 +27,45 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * TestNG Execution Listener capturing failure evidence (screenshots and Playwright zip traces),
- * writing Allure environment/category/executor metadata, and classifying failure categories.
+ * writing Allure environment/category/executor metadata, classifying failure categories,
+ * and closing the database connection pool cleanly at suite completion.
  */
-public class TestListener implements ITestListener {
+public class TestListener implements ITestListener, ISuiteListener, IInvokedMethodListener {
     private static final Logger log = LoggerFactory.getLogger(TestListener.class);
+    private static final String ATTR_EVIDENCE_CAPTURED = "qa.evidence.captured";
     private static final Path ALLURE_RESULTS_DIR = Paths.get(
             System.getProperty("allure.results.directory", "target/allure-results")
     );
+    private final AtomicBoolean suiteMetadataInitialized = new AtomicBoolean(false);
+
+    @Override
+    public void onStart(ISuite suite) {
+        initializeSuiteMetadataOnce(suite.getName());
+    }
+
+    @Override
+    public void onFinish(ISuite suite) {
+        log.info("Finished TestNG Suite: {}", suite.getName());
+        DatabaseManager.closePool();
+    }
 
     @Override
     public void onStart(ITestContext context) {
-        log.info("Starting Test Suite: {}", context.getName());
-        createEvidenceDirectories();
-        writeAllureRunMetadata(context);
-        copyAllureCategoriesDefinition();
-        writeAllureExecutorMetadata(context);
+        log.info("Starting Test Section: {}", context.getName());
+        initializeSuiteMetadataOnce(context.getSuite().getName());
+    }
+
+    private void initializeSuiteMetadataOnce(String suiteName) {
+        if (suiteMetadataInitialized.compareAndSet(false, true)) {
+            createEvidenceDirectories();
+            writeAllureRunMetadata(suiteName);
+            copyAllureCategoriesDefinition();
+            writeAllureExecutorMetadata(suiteName);
+        }
     }
 
     @Override
@@ -54,16 +80,35 @@ public class TestListener implements ITestListener {
     @Override
     public void onTestStart(ITestResult result) {
         String testCaseId = getTestCaseId(result);
-        String reqId = getRequirementId(result);
         log.info("=== STARTING TEST: {} [TestCaseID: {}] ===", result.getMethod().getMethodName(), testCaseId);
+    }
 
-        Allure.label("testCaseId", testCaseId);
-        if (!reqId.isEmpty()) {
-            Allure.label("requirement", reqId);
+    @Override
+    public void beforeInvocation(IInvokedMethod method, ITestResult result) {
+        if (!method.isTestMethod()) {
+            return;
         }
-        Allure.parameter("browser", ConfigReader.getBrowser());
-        Allure.parameter("headless", String.valueOf(ConfigReader.isHeadless()));
-        Allure.parameter("environment", ConfigReader.getTestEnvName());
+        if (Allure.getLifecycle().getCurrentTestCase().isPresent()) {
+            String testCaseId = getTestCaseId(result);
+            String reqId = getRequirementId(result);
+            Allure.label("testCaseId", testCaseId);
+            if (!reqId.isEmpty()) {
+                Allure.label("requirement", reqId);
+            }
+            Allure.parameter("browser", ConfigReader.getBrowser());
+            Allure.parameter("headless", String.valueOf(ConfigReader.isHeadless()));
+            Allure.parameter("environment", ConfigReader.getTestEnvName());
+        }
+    }
+
+    @Override
+    public void afterInvocation(IInvokedMethod method, ITestResult result) {
+        if (!method.isTestMethod() || result.isSuccess()) {
+            return;
+        }
+        if (result.getThrowable() != null) {
+            captureFailureEvidence(result);
+        }
     }
 
     @Override
@@ -74,15 +119,39 @@ public class TestListener implements ITestListener {
 
     @Override
     public void onTestFailure(ITestResult result) {
+        captureFailureEvidence(result);
         String testCaseId = getTestCaseId(result);
+        String methodName = result.getMethod().getMethodName();
+        String category = classifyFailureCategory(result.getThrowable());
+        log.error("=== TEST FAILED: {} [TestCaseID: {}, Category: {}] ===",
+                methodName, testCaseId, category, result.getThrowable());
+    }
+
+    @Override
+    public void onTestSkipped(ITestResult result) {
+        String testCaseId = getTestCaseId(result);
+        String category = classifyFailureCategory(result.getThrowable());
+        if (Allure.getLifecycle().getCurrentTestCase().isPresent()) {
+            Allure.label("failureCategory", category);
+        }
+        log.warn("=== TEST SKIPPED: {} [TestCaseID: {}, Category: {}] ===",
+                result.getMethod().getMethodName(), testCaseId, category);
+    }
+
+    private void captureFailureEvidence(ITestResult result) {
+        if (Boolean.TRUE.equals(result.getAttribute(ATTR_EVIDENCE_CAPTURED))) {
+            return;
+        }
+        result.setAttribute(ATTR_EVIDENCE_CAPTURED, Boolean.TRUE);
+
         String methodName = result.getMethod().getMethodName();
         String sanitizedName = methodName + "_" + System.currentTimeMillis();
         Throwable throwable = result.getThrowable();
-
         String category = classifyFailureCategory(throwable);
-        Allure.label("failureCategory", category);
-        log.error("=== TEST FAILED: {} [TestCaseID: {}, Category: {}] ===",
-                methodName, testCaseId, category, throwable);
+        boolean allureActive = Allure.getLifecycle().getCurrentTestCase().isPresent();
+        if (allureActive) {
+            Allure.label("failureCategory", category);
+        }
 
         Page page = PlaywrightFactory.getPage();
         if (page != null && ConfigReader.isCaptureScreenshotOnFailure()) {
@@ -94,10 +163,12 @@ public class TestListener implements ITestListener {
                             .setFullPage(true));
                     log.info("Saved failure screenshot to {}", screenshotPath);
 
-                    Allure.addAttachment(methodName + " Failure Screenshot",
-                            "image/png",
-                            new ByteArrayInputStream(screenshotBytes),
-                            ".png");
+                    if (allureActive) {
+                        Allure.addAttachment(methodName + " Failure Screenshot",
+                                "image/png",
+                                new ByteArrayInputStream(screenshotBytes),
+                                ".png");
+                    }
                 }
             } catch (Exception e) {
                 log.warn("Failed to capture screenshot: {}", e.getMessage());
@@ -109,7 +180,7 @@ public class TestListener implements ITestListener {
             PlaywrightFactory.stopTracing(tracePath);
             try {
                 File traceFile = new File(tracePath);
-                if (traceFile.exists()) {
+                if (traceFile.exists() && allureActive) {
                     Allure.addAttachment(methodName + " Execution Trace",
                             "application/zip",
                             new ByteArrayInputStream(Files.readAllBytes(traceFile.toPath())),
@@ -119,15 +190,6 @@ public class TestListener implements ITestListener {
                 log.warn("Failed to attach trace to Allure: {}", e.getMessage());
             }
         }
-    }
-
-    @Override
-    public void onTestSkipped(ITestResult result) {
-        String testCaseId = getTestCaseId(result);
-        String category = classifyFailureCategory(result.getThrowable());
-        Allure.label("failureCategory", category);
-        log.warn("=== TEST SKIPPED: {} [TestCaseID: {}, Category: {}] ===",
-                result.getMethod().getMethodName(), testCaseId, category);
     }
 
     private String classifyFailureCategory(Throwable t) {
@@ -198,18 +260,18 @@ public class TestListener implements ITestListener {
         return (version != null && !version.isBlank()) ? version : "unknown";
     }
 
-    private void writeAllureRunMetadata(ITestContext context) {
+    private void writeAllureRunMetadata(String suiteName) {
         try {
             Files.createDirectories(ALLURE_RESULTS_DIR);
             Properties envProps = new Properties();
             envProps.setProperty("Application", "nopCommerce 4.90.8 (.NET 9)");
             envProps.setProperty("Environment", ConfigReader.getTestEnvName());
-            envProps.setProperty("Base.URL", ConfigReader.get("baseUrl", "http://127.0.0.1:5000"));
-            envProps.setProperty("Admin.URL", ConfigReader.get("adminUrl", "http://127.0.0.1:5000/Admin"));
+            envProps.setProperty("Base.URL", ConfigReader.getBaseUrl());
+            envProps.setProperty("Admin.URL", ConfigReader.getAdminUrl());
             envProps.setProperty("Browser", ConfigReader.getBrowser());
             envProps.setProperty("Headless", String.valueOf(ConfigReader.isHeadless()));
             envProps.setProperty("Ignore.HTTPS.Errors", String.valueOf(ConfigReader.isIgnoreHttpsErrors()));
-            envProps.setProperty("Suite.Name", context.getSuite().getName());
+            envProps.setProperty("Suite.Name", suiteName);
             envProps.setProperty("OS", System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ")");
             envProps.setProperty("Java.Version", System.getProperty("java.version"));
             envProps.setProperty("Playwright.Version", resolvePlaywrightVersion());
@@ -243,14 +305,14 @@ public class TestListener implements ITestListener {
         }
     }
 
-    private void writeAllureExecutorMetadata(ITestContext context) {
+    private void writeAllureExecutorMetadata(String suiteName) {
         try {
             Files.createDirectories(ALLURE_RESULTS_DIR);
             String ciType = System.getenv("GITHUB_ACTIONS") != null ? "GitHub Actions"
                     : (System.getenv("JENKINS_URL") != null ? "Jenkins CI" : "Local Maven Runner");
             String buildName = System.getenv("GITHUB_RUN_ID") != null
                     ? "GH-Run-" + System.getenv("GITHUB_RUN_ID")
-                    : (System.getenv("BUILD_TAG") != null ? System.getenv("BUILD_TAG") : context.getSuite().getName());
+                    : (System.getenv("BUILD_TAG") != null ? System.getenv("BUILD_TAG") : suiteName);
             String buildOrder = System.getenv("GITHUB_RUN_NUMBER") != null
                     ? System.getenv("GITHUB_RUN_NUMBER")
                     : (System.getenv("BUILD_NUMBER") != null ? System.getenv("BUILD_NUMBER") : "1");
@@ -293,7 +355,6 @@ public class TestListener implements ITestListener {
             Files.createDirectories(Paths.get("evidence/failures"));
             Files.createDirectories(Paths.get("evidence/traces"));
             Files.createDirectories(Paths.get("evidence/screenshots"));
-            Files.createDirectories(Paths.get("evidence/reports"));
         } catch (Exception e) {
             log.warn("Could not pre-create evidence directories: {}", e.getMessage());
         }

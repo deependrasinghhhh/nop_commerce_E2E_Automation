@@ -9,7 +9,7 @@
 | Defect ID | Type | Title | Severity | Priority | Status | Traceable Requirement |
 |---|---|---|---|---|---|---|
 | **DEF-001** | REAL | Public Storefront & Admin Intercepted by Cloudflare Turnstile Bot Challenge | Blocker | P1 | Open (Blocked by Env) | REQ-NFR-001, REQ-API-001 |
-| **DEF-002** | [SIMULATED] | Order Subtotal Currency Rounding Discrepancy on Fractional Discount Coupons | Major | P2 | Under Review | REQ-CART-005, REQ-CHK-005 |
+| **DEF-002** | [SIMULATED] | Order Subtotal Currency Rounding Discrepancy on Fractional Discount Coupons | Major | P2 | Under Review | REQ-CART-008 |
 | **DEF-003** | [SIMULATED] | Address Line 2 Silent String Truncation Beyond 128 Characters in Customer Address Book | Minor | P3 | Ready for Retest | REQ-CUST-002 |
 
 ---
@@ -24,7 +24,7 @@
 - **Date Discovered:** 2026-10-11
 - **Affected Endpoints:** `https://demo.nopcommerce.com`, `https://admin-demo.nopcommerce.com`
 - **Steps to Reproduce:**
-  1. Launch Playwright test runner in headless or standard CDP mode (`mvn test -DsuiteFile=src/test/resources/suites/smoke.xml`).
+  1. Launch Playwright test runner against public demo (`mvn test -Psmoke -DbaseUrl=https://demo.nopcommerce.com` — now blocked by `ConfigReader`).
   2. Navigate to `https://demo.nopcommerce.com/`.
   3. Observe initial response headers and page document.
 - **Expected Result:**
@@ -32,10 +32,8 @@
 - **Actual Result:**
   - Cloudflare edge returns interactive Turnstile challenge (`<title>Just a moment...</title>`). Automated Playwright assertions fail on page title timeout (`received: Just a moment...`).
   - Automated HTTP probe requests (`curl -I` / `Invoke-WebRequest`) receive `HTTP/1.1 403 Forbidden`.
-- **Retained Evidence Artifacts:**
-  - Screenshot: `evidence/failures/testHomePageTitleAndHeaderRendering.png`
-  - Screenshot: `evidence/failures/testStorefrontSearchBoxInput.png`
-  - Surefire Failure Log: `evidence/surefire-reports/TEST-com.qa.nopcommerce.tests.smoke.SmokeTest.xml`
+- **Historical Discovery Context (Oct 2026):**
+  - Observed during initial Milestone 0/1 probing against the shared public demo site before migrating execution to the local Docker stack (no failure artifacts from public demo are kept active in the repository).
 - **Mitigation / Workaround:**
   - Deploy and execute tests against local containerized nopCommerce 4.90.8 instance via `docker/docker-compose.yml` (free of public WAF layers).
 
@@ -46,7 +44,7 @@
 - **Component:** Shopping Cart Calculation Engine (`Nop.Services.Orders.OrderTotalCalculationService`)
 - **Severity:** Major (S2) | **Priority:** High (P2)
 - **Reported By:** QA Automation Lead
-- **Traceability:** REQ-CART-005, REQ-CHK-005
+- **Traceability:** REQ-CART-008
 - **Steps to Reproduce:**
   1. Add 3 units of "Apple MacBook Pro 13-inch" ($1,800.00 each, subtotal $5,400.00).
   2. Apply promotional coupon code providing a 15.75% fractional discount.

@@ -7,27 +7,27 @@
 [![Axe-core](https://img.shields.io/badge/Axe--core-WCAG%202.1%20AA-blue.svg)](https://www.deque.com/axe/)
 [![Docker](https://img.shields.io/badge/Docker-nopCommerce%204.90.8-blue.svg)](https://www.docker.com/)
 [![Jenkins](https://img.shields.io/badge/Jenkins-CI%2FCD%20Pipeline-informational.svg)](https://www.jenkins.io/)
-[![Test Suite](https://img.shields.io/badge/Tests-61%2F61%20Passed-brightgreen.svg)](docs/execution-summary.md)
+[![Test Suite](https://img.shields.io/badge/Tests-63%2F63%20Passed-brightgreen.svg)](docs/execution-summary.md)
 
 Production-grade Quality Engineering and End-to-End Test Automation framework for **nopCommerce 4.90.8** (.NET 9 on containerized Kestrel + MS SQL Server 2022). Built with **Java 21 LTS**, **Playwright Java**, **TestNG**, **Allure Report**, and **Axe-Playwright**, engineered for zero-flakiness multi-threaded parallel execution, automated CI/CD gating, and direct database persistence validation.
 
 ---
 
-## Reconciled Execution Summary (`2026-11-24 19:14:06 UTC`)
+## Reconciled Execution Summary (`2026-11-25 09:04:30 UTC`)
 
-**Execution Window:** `2026-11-24T19:12:24Z to 2026-11-24T19:14:06Z (102.00s)`
+**Execution Window:** `2026-11-25T09:03:07Z to 2026-11-25T09:04:30Z (83.00s)`
 **Target AUT:** nopCommerce 4.90.8, isolated Docker stack
-**Run Result:** 61 passed, 0 failed, 0 skipped (100.0% of 61 executed automated methods).
+**Run Result:** 63 passed, 0 failed, 0 skipped (100.0% of 63 executed automated methods).
 
 | Metric Category | Value | Source Artifact |
 |---|---|---|
 | Total Test Cases Specified | 108 | `docs/test-cases.csv` |
-| Automated Test Methods | 61 (56.5% of catalog) | `docs/traceability-matrix.md` |
-| Executed Automated Methods | 61 (100.0%) | `evidence/surefire-reports/testng-results.xml` |
-| Passed / Failed / Skipped | 61 / 0 / 0 | `docs/execution-summary.md` |
-| k6 Storefront Load Benchmark | k6 v0.54.0 separate HTTP browse/search workload: 25 peak VUs for 110 seconds, 481 requests, p95 892.6 ms | `evidence/performance/k6-summary.json` |
+| Automated Test Methods | 63 (58.3% of catalog) | `docs/traceability-matrix.md` |
+| Executed Automated Methods | 63 (100.0%) | `evidence/surefire-reports/testng-results.xml` |
+| Passed / Failed / Skipped | 63 / 0 / 0 | `docs/execution-summary.md` |
+| k6 Storefront Load Benchmark | k6 v0.54.0 separate HTTP browse/search workload: 25 peak VUs over 112.89s, 1013 requests, p95 257.73 ms | `evidence/performance/k6-summary.json` |
 
-This run covers the executed automated methods only. The 61 automated methods map to a 108-case catalog; it is not 100% coverage of all planned cases.
+This run covers the executed automated methods only. The 63 automated methods map to a 108-case catalog; it is not 100% coverage of all planned cases.
 GitHub Actions runs smoke and API suites only. A green Jenkins dispatch confirms acceptance of the request, not the downstream test result.
 The axe default threshold is critical impact; critical findings fail the scan. Strict serious-impact audits can be run on demand with -Da11y.failOnImpact=serious.
 
@@ -64,7 +64,7 @@ flowchart TD
         PF --> TL_PW["ThreadLocal&lt;Playwright&gt;"]
         PF --> TL_CTX["ThreadLocal&lt;BrowserContext&gt;"]
         PF --> TL_PAGE["ThreadLocal&lt;Page&gt;"]
-        TL_PAGE --> POM["18 Page Object Model Classes"]
+        TL_PAGE --> POM["19 Page Object Model Classes"]
     end
 
     subgraph Verification_Layer ["Validation & Persistence"]
@@ -88,26 +88,26 @@ flowchart TD
 2. **Auto-Waiting Locators**: Page objects strictly wrap Playwright locators (`click()`, `fill()`, `selectOption()`, `waitForVisible()`) relying on native readiness checks (attached, visible, stable, enabled) with zero arbitrary `Thread.sleep()` pauses.
 3. **Dynamic Concurrency Control (`ThreadCountListener`)**: Inspects parallel suite configurations at runtime and dynamically binds `-DthreadCount` overrides across TestNG runners.
 4. **Hierarchical Configuration Cascade**: Resolves settings in strict priority: `CLI System Properties (-D)` > `Environment Variables` > `.env` file > `config.properties` > hardcoded fallbacks.
-5. **Automated Test Data Lifecycle**: `DatabaseManager.java` manages transactional database assertions and executes cascade teardown (`deleteCustomerCascade`) for dynamic test customer accounts.
-6. **Failure-Only Artifact Capture**: Traces and video are discarded on passing tests to prevent trace collisions and storage bloat; full Playwright trace archives (`.zip`) and screenshots (`.png`) are automatically captured and linked to Allure only on test failure.
+5. **Automated Test Data Lifecycle**: `DatabaseManager.java` manages transactional database assertions and executes allowlisted cleanup (`deleteIsolatedCustomerByEmail`) for dynamic test customer accounts, orders, cart items, reviews, and orphan addresses.
+6. **Failure-Only Diagnostic Traces & Screenshots**: Playwright execution traces (`.zip`) and full-page screenshots (`.png`) are automatically captured and attached to Allure only on test failure (traces are discarded when tests pass; video recording defaults to off and records per-context when `-DrecordVideo=true`).
 
 ---
 
-## 3. Automated Test Coverage (61 Tests Across 10 Domains)
+## 3. Automated Test Coverage (63 Tests Across 10 Domains)
 
 | Domain | Test Class | Methods | Automated Coverage & Key Business Flows |
 | --- | --- | :---: | --- |
 | **Smoke Gate** | `SmokeTest.java` | 3 | Storefront root health, search input interactivity, admin portal login page rendering. |
-| **Authentication & Identity** | `AuthTest.java` | 8 | Valid registration, duplicate email rejection, required field validation, invalid email syntax, password confirmation mismatch, valid login, invalid password, empty credentials, session logout. |
+| **Authentication & Identity** | `AuthTest.java` | 9 | Valid registration, duplicate email rejection, required field validation, invalid email syntax, password confirmation mismatch, valid login, invalid password, empty credentials, session logout. |
 | **Catalog Browsing & Search** | `CatalogTest.java` | 7 | Top menu navigation, category desktop rendering, product details display, image gallery triggers, non-existent search handling, 3-character search warning, price sorting (low-to-high). |
-| **Shopping Cart & Wishlist** | `CartTest.java` | 8 | Add simple product, add with options/attributes, update cart quantity & recalculate total, remove cart item, add to wishlist, migrate wishlist item to cart, apply valid discount coupon code & verify total reduction, invalid coupon rejection. |
-| **Checkout Flow** | `CheckoutTest.java` | 3 | Terms of Service enforcement, guest checkout initiation, and billing/shipping progression through Check / Money Order payment method availability (`TC-CHK-008`; order confirmation stays `Planned`). |
-| **Customer Account Management** | `CustomerAccountTest.java` | 6 | Customer info view/update, address book management (create, edit, delete address), order history page load, registered customer review submission, guest review restrictions. |
-| **Administration Portal** | `AdminTest.java` | 7 | Admin authentication, dashboard metrics & navigation, product catalog grid, orders table display, categories list verification, customer list verification, admin invalid login validation. |
-| **API Endpoint Probing** | `ApiEndpointTest.java` | 6 | Root endpoint HTTP 200, register endpoint health, login endpoint health, 404 route handling, admin portal endpoint status, anti-forgery CSRF token enforcement (HTTP 400 Bad Request). |
-| **Database Persistence** | `DatabaseVerificationTest.java` | 4 | JDBC connectivity health check (`SELECT 1`), customer record persistence in `Customer` table, shopping cart row persistence in `ShoppingCartItem`, seeded order & order-items verification in `[Order]`. |
+| **Shopping Cart & Wishlist** | `CartTest.java` | 8 | Add simple product, view cart & verify product, update cart quantity & verify tripled subtotal, remove cart item, add to wishlist, migrate wishlist item to cart, apply valid discount coupon in isolated guest session & verify total reduction, invalid coupon rejection. |
+| **Checkout Flow** | `CheckoutTest.java` | 4 | Negative & positive Terms of Service enforcement, guest checkout billing initiation, billing/shipping through Check / Money Order payment options, and complete E2E guest order confirmation with DB persistence verification (`TC-CHK-010`). |
+| **Customer Account Management** | `CustomerAccountTest.java` | 6 | Customer info view/update with reload persistence verification, address book management (create, edit, delete address), order history page load, registered customer review submission, guest review restrictions. |
+| **Administration Portal** | `AdminTest.java` | 7 | Admin authentication, dashboard metrics cards & header verification, product catalog grid & search, orders table display, categories list verification, customer list verification, admin invalid login validation. |
+| **API Endpoint Probing** | `ApiEndpointTest.java` | 6 | Root endpoint HTTP 200, register endpoint health, login endpoint health, 404 route handling, unauthenticated `/Admin` HTTP 302 redirect to login, anti-forgery CSRF token enforcement (HTTP 400 Bad Request). |
+| **Database Persistence** | `DatabaseVerificationTest.java` | 4 | JDBC connectivity health check (`SELECT 1`), customer record persistence in `Customer` table, shopping cart row + quantity + product verification (`ShoppingCartTypeId=1`), seeded order & order-items verification in `[Order]`. |
 | **Accessibility Compliance** | `AccessibilityTest.java` | 5 | Automated WCAG 2.1 AA scans with axe-core across Homepage, Registration, Login, Shopping Cart, and Category pages with configurable impact thresholds (`RSK-012` documents upstream `DEF-A11Y-001` contrast debt). |
-| **Non-Functional & SLA** | `NonFunctionalTest.java` | 4 | Homepage load + header visibility SLA (`< 15000ms` via `System.nanoTime()`), desktop (`1920x1080`) & mobile (`375x667`) responsive layout + zero overflow check, mobile menu trigger, zero HTTP 500 server errors on page assets. |
+| **Non-Functional & SLA** | `NonFunctionalTest.java` | 4 | Full document load + header visibility SLA (`< 15000ms` via `System.nanoTime()`), desktop (`1920x1080`) & mobile (`375x667`) responsive layout + zero overflow check, mobile menu trigger, zero HTTP 5xx server errors on loaded page assets. |
 
 ---
 
@@ -129,16 +129,30 @@ In strict adherence to professional QA transparency, known upstream platform def
 
 ## 5. CLI Execution Cheat Sheet
 
+### 5.0 One-Time Local Prerequisites
+
+```powershell
+# 1. Configure secrets locally (never commit .env)
+Copy-Item .env.example .env
+# Edit .env to set ADMIN_EMAIL, ADMIN_PASSWORD, DB_USER, DB_PASSWORD
+
+# 2. Download Playwright browser binary (Maven skips browser auto-download by default)
+mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install chromium"
+
+# 3. Boot and verify the isolated Docker AUT stack (from Git Bash / WSL)
+bash docker/bootstrap-aut.sh
+```
+
 ### 5.1 Run Test Suites by Profile
 
 ```powershell
 # 1. Quick Smoke Suite (3 tests, ~10s)
 mvn test -Psmoke
 
-# 2. Dedicated Parallel Storefront UI Suite (39 tests, 2 browsers)
+# 2. Dedicated Parallel Storefront UI Suite (41 tests, 2 browsers)
 mvn test -Pui
 
-# 3. Full End-to-End Regression Suite (61 tests, ~1 min)
+# 3. Full End-to-End Regression Suite (63 tests, ~1.5-2 min)
 mvn test -Pregression
 
 # 4. API Integration Probing (6 tests, ~12s)
@@ -180,7 +194,7 @@ mvn test -Dtest=CartTest -DslowMo=500 -Dheadless=false
 mvn test -Pui -DthreadCount=4
 
 # Run against a different browser engine (chromium, firefox, webkit)
-mvn test -Psmoke -DbrowserName=firefox
+mvn test -Psmoke -Dbrowser=firefox
 ```
 
 ### 5.4 Allure Reporting
@@ -229,11 +243,11 @@ Required environment variables or `.env` entries:
 
 ### GitHub Actions CI (`.github/workflows/smoke-gate.yml`)
 
-- Triggered automatically on push and pull requests to `main` and `refactor/**`.
+- Triggered automatically on pushes to `main` and `refactor/**`, and pull requests targeting `main`.
 - Spins up an ephemeral, isolated nopCommerce and MS SQL Docker stack on `ubuntu-latest`.
 - Pre-seeds the database snapshot using `docker/seed/nopcommerce_baseline.bak`.
 - Executes both the **Browser Smoke Suite** and **API Probe Suite**.
-- Automatically reconciles RTM documentation and uploads Allure + Surefire build artifacts.
+- Runs `python3 scripts/reconcile_rtm.py --verify-only` to validate RTM parity without overwriting committed regression baselines, and uploads Allure + Surefire CI artifacts.
 
 ### Local Jenkins CI Pipeline (`jenkins/Jenkinsfile`)
 
@@ -269,7 +283,7 @@ Required environment variables or `.env` entries:
 │   ├── database/       # DatabaseManager for HikariCP JDBC pooling, SQL queries & customer cleanup
 │   ├── factory/        # PlaywrightFactory for ThreadLocal browser and page instances
 │   ├── listeners/      # TestListener (Allure/screenshots) & ThreadCountListener (parallelism)
-│   ├── pages/          # 18 Page Object implementations with auto-wait actions
+│   ├── pages/          # 19 Page Object implementations with auto-wait actions
 │   └── tests/          # 11 Test classes across UI, API, DB, Smoke, A11y, and NFR
 ├── src/test/resources/
 │   ├── config/         # config.properties repository defaults
@@ -288,4 +302,4 @@ Required environment variables or `.env` entries:
 
 - **Author & QA Automation Engineer:** Deependra Singh
 - **Target Application:** nopCommerce 4.90.8 (.NET 9 + MS SQL Server)
-- **Status:** **Active / Fully Verified — 61/61 Tests Passing (100% Pass Rate)**
+- **Status:** **Active / Verified — 63/63 Automated Tests Passing (100% Pass Rate)**

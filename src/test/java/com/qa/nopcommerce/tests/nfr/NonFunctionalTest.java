@@ -2,6 +2,7 @@ package com.qa.nopcommerce.tests.nfr;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.assertions.PlaywrightAssertions;
+import com.microsoft.playwright.options.WaitUntilState;
 import com.qa.nopcommerce.annotation.TestCase;
 import com.qa.nopcommerce.base.BaseTest;
 import io.qameta.allure.Description;
@@ -20,17 +21,17 @@ import java.util.List;
 public class NonFunctionalTest extends BaseTest {
 
     @Test(groups = {"nfr"})
-    @TestCase(value = "TC-NFR-001", requirementId = "REQ-NFR-001")
+    @TestCase(value = "TC-NFR-001", requirementId = "REQ-NFR-006")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify storefront responsive layout adapts across Desktop (1920x1080) and Mobile (375x667)")
     public void testResponsiveViewportLayout() {
         getPage().setViewportSize(1920, 1080);
-        navigateTo("/");
+        navigateTo("/", WaitUntilState.LOAD);
         Locator desktopMenu = getPage().locator(".header-menu .menu");
         PlaywrightAssertions.assertThat(desktopMenu).isVisible();
 
         getPage().setViewportSize(375, 667);
-        navigateTo("/");
+        navigateTo("/", WaitUntilState.LOAD);
         Locator searchBox = getPage().locator("#small-searchterms");
         PlaywrightAssertions.assertThat(searchBox).isVisible();
         Boolean hasHorizontalOverflow = (Boolean) getPage().evaluate(
@@ -40,35 +41,35 @@ public class NonFunctionalTest extends BaseTest {
     }
 
     @Test(groups = {"nfr"})
-    @TestCase(value = "TC-NFR-002", requirementId = "REQ-NFR-001")
+    @TestCase(value = "TC-NFR-002", requirementId = "REQ-NFR-006")
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify mobile viewport renders navigation hamburger menu trigger")
     public void testMobileNavigationMenuTrigger() {
         getPage().setViewportSize(375, 667);
-        navigateTo("/");
+        navigateTo("/", WaitUntilState.LOAD);
 
         Locator mobileMenuTrigger = getPage().locator(".header-menu #menu-1.menu__toggle");
         PlaywrightAssertions.assertThat(mobileMenuTrigger).isVisible();
     }
 
     @Test(groups = {"nfr"})
-    @TestCase(value = "TC-NFR-003", requirementId = "REQ-NFR-002")
+    @TestCase(value = "TC-NFR-003", requirementId = "REQ-NFR-003")
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Verify homepage navigation commit plus header visibility completes within 15000ms")
+    @Description("Verify full homepage document load plus header visibility completes within 15000ms CI SLA")
     public void testPageLoadPerformanceSla() {
         long startNano = System.nanoTime();
-        navigateTo("/");
+        navigateTo("/", WaitUntilState.LOAD);
         PlaywrightAssertions.assertThat(getPage().locator(".header-logo")).isVisible();
         long duration = (System.nanoTime() - startNano) / 1_000_000;
 
-        log.info("Homepage navigation took {} ms", duration);
+        log.info("Homepage full load took {} ms", duration);
         Assert.assertTrue(duration < 15000, "Homepage load time exceeded maximum 15s SLA: " + duration + "ms");
     }
 
     @Test(groups = {"nfr"})
-    @TestCase(value = "TC-NFR-004", requirementId = "REQ-NFR-003")
+    @TestCase(value = "TC-NFR-004", requirementId = "REQ-NFR-007")
     @Severity(SeverityLevel.NORMAL)
-    @Description("Verify network request traffic contains no uncaught 500 Server Errors on core assets")
+    @Description("Verify full page load and network asset traffic contain no HTTP 5xx Server Errors")
     public void testNo500InternalServerErrorsOnAssets() {
         List<String> failedUrls = new ArrayList<>();
         getPage().onResponse(response -> {
@@ -77,7 +78,7 @@ public class NonFunctionalTest extends BaseTest {
             }
         });
 
-        navigateTo("/");
+        navigateTo("/", WaitUntilState.LOAD);
         PlaywrightAssertions.assertThat(getPage().locator(".header-logo")).isVisible();
         Assert.assertTrue(failedUrls.isEmpty(), "Found 500 Server Errors on page assets: " + failedUrls);
     }

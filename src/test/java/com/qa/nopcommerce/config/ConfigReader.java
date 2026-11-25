@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
@@ -167,9 +168,13 @@ public class ConfigReader {
         ));
     }
 
+    private static boolean isForbiddenDemoUrl(String url) {
+        return url != null && url.toLowerCase(Locale.ROOT).contains("demo.nopcommerce.com");
+    }
+
     public static String getBaseUrl() {
         String url = get("baseUrl", "http://127.0.0.1:5000");
-        if (url.contains("demo.nopcommerce.com")) {
+        if (isForbiddenDemoUrl(url)) {
             throw new IllegalStateException(
                     "Refusing to target shared public demo site (" + url + "). " +
                     "Point BASE_URL / baseUrl to an isolated nopCommerce test instance."
@@ -184,13 +189,13 @@ public class ConfigReader {
 
     public static String getAdminUrl() {
         String url = get("adminUrl", getBaseUrl() + "/Admin");
-        if (url.contains("demo.nopcommerce.com")) {
+        if (isForbiddenDemoUrl(url)) {
             throw new IllegalStateException(
                     "Refusing to target shared public admin demo site (" + url + "). " +
                     "Point ADMIN_URL / adminUrl to an isolated nopCommerce test instance."
             );
         }
-        return url;
+        return url.replaceAll("/+$", "");
     }
 
     public static String getBrowser() {

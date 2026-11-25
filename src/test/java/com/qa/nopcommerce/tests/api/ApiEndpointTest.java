@@ -17,6 +17,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 @Epic("Integration & HTTP Surface")
@@ -99,12 +100,17 @@ public class ApiEndpointTest {
     @Test(groups = {"api"})
     @TestCase(value = "TC-API-007", requirementId = "REQ-API-002")
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Verify protected administration portal root responds with login prompt or redirect")
+    @Description("Verify protected administration portal root responds with HTTP 302 redirect to /login")
     public void testAdminPortalEndpoint() {
-        APIResponse response = requestContext.get("/Admin");
+        APIResponse response = requestContext.get("/Admin",
+                com.microsoft.playwright.options.RequestOptions.create().setMaxRedirects(0));
         int status = response.status();
-        Assert.assertTrue(status == 200 || status == 302,
-                "Expected status 200 (after redirect to login) or 302 for /Admin, received: " + status);
+        Assert.assertEquals(status, 302,
+                "Expected HTTP 302 Found redirect for unauthenticated /Admin request, received: " + status);
+        String location = response.headers().get("location");
+        Assert.assertNotNull(location, "Expected Location redirect header on /Admin");
+        Assert.assertTrue(location.toLowerCase(Locale.ROOT).contains("login"),
+                "Expected /Admin redirect Location header to point to login, received: " + location);
     }
 
     @Test(groups = {"api"})

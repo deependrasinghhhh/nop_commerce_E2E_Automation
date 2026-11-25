@@ -8,7 +8,6 @@ import com.microsoft.playwright.Page;
  */
 public class OrderSuccessPage extends BasePage {
 
-    private final Locator pageTitle;
     private final Locator completedTitle;
     private final Locator orderNumber;
     private final Locator detailsLink;
@@ -16,9 +15,8 @@ public class OrderSuccessPage extends BasePage {
 
     public OrderSuccessPage(Page page) {
         super(page);
-        this.pageTitle = page.locator(".page-title h1");
-        this.completedTitle = page.locator(".section.order-completed .title strong");
-        this.orderNumber = page.locator(".order-number strong, .order-completed .details");
+        this.completedTitle = page.locator(".section.order-completed .title, .section.order-completed .title strong").first();
+        this.orderNumber = page.locator(".order-completed .order-number strong, .order-number strong").first();
         this.detailsLink = page.locator("a[href*='orderdetails']");
         this.continueButton = page.locator("button.order-completed-continue-button");
     }
@@ -28,7 +26,20 @@ public class OrderSuccessPage extends BasePage {
     }
 
     public String getOrderNumber() {
+        waitForVisible(orderNumber);
         return getText(orderNumber);
+    }
+
+    public int getOrderId() {
+        String digits = getOrderNumber().replaceAll("\\D+", "");
+        if (digits.isBlank()) {
+            throw new IllegalStateException("Could not parse numeric order ID from text: " + getOrderNumber());
+        }
+        return Integer.parseInt(digits);
+    }
+
+    public boolean isOrderDetailsLinkVisible() {
+        return waitForVisible(detailsLink);
     }
 
     public HomePage clickContinue() {

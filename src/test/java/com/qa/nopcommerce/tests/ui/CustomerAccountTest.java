@@ -61,8 +61,10 @@ public class CustomerAccountTest extends BaseTest {
             Assert.assertEquals(infoPage.getEmailValue(), email, "Expected email to match registered email");
 
             infoPage.updateName("Alexander", "UpdatedQA");
+            getPage().reload();
+            infoPage = new CustomerInfoPage(getPage());
             Assert.assertEquals(infoPage.getFirstNameValue(), "Alexander",
-                    "Expected updated first name Alexander");
+                    "Expected updated first name Alexander to persist across reload");
         });
     }
 

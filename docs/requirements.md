@@ -73,6 +73,7 @@ To ensure end-to-end traceability across the STLC, every requirement follows a s
 | `REQ-CART-005` | P2 | Add Product to Wishlist | The system shall add a product to the customer wishlist upon clicking `"Add to wishlist"`, displaying a confirmation notification and updating the wishlist header badge. |
 | `REQ-CART-006` | P2 | Move Wishlist Item to Shopping Cart | The system shall allow users on `/wishlist` to select items and click `"Add to cart"`, migrating selected items into the shopping cart. |
 | `REQ-CART-007` | P3 | Estimate Shipping Calculation | The system shall calculate shipping fee estimates on `/cart` when Country, State, and Zip code are provided. |
+| `REQ-CART-008` | P1 | Discount Coupon Code Application & Validation | The system shall validate discount coupon codes entered on `/cart`, applying percentage/order reductions cleanly when valid and displaying a rejection banner for invalid codes. |
 
 ---
 
@@ -110,6 +111,7 @@ To ensure end-to-end traceability across the STLC, every requirement follows a s
 | `REQ-ADM-002` | P2 | Dashboard Metric Presentation | The system shall render administrative overview statistics (Sales totals, Orders volume, Registered customers) on `/Admin`. |
 | `REQ-ADM-003` | P2 | Catalog Product Inspection | The system shall allow administrators to search and view product records under `/Admin/Product/List` by product name, category, and vendor. |
 | `REQ-ADM-004` | P2 | Order Management Verification | The system shall display placed customer orders under `/Admin/Order/List`, reflecting matching customer email, order status, and total. |
+| `REQ-ADM-005` | P2 | Customer Account Directory Inspection | The system shall allow administrators to inspect registered customer accounts under `/Admin/Customer/List`. |
 
 ---
 
@@ -122,14 +124,14 @@ To ensure end-to-end traceability across the STLC, every requirement follows a s
 | `REQ-API-001` | P1 | Core Route Status Codes | The system shall respond with HTTP `200 OK` for primary public routes (`/`, `/register`, `/login`, `/cart`, `/contactus`, `/search`). |
 | `REQ-API-002` | P2 | Protected Route Redirects | The system shall respond with HTTP `302 Found` (redirecting to `/login`) when unauthenticated requests target protected routes like `/customer/info` or `/Admin`. |
 | `REQ-API-003` | P2 | Anti-Forgery Token Issuance | The system shall include an ASP.NET anti-forgery cookie and hidden `__RequestVerificationToken` in HTML response payloads for state-changing forms (`/login`, `/register`). |
-| `REQ-API-004` | P2 | HTTP Form Submission Handling | The system shall process valid form POST requests with extracted verification tokens and cookies, returning appropriate HTTP redirect/success codes. |
+| `REQ-API-004` | P2 | HTTP Form Submission & CSRF Enforcement | The system shall enforce ASP.NET anti-forgery tokens on state-changing form POST requests, processing valid token-bearing payloads and rejecting forged/tokenless POSTs with HTTP `400 Bad Request`. |
 | `REQ-API-005` | P3 | Security Headers Presence | The system shall return standard security response headers (e.g., `X-Content-Type-Options: nosniff`) across web responses. |
 
 ---
 
 ### 2.8 Database Verification (`REQ-DB`)
 
-> **Architectural Note:** Direct backend validation is performed via read-only JDBC queries against Microsoft SQL Server 2022 to verify data persistence integrity resulting from UI interactions.
+> **Architectural Note:** Direct backend validation is performed via pooled JDBC assertions against Microsoft SQL Server 2022 to verify persistence integrity; isolated test accounts, orders, and cart items created during automation are removed transactionally afterward.
 
 | ID | Priority | Title | Description & Acceptance Criteria |
 |---|---|---|---|
@@ -137,6 +139,8 @@ To ensure end-to-end traceability across the STLC, every requirement follows a s
 | `REQ-DB-002` | P1 | Order & OrderItem Integrity | Upon completing order placement, the system shall persist an active record in `[Order]` with valid `OrderGuid`, matching `CustomerId`, and `OrderTotal`. At least one associated record must exist in `[OrderItem]` referencing the purchased `ProductId` and quantity. |
 | `REQ-DB-003` | P2 | Shopping Cart Item State Persistence | When a product is added or updated in the cart, the system shall persist a record in `[ShoppingCartItem]` reflecting the customer's ID, `ProductId`, selected `Quantity`, and `ShoppingCartTypeId = 1` (Shopping Cart). |
 | `REQ-DB-004` | P2 | Product Inventory & Stock Consistency | The system shall reflect stock quantity consistency in `[Product]` where `StockQuantity` matches the UI availability status, and inventory decrements appropriately when inventory tracking is enabled. |
+| `REQ-DB-005` | P2 | Customer Address Entity Persistence | When a customer saves a delivery address via `/customer/addresses`, matching rows shall persist in `[Address]` and `[CustomerAddresses]`. |
+| `REQ-DB-006` | P2 | Database Pool Connectivity Health | The HikariCP JDBC pool (`DatabaseManager`) shall open valid SQL Server connections and execute health queries (`SELECT 1`) deterministically. |
 
 ---
 
@@ -155,8 +159,10 @@ To ensure end-to-end traceability across the STLC, every requirement follows a s
 
 | ID | Priority | Title | Description & Acceptance Criteria |
 |---|---|---|---|
-| `REQ-NFR-001` | P1 | Cross-Browser Compatibility | The automated test suite shall execute deterministically across **Chromium**, **Firefox**, and **WebKit** using Playwright Java browser binaries. |
-| `REQ-NFR-002` | P1 | Thread-Safe Concurrency | The test framework must manage browser contexts via `ThreadLocal<Playwright>` and `ThreadLocal<BrowserContext>`, supporting parallel TestNG execution with zero race conditions. |
-| `REQ-NFR-003` | P1 | Local Container Performance Baseline | The local containerized instance shall handle typical user navigation flows with median page response latency under 1500 ms, measured via k6 performance scripts. |
-| `REQ-NFR-004` | P1 | Zero Hardcoded Sleep Policies *(Deferred — Architectural Standard)* | Test automation code shall strictly prohibit `Thread.sleep()`. All synchronizations must leverage Playwright's auto-waiting assertions (`PlaywrightAssertions.assertThat()`) or explicit web assertions. *Deferred as a standalone test case; enforced globally via static review and CI policy.* |
+| `REQ-NFR-001` | P1 | Cross-Browser Compatibility *(Executed via Browser Matrix CLI)* | The automated test suite shall support execution across **Chromium**, **Firefox**, and **WebKit** using Playwright Java browser binaries via `-Dbrowser=...`. |
+| `REQ-NFR-002` | P1 | Thread-Safe Concurrency *(Verified via Parallel Regression)* | The test framework shall isolate browser contexts via `ThreadLocal<Playwright>` and `ThreadLocal<BrowserContext>`, supporting parallel TestNG execution (`thread-count=2`+) with zero race conditions. |
+| `REQ-NFR-003` | P1 | Local Container Performance Baseline | The local containerized instance shall render primary storefront routes promptly, keeping k6 median HTTP latency `< 1500 ms` (`p95 < 2500 ms`) and CI document load + header visibility `< 15000 ms`. |
+| `REQ-NFR-004` | P1 | Zero Hardcoded Sleep Policies *(Deferred — Architectural Standard)* | Test automation code shall strictly prohibit `Thread.sleep()`. All synchronizations must leverage Playwright's auto-waiting assertions (`PlaywrightAssertions.assertThat()`) or explicit polling. *Deferred as a standalone test case; enforced globally via static review and CI policy.* |
 | `REQ-NFR-005` | P1 | Automatic Evidence Capture *(Deferred — Architectural Standard)* | Test execution failures must automatically capture a full-resolution screenshot and Playwright zip trace through a TestNG failure listener, attached to surefire/allure reports. *Deferred as a standalone test case; enforced globally via `TestListener` failure hooks.* |
+| `REQ-NFR-006` | P1 | Responsive Storefront Viewport Adaptation | Storefront pages shall adapt cleanly across desktop (`1920x1080`) and mobile (`375x667`) viewports, exposing the mobile menu trigger with zero horizontal overflow. |
+| `REQ-NFR-007` | P2 | Core Asset HTTP Stability | Full storefront page load and dependent asset responses shall complete with zero uncaught HTTP `5xx` internal server errors. |

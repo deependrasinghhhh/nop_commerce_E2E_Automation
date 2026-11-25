@@ -3,7 +3,6 @@
 <suite name="nopCommerce Full Regression Suite" parallel="none">
     <listeners>
         <listener class-name="com.qa.nopcommerce.listeners.ThreadCountListener" />
-        <listener class-name="com.qa.nopcommerce.listeners.TestListener" />
     </listeners>
 
     <test name="API Endpoint Integration Tests" parallel="none">

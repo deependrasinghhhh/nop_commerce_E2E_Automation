@@ -11,8 +11,6 @@ import java.util.List;
  */
 public class CartPage extends BasePage {
 
-    private final Locator pageTitle;
-    private final Locator cartTable;
     private final Locator cartRows;
     private final Locator updateCartButton;
     private final Locator discountCodeInput;
@@ -22,14 +20,14 @@ public class CartPage extends BasePage {
     private final Locator discountRowSummary;
     private final Locator subTotalSummary;
     private final Locator termsOfServiceCheckbox;
+    private final Locator termsWarningDialog;
+    private final Locator termsWarningCloseButton;
     private final Locator checkoutButton;
     private final Locator orderTotal;
     private final Locator emptyCartMessage;
 
     public CartPage(Page page) {
         super(page);
-        this.pageTitle = page.locator(".page-title h1");
-        this.cartTable = page.locator("table.cart");
         this.cartRows = page.locator("table.cart tbody tr");
         this.updateCartButton = page.locator("#updatecart");
         this.discountCodeInput = page.locator("#discountcouponcode");
@@ -39,6 +37,8 @@ public class CartPage extends BasePage {
         this.discountRowSummary = page.locator(".order-total-discount .value-summary, .cart-total .discount-total");
         this.subTotalSummary = page.locator(".order-subtotal .value-summary");
         this.termsOfServiceCheckbox = page.locator("#termsofservice");
+        this.termsWarningDialog = page.locator("#terms-of-service-warning-box");
+        this.termsWarningCloseButton = page.locator(".ui-dialog:has(#terms-of-service-warning-box) button.ui-dialog-titlebar-close");
         this.checkoutButton = page.locator("#checkout");
         this.orderTotal = page.locator(".order-total .value-summary");
         this.emptyCartMessage = page.locator(".no-data");
@@ -78,9 +78,10 @@ public class CartPage extends BasePage {
     public void updateQuantity(int rowIndex, int newQty) {
         Locator qtyInput = cartRows.nth(rowIndex).locator("input.qty-input");
         fill(qtyInput, String.valueOf(newQty));
-        qtyInput.press("Enter");
-        if (updateCartButton.count() > 0 && updateCartButton.isVisible()) {
+        if (updateCartButton.count() > 0 && waitForVisible(updateCartButton, 3_000)) {
             click(updateCartButton);
+        } else {
+            qtyInput.press("Enter");
         }
         waitForLoad();
     }
@@ -128,13 +129,15 @@ public class CartPage extends BasePage {
     }
 
     public void removeAppliedCouponIfPresent() {
-        if (isVisible(removeDiscountButton)) {
+        if (waitForVisible(removeDiscountButton, 2_000)) {
             click(removeDiscountButton);
             waitForLoad();
+            waitForCondition(() -> !isVisible(removeDiscountButton), 5_000);
         }
     }
 
     public String getCouponMessageText() {
+        waitForVisible(couponMessage);
         return getOptionalText(couponMessage);
     }
 
@@ -165,10 +168,46 @@ public class CartPage extends BasePage {
         }
     }
 
+    public void clickCheckoutWithoutTerms() {
+        if (!waitForVisible(checkoutButton)) {
+            throw new IllegalStateException("Checkout button did not become visible on the cart page");
+        }
+        if (termsOfServiceCheckbox.count() > 0 && termsOfServiceCheckbox.first().isChecked()) {
+            termsOfServiceCheckbox.first().uncheck();
+        }
+        click(checkoutButton);
+    }
+
+    public boolean isTermsWarningVisible() {
+        return waitForVisible(termsWarningDialog, 5_000);
+    }
+
+    public void closeTermsWarningDialog() {
+        if (waitForVisible(termsWarningCloseButton, 2_000)) {
+            click(termsWarningCloseButton);
+            waitForCondition(() -> !isVisible(termsWarningDialog), 5_000);
+        } else if (isVisible(termsWarningDialog)) {
+            page.keyboard().press("Escape");
+            waitForCondition(() -> !isVisible(termsWarningDialog), 5_000);
+        }
+    }
+
     public CheckoutPage proceedToCheckout() {
         acceptTermsOfService();
         click(checkoutButton);
         return new CheckoutPage(page);
+    }
+
+    public String getSubTotal() {
+        return getText(subTotalSummary);
+    }
+
+    public BigDecimal getSubTotalAmount() {
+        String normalized = getSubTotal().replaceAll("[^0-9,.-]", "").replace(",", "");
+        if (normalized.isBlank()) {
+            throw new IllegalStateException("Cart subtotal was empty or not numeric");
+        }
+        return new BigDecimal(normalized);
     }
 
     public String getOrderTotal() {

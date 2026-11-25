@@ -144,10 +144,14 @@ public class CheckoutPage extends BasePage {
     }
 
     public void selectPaymentMethodAndContinue() {
-        if (isVisible(paymentMethodCheckMoneyOrderRadio)) {
-            paymentMethodCheckMoneyOrderRadio.check();
+        if (!waitForVisible(paymentMethodCheckMoneyOrderRadio, 15_000)) {
+            throw new IllegalStateException("Check / Money Order payment radio button did not become visible");
         }
+        paymentMethodCheckMoneyOrderRadio.check();
         click(paymentMethodContinueButton);
+        if (!waitForVisible(paymentInfoContinueButton, 15_000)) {
+            throw new IllegalStateException("Checkout did not advance to the payment information step");
+        }
     }
 
     public boolean isPaymentMethodOptionVisible() {
@@ -192,10 +196,19 @@ public class CheckoutPage extends BasePage {
     }
 
     public void continuePaymentInfo() {
+        if (!waitForVisible(paymentInfoContinueButton, 15_000)) {
+            throw new IllegalStateException("Payment information continue button did not become visible");
+        }
         click(paymentInfoContinueButton);
+        if (!waitForVisible(confirmOrderButton, 15_000)) {
+            throw new IllegalStateException("Checkout did not advance to the confirm order step");
+        }
     }
 
     public OrderSuccessPage confirmOrder() {
+        if (!waitForVisible(confirmOrderButton, 15_000)) {
+            throw new IllegalStateException("Confirm order button did not become visible");
+        }
         click(confirmOrderButton);
         return new OrderSuccessPage(page);
     }

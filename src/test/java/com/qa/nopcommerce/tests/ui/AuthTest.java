@@ -72,6 +72,37 @@ public class AuthTest extends BaseTest {
     }
 
     @Test(groups = {"ui", "auth"})
+    @TestCase(value = "TC-AUTH-006", requirementId = "REQ-AUTH-003")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Verify registration with an already-registered email is rejected cleanly")
+    public void testRegistrationDuplicateEmailRejected() {
+        String existingEmail = "nop_qa_" + UUID.randomUUID().toString().replace("-", "") + "@example.com";
+        String dynamicPassword = "QaAuth@" + UUID.randomUUID().toString().substring(0, 8);
+        runWithCleanup("duplicate email registration " + existingEmail, () -> {
+            navigateTo("/register");
+            RegisterPage registerPage = new RegisterPage(getPage());
+            registerPage.selectGender("male");
+            registerPage.fillRegistrationForm(
+                    "Alex", "QA Tester", existingEmail, "QA Corp", dynamicPassword, dynamicPassword);
+            registerPage.clickRegisterButton();
+            Assert.assertTrue(registerPage.isRegistrationSuccess(),
+                    "Expected initial registration to succeed before duplicate check");
+
+            new HomePage(getPage()).clickLogout();
+
+            navigateTo("/register");
+            RegisterPage duplicateRegisterPage = new RegisterPage(getPage());
+            duplicateRegisterPage.selectGender("male");
+            duplicateRegisterPage.fillRegistrationForm(
+                    "Alex", "QA Tester", existingEmail, "QA Corp", dynamicPassword, dynamicPassword);
+            duplicateRegisterPage.clickRegisterButton();
+
+            Assert.assertTrue(duplicateRegisterPage.getValidationSummary().contains("The specified email already exists"),
+                    "Expected duplicate email rejection message, got: " + duplicateRegisterPage.getValidationSummary());
+        }, () -> DatabaseManager.deleteIsolatedCustomerByEmail(existingEmail));
+    }
+
+    @Test(groups = {"ui", "auth"})
     @TestCase(value = "TC-AUTH-008", requirementId = "REQ-AUTH-004")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify registration fails when password and confirm password do not match")

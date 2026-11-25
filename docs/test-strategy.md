@@ -4,7 +4,7 @@
 > **Target AUT:** nopCommerce 4.90.8 on ASP.NET Core (.NET 9)  
 > **Technology Stack:** Java 21 · Playwright Java 1.49.0 · TestNG 7.10.2 · Maven · Docker (MSSQL 2022)
 > **Sign-off / Governance:** Self-assessed by the project author acting as QA Lead. No other reviewer or external stakeholder was involved.  
-> **Base Evaluation Date:** 2026-11-13
+> **Base Evaluation Date:** 2026-11-25
 
 ---
 
@@ -68,14 +68,9 @@ public class PlaywrightFactory {
 ```
 
 ### 3.3 Synchronization & Locator Discipline
-* **Zero Hardcoded Sleeps:** `Thread.sleep()` is categorically forbidden.
-* **Auto-Waiting Assertions:** Playwright locator actions and `PlaywrightAssertions.assertThat(locator)` use the configured timeout (45,000 ms in `config.properties`).
-* **Resilient User-Facing Locators:** Locators prioritize accessible roles and labels:
-  1. `page.getByRole(...)`
-  2. `page.getByLabel(...)`
-  3. `page.getByPlaceholder(...)`
-  4. `page.getByText(...)`
-  5. Structural CSS locators (e.g., `#small-searchterms`) only when semantic roles are unavailable in the ASP.NET template. Positional XPaths are strictly prohibited.
+* **Zero Hardcoded Sleeps:** `Thread.sleep()` and `waitForTimeout()` are categorically prohibited.
+* **Auto-Waiting Assertions:** Playwright locator actions and `PlaywrightAssertions.assertThat(locator)` use the configured timeout (45,000 ms in `config.properties`), paired with bounded `LockSupport.parkNanos` polling in `BasePage`.
+* **Resilient Structural & Semantic Selectors:** Page Objects use stable element IDs (`#Email`, `#FirstName`, `#small-searchterms`, `#discountcouponcode`), validation attributes (`span[data-valmsg-for='...']`), semantic CSS classes, and Playwright `.filter(setHasText(...))` predicates, avoiding positional XPaths (`//div[3]/button[1]`).
 
 ---
 
@@ -137,15 +132,15 @@ public class PlaywrightFactory {
 | **Database** | Microsoft SQL Server | 2022 Developer | Primary persistence engine for containerized AUT |
 | **Database client / pool** | Microsoft JDBC / HikariCP | 12.8.1.jre11 / 5.1.0 | JDBC verification and cleanup |
 | **Performance** | k6 | 0.54.0 in the retained benchmark | Separate HTTP browse/search run |
-| **Reporting** | Allure / AspectJ | 2.29.0 / 1.9.22 | Allure results and TestNG attachments |
+| **Reporting** | Allure | 2.29.0 | Allure results and TestNG attachments via `TestListener` |
 | **CI/CD** | Jenkins + GitHub Actions | Jenkinsfile / workflow YAML | Jenkins-selected TestNG suite; GitHub smoke and API gates |
 
 ## 8. Current Coverage, CI, and Known Findings
 
-The test catalog contains **108 cases**, of which **61 automated methods** currently have `@TestCase` mappings (56.5% catalog automation). This is not 100% coverage of the planned catalog; the remaining cases are unautomated/manual scope. Execution counts are generated from TestNG reports and reconciled by `scripts/reconcile_rtm.py`.
+The test catalog contains **108 cases**, of which **63 automated methods** currently have `@TestCase` mappings (58.3% catalog automation). This is not 100% coverage of the planned catalog; the remaining cases are unautomated/manual scope. Execution counts are generated from TestNG reports and verified/reconciled by `scripts/reconcile_rtm.py`.
 
-The GitHub Actions workflow runs the selected smoke suite and a separate API suite. It does not execute the full UI regression, database, accessibility, or NFR suites. A green dispatch workflow for Jenkins confirms only that Jenkins accepted the build request; it does not wait for or verify the downstream test result.
+The GitHub Actions workflow runs the selected smoke suite and a separate API suite (`--verify-only` RTM check). It does not execute the full UI regression, database, accessibility, or NFR suites. A green dispatch workflow for Jenkins confirms only that Jenkins accepted the build request; it does not wait for or verify the downstream test result.
 
-The retained k6 summary is a separate **HTTP storefront browse/search** run (25 peak VUs, 110 seconds, 481 requests, reported p95 892.6 ms). It is not a browser checkout workload and is not a current CI gate.
+The retained k6 summary is a separate **HTTP storefront browse/search** run (25 peak VUs, 112.89 seconds, 1013 requests, median 72.97 ms, p95 257.73 ms). It is not a browser checkout workload and is not a current CI gate.
 
-The axe scans retain full rule and node data. The default failure threshold is `critical` so CI pipelines catch severe regressions without failing on accepted upstream theme debt, and is configurable through `a11y.failOnImpact` / `A11Y_FAIL_ON_IMPACT` (e.g., `serious` for strict audits); reports are written under `a11y.reportDirectory` (default `evidence/a11y`). The current saved scans show serious `color-contrast` findings, including white text on `#4ab2f1` at 2.35:1 where 4.5:1 is expected for normal text (`DEF-A11Y-001` / `RSK-012`). Because the automation repository contains no nopCommerce storefront CSS to repair this product defect, strict `-Da11y.failOnImpact=serious` runs report/fail those contrast nodes visibly rather than excluding the `color-contrast` rule.
+The axe scans retain full rule and node data. The default failure threshold is `critical` so CI pipelines catch severe regressions without failing on accepted upstream theme debt, and is configurable through `a11y.failOnImpact` / `A11Y_FAIL_ON_IMPACT` (e.g., `serious` for strict audits); reports are written under `a11y.reportDirectory` (default `target/a11y-reports`, synced to `evidence/a11y` on `--update-baseline`). The current saved scans show serious `color-contrast` findings, including white text on `#4ab2f1` at 2.35:1 where 4.5:1 is expected for normal text (`DEF-A11Y-001` / `RSK-012`). Because the automation repository contains no nopCommerce storefront CSS to repair this product defect, strict `-Da11y.failOnImpact=serious` runs report/fail those contrast nodes visibly rather than excluding the `color-contrast` rule.

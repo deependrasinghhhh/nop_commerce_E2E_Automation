@@ -14,7 +14,7 @@
 - **Environment:** Containerized Local (Docker) / Public Demo Fallback
 - **Browser & OS:** Google Chrome 154 / Windows 11 / Linux Ubuntu 24.04
 - **Database:** Microsoft SQL Server 2022
-- **Automation Runner:** Java 21 LTS + Playwright Java 1.48.0 + TestNG 7.10.2
+- **Automation Runner:** Java 21 LTS + Playwright Java 1.49.0 + TestNG 7.10.2
 
 #### 2. Traceability
 - **Requirement ID:** REQ-XXX-YYY
@@ -38,8 +38,8 @@
 
 #### 6. Retained Evidence Attachments
 - **Screenshot:** `evidence/failures/<test-name>.png`
-- **Playwright Trace Archive:** `evidence/failures/<test-name>.zip`
-- **Video Recording:** `evidence/recordings/<recording>.webp`
+- **Playwright Trace Archive:** `evidence/traces/<test-name>-trace.zip`
+- **Video Recording (when `-DrecordVideo=true`):** `evidence/videos/<recording>.webm`
 
 #### 7. Severity & Priority Rationale
 - **Severity:** Blocker / Major / Normal / Minor (technical impact rationale)

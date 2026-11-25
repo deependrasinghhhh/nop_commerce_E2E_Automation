@@ -56,6 +56,8 @@ public class AdminTest extends BaseTest {
         AdminDashboardPage dashboardPage = new AdminDashboardPage(getPage());
 
         Assert.assertTrue(dashboardPage.isDashboardLoaded(), "Expected admin dashboard to load");
+        Assert.assertTrue(dashboardPage.getStatisticsCardCount() >= 1,
+                "Expected admin dashboard statistics cards to be rendered");
     }
 
     @Test(groups = {"ui", "admin"})
@@ -70,6 +72,10 @@ public class AdminTest extends BaseTest {
         AdminProductListPage productListPage = new AdminProductListPage(getPage());
         productListPage.waitForGrid();
         Assert.assertTrue(productListPage.isGridVisible(), "Expected products grid to be visible");
+
+        productListPage.searchProduct("Build your own computer");
+        Assert.assertTrue(productListPage.getProductRowCount() >= 1,
+                "Expected product search to return matching row(s)");
     }
 
     @Test(groups = {"ui", "admin"})
@@ -101,7 +107,7 @@ public class AdminTest extends BaseTest {
     }
 
     @Test(groups = {"ui", "admin"})
-    @TestCase(value = "TC-ADM-007", requirementId = "REQ-ADM-002")
+    @TestCase(value = "TC-ADM-007", requirementId = "REQ-ADM-005")
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify admin can access customer accounts list page")
     public void testAdminCustomersPage() {

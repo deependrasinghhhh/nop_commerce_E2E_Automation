@@ -135,10 +135,10 @@ jobs:
           path: target/allure-results/history
           key: allure-history-smoke-${{ github.ref_name }}-${{ github.run_id }}
 
-      - name: Run RTM Reconciliation Script
+      - name: Run RTM Reconciliation Verification
         if: always()
         run: |
-          python3 scripts/reconcile_rtm.py
+          python3 scripts/reconcile_rtm.py --verify-only
 
       - name: Collect Container Logs on Failure
         if: failure()
@@ -163,9 +163,9 @@ jobs:
             target/surefire-reports/
             target/allure-results/
             target/site/allure-maven-plugin/
-            evidence/
-            docs/traceability-matrix.md
-            docs/execution-summary.md
+            evidence/failures/
+            evidence/traces/
+            evidence/logs/
 
   api-contract-gate:
     name: API Probe Suite (Isolated Instance)

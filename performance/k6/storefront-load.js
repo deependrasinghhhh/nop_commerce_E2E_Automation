@@ -25,8 +25,8 @@ const BASE_URL = RAW_BASE_URL.replace(/\/+$/, '');
 export const options = {
     stages: [
         { duration: '30s', target: 10 }, // Ramp-up to 10 VUs
-        { duration: '1m', target: 25 },  // Sustained load with 25 VUs
-        { duration: '20s', target: 0 },  // Ramp-down
+        { duration: '1m', target: 25 },  // Ramp-up to 25 peak VUs
+        { duration: '20s', target: 0 },  // Ramp-down to 0 VUs
     ],
     thresholds: {
         http_req_duration: ['p(95)<2500'], // 95% of requests must complete under 2.5s
@@ -42,7 +42,7 @@ const HEADERS = {
 };
 
 export function setup() {
-    const probe = http.get(`${BASE_URL}/`, { headers: HEADERS, timeout: '10s' });
+    const probe = http.get(`${BASE_URL}/`, { headers: HEADERS, timeout: '30s' });
     if (probe.status !== 200 || !probe.body || !probe.body.includes('nopCommerce')) {
         fail(`Target AUT health check failed at ${BASE_URL}/ (HTTP ${probe.status}). Aborting load test.`);
     }
@@ -100,6 +100,20 @@ export function handleSummary(data) {
     const totalHttpReqs = data.metrics.http_reqs ? data.metrics.http_reqs.values.count : iterations * reqsPerIteration + setupReqs;
     const failedReqs = data.metrics.http_req_failed ? data.metrics.http_req_failed.values.passes : 0;
     const passedReqs = totalHttpReqs - failedReqs;
+    const durationSeconds = data.state && typeof data.state.testRunDurationMs === 'number'
+        ? Number((data.state.testRunDurationMs / 1000).toFixed(2))
+        : 110;
+    const vusPeak = data.metrics.vus_max ? data.metrics.vus_max.values.max : 25;
+
+    const p95Ms = data.metrics.http_req_duration
+        ? Number(data.metrics.http_req_duration.values['p(95)'].toFixed(2))
+        : 0;
+    const failedRate = data.metrics.http_req_failed
+        ? Number(data.metrics.http_req_failed.values.rate.toFixed(4))
+        : 1.0;
+    const checkRate = data.metrics.checks
+        ? Number(data.metrics.checks.values.rate.toFixed(4))
+        : 0.0;
 
     const summaryPayload = {
         benchmark_metadata: {
@@ -108,8 +122,8 @@ export function handleSummary(data) {
             target_base_url: BASE_URL,
             scenario: 'Storefront Browse & Search Load Test (4 requests/iteration + 1 setup probe)',
             timestamp: new Date().toISOString(),
-            vus_peak: 25,
-            duration_seconds: 110,
+            vus_peak: vusPeak,
+            duration_seconds: durationSeconds,
         },
         metrics: {
             iterations: {
@@ -128,36 +142,48 @@ export function handleSummary(data) {
                 med_ms: data.metrics.http_req_duration ? Number(data.metrics.http_req_duration.values.med.toFixed(2)) : 0,
                 max_ms: data.metrics.http_req_duration ? Number(data.metrics.http_req_duration.values.max.toFixed(2)) : 0,
                 p90_ms: data.metrics.http_req_duration ? Number(data.metrics.http_req_duration.values['p(90)'].toFixed(2)) : 0,
-                p95_ms: data.metrics.http_req_duration ? Number(data.metrics.http_req_duration.values['p(95)'].toFixed(2)) : 0,
+                p95_ms: p95Ms,
             },
             http_req_failed: {
                 failed_requests: failedReqs,
                 succeeded_requests: passedReqs,
-                failure_rate: data.metrics.http_req_failed ? Number(data.metrics.http_req_failed.values.rate.toFixed(4)) : 0,
+                failure_rate: failedRate,
             },
             checks: {
                 passes: data.metrics.checks ? data.metrics.checks.values.passes : 0,
                 fails: data.metrics.checks ? data.metrics.checks.values.fails : 0,
-                pass_rate: data.metrics.checks ? Number(data.metrics.checks.values.rate.toFixed(4)) : 1.0,
+                pass_rate: checkRate,
             },
         },
         thresholds: {
             'http_req_duration:p(95)<2500': {
-                ok: data.metrics.http_req_duration ? data.metrics.http_req_duration.values['p(95)'] < 2500 : true,
-                actual_value_ms: data.metrics.http_req_duration ? Number(data.metrics.http_req_duration.values['p(95)'].toFixed(2)) : 0,
+                ok: Boolean(data.metrics.http_req_duration && data.metrics.http_req_duration.values['p(95)'] < 2500),
+                actual_value_ms: p95Ms,
             },
             'http_req_failed:rate<0.01': {
-                ok: data.metrics.http_req_failed ? data.metrics.http_req_failed.values.rate < 0.01 : true,
-                actual_rate: data.metrics.http_req_failed ? Number(data.metrics.http_req_failed.values.rate.toFixed(4)) : 0,
+                ok: Boolean(data.metrics.http_req_failed && data.metrics.http_req_failed.values.rate < 0.01),
+                actual_rate: failedRate,
             },
             'checks:rate>0.99': {
-                ok: data.metrics.checks ? data.metrics.checks.values.rate > 0.99 : true,
-                actual_rate: data.metrics.checks ? Number(data.metrics.checks.values.rate.toFixed(4)) : 1.0,
+                ok: Boolean(data.metrics.checks && data.metrics.checks.values.rate > 0.99),
+                actual_rate: checkRate,
             },
         },
     };
 
-    return {
-        'evidence/performance/k6-summary.json': JSON.stringify(summaryPayload, null, 2),
-    };
+    const jsonOutput = JSON.stringify(summaryPayload, null, 2) + '\n';
+    const stdoutText = [
+        `=== k6 Storefront Load Summary (${BASE_URL}) ===`,
+        `Duration: ${durationSeconds}s | Peak VUs: ${vusPeak} | Iterations: ${iterations} | HTTP Reqs: ${totalHttpReqs}`,
+        `Latency (ms): avg=${summaryPayload.metrics.http_req_duration.avg_ms}, med=${summaryPayload.metrics.http_req_duration.med_ms}, p90=${summaryPayload.metrics.http_req_duration.p90_ms}, p95=${p95Ms}, max=${summaryPayload.metrics.http_req_duration.max_ms}`,
+        `Failures: ${failedReqs}/${totalHttpReqs} (rate=${failedRate}) | Checks pass rate: ${checkRate}`,
+        '',
+    ].join('\n');
+
+    const outputs = { stdout: stdoutText };
+    const summaryOutPath = (__ENV.K6_SUMMARY_OUT || '').trim();
+    if (summaryOutPath) {
+        outputs[summaryOutPath] = jsonOutput;
+    }
+    return outputs;
 }

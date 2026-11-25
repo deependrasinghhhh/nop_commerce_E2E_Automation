@@ -27,7 +27,7 @@ public class DatabaseManager {
     private static final Pattern ISOLATED_CUSTOMER_EMAIL = Pattern.compile(
             "^(?:nop_(?:qa|profile|addr|deladdr|orders|reviewer)_[0-9a-f]{8}|"
                     + "nop_(?:qa|profile|addr|deladdr|orders|reviewer)_[0-9a-f]{32}|"
-                    + "qa_db_cart_[0-9a-f]{32})@example\\.com$",
+                    + "qa_(?:db_cart|checkout)_[0-9a-f]{32})@example\\.com$",
             Pattern.CASE_INSENSITIVE);
     private static volatile HikariDataSource dataSource;
 
@@ -178,7 +178,7 @@ public class DatabaseManager {
     }
 
     public static int getShoppingCartItemCount(int customerId) {
-        String sql = "SELECT COUNT(1) AS TotalItems FROM ShoppingCartItem WHERE CustomerId = ?";
+        String sql = "SELECT COUNT(1) AS TotalItems FROM ShoppingCartItem WHERE CustomerId = ? AND ShoppingCartTypeId = 1";
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, customerId);
@@ -193,6 +193,55 @@ public class DatabaseManager {
         throw new IllegalStateException("Shopping cart item count query returned no result row");
     }
 
+    /**
+     * Returns persisted shopping cart quantity ({@code ShoppingCartTypeId = 1}) for the specified
+     * customer and product URL slug, or {@code 0} when no matching row exists.
+     */
+    public static int getShoppingCartItemQuantity(int customerId, String productSlug) {
+        String sql = "SELECT COALESCE(SUM(sci.Quantity), 0) AS TotalQty "
+                + "FROM ShoppingCartItem sci "
+                + "INNER JOIN UrlRecord u ON u.EntityId = sci.ProductId AND u.EntityName = 'Product' "
+                + "WHERE sci.CustomerId = ? AND sci.ShoppingCartTypeId = 1 AND u.Slug = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, customerId);
+            stmt.setString(2, productSlug);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("TotalQty");
+                }
+            }
+        } catch (SQLException e) {
+            throw new IllegalStateException("Database query failed for getShoppingCartItemQuantity", e);
+        }
+        throw new IllegalStateException("Shopping cart quantity query returned no result row");
+    }
+
+    /**
+     * Checks whether a persisted active order exists for the specified registered customer email
+     * or guest billing address email and numeric order ID.
+     */
+    public static boolean orderExistsForCustomerEmail(int orderId, String customerEmail) {
+        String sql = "SELECT COUNT(1) AS TotalCount FROM [Order] o "
+                + "INNER JOIN Customer c ON c.Id = o.CustomerId "
+                + "LEFT JOIN Address ba ON ba.Id = o.BillingAddressId "
+                + "WHERE o.Id = ? AND o.Deleted = 0 AND (c.Email = ? OR ba.Email = ?)";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, orderId);
+            stmt.setString(2, customerEmail);
+            stmt.setString(3, customerEmail);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("TotalCount") > 0;
+                }
+            }
+        } catch (SQLException e) {
+            throw new IllegalStateException("Database query failed for orderExistsForCustomerEmail", e);
+        }
+        throw new IllegalStateException("Customer order check query returned no result row");
+    }
+
     public static int deleteShoppingCartItemsForCustomer(int customerId) {
         String sql = "DELETE FROM ShoppingCartItem WHERE CustomerId = ?";
         try (Connection conn = getConnection();
@@ -204,25 +253,10 @@ public class DatabaseManager {
         }
     }
 
-    public static int softDeleteCustomerByEmail(String email) {
-        if (email == null || email.isBlank()) {
-            return 0;
-        }
-        String sql = "UPDATE Customer SET Deleted = 1 WHERE Email = ? AND Deleted = 0";
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, email);
-            int deleted = stmt.executeUpdate();
-            log.info("Soft-deleted {} isolated customer record(s) for email '{}'", deleted, email);
-            return deleted;
-        } catch (SQLException e) {
-            throw new IllegalStateException("Database cleanup failed for isolated customer", e);
-        }
-    }
-
     /**
-     * Physically removes one account created by an isolated customer test.
-     * The email allowlist prevents this cleanup path from targeting seeded accounts.
+     * Physically removes one account (or anonymous guest customer matching billing address email)
+     * created by an isolated test, including any test-owned orders, cart items, reviews, generic
+     * attributes, and orphan addresses. The email allowlist protects seeded accounts.
      */
     public static int deleteIsolatedCustomerByEmail(String email) {
         if (email == null || email.isBlank()) {
@@ -232,14 +266,48 @@ public class DatabaseManager {
             throw new IllegalArgumentException("Refusing isolated-customer cleanup for an unrecognized test email.");
         }
 
-        String customerIdSql = "SELECT TOP (1) Id FROM Customer WHERE Email = ? ORDER BY Id DESC";
-        String addressIdsSql = "SELECT Address_Id FROM CustomerAddresses WHERE Customer_Id = ?";
+        String customerIdsSql = "SELECT DISTINCT Id FROM ("
+                + "SELECT Id FROM Customer WHERE Email = ? "
+                + "UNION "
+                + "SELECT c.Id FROM Customer c INNER JOIN Address a ON c.BillingAddress_Id = a.Id OR c.ShippingAddress_Id = a.Id WHERE a.Email = ? "
+                + "UNION "
+                + "SELECT o.CustomerId AS Id FROM [Order] o INNER JOIN Address a ON o.BillingAddressId = a.Id WHERE a.Email = ? "
+                + "UNION "
+                + "SELECT ca.Customer_Id AS Id FROM CustomerAddresses ca INNER JOIN Address a ON ca.Address_Id = a.Id WHERE a.Email = ?"
+                + ") AS MatchedCustomers";
+        String addressIdsSql = "SELECT DISTINCT AddressId FROM ("
+                + "SELECT Id AS AddressId FROM Address WHERE Email = ? "
+                + "UNION "
+                + "SELECT Address_Id AS AddressId FROM CustomerAddresses WHERE Customer_Id = ? "
+                + "UNION "
+                + "SELECT BillingAddress_Id AS AddressId FROM Customer WHERE Id = ? AND BillingAddress_Id IS NOT NULL "
+                + "UNION "
+                + "SELECT ShippingAddress_Id AS AddressId FROM Customer WHERE Id = ? AND ShippingAddress_Id IS NOT NULL "
+                + "UNION "
+                + "SELECT BillingAddressId AS AddressId FROM [Order] WHERE CustomerId = ? "
+                + "UNION "
+                + "SELECT ShippingAddressId AS AddressId FROM [Order] WHERE CustomerId = ? AND ShippingAddressId IS NOT NULL"
+                + ") AS CandidateAddresses";
+        String orderIdsSql = "SELECT Id FROM [Order] WHERE CustomerId = ?";
+        String deleteOrderNotesSql = "DELETE FROM OrderNote WHERE OrderId = ?";
+        String deleteDiscountHistorySql = "DELETE FROM DiscountUsageHistory WHERE OrderId = ?";
+        String deleteGiftCardHistorySql = "DELETE FROM GiftCardUsageHistory WHERE UsedWithOrderId = ?";
+        String deleteShipmentsSql = "DELETE FROM Shipment WHERE OrderId = ?";
+        String deleteOrderItemsSql = "DELETE FROM OrderItem WHERE OrderId = ?";
+        String deleteOrdersSql = "DELETE FROM [Order] WHERE CustomerId = ?";
+        String deleteShoppingCartSql = "DELETE FROM ShoppingCartItem WHERE CustomerId = ?";
+        String deleteReviewsSql = "DELETE FROM ProductReview WHERE CustomerId = ?";
+        String deleteActivityLogSql = "DELETE FROM ActivityLog WHERE CustomerId = ?";
+        String deleteLogSql = "DELETE FROM Log WHERE CustomerId = ?";
+        String clearCustomerAddressRefsSql = "UPDATE Customer SET BillingAddress_Id = NULL, ShippingAddress_Id = NULL WHERE Id = ?";
+        String deleteCustomerAddressesSql = "DELETE FROM CustomerAddresses WHERE Customer_Id = ?";
         String deleteGenericAttributesSql =
                 "DELETE FROM GenericAttribute WHERE KeyGroup = 'Customer' AND EntityId = ?";
         String deleteCustomWishlistSql = "DELETE FROM CustomWishlist WHERE CustomerId = ?";
         String deleteCustomerSql = "DELETE FROM Customer WHERE Id = ?";
         String deleteOrphanAddressSql = "DELETE FROM Address WHERE Id = ? " +
                 "AND NOT EXISTS (SELECT 1 FROM Customer WHERE BillingAddress_Id = ? OR ShippingAddress_Id = ?) " +
+                "AND NOT EXISTS (SELECT 1 FROM CustomerAddresses WHERE Address_Id = ?) " +
                 "AND NOT EXISTS (SELECT 1 FROM [Order] WHERE BillingAddressId = ? " +
                 "OR PickupAddressId = ? OR ShippingAddressId = ?) " +
                 "AND NOT EXISTS (SELECT 1 FROM Affiliate WHERE AddressId = ?)";
@@ -247,54 +315,100 @@ public class DatabaseManager {
         try (Connection connection = getConnection()) {
             connection.setAutoCommit(false);
             try {
-                int customerId;
-                try (PreparedStatement statement = connection.prepareStatement(customerIdSql)) {
-                    statement.setString(1, email);
-                    try (ResultSet result = statement.executeQuery()) {
-                        if (!result.next()) {
-                            connection.commit();
-                            return 0;
-                        }
-                        customerId = result.getInt("Id");
+                List<Integer> customerIds = new ArrayList<>();
+                try (PreparedStatement statement = connection.prepareStatement(customerIdsSql)) {
+                    for (int p = 1; p <= 4; p++) {
+                        statement.setString(p, email);
                     }
+                    try (ResultSet result = statement.executeQuery()) {
+                        while (result.next()) {
+                            customerIds.add(result.getInt("Id"));
+                        }
+                    }
+                }
+                if (customerIds.isEmpty()) {
+                    connection.commit();
+                    return 0;
                 }
 
                 List<Integer> addressIds = new ArrayList<>();
-                try (PreparedStatement statement = connection.prepareStatement(addressIdsSql)) {
-                    statement.setInt(1, customerId);
-                    try (ResultSet result = statement.executeQuery()) {
-                        while (result.next()) {
-                            addressIds.add(result.getInt("Address_Id"));
+                for (int customerId : customerIds) {
+                    try (PreparedStatement statement = connection.prepareStatement(addressIdsSql)) {
+                        statement.setString(1, email);
+                        for (int p = 2; p <= 6; p++) {
+                            statement.setInt(p, customerId);
+                        }
+                        try (ResultSet result = statement.executeQuery()) {
+                            while (result.next()) {
+                                int addrId = result.getInt("AddressId");
+                                if (!result.wasNull() && !addressIds.contains(addrId)) {
+                                    addressIds.add(addrId);
+                                }
+                            }
+                        }
+                    }
+
+                    List<Integer> orderIds = new ArrayList<>();
+                    try (PreparedStatement statement = connection.prepareStatement(orderIdsSql)) {
+                        statement.setInt(1, customerId);
+                        try (ResultSet result = statement.executeQuery()) {
+                            while (result.next()) {
+                                orderIds.add(result.getInt("Id"));
+                            }
+                        }
+                    }
+
+                    for (String orderChildSql : List.of(
+                            deleteOrderNotesSql, deleteDiscountHistorySql, deleteGiftCardHistorySql,
+                            deleteShipmentsSql, deleteOrderItemsSql)) {
+                        if (!orderIds.isEmpty()) {
+                            try (PreparedStatement statement = connection.prepareStatement(orderChildSql)) {
+                                for (int orderId : orderIds) {
+                                    statement.setInt(1, orderId);
+                                    statement.addBatch();
+                                }
+                                statement.executeBatch();
+                            }
+                        }
+                    }
+
+                    try (PreparedStatement statement = connection.prepareStatement(deleteOrdersSql)) {
+                        statement.setInt(1, customerId);
+                        statement.executeUpdate();
+                    }
+                    for (String customerChildSql : List.of(
+                            deleteShoppingCartSql, deleteReviewsSql, deleteActivityLogSql, deleteLogSql,
+                            clearCustomerAddressRefsSql, deleteCustomerAddressesSql,
+                            deleteGenericAttributesSql, deleteCustomWishlistSql)) {
+                        try (PreparedStatement statement = connection.prepareStatement(customerChildSql)) {
+                            statement.setInt(1, customerId);
+                            statement.executeUpdate();
                         }
                     }
                 }
 
-                try (PreparedStatement statement = connection.prepareStatement(deleteGenericAttributesSql)) {
-                    statement.setInt(1, customerId);
-                    statement.executeUpdate();
-                }
-                try (PreparedStatement statement = connection.prepareStatement(deleteCustomWishlistSql)) {
-                    statement.setInt(1, customerId);
-                    statement.executeUpdate();
-                }
-                int deletedCustomers;
-                try (PreparedStatement statement = connection.prepareStatement(deleteCustomerSql)) {
-                    statement.setInt(1, customerId);
-                    deletedCustomers = statement.executeUpdate();
-                }
-                try (PreparedStatement statement = connection.prepareStatement(deleteOrphanAddressSql)) {
-                    for (int addressId : addressIds) {
-                        for (int parameter = 1; parameter <= 7; parameter++) {
-                            statement.setInt(parameter, addressId);
-                        }
-                        statement.addBatch();
+                int deletedCustomers = 0;
+                for (int customerId : customerIds) {
+                    try (PreparedStatement statement = connection.prepareStatement(deleteCustomerSql)) {
+                        statement.setInt(1, customerId);
+                        deletedCustomers += statement.executeUpdate();
                     }
-                    statement.executeBatch();
+                }
+                if (!addressIds.isEmpty()) {
+                    try (PreparedStatement statement = connection.prepareStatement(deleteOrphanAddressSql)) {
+                        for (int addressId : addressIds) {
+                            for (int parameter = 1; parameter <= 8; parameter++) {
+                                statement.setInt(parameter, addressId);
+                            }
+                            statement.addBatch();
+                        }
+                        statement.executeBatch();
+                    }
                 }
 
                 connection.commit();
-                log.info("Deleted {} isolated customer record(s) and removed eligible orphan addresses for '{}'",
-                        deletedCustomers, email);
+                log.info("Deleted {} isolated customer record(s) (orphanAddressesChecked={}) for '{}'",
+                        deletedCustomers, addressIds.size(), email);
                 return deletedCustomers;
             } catch (SQLException | RuntimeException e) {
                 try {

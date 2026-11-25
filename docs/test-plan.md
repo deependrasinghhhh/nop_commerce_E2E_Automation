@@ -2,9 +2,9 @@
 
 > **Document ID:** PLAN-NOP-4.90.8  
 > **Release Target:** nopCommerce 4.90.8 (.NET 9, Docker Image: `nopcommerceteam/nopcommerce:4.90.8`)  
-> **Target Database:** Microsoft SQL Server 2022 (`mcr.microsoft.com/mssql/server:2022-latest`)  
+> **Target Database:** Microsoft SQL Server 2022 (`mcr.microsoft.com/mssql/server:2022-CU27-ubuntu-22.04`)  
 > **Author & Approver:** Project Author acting as QA Lead (Self-assessed; no other reviewer was involved).  
-> **Base Execution Date:** October 2026  
+> **Last Reviewed:** November 2026  
 
 ---
 
@@ -50,8 +50,8 @@ This Master Test Plan operationalizes the quality assurance mandate for the nopC
 Unlike conventional placeholder test plans, the criteria below represent **strict, enforceable gates** in the execution workflow:
 
 ### 3.1 Entry Criteria (Prerequisites to Initiate Test Runs)
-1. **Container Availability:** `nopcommerce_web` container is running and responds with HTTP `200 OK` on `http://localhost:5000` (or configured port) within 60 seconds.
-2. **Database Availability:** `nopcommerce_db` container is reachable on port `1433`, and JDBC connection healthcheck succeeds in `@BeforeSuite`.
+1. **Container Availability:** `nopcommerce_web` container is running and responds with HTTP `200 OK` on `http://127.0.0.1:5000` (or configured port) within 60 seconds.
+2. **Database Availability:** `nopcommerce_mssql` container is reachable on `127.0.0.1:1433`, and JDBC connection healthcheck succeeds in `@BeforeClass` (`DatabaseVerificationTest`).
 3. **Configuration Ready:** Local `.env` file exists with valid non-default credentials populated from `.env.example`.
 4. **Clean Build:** `mvn clean compile test-compile` passes with zero compilation errors.
 
@@ -68,11 +68,11 @@ Execution halts immediately upon any of the following blocking conditions:
 3. Test environment state reset via clean seed migration or fresh container spin-up.
 
 ### 3.4 Exit Criteria (Prerequisites for Test Sign-Off)
-1. **100% P1 Execution:** All Priority 1 (Smoke & Critical) test cases executed with 100% pass rate.
-2. **≥ 95% Regression Pass Rate:** Overall regression suite pass rate ≥ 95% (with zero unresolved Critical/High defects).
+1. **100% Execution of Automated P1 Scope:** All implemented Priority 1 automated test cases execute with 100% pass rate (remaining unautomated P1/P2/P3 catalog cases in `docs/test-cases.csv` stay explicitly marked `Planned`).
+2. **≥ 95% Regression Pass Rate:** Overall automated regression suite pass rate ≥ 95% (with zero unresolved Critical/High defects).
 3. **Zero Critical a11y Violations:** Automated axe-core scan detects zero critical-severity violations on primary storefront templates.
 4. **Evidence Persisted:** TestNG XML/HTML results, Allure results, and performance k6 summary JSON are archived in `evidence/`.
-5. **Machine-Reconciled RTM:** The Requirements Traceability Matrix is generated directly from execution evidence.
+5. **Machine-Reconciled RTM:** The Requirements Traceability Matrix is verified and generated directly from execution evidence (`scripts/reconcile_rtm.py`).
 
 ---
 
@@ -97,9 +97,9 @@ To avoid known Maven/Surefire group filtering friction (`-Dgroups` vs `suiteXmlF
 | Test Strategy & Plan | `docs/test-strategy.md`, `docs/test-plan.md` | Version-controlled in Git |
 | Test Scenarios & Catalog | `docs/test-cases.csv` | Machine-readable baseline |
 | Automated Test Code | `src/test/java/...` | Java 21 POM implementation |
-| Surefire XML Execution Reports | `evidence/surefire-*.xml` | Retained execution artifact |
-| Failure Evidence (Screenshots/Traces)| `evidence/failures/` | Persisted on test failure |
-| k6 Performance Summary | `evidence/k6-summary-*.json` | Machine-generated benchmark |
+| Surefire XML Execution Reports | `evidence/surefire-reports/testng-results.xml` | Retained execution artifact |
+| Failure Evidence (Screenshots/Traces)| `evidence/failures/`, `evidence/traces/` | Persisted on test failure (git-ignored) |
+| k6 Performance Summary | `evidence/performance/k6-summary.json` | Machine-generated benchmark |
 | Final Test Closure & Sign-off | `docs/test-closure-report.md` | Self-assessed summary |
 
 ---

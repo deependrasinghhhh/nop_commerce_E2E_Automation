@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="TestSuite" time="103.701" tests="61" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="TestSuite" time="85.971" tests="63" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="26"/>
     <property name="sun.cpu.isalist" value="amd64"/>
     <property name="sun.jnu.encoding" value="Cp1252"/>
-    <property name="java.class.path" value="/workspace/nopcommerce-qa-java/target/test-classes;/workspace/nopcommerce-qa-java/target/classes;/home/qa-runner/.m2/repository/com/microsoft/playwright/playwright/1.49.0/playwright-1.49.0.jar;/home/qa-runner/.m2/repository/com/google/code/gson/gson/2.11.0/gson-2.11.0.jar;/home/qa-runner/.m2/repository/com/google/errorprone/error_prone_annotations/2.27.0/error_prone_annotations-2.27.0.jar;/home/qa-runner/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar;/home/qa-runner/.m2/repository/com/microsoft/playwright/driver/1.49.0/driver-1.49.0.jar;/home/qa-runner/.m2/repository/com/microsoft/playwright/driver-bundle/1.49.0/driver-bundle-1.49.0.jar;/home/qa-runner/.m2/repository/org/testng/testng/7.10.2/testng-7.10.2.jar;/home/qa-runner/.m2/repository/org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar;/home/qa-runner/.m2/repository/com/beust/jcommander/1.82/jcommander-1.82.jar;/home/qa-runner/.m2/repository/org/webjars/jquery/3.7.1/jquery-3.7.1.jar;/home/qa-runner/.m2/repository/com/deque/html/axe-core/playwright/4.6.0/playwright-4.6.0.jar;/home/qa-runner/.m2/repository/commons-codec/commons-codec/1.15/commons-codec-1.15.jar;/home/qa-runner/.m2/repository/org/apache/commons/commons-compress/1.22/commons-compress-1.22.jar;/home/qa-runner/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.14.1/jackson-annotations-2.14.1.jar;/home/qa-runner/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.14.1/jackson-databind-2.14.1.jar;/home/qa-runner/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.14.1/jackson-core-2.14.1.jar;/home/qa-runner/.m2/repository/commons-io/commons-io/2.11.0/commons-io-2.11.0.jar;/home/qa-runner/.m2/repository/com/deque/html/axe-core/dequeutilites/4.6.0/dequeutilites-4.6.0.jar;/home/qa-runner/.m2/repository/com/microsoft/sqlserver/mssql-jdbc/12.8.1.jre11/mssql-jdbc-12.8.1.jre11.jar;/home/qa-runner/.m2/repository/com/zaxxer/HikariCP/5.1.0/HikariCP-5.1.0.jar;/home/qa-runner/.m2/repository/io/github/cdimascio/dotenv-java/3.0.0/dotenv-java-3.0.0.jar;/home/qa-runner/.m2/repository/org/slf4j/slf4j-simple/2.0.16/slf4j-simple-2.0.16.jar;/home/qa-runner/.m2/repository/io/qameta/allure/allure-testng/2.29.0/allure-testng-2.29.0.jar;/home/qa-runner/.m2/repository/io/qameta/allure/allure-java-commons/2.29.0/allure-java-commons-2.29.0.jar;/home/qa-runner/.m2/repository/io/qameta/allure/allure-model/2.29.0/allure-model-2.29.0.jar;/home/qa-runner/.m2/repository/io/qameta/allure/allure-test-filter/2.29.0/allure-test-filter-2.29.0.jar;/home/qa-runner/.m2/repository/org/aspectj/aspectjweaver/1.9.22/aspectjweaver-1.9.22.jar;"/>
+    <property name="java.class.path" value="/workspace/nopcommerce-qa-java/target/test-classes;/workspace/nopcommerce-qa-java/target/classes;/home/qa-runner/.m2/repository/com/microsoft/playwright/playwright/1.49.0/playwright-1.49.0.jar;/home/qa-runner/.m2/repository/com/google/code/gson/gson/2.11.0/gson-2.11.0.jar;/home/qa-runner/.m2/repository/com/google/errorprone/error_prone_annotations/2.27.0/error_prone_annotations-2.27.0.jar;/home/qa-runner/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar;/home/qa-runner/.m2/repository/com/microsoft/playwright/driver/1.49.0/driver-1.49.0.jar;/home/qa-runner/.m2/repository/com/microsoft/playwright/driver-bundle/1.49.0/driver-bundle-1.49.0.jar;/home/qa-runner/.m2/repository/org/testng/testng/7.10.2/testng-7.10.2.jar;/home/qa-runner/.m2/repository/com/beust/jcommander/1.82/jcommander-1.82.jar;/home/qa-runner/.m2/repository/org/webjars/jquery/3.7.1/jquery-3.7.1.jar;/home/qa-runner/.m2/repository/com/deque/html/axe-core/playwright/4.6.0/playwright-4.6.0.jar;/home/qa-runner/.m2/repository/commons-codec/commons-codec/1.15/commons-codec-1.15.jar;/home/qa-runner/.m2/repository/org/apache/commons/commons-compress/1.22/commons-compress-1.22.jar;/home/qa-runner/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.14.1/jackson-annotations-2.14.1.jar;/home/qa-runner/.m2/repository/commons-io/commons-io/2.11.0/commons-io-2.11.0.jar;/home/qa-runner/.m2/repository/com/deque/html/axe-core/dequeutilites/4.6.0/dequeutilites-4.6.0.jar;/home/qa-runner/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.14.1/jackson-databind-2.14.1.jar;/home/qa-runner/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.14.1/jackson-core-2.14.1.jar;/home/qa-runner/.m2/repository/com/microsoft/sqlserver/mssql-jdbc/12.8.1.jre11/mssql-jdbc-12.8.1.jre11.jar;/home/qa-runner/.m2/repository/com/zaxxer/HikariCP/5.1.0/HikariCP-5.1.0.jar;/home/qa-runner/.m2/repository/io/github/cdimascio/dotenv-java/3.0.0/dotenv-java-3.0.0.jar;/home/qa-runner/.m2/repository/org/slf4j/slf4j-api/2.0.16/slf4j-api-2.0.16.jar;/home/qa-runner/.m2/repository/org/slf4j/slf4j-simple/2.0.16/slf4j-simple-2.0.16.jar;/home/qa-runner/.m2/repository/io/qameta/allure/allure-testng/2.29.0/allure-testng-2.29.0.jar;/home/qa-runner/.m2/repository/io/qameta/allure/allure-java-commons/2.29.0/allure-java-commons-2.29.0.jar;/home/qa-runner/.m2/repository/io/qameta/allure/allure-model/2.29.0/allure-model-2.29.0.jar;/home/qa-runner/.m2/repository/io/qameta/allure/allure-test-filter/2.29.0/allure-test-filter-2.29.0.jar;"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="user.variant" value=""/>
     <property name="java.vendor.url" value="https://java.oracle.com/"/>
     <property name="user.timezone" value="Asia/Calcutta"/>
-    <property name="suiteXmlFile" value="src/test/resources/suites/regression.xml"/>
     <property name="os.name" value="Windows 11"/>
     <property name="java.vm.specification.version" value="26"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
@@ -18,7 +17,7 @@
     <property name="sun.boot.library.path" value="/opt/java/openjdk/bin"/>
     <property name="sun.java.command" value="/tmp/surefirebooter.jar"/>
     <property name="jdk.debug" value="release"/>
-    <property name="surefire.test.class.path" value="/workspace/nopcommerce-qa-java/target/test-classes;/workspace/nopcommerce-qa-java/target/classes;/home/qa-runner/.m2/repository/com/microsoft/playwright/playwright/1.49.0/playwright-1.49.0.jar;/home/qa-runner/.m2/repository/com/google/code/gson/gson/2.11.0/gson-2.11.0.jar;/home/qa-runner/.m2/repository/com/google/errorprone/error_prone_annotations/2.27.0/error_prone_annotations-2.27.0.jar;/home/qa-runner/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar;/home/qa-runner/.m2/repository/com/microsoft/playwright/driver/1.49.0/driver-1.49.0.jar;/home/qa-runner/.m2/repository/com/microsoft/playwright/driver-bundle/1.49.0/driver-bundle-1.49.0.jar;/home/qa-runner/.m2/repository/org/testng/testng/7.10.2/testng-7.10.2.jar;/home/qa-runner/.m2/repository/org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar;/home/qa-runner/.m2/repository/com/beust/jcommander/1.82/jcommander-1.82.jar;/home/qa-runner/.m2/repository/org/webjars/jquery/3.7.1/jquery-3.7.1.jar;/home/qa-runner/.m2/repository/com/deque/html/axe-core/playwright/4.6.0/playwright-4.6.0.jar;/home/qa-runner/.m2/repository/commons-codec/commons-codec/1.15/commons-codec-1.15.jar;/home/qa-runner/.m2/repository/org/apache/commons/commons-compress/1.22/commons-compress-1.22.jar;/home/qa-runner/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.14.1/jackson-annotations-2.14.1.jar;/home/qa-runner/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.14.1/jackson-databind-2.14.1.jar;/home/qa-runner/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.14.1/jackson-core-2.14.1.jar;/home/qa-runner/.m2/repository/commons-io/commons-io/2.11.0/commons-io-2.11.0.jar;/home/qa-runner/.m2/repository/com/deque/html/axe-core/dequeutilites/4.6.0/dequeutilites-4.6.0.jar;/home/qa-runner/.m2/repository/com/microsoft/sqlserver/mssql-jdbc/12.8.1.jre11/mssql-jdbc-12.8.1.jre11.jar;/home/qa-runner/.m2/repository/com/zaxxer/HikariCP/5.1.0/HikariCP-5.1.0.jar;/home/qa-runner/.m2/repository/io/github/cdimascio/dotenv-java/3.0.0/dotenv-java-3.0.0.jar;/home/qa-runner/.m2/repository/org/slf4j/slf4j-simple/2.0.16/slf4j-simple-2.0.16.jar;/home/qa-runner/.m2/repository/io/qameta/allure/allure-testng/2.29.0/allure-testng-2.29.0.jar;/home/qa-runner/.m2/repository/io/qameta/allure/allure-java-commons/2.29.0/allure-java-commons-2.29.0.jar;/home/qa-runner/.m2/repository/io/qameta/allure/allure-model/2.29.0/allure-model-2.29.0.jar;/home/qa-runner/.m2/repository/io/qameta/allure/allure-test-filter/2.29.0/allure-test-filter-2.29.0.jar;/home/qa-runner/.m2/repository/org/aspectj/aspectjweaver/1.9.22/aspectjweaver-1.9.22.jar;"/>
+    <property name="surefire.test.class.path" value="/workspace/nopcommerce-qa-java/target/test-classes;/workspace/nopcommerce-qa-java/target/classes;/home/qa-runner/.m2/repository/com/microsoft/playwright/playwright/1.49.0/playwright-1.49.0.jar;/home/qa-runner/.m2/repository/com/google/code/gson/gson/2.11.0/gson-2.11.0.jar;/home/qa-runner/.m2/repository/com/google/errorprone/error_prone_annotations/2.27.0/error_prone_annotations-2.27.0.jar;/home/qa-runner/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar;/home/qa-runner/.m2/repository/com/microsoft/playwright/driver/1.49.0/driver-1.49.0.jar;/home/qa-runner/.m2/repository/com/microsoft/playwright/driver-bundle/1.49.0/driver-bundle-1.49.0.jar;/home/qa-runner/.m2/repository/org/testng/testng/7.10.2/testng-7.10.2.jar;/home/qa-runner/.m2/repository/com/beust/jcommander/1.82/jcommander-1.82.jar;/home/qa-runner/.m2/repository/org/webjars/jquery/3.7.1/jquery-3.7.1.jar;/home/qa-runner/.m2/repository/com/deque/html/axe-core/playwright/4.6.0/playwright-4.6.0.jar;/home/qa-runner/.m2/repository/commons-codec/commons-codec/1.15/commons-codec-1.15.jar;/home/qa-runner/.m2/repository/org/apache/commons/commons-compress/1.22/commons-compress-1.22.jar;/home/qa-runner/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.14.1/jackson-annotations-2.14.1.jar;/home/qa-runner/.m2/repository/commons-io/commons-io/2.11.0/commons-io-2.11.0.jar;/home/qa-runner/.m2/repository/com/deque/html/axe-core/dequeutilites/4.6.0/dequeutilites-4.6.0.jar;/home/qa-runner/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.14.1/jackson-databind-2.14.1.jar;/home/qa-runner/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.14.1/jackson-core-2.14.1.jar;/home/qa-runner/.m2/repository/com/microsoft/sqlserver/mssql-jdbc/12.8.1.jre11/mssql-jdbc-12.8.1.jre11.jar;/home/qa-runner/.m2/repository/com/zaxxer/HikariCP/5.1.0/HikariCP-5.1.0.jar;/home/qa-runner/.m2/repository/io/github/cdimascio/dotenv-java/3.0.0/dotenv-java-3.0.0.jar;/home/qa-runner/.m2/repository/org/slf4j/slf4j-api/2.0.16/slf4j-api-2.0.16.jar;/home/qa-runner/.m2/repository/org/slf4j/slf4j-simple/2.0.16/slf4j-simple-2.0.16.jar;/home/qa-runner/.m2/repository/io/qameta/allure/allure-testng/2.29.0/allure-testng-2.29.0.jar;/home/qa-runner/.m2/repository/io/qameta/allure/allure-java-commons/2.29.0/allure-java-commons-2.29.0.jar;/home/qa-runner/.m2/repository/io/qameta/allure/allure-model/2.29.0/allure-model-2.29.0.jar;/home/qa-runner/.m2/repository/io/qameta/allure/allure-test-filter/2.29.0/allure-test-filter-2.29.0.jar;"/>
     <property name="allure.results.directory" value="/workspace/nopcommerce-qa-java/target/allure-results"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="/home/qa-runner"/>
@@ -32,7 +31,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="/tmp/surefire14445957328541028454/surefirebooter-20261125004223030_3.jar"/>
+    <property name="surefire.real.class.path" value="/tmp/surefire12683213901073787812/surefirebooter-20261125143304606_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="26.0.2+10-55"/>
@@ -62,70 +61,577 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="70.0"/>
   </properties>
-  <testcase name="testAdminPortalEndpoint" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="2.924">
-    <system-err><![CDATA[SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
-SLF4J: Defaulting to no-operation (NOP) logger implementation
-SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+  <testcase name="testAdminPortalEndpoint" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.169">
+    <system-err><![CDATA[[main] INFO com.qa.nopcommerce.config.ConfigReader - Loaded configuration properties from src/test/resources/config/config.properties
+[main] INFO com.qa.nopcommerce.config.ConfigReader - Loaded .env file for local environment overrides
+[main] INFO com.qa.nopcommerce.listeners.TestListener - Starting Test Section: API Endpoint Integration Tests
+[main] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testAdminPortalEndpoint [TestCaseID: TC-API-007] ===
 ]]></system-err>
   </testcase>
-  <testcase name="testCustomerLoginEndpoint" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.17"/>
-  <testcase name="testCustomerRegisterEndpoint" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="2.29"/>
-  <testcase name="testNonExistentRouteHandling" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.197"/>
-  <testcase name="testPostWithoutAntiForgeryTokenRejection" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.108"/>
-  <testcase name="testStorefrontRootEndpoint" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.242"/>
-  <testcase name="testAdminLoginPageRendering" classname="com.qa.nopcommerce.tests.smoke.SmokeTest" time="1.045"/>
-  <testcase name="testHomePageTitleAndHeaderRendering" classname="com.qa.nopcommerce.tests.smoke.SmokeTest" time="2.727"/>
-  <testcase name="testStorefrontSearchBoxInput" classname="com.qa.nopcommerce.tests.smoke.SmokeTest" time="3.012"/>
-  <testcase name="testCustomerLoginBlankEmail" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="1.211"/>
-  <testcase name="testCustomerLoginInvalidPassword" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.946"/>
-  <testcase name="testCustomerLoginValidCredentials" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.719"/>
-  <testcase name="testCustomerLogout" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="1.276"/>
-  <testcase name="testRegistrationMalformedEmailValidation" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.89"/>
-  <testcase name="testRegistrationMandatoryFieldValidation" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.596"/>
-  <testcase name="testRegistrationPasswordMismatch" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.85"/>
-  <testcase name="testValidCustomerRegistration" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="1.31"/>
-  <testcase name="testCategoryNavigation" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.357"/>
-  <testcase name="testProductDetailsRendering" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.191"/>
-  <testcase name="testProductImageGalleryDisplay" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.072"/>
-  <testcase name="testProductSorting" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.388"/>
-  <testcase name="testSearchWithNonExistentKeyword" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="1.164"/>
-  <testcase name="testShortSearchTermNotice" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.364"/>
-  <testcase name="testTopMenuCategoriesRendering" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.869"/>
-  <testcase name="testAddProductToCart" classname="com.qa.nopcommerce.tests.ui.CartTest" time="8.094"/>
-  <testcase name="testAddProductToWishlistAndVerifyCounter" classname="com.qa.nopcommerce.tests.ui.CartTest" time="1.231"/>
-  <testcase name="testApplyInvalidCouponCode" classname="com.qa.nopcommerce.tests.ui.CartTest" time="3.377"/>
-  <testcase name="testApplyValidCouponCode" classname="com.qa.nopcommerce.tests.ui.CartTest" time="0.318"/>
-  <testcase name="testMoveItemFromWishlistToShoppingCart" classname="com.qa.nopcommerce.tests.ui.CartTest" time="3.275"/>
-  <testcase name="testRemoveItemFromCart" classname="com.qa.nopcommerce.tests.ui.CartTest" time="1.469"/>
-  <testcase name="testUpdateCartItemQuantity" classname="com.qa.nopcommerce.tests.ui.CartTest" time="1.299"/>
-  <testcase name="testViewShoppingCart" classname="com.qa.nopcommerce.tests.ui.CartTest" time="0.508"/>
-  <testcase name="testCheckoutBillingAddressForm" classname="com.qa.nopcommerce.tests.ui.CheckoutTest" time="0.861"/>
-  <testcase name="testCheckoutInitiation" classname="com.qa.nopcommerce.tests.ui.CheckoutTest" time="0.517"/>
-  <testcase name="testCheckoutPaymentMethodOptions" classname="com.qa.nopcommerce.tests.ui.CheckoutTest" time="2.0"/>
-  <testcase name="testCustomerAddressCreateEditAndDelete" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="7.086"/>
-  <testcase name="testCustomerInfoPageRendering" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="1.543"/>
-  <testcase name="testCustomerOrdersPage" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="1.528"/>
-  <testcase name="testDeleteCustomerAddressFromAddressBook" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="3.261"/>
-  <testcase name="testProductReviewBlockedForUnauthenticatedGuest" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="0.823"/>
-  <testcase name="testSubmitProductReviewAsRegisteredUser" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="2.332"/>
-  <testcase name="testAdminCatalogCategoriesPage" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="1.339"/>
-  <testcase name="testAdminCatalogProductsPage" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="1.612"/>
-  <testcase name="testAdminCustomersPage" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="1.973"/>
-  <testcase name="testAdminDashboardElements" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="1.367"/>
-  <testcase name="testAdminLoginInvalidPassword" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="0.513"/>
-  <testcase name="testAdminLoginValidCredentials" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="1.187"/>
-  <testcase name="testAdminSalesOrdersPage" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="1.494"/>
-  <testcase name="testCartPageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="1.287"/>
-  <testcase name="testCategoryPageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="1.199"/>
-  <testcase name="testHomePageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="1.336"/>
-  <testcase name="testLoginPageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="0.842"/>
-  <testcase name="testRegisterPageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="0.911"/>
-  <testcase name="testCartItemPersistenceInDatabase" classname="com.qa.nopcommerce.tests.db.DatabaseVerificationTest" time="1.386"/>
-  <testcase name="testCustomerRecordPersistenceInDatabase" classname="com.qa.nopcommerce.tests.db.DatabaseVerificationTest" time="0.014"/>
-  <testcase name="testDatabaseConnectionHealth" classname="com.qa.nopcommerce.tests.db.DatabaseVerificationTest" time="0.01"/>
-  <testcase name="testOrderRecordPersistenceInDatabase" classname="com.qa.nopcommerce.tests.db.DatabaseVerificationTest" time="0.023"/>
-  <testcase name="testMobileNavigationMenuTrigger" classname="com.qa.nopcommerce.tests.nfr.NonFunctionalTest" time="0.365"/>
-  <testcase name="testNo500InternalServerErrorsOnAssets" classname="com.qa.nopcommerce.tests.nfr.NonFunctionalTest" time="0.497"/>
-  <testcase name="testPageLoadPerformanceSla" classname="com.qa.nopcommerce.tests.nfr.NonFunctionalTest" time="0.504"/>
-  <testcase name="testResponsiveViewportLayout" classname="com.qa.nopcommerce.tests.nfr.NonFunctionalTest" time="0.551"/>
+  <testcase name="testCustomerLoginEndpoint" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.108">
+    <system-err><![CDATA[[main] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testAdminPortalEndpoint [TestCaseID: TC-API-007] ===
+[main] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testCustomerLoginEndpoint [TestCaseID: TC-API-003] ===
+]]></system-err>
+  </testcase>
+  <testcase name="testCustomerRegisterEndpoint" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.077">
+    <system-err><![CDATA[[main] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testCustomerLoginEndpoint [TestCaseID: TC-API-003] ===
+[main] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testCustomerRegisterEndpoint [TestCaseID: TC-API-002] ===
+]]></system-err>
+  </testcase>
+  <testcase name="testNonExistentRouteHandling" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.068">
+    <system-err><![CDATA[[main] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testCustomerRegisterEndpoint [TestCaseID: TC-API-002] ===
+[main] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testNonExistentRouteHandling [TestCaseID: TC-API-005] ===
+]]></system-err>
+  </testcase>
+  <testcase name="testPostWithoutAntiForgeryTokenRejection" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.038">
+    <system-err><![CDATA[[main] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testNonExistentRouteHandling [TestCaseID: TC-API-005] ===
+[main] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testPostWithoutAntiForgeryTokenRejection [TestCaseID: TC-API-009] ===
+]]></system-err>
+  </testcase>
+  <testcase name="testStorefrontRootEndpoint" classname="com.qa.nopcommerce.tests.api.ApiEndpointTest" time="0.107">
+    <system-err><![CDATA[[main] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testPostWithoutAntiForgeryTokenRejection [TestCaseID: TC-API-009] ===
+[main] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testStorefrontRootEndpoint [TestCaseID: TC-API-001] ===
+]]></system-err>
+  </testcase>
+  <testcase name="testAdminLoginPageRendering" classname="com.qa.nopcommerce.tests.smoke.SmokeTest" time="0.346">
+    <system-err><![CDATA[[main] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testStorefrontRootEndpoint [TestCaseID: TC-API-001] ===
+[main] INFO com.qa.nopcommerce.listeners.TestListener - Finished Test Suite: API Endpoint Integration Tests. Passed: 6, Failed: 0, Skipped: 0
+[main] INFO com.qa.nopcommerce.listeners.TestListener - Starting Test Section: Storefront Smoke Gate Tests
+[main] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=main
+[main] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Launching Chromium (channel=default, headless=true, args=[--disable-dev-shm-usage, --no-sandbox, --disable-gpu, --disable-extensions, --window-size=1920,1080])
+[main] INFO com.qa.nopcommerce.tests.smoke.SmokeTest - Initialized test session – browser=chromium, headless=true, thread=main
+[main] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testAdminLoginPageRendering [TestCaseID: TC-ADM-002] ===
+[main] INFO com.qa.nopcommerce.tests.smoke.SmokeTest - Navigating to: http://127.0.0.1:5000/Admin
+]]></system-err>
+  </testcase>
+  <testcase name="testHomePageTitleAndHeaderRendering" classname="com.qa.nopcommerce.tests.smoke.SmokeTest" time="0.489">
+    <system-err><![CDATA[[main] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testAdminLoginPageRendering [TestCaseID: TC-ADM-002] ===
+[main] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=main
+[main] INFO com.qa.nopcommerce.tests.smoke.SmokeTest - Initialized test session – browser=chromium, headless=true, thread=main
+[main] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testHomePageTitleAndHeaderRendering [TestCaseID: TC-CAT-001] ===
+[main] INFO com.qa.nopcommerce.tests.smoke.SmokeTest - Navigating to: http://127.0.0.1:5000/
+]]></system-err>
+  </testcase>
+  <testcase name="testStorefrontSearchBoxInput" classname="com.qa.nopcommerce.tests.smoke.SmokeTest" time="0.946">
+    <system-err><![CDATA[[main] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testHomePageTitleAndHeaderRendering [TestCaseID: TC-CAT-001] ===
+[main] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=main
+[main] INFO com.qa.nopcommerce.tests.smoke.SmokeTest - Initialized test session – browser=chromium, headless=true, thread=main
+[main] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testStorefrontSearchBoxInput [TestCaseID: TC-CAT-011] ===
+[main] INFO com.qa.nopcommerce.tests.smoke.SmokeTest - Navigating to: http://127.0.0.1:5000/
+]]></system-err>
+  </testcase>
+  <testcase name="testCustomerLoginBlankEmail" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.648">
+    <system-err><![CDATA[[main] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testStorefrontSearchBoxInput [TestCaseID: TC-CAT-011] ===
+[main] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Playwright session shut down for thread main
+[main] INFO com.qa.nopcommerce.listeners.TestListener - Finished Test Suite: Storefront Smoke Gate Tests. Passed: 3, Failed: 0, Skipped: 0
+[main] INFO com.qa.nopcommerce.listeners.TestListener - Starting Test Section: Storefront UI Tests
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Launching Chromium (channel=default, headless=true, args=[--disable-dev-shm-usage, --no-sandbox, --disable-gpu, --disable-extensions, --window-size=1920,1080])
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Launching Chromium (channel=default, headless=true, args=[--disable-dev-shm-usage, --no-sandbox, --disable-gpu, --disable-extensions, --window-size=1920,1080])
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.AuthTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testCustomerLoginBlankEmail [TestCaseID: TC-AUTH-012] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.AuthTest - Navigating to: http://127.0.0.1:5000/login
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CatalogTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testCategoryNavigation [TestCaseID: TC-CAT-002] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CatalogTest - Navigating to: http://127.0.0.1:5000/computers
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CatalogTest - Navigating to: http://127.0.0.1:5000/desktops
+]]></system-err>
+  </testcase>
+  <testcase name="testCustomerLoginInvalidPassword" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.506">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testCategoryNavigation [TestCaseID: TC-CAT-002] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CatalogTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testProductDetailsRendering [TestCaseID: TC-CAT-009] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CatalogTest - Navigating to: http://127.0.0.1:5000/build-your-own-computer
+]]></system-err>
+  </testcase>
+  <testcase name="testCustomerLoginValidCredentials" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.01">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testProductImageGalleryDisplay [TestCaseID: TC-CAT-010] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CatalogTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testProductSorting [TestCaseID: TC-CAT-016] ===
+]]></system-err>
+  </testcase>
+  <testcase name="testCustomerLogout" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.776">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testProductSorting [TestCaseID: TC-CAT-016] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CatalogTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testSearchWithNonExistentKeyword [TestCaseID: TC-CAT-013] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CatalogTest - Navigating to: http://127.0.0.1:5000/
+]]></system-err>
+  </testcase>
+  <testcase name="testRegistrationDuplicateEmailRejected" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.547">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testTopMenuCategoriesRendering [TestCaseID: TC-CAT-003] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.AuthTest - Navigating to: http://127.0.0.1:5000/register
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Playwright session shut down for thread TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Launching Chromium (channel=default, headless=true, args=[--disable-dev-shm-usage, --no-sandbox, --disable-gpu, --disable-extensions, --window-size=1920,1080])
+[TestNG-test-Storefront UI Tests-1] INFO com.zaxxer.hikari.HikariDataSource - nopCommerce-HikariPool - Starting...
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testAddProductToCart [TestCaseID: TC-CART-001] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/apple-icam
+[TestNG-test-Storefront UI Tests-1] INFO com.zaxxer.hikari.pool.HikariPool - nopCommerce-HikariPool - Added connection ConnectionID:1 ClientConnectionId: 803958b5-1cde-4376-9820-c70548216295
+[TestNG-test-Storefront UI Tests-1] INFO com.zaxxer.hikari.HikariDataSource - nopCommerce-HikariPool - Start completed.
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.database.DatabaseManager - Initialized HikariCP connection pool for jdbc:sqlserver://127.0.0.1:1433;databaseName=nopcommerce_db;encrypt=false;trustServerCertificate=true;loginTimeout=3;
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.database.DatabaseManager - Deleted 1 isolated customer record(s) (orphanAddressesChecked=0) for 'nop_qa_698c31286b8e42e795812155a36fb6a5@example.com'
+]]></system-err>
+  </testcase>
+  <testcase name="testRegistrationMalformedEmailValidation" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.712">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testRegistrationDuplicateEmailRejected [TestCaseID: TC-AUTH-006] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.AuthTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testRegistrationMalformedEmailValidation [TestCaseID: TC-AUTH-005] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.AuthTest - Navigating to: http://127.0.0.1:5000/register
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/cart
+]]></system-err>
+  </testcase>
+  <testcase name="testRegistrationMandatoryFieldValidation" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.624">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testRegistrationMalformedEmailValidation [TestCaseID: TC-AUTH-005] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.AuthTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testRegistrationMandatoryFieldValidation [TestCaseID: TC-AUTH-002] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.AuthTest - Navigating to: http://127.0.0.1:5000/register
+]]></system-err>
+  </testcase>
+  <testcase name="testRegistrationPasswordMismatch" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="0.694">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testRegistrationMandatoryFieldValidation [TestCaseID: TC-AUTH-002] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.AuthTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testRegistrationPasswordMismatch [TestCaseID: TC-AUTH-008] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.AuthTest - Navigating to: http://127.0.0.1:5000/register
+]]></system-err>
+  </testcase>
+  <testcase name="testValidCustomerRegistration" classname="com.qa.nopcommerce.tests.ui.AuthTest" time="1.339">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testAddProductToCart [TestCaseID: TC-CART-001] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.AuthTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testValidCustomerRegistration [TestCaseID: TC-AUTH-001] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.AuthTest - Navigating to: http://127.0.0.1:5000/register
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testAddProductToWishlistAndVerifyCounter [TestCaseID: TC-CART-009] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/wishlist
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/apple-icam
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.database.DatabaseManager - Deleted 1 isolated customer record(s) (orphanAddressesChecked=0) for 'nop_qa_8d5d5c256468431087ed01b00a789a8e@example.com'
+]]></system-err>
+  </testcase>
+  <testcase name="testCategoryNavigation" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.219">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testCustomerLoginBlankEmail [TestCaseID: TC-AUTH-012] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.AuthTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testCustomerLoginInvalidPassword [TestCaseID: TC-AUTH-011] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.AuthTest - Navigating to: http://127.0.0.1:5000/login
+]]></system-err>
+  </testcase>
+  <testcase name="testProductDetailsRendering" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.281">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testCustomerLoginInvalidPassword [TestCaseID: TC-AUTH-011] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.AuthTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testCustomerLoginValidCredentials [TestCaseID: TC-AUTH-009] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.AuthTest - Navigating to: http://127.0.0.1:5000/login
+]]></system-err>
+  </testcase>
+  <testcase name="testProductImageGalleryDisplay" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.582">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testProductDetailsRendering [TestCaseID: TC-CAT-009] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CatalogTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testProductImageGalleryDisplay [TestCaseID: TC-CAT-010] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CatalogTest - Navigating to: http://127.0.0.1:5000/build-your-own-computer
+]]></system-err>
+  </testcase>
+  <testcase name="testProductSorting" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.751">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testCustomerLoginValidCredentials [TestCaseID: TC-AUTH-009] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CatalogTest - Navigating to: http://127.0.0.1:5000/desktops
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.AuthTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testCustomerLogout [TestCaseID: TC-AUTH-013] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.AuthTest - Navigating to: http://127.0.0.1:5000/login
+]]></system-err>
+  </testcase>
+  <testcase name="testSearchWithNonExistentKeyword" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.294">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testCustomerLogout [TestCaseID: TC-AUTH-013] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.AuthTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testRegistrationDuplicateEmailRejected [TestCaseID: TC-AUTH-006] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.AuthTest - Navigating to: http://127.0.0.1:5000/register
+]]></system-err>
+  </testcase>
+  <testcase name="testShortSearchTermNotice" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.439">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testSearchWithNonExistentKeyword [TestCaseID: TC-CAT-013] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CatalogTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testShortSearchTermNotice [TestCaseID: TC-CAT-014] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CatalogTest - Navigating to: http://127.0.0.1:5000/search?q=a
+]]></system-err>
+  </testcase>
+  <testcase name="testTopMenuCategoriesRendering" classname="com.qa.nopcommerce.tests.ui.CatalogTest" time="0.522">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testShortSearchTermNotice [TestCaseID: TC-CAT-014] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CatalogTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testTopMenuCategoriesRendering [TestCaseID: TC-CAT-003] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CatalogTest - Navigating to: http://127.0.0.1:5000/
+]]></system-err>
+  </testcase>
+  <testcase name="testAddProductToCart" classname="com.qa.nopcommerce.tests.ui.CartTest" time="0.763">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testRegistrationPasswordMismatch [TestCaseID: TC-AUTH-008] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-1
+]]></system-err>
+  </testcase>
+  <testcase name="testAddProductToWishlistAndVerifyCounter" classname="com.qa.nopcommerce.tests.ui.CartTest" time="2.173">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testValidCustomerRegistration [TestCaseID: TC-AUTH-001] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/wishlist
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Playwright session shut down for thread TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/wishlist
+]]></system-err>
+  </testcase>
+  <testcase name="testApplyInvalidCouponCode" classname="com.qa.nopcommerce.tests.ui.CartTest" time="3.217">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testAddProductToWishlistAndVerifyCounter [TestCaseID: TC-CART-009] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Launching Chromium (channel=default, headless=true, args=[--disable-dev-shm-usage, --no-sandbox, --disable-gpu, --disable-extensions, --window-size=1920,1080])
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testApplyInvalidCouponCode [TestCaseID: TC-CART-015] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/apple-icam
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CheckoutTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testCheckoutBillingAddressForm [TestCaseID: TC-CHK-002] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CheckoutTest - Navigating to: http://127.0.0.1:5000/apple-macbook-pro
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/cart
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CheckoutTest - Navigating to: http://127.0.0.1:5000/cart
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/cart
+]]></system-err>
+  </testcase>
+  <testcase name="testApplyValidCouponCode" classname="com.qa.nopcommerce.tests.ui.CartTest" time="1.429">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testCheckoutPaymentMethodOptions [TestCaseID: TC-CHK-008] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CheckoutTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testGuestOrderConfirmationAndCompletion [TestCaseID: TC-CHK-010] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CheckoutTest - Navigating to: http://127.0.0.1:5000/apple-macbook-pro
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CheckoutTest - Navigating to: http://127.0.0.1:5000/cart
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.database.DatabaseManager - Cleaned up 1 isolated Discount row(s) with couponCode 'QAE2E_66E18D'
+]]></system-err>
+  </testcase>
+  <testcase name="testMoveItemFromWishlistToShoppingCart" classname="com.qa.nopcommerce.tests.ui.CartTest" time="3.806">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testApplyValidCouponCode [TestCaseID: TC-CART-012] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testMoveItemFromWishlistToShoppingCart [TestCaseID: TC-CART-011] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/apple-icam
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/wishlist
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/wishlist
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/wishlist
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/cart
+]]></system-err>
+  </testcase>
+  <testcase name="testRemoveItemFromCart" classname="com.qa.nopcommerce.tests.ui.CartTest" time="2.202">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testGuestOrderConfirmationAndCompletion [TestCaseID: TC-CHK-010] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Playwright session shut down for thread TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-1
+]]></system-err>
+  </testcase>
+  <testcase name="testUpdateCartItemQuantity" classname="com.qa.nopcommerce.tests.ui.CartTest" time="1.866">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testCustomerAddressCreateEditAndDelete [TestCaseID: TC-CUST-002] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CustomerAccountTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testCustomerInfoPageRendering [TestCaseID: TC-CUST-001] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CustomerAccountTest - Navigating to: http://127.0.0.1:5000/register
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/cart
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CustomerAccountTest - Navigating to: http://127.0.0.1:5000/customer/info
+]]></system-err>
+  </testcase>
+  <testcase name="testViewShoppingCart" classname="com.qa.nopcommerce.tests.ui.CartTest" time="0.125">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testCustomerOrdersPage [TestCaseID: TC-CUST-004] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CustomerAccountTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testDeleteCustomerAddressFromAddressBook [TestCaseID: TC-CUST-003] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CustomerAccountTest - Navigating to: http://127.0.0.1:5000/register
+]]></system-err>
+  </testcase>
+  <testcase name="testCheckoutBillingAddressForm" classname="com.qa.nopcommerce.tests.ui.CheckoutTest" time="0.997">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testApplyInvalidCouponCode [TestCaseID: TC-CART-015] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CheckoutTest - Navigating to: http://127.0.0.1:5000/cart
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testApplyValidCouponCode [TestCaseID: TC-CART-012] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/Admin
+]]></system-err>
+  </testcase>
+  <testcase name="testCheckoutInitiation" classname="com.qa.nopcommerce.tests.ui.CheckoutTest" time="3.945">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testCheckoutBillingAddressForm [TestCaseID: TC-CHK-002] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CheckoutTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testCheckoutInitiation [TestCaseID: TC-CHK-001] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CheckoutTest - Navigating to: http://127.0.0.1:5000/apple-macbook-pro
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/Admin/Discount/Create
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CheckoutTest - Navigating to: http://127.0.0.1:5000/cart
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CheckoutTest - Navigating to: http://127.0.0.1:5000/cart
+]]></system-err>
+  </testcase>
+  <testcase name="testCheckoutPaymentMethodOptions" classname="com.qa.nopcommerce.tests.ui.CheckoutTest" time="5.086">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testCheckoutInitiation [TestCaseID: TC-CHK-001] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CheckoutTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testCheckoutPaymentMethodOptions [TestCaseID: TC-CHK-008] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CheckoutTest - Navigating to: http://127.0.0.1:5000/apple-macbook-pro
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CheckoutTest - Navigating to: http://127.0.0.1:5000/cart
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/apple-icam
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/cart
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CheckoutTest - Navigating to: http://127.0.0.1:5000/cart
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/cart
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.database.DatabaseManager - Deleted 1 isolated customer record(s) (orphanAddressesChecked=1) for 'qa_checkout_1bf901ab4e1f4d5b81d6f898243216ba@example.com'
+]]></system-err>
+  </testcase>
+  <testcase name="testGuestOrderConfirmationAndCompletion" classname="com.qa.nopcommerce.tests.ui.CheckoutTest" time="1.939">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testMoveItemFromWishlistToShoppingCart [TestCaseID: TC-CART-011] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testRemoveItemFromCart [TestCaseID: TC-CART-007] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/apple-icam
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CheckoutTest - Navigating to: http://127.0.0.1:5000/cart
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/cart
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CheckoutTest - Navigating to: http://127.0.0.1:5000/cart
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.database.DatabaseManager - Deleted 1 isolated customer record(s) (orphanAddressesChecked=3) for 'qa_checkout_e557d90e060d4e7f9c9ed8591a25600f@example.com'
+]]></system-err>
+  </testcase>
+  <testcase name="testCustomerAddressCreateEditAndDelete" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="3.399">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testRemoveItemFromCart [TestCaseID: TC-CART-007] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testUpdateCartItemQuantity [TestCaseID: TC-CART-006] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/apple-icam
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Launching Chromium (channel=default, headless=true, args=[--disable-dev-shm-usage, --no-sandbox, --disable-gpu, --disable-extensions, --window-size=1920,1080])
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/cart
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CustomerAccountTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testCustomerAddressCreateEditAndDelete [TestCaseID: TC-CUST-002] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CustomerAccountTest - Navigating to: http://127.0.0.1:5000/register
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CustomerAccountTest - Navigating to: http://127.0.0.1:5000/customer/addresses
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.database.DatabaseManager - Deleted 1 isolated customer record(s) (orphanAddressesChecked=0) for 'nop_addr_4b85a2d5c4de4b8683e73bebb92799a2@example.com'
+]]></system-err>
+  </testcase>
+  <testcase name="testCustomerInfoPageRendering" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="0.545">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testUpdateCartItemQuantity [TestCaseID: TC-CART-006] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testViewShoppingCart [TestCaseID: TC-CART-004] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/apple-icam
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.database.DatabaseManager - Deleted 1 isolated customer record(s) (orphanAddressesChecked=0) for 'nop_profile_cd3b75dc5e754148a75d24ee3f90e944@example.com'
+]]></system-err>
+  </testcase>
+  <testcase name="testCustomerOrdersPage" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="1.77">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testCustomerInfoPageRendering [TestCaseID: TC-CUST-001] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CustomerAccountTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testCustomerOrdersPage [TestCaseID: TC-CUST-004] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CustomerAccountTest - Navigating to: http://127.0.0.1:5000/register
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/cart
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.CartTest - Navigating to: http://127.0.0.1:5000/cart
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CustomerAccountTest - Navigating to: http://127.0.0.1:5000/order/history
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.database.DatabaseManager - Deleted 1 isolated customer record(s) (orphanAddressesChecked=0) for 'nop_orders_6bc77f6bba724b46896e3a59fc629d87@example.com'
+]]></system-err>
+  </testcase>
+  <testcase name="testDeleteCustomerAddressFromAddressBook" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="1.41">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testViewShoppingCart [TestCaseID: TC-CART-004] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Playwright session shut down for thread TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CustomerAccountTest - Navigating to: http://127.0.0.1:5000/customer/addresses
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Launching Chromium (channel=default, headless=true, args=[--disable-dev-shm-usage, --no-sandbox, --disable-gpu, --disable-extensions, --window-size=1920,1080])
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.AdminTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testAdminCatalogCategoriesPage [TestCaseID: TC-ADM-006] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.AdminTest - Navigating to: http://127.0.0.1:5000/Admin
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.AdminTest - Navigating to: http://127.0.0.1:5000/Admin/Category/List
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.database.DatabaseManager - Deleted 1 isolated customer record(s) (orphanAddressesChecked=0) for 'nop_deladdr_5e85920415bc4e7c97d6aa8c8aa42c1a@example.com'
+]]></system-err>
+  </testcase>
+  <testcase name="testProductReviewBlockedForUnauthenticatedGuest" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="0.908">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testAdminCatalogCategoriesPage [TestCaseID: TC-ADM-006] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.AdminTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-2
+]]></system-err>
+  </testcase>
+  <testcase name="testSubmitProductReviewAsRegisteredUser" classname="com.qa.nopcommerce.tests.ui.CustomerAccountTest" time="3.542">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testProductReviewBlockedForUnauthenticatedGuest [TestCaseID: TC-CUST-006] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testAdminCatalogProductsPage [TestCaseID: TC-ADM-004] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.AdminTest - Navigating to: http://127.0.0.1:5000/Admin
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CustomerAccountTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testSubmitProductReviewAsRegisteredUser [TestCaseID: TC-CUST-005] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CustomerAccountTest - Navigating to: http://127.0.0.1:5000/register
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CustomerAccountTest - Navigating to: http://127.0.0.1:5000/build-your-own-computer
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.AdminTest - Navigating to: http://127.0.0.1:5000/Admin/Product/List
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.database.DatabaseManager - Cleaned up 1 isolated ProductReview row(s) with title 'QA Verified Review 91088b'
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.database.DatabaseManager - Deleted 1 isolated customer record(s) (orphanAddressesChecked=0) for 'nop_reviewer_c37ebf49097244afa75bc3f89292f13f@example.com'
+]]></system-err>
+  </testcase>
+  <testcase name="testAdminCatalogCategoriesPage" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="0.79">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testDeleteCustomerAddressFromAddressBook [TestCaseID: TC-CUST-003] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CustomerAccountTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testProductReviewBlockedForUnauthenticatedGuest [TestCaseID: TC-CUST-006] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.tests.ui.CustomerAccountTest - Navigating to: http://127.0.0.1:5000/build-your-own-computer
+]]></system-err>
+  </testcase>
+  <testcase name="testAdminCatalogProductsPage" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="3.668">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testSubmitProductReviewAsRegisteredUser [TestCaseID: TC-CUST-005] ===
+]]></system-err>
+  </testcase>
+  <testcase name="testAdminCustomersPage" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="1.674">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testAdminCatalogProductsPage [TestCaseID: TC-ADM-004] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.AdminTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testAdminCustomersPage [TestCaseID: TC-ADM-007] ===
+[TestNG-test-Storefront UI Tests-1] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Playwright session shut down for thread TestNG-test-Storefront UI Tests-1
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.AdminTest - Navigating to: http://127.0.0.1:5000/Admin
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.AdminTest - Navigating to: http://127.0.0.1:5000/Admin/Customer/List
+]]></system-err>
+  </testcase>
+  <testcase name="testAdminDashboardElements" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="1.442">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testAdminCustomersPage [TestCaseID: TC-ADM-007] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.AdminTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testAdminDashboardElements [TestCaseID: TC-ADM-003] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.AdminTest - Navigating to: http://127.0.0.1:5000/Admin
+]]></system-err>
+  </testcase>
+  <testcase name="testAdminLoginInvalidPassword" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="0.52">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testAdminDashboardElements [TestCaseID: TC-ADM-003] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.AdminTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testAdminLoginInvalidPassword [TestCaseID: TC-ADM-008] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.AdminTest - Navigating to: http://127.0.0.1:5000/Admin
+]]></system-err>
+  </testcase>
+  <testcase name="testAdminLoginValidCredentials" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="1.297">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testAdminLoginInvalidPassword [TestCaseID: TC-ADM-008] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.AdminTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testAdminLoginValidCredentials [TestCaseID: TC-ADM-001] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.AdminTest - Navigating to: http://127.0.0.1:5000/Admin
+]]></system-err>
+  </testcase>
+  <testcase name="testAdminSalesOrdersPage" classname="com.qa.nopcommerce.tests.ui.AdminTest" time="1.6">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testAdminLoginValidCredentials [TestCaseID: TC-ADM-001] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.AdminTest - Initialized test session – browser=chromium, headless=true, thread=TestNG-test-Storefront UI Tests-2
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testAdminSalesOrdersPage [TestCaseID: TC-ADM-005] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.AdminTest - Navigating to: http://127.0.0.1:5000/Admin
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.tests.ui.AdminTest - Navigating to: http://127.0.0.1:5000/Admin/Order/List
+]]></system-err>
+  </testcase>
+  <testcase name="testCartPageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="1.416">
+    <system-err><![CDATA[[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testAdminSalesOrdersPage [TestCaseID: TC-ADM-005] ===
+[TestNG-test-Storefront UI Tests-2] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Playwright session shut down for thread TestNG-test-Storefront UI Tests-2
+[main] INFO com.qa.nopcommerce.listeners.TestListener - Finished Test Suite: Storefront UI Tests. Passed: 41, Failed: 0, Skipped: 0
+[main] INFO com.qa.nopcommerce.listeners.TestListener - Starting Test Section: Accessibility Compliance Tests
+[main] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=main
+[main] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Launching Chromium (channel=default, headless=true, args=[--disable-dev-shm-usage, --no-sandbox, --disable-gpu, --disable-extensions, --window-size=1920,1080])
+[main] INFO com.qa.nopcommerce.tests.a11y.AccessibilityTest - Initialized test session – browser=chromium, headless=true, thread=main
+[main] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testCartPageAccessibility [TestCaseID: TC-A11Y-004] ===
+[main] INFO com.qa.nopcommerce.tests.a11y.AccessibilityTest - Navigating to: http://127.0.0.1:5000/cart
+[main] INFO com.qa.nopcommerce.tests.a11y.AccessibilityTest - Saved accessibility scan results to target\a11y-reports\cart-page-axe-results.json
+[main] INFO com.qa.nopcommerce.tests.a11y.AccessibilityTest - Total WCAG violations detected: 1
+]]></system-err>
+  </testcase>
+  <testcase name="testCategoryPageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="1.148">
+    <system-err><![CDATA[[main] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testCartPageAccessibility [TestCaseID: TC-A11Y-004] ===
+[main] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=main
+[main] INFO com.qa.nopcommerce.tests.a11y.AccessibilityTest - Initialized test session – browser=chromium, headless=true, thread=main
+[main] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testCategoryPageAccessibility [TestCaseID: TC-A11Y-005] ===
+[main] INFO com.qa.nopcommerce.tests.a11y.AccessibilityTest - Navigating to: http://127.0.0.1:5000/desktops
+[main] INFO com.qa.nopcommerce.tests.a11y.AccessibilityTest - Saved accessibility scan results to target\a11y-reports\category-desktops-page-axe-results.json
+[main] INFO com.qa.nopcommerce.tests.a11y.AccessibilityTest - Total WCAG violations detected: 1
+]]></system-err>
+  </testcase>
+  <testcase name="testHomePageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="1.43">
+    <system-err><![CDATA[[main] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testCategoryPageAccessibility [TestCaseID: TC-A11Y-005] ===
+[main] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=main
+[main] INFO com.qa.nopcommerce.tests.a11y.AccessibilityTest - Initialized test session – browser=chromium, headless=true, thread=main
+[main] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testHomePageAccessibility [TestCaseID: TC-A11Y-001] ===
+[main] INFO com.qa.nopcommerce.tests.a11y.AccessibilityTest - Navigating to: http://127.0.0.1:5000/
+[main] INFO com.qa.nopcommerce.tests.a11y.AccessibilityTest - Saved accessibility scan results to target\a11y-reports\homepage-axe-results.json
+[main] INFO com.qa.nopcommerce.tests.a11y.AccessibilityTest - Total WCAG violations detected: 1
+]]></system-err>
+  </testcase>
+  <testcase name="testLoginPageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="1.011">
+    <system-err><![CDATA[[main] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testHomePageAccessibility [TestCaseID: TC-A11Y-001] ===
+[main] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=main
+[main] INFO com.qa.nopcommerce.tests.a11y.AccessibilityTest - Initialized test session – browser=chromium, headless=true, thread=main
+[main] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testLoginPageAccessibility [TestCaseID: TC-A11Y-003] ===
+[main] INFO com.qa.nopcommerce.tests.a11y.AccessibilityTest - Navigating to: http://127.0.0.1:5000/login
+[main] INFO com.qa.nopcommerce.tests.a11y.AccessibilityTest - Saved accessibility scan results to target\a11y-reports\login-page-axe-results.json
+[main] INFO com.qa.nopcommerce.tests.a11y.AccessibilityTest - Total WCAG violations detected: 1
+]]></system-err>
+  </testcase>
+  <testcase name="testRegisterPageAccessibility" classname="com.qa.nopcommerce.tests.a11y.AccessibilityTest" time="0.956">
+    <system-err><![CDATA[[main] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testLoginPageAccessibility [TestCaseID: TC-A11Y-003] ===
+[main] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=main
+[main] INFO com.qa.nopcommerce.tests.a11y.AccessibilityTest - Initialized test session – browser=chromium, headless=true, thread=main
+[main] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testRegisterPageAccessibility [TestCaseID: TC-A11Y-002] ===
+[main] INFO com.qa.nopcommerce.tests.a11y.AccessibilityTest - Navigating to: http://127.0.0.1:5000/register
+[main] INFO com.qa.nopcommerce.tests.a11y.AccessibilityTest - Saved accessibility scan results to target\a11y-reports\register-page-axe-results.json
+[main] INFO com.qa.nopcommerce.tests.a11y.AccessibilityTest - Total WCAG violations detected: 1
+]]></system-err>
+  </testcase>
+  <testcase name="testCartItemPersistenceInDatabase" classname="com.qa.nopcommerce.tests.db.DatabaseVerificationTest" time="2.408">
+    <system-err><![CDATA[[main] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testRegisterPageAccessibility [TestCaseID: TC-A11Y-002] ===
+[main] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Playwright session shut down for thread main
+[main] INFO com.qa.nopcommerce.listeners.TestListener - Finished Test Suite: Accessibility Compliance Tests. Passed: 5, Failed: 0, Skipped: 0
+[main] INFO com.qa.nopcommerce.listeners.TestListener - Starting Test Section: Database Persistence Verification Tests
+[main] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testCartItemPersistenceInDatabase [TestCaseID: TC-DB-003] ===
+[main] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=main
+[main] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Launching Chromium (channel=default, headless=true, args=[--disable-dev-shm-usage, --no-sandbox, --disable-gpu, --disable-extensions, --window-size=1920,1080])
+[main] INFO com.qa.nopcommerce.database.DatabaseManager - Deleted 1 isolated customer record(s) (orphanAddressesChecked=0) for 'qa_db_cart_991177e2d78d4e6fb5795bce135d2c15@example.com'
+]]></system-err>
+  </testcase>
+  <testcase name="testCustomerRecordPersistenceInDatabase" classname="com.qa.nopcommerce.tests.db.DatabaseVerificationTest" time="0.007">
+    <system-err><![CDATA[[main] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testCartItemPersistenceInDatabase [TestCaseID: TC-DB-003] ===
+[main] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Playwright session shut down for thread main
+[main] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testCustomerRecordPersistenceInDatabase [TestCaseID: TC-DB-001] ===
+]]></system-err>
+  </testcase>
+  <testcase name="testDatabaseConnectionHealth" classname="com.qa.nopcommerce.tests.db.DatabaseVerificationTest" time="0.004">
+    <system-err><![CDATA[[main] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testCustomerRecordPersistenceInDatabase [TestCaseID: TC-DB-001] ===
+[main] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testDatabaseConnectionHealth [TestCaseID: TC-DB-004] ===
+]]></system-err>
+  </testcase>
+  <testcase name="testOrderRecordPersistenceInDatabase" classname="com.qa.nopcommerce.tests.db.DatabaseVerificationTest" time="0.01">
+    <system-err><![CDATA[[main] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testDatabaseConnectionHealth [TestCaseID: TC-DB-004] ===
+[main] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testOrderRecordPersistenceInDatabase [TestCaseID: TC-DB-002] ===
+]]></system-err>
+  </testcase>
+  <testcase name="testMobileNavigationMenuTrigger" classname="com.qa.nopcommerce.tests.nfr.NonFunctionalTest" time="0.519">
+    <system-err><![CDATA[[main] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testOrderRecordPersistenceInDatabase [TestCaseID: TC-DB-002] ===
+[main] INFO com.qa.nopcommerce.listeners.TestListener - Finished Test Suite: Database Persistence Verification Tests. Passed: 4, Failed: 0, Skipped: 0
+[main] INFO com.qa.nopcommerce.listeners.TestListener - Starting Test Section: Non-Functional Responsive and SLA Tests
+[main] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=main
+[main] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Launching Chromium (channel=default, headless=true, args=[--disable-dev-shm-usage, --no-sandbox, --disable-gpu, --disable-extensions, --window-size=1920,1080])
+[main] INFO com.qa.nopcommerce.tests.nfr.NonFunctionalTest - Initialized test session – browser=chromium, headless=true, thread=main
+[main] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testMobileNavigationMenuTrigger [TestCaseID: TC-NFR-002] ===
+[main] INFO com.qa.nopcommerce.tests.nfr.NonFunctionalTest - Navigating to: http://127.0.0.1:5000/
+]]></system-err>
+  </testcase>
+  <testcase name="testNo500InternalServerErrorsOnAssets" classname="com.qa.nopcommerce.tests.nfr.NonFunctionalTest" time="0.577">
+    <system-err><![CDATA[[main] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testMobileNavigationMenuTrigger [TestCaseID: TC-NFR-002] ===
+[main] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=main
+[main] INFO com.qa.nopcommerce.tests.nfr.NonFunctionalTest - Initialized test session – browser=chromium, headless=true, thread=main
+[main] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testNo500InternalServerErrorsOnAssets [TestCaseID: TC-NFR-004] ===
+[main] INFO com.qa.nopcommerce.tests.nfr.NonFunctionalTest - Navigating to: http://127.0.0.1:5000/
+]]></system-err>
+  </testcase>
+  <testcase name="testPageLoadPerformanceSla" classname="com.qa.nopcommerce.tests.nfr.NonFunctionalTest" time="0.529">
+    <system-err><![CDATA[[main] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testNo500InternalServerErrorsOnAssets [TestCaseID: TC-NFR-004] ===
+[main] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=main
+[main] INFO com.qa.nopcommerce.tests.nfr.NonFunctionalTest - Initialized test session – browser=chromium, headless=true, thread=main
+[main] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testPageLoadPerformanceSla [TestCaseID: TC-NFR-003] ===
+[main] INFO com.qa.nopcommerce.tests.nfr.NonFunctionalTest - Navigating to: http://127.0.0.1:5000/
+[main] INFO com.qa.nopcommerce.tests.nfr.NonFunctionalTest - Homepage full load took 526 ms
+]]></system-err>
+  </testcase>
+  <testcase name="testResponsiveViewportLayout" classname="com.qa.nopcommerce.tests.nfr.NonFunctionalTest" time="0.889">
+    <system-err><![CDATA[[main] INFO com.qa.nopcommerce.listeners.TestListener - === TEST PASSED: testPageLoadPerformanceSla [TestCaseID: TC-NFR-003] ===
+[main] INFO com.qa.nopcommerce.factory.PlaywrightFactory - Initializing Playwright session: browser=chromium, headless=true, ignoreHttpsErrors=false, thread=main
+[main] INFO com.qa.nopcommerce.tests.nfr.NonFunctionalTest - Initialized test session – browser=chromium, headless=true, thread=main
+[main] INFO com.qa.nopcommerce.listeners.TestListener - === STARTING TEST: testResponsiveViewportLayout [TestCaseID: TC-NFR-001] ===
+[main] INFO com.qa.nopcommerce.tests.nfr.NonFunctionalTest - Navigating to: http://127.0.0.1:5000/
+[main] INFO com.qa.nopcommerce.tests.nfr.NonFunctionalTest - Navigating to: http://127.0.0.1:5000/
+]]></system-err>
+  </testcase>
 </testsuite>

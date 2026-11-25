@@ -1,19 +1,19 @@
 {
   "info": {
     "_postman_id": "7b8e5192-d6c4-4a21-9923-nopcommerce-qa",
-    "name": "nopCommerce 4.90.8 Exploratory API & HTTP Probing",
-    "description": "Exploratory HTTP probe collection validating storefront routes, content negotiation, and security headers against nopCommerce 4.90.8.",
+    "name": "nopCommerce 4.90.8 Local Storefront & Admin HTTP Probing",
+    "description": "HTTP probe collection validating storefront routes, content negotiation, and unauthenticated admin redirects against the local isolated nopCommerce 4.90.8 Docker stack (http://127.0.0.1:5000).",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
     {
       "key": "baseUrl",
-      "value": "https://demo.nopcommerce.com",
+      "value": "http://127.0.0.1:5000",
       "type": "string"
     },
     {
       "key": "adminUrl",
-      "value": "https://admin-demo.nopcommerce.com",
+      "value": "http://127.0.0.1:5000/Admin",
       "type": "string"
     }
   ],
@@ -36,11 +36,12 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test('Status code is 200 or 403', function () {",
-              "    pm.expect([200, 403]).to.include(pm.response.code);",
+              "pm.test('Status code is 200 OK', function () {",
+              "    pm.response.to.have.status(200);",
               "});",
-              "pm.test('Response contains HTML or WAF challenge', function () {",
+              "pm.test('Response contains text/html storefront content', function () {",
               "    pm.expect(pm.response.headers.get('content-type')).to.include('text/html');",
+              "    pm.expect(pm.response.text()).to.include('nopCommerce');",
               "});"
             ],
             "type": "text/javascript"
@@ -64,8 +65,8 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test('Status code is 200 or 403', function () {",
-              "    pm.expect([200, 403]).to.include(pm.response.code);",
+              "pm.test('Status code is 200 OK', function () {",
+              "    pm.response.to.have.status(200);",
               "});"
             ],
             "type": "text/javascript"
@@ -90,8 +91,8 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test('Search response returned', function () {",
-              "    pm.expect([200, 403]).to.include(pm.response.code);",
+              "pm.test('Search status code is 200 OK', function () {",
+              "    pm.response.to.have.status(200);",
               "});"
             ],
             "type": "text/javascript"
@@ -115,8 +116,8 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test('Login route status is 200 or 403', function () {",
-              "    pm.expect([200, 403]).to.include(pm.response.code);",
+              "pm.test('Login route status is 200 OK', function () {",
+              "    pm.response.to.have.status(200);",
               "});"
             ],
             "type": "text/javascript"
@@ -140,8 +141,8 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test('Cart route status is 200 or 403', function () {",
-              "    pm.expect([200, 403]).to.include(pm.response.code);",
+              "pm.test('Cart route status is 200 OK', function () {",
+              "    pm.response.to.have.status(200);",
               "});"
             ],
             "type": "text/javascript"
@@ -165,8 +166,8 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test('Admin login status is 200 or 403', function () {",
-              "    pm.expect([200, 403]).to.include(pm.response.code);",
+              "pm.test('Admin login prompt loads with 200 OK (or 302 redirect)', function () {",
+              "    pm.expect([200, 302]).to.include(pm.response.code);",
               "});"
             ],
             "type": "text/javascript"

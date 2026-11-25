@@ -1,7 +1,7 @@
 # Requirements Traceability Matrix (RTM)
 
-**Reconciliation Timestamp:** 2026-11-24 19:14:06 UTC
-**Execution Window:** 2026-11-24T19:12:24Z to 2026-11-24T19:14:06Z (102.00s)
+**Reconciliation Timestamp:** 2026-11-25 09:04:30 UTC
+**Execution Window:** 2026-11-25T09:03:07Z to 2026-11-25T09:04:30Z (83.00s)
 **Target AUT:** nopCommerce 4.90.8 (.NET 9, Isolated Docker Stack `http://127.0.0.1:5000`)
 
 > **Evidence Notice:** Reconciled from `docs/test-cases.csv`, Java `@TestCase` annotations, and `evidence/surefire-reports/testng-results.xml`.
@@ -9,13 +9,13 @@
 ## 1. Traceability Summary
 
 - **Total Specified Test Cases:** 108
-- **Automated Test Methods (1:1 Mapped):** 61 (56.5%)
-- **Executed:** 61/61 automated methods (100.0%)
-- **Passed / Failed / Skipped:** 61 / 0 / 0 (100.0% pass rate of executed)
-- **Not Executed / Manual Scope:** 47
+- **Automated Test Methods (1:1 Mapped):** 63 (58.3%)
+- **Executed:** 63/63 automated methods (100.0%)
+- **Passed / Failed / Skipped:** 63 / 0 / 0 (100.0% pass rate of executed)
+- **Not Executed / Manual Scope:** 45
 
-The 61 automated methods are mapped from a 108-case catalog; this is not full coverage of all planned cases.
-**Performance evidence:** k6 v0.54.0 separate HTTP browse/search workload: 25 peak VUs for 110 seconds, 481 requests, p95 892.6 ms; not a browser checkout workload or current CI gate.
+The 63 automated methods are mapped from a 108-case catalog; this is not full coverage of all planned cases.
+**Performance evidence:** k6 v0.54.0 separate HTTP browse/search workload: 25 peak VUs over 112.89s, 1013 requests, p95 257.73 ms; not a browser checkout workload or current CI gate.
 
 ## 2. Granular Traceability Table
 
@@ -26,7 +26,7 @@ The 61 automated methods are mapped from a 108-case catalog; this is not full co
 | TC-AUTH-003 | REQ-AUTH-002 | UI | Registration with Missing Last Name | P2 | NO | Manual / Planned Scope | NOT RUN (Manual Scope) |
 | TC-AUTH-004 | REQ-AUTH-002 | UI | Registration with Missing Email | P2 | NO | Manual / Planned Scope | NOT RUN (Manual Scope) |
 | TC-AUTH-005 | REQ-AUTH-002 | UI | Registration with Invalid Email Format | P2 | YES | [AuthTest#testRegistrationMalformedEmailValidation](../src/test/java/com/qa/nopcommerce/tests/ui/AuthTest.java) | PASS |
-| TC-AUTH-006 | REQ-AUTH-003 | UI | Registration with Existing Registered Email | P2 | NO | Manual / Planned Scope | NOT RUN (Manual Scope) |
+| TC-AUTH-006 | REQ-AUTH-003 | UI | Registration with Existing Registered Email | P2 | YES | [AuthTest#testRegistrationDuplicateEmailRejected](../src/test/java/com/qa/nopcommerce/tests/ui/AuthTest.java) | PASS |
 | TC-AUTH-007 | REQ-AUTH-004 | UI | Registration with Password Shorter than Policy | P2 | NO | Manual / Planned Scope | NOT RUN (Manual Scope) |
 | TC-AUTH-008 | REQ-AUTH-004 | UI | Registration with Mismatched Password Confirmation | P2 | YES | [AuthTest#testRegistrationPasswordMismatch](../src/test/java/com/qa/nopcommerce/tests/ui/AuthTest.java) | PASS |
 | TC-AUTH-009 | REQ-AUTH-005 | UI | Successful Login with Valid Registered Credentials | P1 | YES | [AuthTest#testCustomerLoginValidCredentials](../src/test/java/com/qa/nopcommerce/tests/ui/AuthTest.java) | PASS |
@@ -67,10 +67,10 @@ The 61 automated methods are mapped from a 108-case catalog; this is not full co
 | TC-CART-009 | REQ-CART-005 | UI | Add Product to Wishlist from PDP and Verify Counter Increment | P1 | YES | [CartTest#testAddProductToWishlistAndVerifyCounter](../src/test/java/com/qa/nopcommerce/tests/ui/CartTest.java) | PASS |
 | TC-CART-010 | REQ-CART-005 | UI | Verify Wishlist Sharing URL Page Rendering | P2 | NO | Manual / Planned Scope | NOT RUN (Manual Scope) |
 | TC-CART-011 | REQ-CART-006 | UI | Move Item from Wishlist to Shopping Cart | P1 | YES | [CartTest#testMoveItemFromWishlistToShoppingCart](../src/test/java/com/qa/nopcommerce/tests/ui/CartTest.java) | PASS |
-| TC-CART-012 | REQ-CART-007 | UI | Apply Valid Discount Coupon Code in Shopping Cart | P1 | YES | [CartTest#testApplyValidCouponCode](../src/test/java/com/qa/nopcommerce/tests/ui/CartTest.java) | PASS |
+| TC-CART-012 | REQ-CART-008 | UI | Apply Valid Discount Coupon Code in Shopping Cart | P1 | YES | [CartTest#testApplyValidCouponCode](../src/test/java/com/qa/nopcommerce/tests/ui/CartTest.java) | PASS |
 | TC-CART-013 | REQ-CART-001 | UI | Add Gift Card with Valid Recipient Details | P2 | NO | Manual / Planned Scope | NOT RUN (Manual Scope) |
 | TC-CART-014 | REQ-CART-001 | UI | Add Gift Card with Missing Recipient Email | P2 | NO | Manual / Planned Scope | NOT RUN (Manual Scope) |
-| TC-CART-015 | REQ-CART-003 | UI | Apply Invalid Coupon Code Validation in Shopping Cart | P2 | YES | [CartTest#testApplyInvalidCouponCode](../src/test/java/com/qa/nopcommerce/tests/ui/CartTest.java) | PASS |
+| TC-CART-015 | REQ-CART-008 | UI | Apply Invalid Coupon Code Validation in Shopping Cart | P2 | YES | [CartTest#testApplyInvalidCouponCode](../src/test/java/com/qa/nopcommerce/tests/ui/CartTest.java) | PASS |
 | TC-CHK-001 | REQ-CHK-001 | UI | Enforce Terms of Service Checkbox and Initiate Checkout | P1 | YES | [CheckoutTest#testCheckoutInitiation](../src/test/java/com/qa/nopcommerce/tests/ui/CheckoutTest.java) | PASS |
 | TC-CHK-002 | REQ-CHK-002 | UI | Initiate Guest Checkout and Verify Billing Address Form | P1 | YES | [CheckoutTest#testCheckoutBillingAddressForm](../src/test/java/com/qa/nopcommerce/tests/ui/CheckoutTest.java) | PASS |
 | TC-CHK-003 | REQ-CHK-003 | UI | Complete Billing Address Step with Valid Details | P1 | NO | Manual / Planned Scope | NOT RUN (Manual Scope) |
@@ -80,7 +80,7 @@ The 61 automated methods are mapped from a 108-case catalog; this is not full co
 | TC-CHK-007 | REQ-CHK-004 | UI | Select Shipping Method - Next Day Air | P2 | NO | Manual / Planned Scope | NOT RUN (Manual Scope) |
 | TC-CHK-008 | REQ-CHK-005 | UI | Verify Guest Checkout Exposes a Payment Method Option | P1 | YES | [CheckoutTest#testCheckoutPaymentMethodOptions](../src/test/java/com/qa/nopcommerce/tests/ui/CheckoutTest.java) | PASS |
 | TC-CHK-009 | REQ-CHK-005 | UI | Verify Payment Information Instructions | P2 | NO | Manual / Planned Scope | NOT RUN (Manual Scope) |
-| TC-CHK-010 | REQ-CHK-006 | UI | Confirm and Finalize Guest Order Placement | P1 | NO | Manual / Planned Scope | NOT RUN (Manual Scope) |
+| TC-CHK-010 | REQ-CHK-006 | UI | Confirm and Finalize Guest Order Placement | P1 | YES | [CheckoutTest#testGuestOrderConfirmationAndCompletion](../src/test/java/com/qa/nopcommerce/tests/ui/CheckoutTest.java) | PASS |
 | TC-CHK-011 | REQ-CHK-007 | UI | Checkout with Authenticated User and Saved Address | P1 | NO | Manual / Planned Scope | NOT RUN (Manual Scope) |
 | TC-CHK-012 | REQ-CHK-006 | UI | Verify Order Details Link on Completed Order Page | P1 | NO | Manual / Planned Scope | NOT RUN (Manual Scope) |
 | TC-CHK-013 | REQ-CHK-006 | UI | Verify Order PDF Invoice Download Link | P2 | NO | Manual / Planned Scope | NOT RUN (Manual Scope) |
@@ -102,7 +102,7 @@ The 61 automated methods are mapped from a 108-case catalog; this is not full co
 | TC-ADM-004 | REQ-ADM-003 | UI | Admin Catalog Product List Page Verification | P2 | YES | [AdminTest#testAdminCatalogProductsPage](../src/test/java/com/qa/nopcommerce/tests/ui/AdminTest.java) | PASS |
 | TC-ADM-005 | REQ-ADM-004 | UI | Admin Sales Order List Page Verification | P2 | YES | [AdminTest#testAdminSalesOrdersPage](../src/test/java/com/qa/nopcommerce/tests/ui/AdminTest.java) | PASS |
 | TC-ADM-006 | REQ-ADM-003 | UI | Admin Catalog Category List Rendering | P2 | YES | [AdminTest#testAdminCatalogCategoriesPage](../src/test/java/com/qa/nopcommerce/tests/ui/AdminTest.java) | PASS |
-| TC-ADM-007 | REQ-ADM-002 | UI | Admin Customer List Verification | P2 | YES | [AdminTest#testAdminCustomersPage](../src/test/java/com/qa/nopcommerce/tests/ui/AdminTest.java) | PASS |
+| TC-ADM-007 | REQ-ADM-005 | UI | Admin Customer List Verification | P2 | YES | [AdminTest#testAdminCustomersPage](../src/test/java/com/qa/nopcommerce/tests/ui/AdminTest.java) | PASS |
 | TC-ADM-008 | REQ-ADM-001 | UI | Admin Login Invalid Password Rejection | P2 | YES | [AdminTest#testAdminLoginInvalidPassword](../src/test/java/com/qa/nopcommerce/tests/ui/AdminTest.java) | PASS |
 | TC-API-001 | REQ-API-001 | API | HTTP GET Public Route - Home Page Status | P1 | YES | [ApiEndpointTest#testStorefrontRootEndpoint](../src/test/java/com/qa/nopcommerce/tests/api/ApiEndpointTest.java) | PASS |
 | TC-API-002 | REQ-API-001 | API | HTTP GET Public Route - Register Page Status | P1 | YES | [ApiEndpointTest#testCustomerRegisterEndpoint](../src/test/java/com/qa/nopcommerce/tests/api/ApiEndpointTest.java) | PASS |
@@ -117,15 +117,15 @@ The 61 automated methods are mapped from a 108-case catalog; this is not full co
 | TC-DB-001 | REQ-DB-001 | DB | Verify Customer Persistence in Database | P1 | YES | [DatabaseVerificationTest#testCustomerRecordPersistenceInDatabase](../src/test/java/com/qa/nopcommerce/tests/db/DatabaseVerificationTest.java) | PASS |
 | TC-DB-002 | REQ-DB-002 | DB | Verify Active Order and Order Item Rows in Seeded Database | P1 | YES | [DatabaseVerificationTest#testOrderRecordPersistenceInDatabase](../src/test/java/com/qa/nopcommerce/tests/db/DatabaseVerificationTest.java) | PASS |
 | TC-DB-003 | REQ-DB-003 | DB | Verify Storefront Cart Item Persistence in Database | P2 | YES | [DatabaseVerificationTest#testCartItemPersistenceInDatabase](../src/test/java/com/qa/nopcommerce/tests/db/DatabaseVerificationTest.java) | PASS |
-| TC-DB-004 | REQ-DB-004 | DB | Verify Database Connection Health & Query Execution | P2 | YES | [DatabaseVerificationTest#testDatabaseConnectionHealth](../src/test/java/com/qa/nopcommerce/tests/db/DatabaseVerificationTest.java) | PASS |
-| TC-DB-005 | REQ-DB-002 | DB | Verify Customer Address Record Persistence | P2 | NO | Manual / Planned Scope | NOT RUN (Manual Scope) |
+| TC-DB-004 | REQ-DB-006 | DB | Verify Database Connection Health & Query Execution | P2 | YES | [DatabaseVerificationTest#testDatabaseConnectionHealth](../src/test/java/com/qa/nopcommerce/tests/db/DatabaseVerificationTest.java) | PASS |
+| TC-DB-005 | REQ-DB-005 | DB | Verify Customer Address Record Persistence | P2 | NO | Manual / Planned Scope | NOT RUN (Manual Scope) |
 | TC-A11Y-001 | REQ-A11Y-001 | A11Y | Storefront Home Page Automated Accessibility Scan | P2 | YES | [AccessibilityTest#testHomePageAccessibility](../src/test/java/com/qa/nopcommerce/tests/a11y/AccessibilityTest.java) | PASS |
 | TC-A11Y-002 | REQ-A11Y-001 | A11Y | Registration Page Automated Accessibility Scan | P2 | YES | [AccessibilityTest#testRegisterPageAccessibility](../src/test/java/com/qa/nopcommerce/tests/a11y/AccessibilityTest.java) | PASS |
 | TC-A11Y-003 | REQ-A11Y-001 | A11Y | Login Page Automated Accessibility Scan | P2 | YES | [AccessibilityTest#testLoginPageAccessibility](../src/test/java/com/qa/nopcommerce/tests/a11y/AccessibilityTest.java) | PASS |
 | TC-A11Y-004 | REQ-A11Y-001 | A11Y | Shopping Cart Page Automated Accessibility Scan | P2 | YES | [AccessibilityTest#testCartPageAccessibility](../src/test/java/com/qa/nopcommerce/tests/a11y/AccessibilityTest.java) | PASS |
 | TC-A11Y-005 | REQ-A11Y-001 | A11Y | Category Desktops Page Automated Accessibility Scan | P2 | YES | [AccessibilityTest#testCategoryPageAccessibility](../src/test/java/com/qa/nopcommerce/tests/a11y/AccessibilityTest.java) | PASS |
 | TC-A11Y-006 | REQ-A11Y-002 | A11Y | Checkout Billing Step Accessibility Scan | P2 | NO | Manual / Planned Scope | NOT RUN (Manual Scope) |
-| TC-NFR-001 | REQ-NFR-001 | NFR | Responsive Viewport Layout Adaptation (Desktop & Mobile) | P1 | YES | [NonFunctionalTest#testResponsiveViewportLayout](../src/test/java/com/qa/nopcommerce/tests/nfr/NonFunctionalTest.java) | PASS |
-| TC-NFR-002 | REQ-NFR-001 | NFR | Mobile Viewport Navigation Hamburger Menu Trigger | P2 | YES | [NonFunctionalTest#testMobileNavigationMenuTrigger](../src/test/java/com/qa/nopcommerce/tests/nfr/NonFunctionalTest.java) | PASS |
-| TC-NFR-003 | REQ-NFR-002 | NFR | Storefront Page Load Performance SLA (<15000ms) | P1 | YES | [NonFunctionalTest#testPageLoadPerformanceSla](../src/test/java/com/qa/nopcommerce/tests/nfr/NonFunctionalTest.java) | PASS |
-| TC-NFR-004 | REQ-NFR-003 | NFR | Verify Zero HTTP 500 Internal Server Errors on Core Assets | P2 | YES | [NonFunctionalTest#testNo500InternalServerErrorsOnAssets](../src/test/java/com/qa/nopcommerce/tests/nfr/NonFunctionalTest.java) | PASS |
+| TC-NFR-001 | REQ-NFR-006 | NFR | Responsive Viewport Layout Adaptation (Desktop & Mobile) | P1 | YES | [NonFunctionalTest#testResponsiveViewportLayout](../src/test/java/com/qa/nopcommerce/tests/nfr/NonFunctionalTest.java) | PASS |
+| TC-NFR-002 | REQ-NFR-006 | NFR | Mobile Viewport Navigation Hamburger Menu Trigger | P2 | YES | [NonFunctionalTest#testMobileNavigationMenuTrigger](../src/test/java/com/qa/nopcommerce/tests/nfr/NonFunctionalTest.java) | PASS |
+| TC-NFR-003 | REQ-NFR-003 | NFR | Storefront Page Load Performance SLA (<15000ms) | P1 | YES | [NonFunctionalTest#testPageLoadPerformanceSla](../src/test/java/com/qa/nopcommerce/tests/nfr/NonFunctionalTest.java) | PASS |
+| TC-NFR-004 | REQ-NFR-007 | NFR | Verify Zero HTTP 500 Internal Server Errors on Core Assets | P2 | YES | [NonFunctionalTest#testNo500InternalServerErrorsOnAssets](../src/test/java/com/qa/nopcommerce/tests/nfr/NonFunctionalTest.java) | PASS |

@@ -34,17 +34,17 @@ public class CartTest extends BaseTest {
     @Severity(SeverityLevel.BLOCKER)
     @Description("Verify adding simple product to shopping cart from product details page")
     public void testAddProductToCart() {
-        try {
+        runWithCleanup("add product to cart cleanup", () -> {
             navigateTo(TEST_PRODUCT_SLUG);
             ProductDetailsPage productPage = new ProductDetailsPage(getPage());
             productPage.clickAddToCart();
 
             Assert.assertTrue(productPage.getNotificationText().contains("The product has been added to your shopping cart"),
                     "Expected add to cart notification banner");
-        } finally {
+        }, () -> {
             navigateTo("/cart");
             new CartPage(getPage()).clearCart();
-        }
+        });
     }
 
     @Test(groups = {"ui", "cart"})
@@ -52,7 +52,7 @@ public class CartTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify shopping cart table renders added product and updates header cart quantity")
     public void testViewShoppingCart() {
-        try {
+        runWithCleanup("view shopping cart cleanup", () -> {
             navigateTo(TEST_PRODUCT_SLUG);
             ProductDetailsPage productPage = new ProductDetailsPage(getPage());
             productPage.clickAddToCart();
@@ -62,10 +62,13 @@ public class CartTest extends BaseTest {
             CartPage cartPage = new CartPage(getPage());
 
             Assert.assertTrue(cartPage.hasCartItemCount(1), "Expected 1 item in cart");
+            Assert.assertTrue(cartPage.containsProduct(TEST_PRODUCT_NAME),
+                    "Expected cart table to contain " + TEST_PRODUCT_NAME);
             Assert.assertTrue(cartPage.isCheckoutButtonVisible(), "Expected checkout button to be visible");
-        } finally {
+        }, () -> {
+            navigateTo("/cart");
             new CartPage(getPage()).clearCart();
-        }
+        });
     }
 
     @Test(groups = {"ui", "cart"})
@@ -73,7 +76,7 @@ public class CartTest extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify updating line item quantity in shopping cart recalculates subtotal")
     public void testUpdateCartItemQuantity() {
-        try {
+        runWithCleanup("update cart quantity cleanup", () -> {
             navigateTo(TEST_PRODUCT_SLUG);
             ProductDetailsPage productPage = new ProductDetailsPage(getPage());
             productPage.clickAddToCart();
@@ -82,12 +85,18 @@ public class CartTest extends BaseTest {
             navigateTo("/cart");
             CartPage cartPage = new CartPage(getPage());
             Assert.assertTrue(cartPage.hasCartItemCount(1), "Expected 1 item in cart");
+            BigDecimal initialSubtotal = cartPage.getSubTotalAmount();
 
             cartPage.updateQuantity(0, 3);
             Assert.assertTrue(cartPage.hasItemQuantity(0, "3"), "Expected quantity to be updated to 3");
-        } finally {
+            BigDecimal updatedSubtotal = cartPage.getSubTotalAmount();
+            Assert.assertEquals(updatedSubtotal.compareTo(initialSubtotal.multiply(BigDecimal.valueOf(3))), 0,
+                    "Expected subtotal to triple from " + initialSubtotal + " to " + initialSubtotal.multiply(BigDecimal.valueOf(3))
+                            + ", actual: " + updatedSubtotal);
+        }, () -> {
+            navigateTo("/cart");
             new CartPage(getPage()).clearCart();
-        }
+        });
     }
 
     @Test(groups = {"ui", "cart"})
@@ -114,7 +123,7 @@ public class CartTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify adding a product to wishlist from PDP increments header wishlist counter and lists item")
     public void testAddProductToWishlistAndVerifyCounter() {
-        try {
+        runWithCleanup("wishlist add cleanup", () -> {
             navigateTo("/wishlist");
             new WishlistPage(getPage()).clearWishlist();
 
@@ -134,10 +143,10 @@ public class CartTest extends BaseTest {
             Assert.assertTrue(wishlistPage.hasWishlistItemCount(1), "Expected 1 item in wishlist");
             Assert.assertTrue(wishlistPage.isProductInWishlist(TEST_PRODUCT_NAME),
                     "Expected product link in wishlist");
-        } finally {
+        }, () -> {
             navigateTo("/wishlist");
             new WishlistPage(getPage()).clearWishlist();
-        }
+        });
     }
 
     @Test(groups = {"ui", "cart", "wishlist"})
@@ -145,7 +154,7 @@ public class CartTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify moving an item from wishlist to shopping cart transfers item and empties wishlist")
     public void testMoveItemFromWishlistToShoppingCart() {
-        try {
+        runWithCleanup("move wishlist to cart cleanup", () -> {
             navigateTo(TEST_PRODUCT_SLUG);
             ProductDetailsPage productPage = new ProductDetailsPage(getPage());
             productPage.setQuantity(1);
@@ -165,23 +174,24 @@ public class CartTest extends BaseTest {
             navigateTo("/wishlist");
             Assert.assertTrue(wishlistPage.getEmptyWishlistText().contains("The wishlist is empty!"),
                     "Expected empty wishlist message");
-        } finally {
+        }, () -> {
             navigateTo("/wishlist");
             new WishlistPage(getPage()).clearWishlist();
+        }, () -> {
             navigateTo("/cart");
             new CartPage(getPage()).clearCart();
-        }
+        });
     }
 
     @Test(groups = {"ui", "cart", "coupon"})
-    @TestCase(value = "TC-CART-012", requirementId = "REQ-CART-007")
+    @TestCase(value = "TC-CART-012", requirementId = "REQ-CART-008")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify provisioning an isolated discount coupon and applying it to the cart reduces the order total")
     public void testApplyValidCouponCode() {
         String isolatedCouponCode = "QAE2E_" + UUID.randomUUID().toString().substring(0, 6).toUpperCase();
         String discountName = "QA_Automated_Discount_" + isolatedCouponCode;
 
-        try {
+        runWithCleanup("isolated coupon test " + isolatedCouponCode, () -> {
             // 1. Provision an isolated coupon code in Admin -> Promotions -> Discounts
             navigateTo(ConfigReader.getAdminUrl());
             AdminLoginPage adminLogin = new AdminLoginPage(getPage());
@@ -193,7 +203,10 @@ public class CartTest extends BaseTest {
             Assert.assertTrue(discountPage.isDiscountCreatedSuccessfully(),
                     "Expected new discount added successfully alert");
 
-            // 2. Add isolated test item to storefront cart and apply the valid coupon code
+            // 2. Drop Admin session cookies before storefront cart flow so shared Admin state is untouched
+            getPage().context().clearCookies();
+
+            // 3. Add isolated test item to anonymous storefront cart and apply the valid coupon code
             navigateTo(TEST_PRODUCT_SLUG);
             ProductDetailsPage productPage = new ProductDetailsPage(getPage());
             productPage.clickAddToCart();
@@ -206,32 +219,27 @@ public class CartTest extends BaseTest {
 
             cartPage.applyCouponCode(isolatedCouponCode);
 
+            Assert.assertTrue(cartPage.isCouponMessageDisplayed(), "Expected coupon status banner to appear");
             Assert.assertTrue(cartPage.getCouponMessageText().contains("The coupon code was applied"),
                     "Expected coupon applied message");
             Assert.assertTrue(cartPage.isDiscountApplied(), "Expected discount row summary to be visible");
             BigDecimal totalAfterCoupon = cartPage.getOrderTotalAmount();
             Assert.assertTrue(totalAfterCoupon.compareTo(totalBeforeCoupon) < 0,
                     "Expected coupon to reduce total from " + totalBeforeCoupon + " to " + totalAfterCoupon);
-        } finally {
-            try {
-                navigateTo("/cart");
-                CartPage cleanupCart = new CartPage(getPage());
-                cleanupCart.removeAppliedCouponIfPresent();
-                cleanupCart.clearCart();
-            } catch (Exception e) {
-                log.warn("Best-effort UI cleanup failed for isolated coupon '{}': {}",
-                        isolatedCouponCode, e.getMessage(), e);
-            }
-            DatabaseManager.deleteDiscountCouponByCode(isolatedCouponCode);
-        }
+        }, () -> {
+            navigateTo("/cart");
+            CartPage cleanupCart = new CartPage(getPage());
+            cleanupCart.removeAppliedCouponIfPresent();
+            cleanupCart.clearCart();
+        }, () -> DatabaseManager.deleteDiscountCouponByCode(isolatedCouponCode));
     }
 
     @Test(groups = {"ui", "cart", "coupon"})
-    @TestCase(value = "TC-CART-015", requirementId = "REQ-CART-003")
+    @TestCase(value = "TC-CART-015", requirementId = "REQ-CART-008")
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify applying an invalid coupon code displays a failure message in the cart")
     public void testApplyInvalidCouponCode() {
-        try {
+        runWithCleanup("invalid coupon cleanup", () -> {
             navigateTo(TEST_PRODUCT_SLUG);
             ProductDetailsPage productPage = new ProductDetailsPage(getPage());
             productPage.clickAddToCart();
@@ -243,9 +251,9 @@ public class CartTest extends BaseTest {
 
             cartPage.applyCouponCode("INVALID_DISCOUNT_CODE_999");
             Assert.assertTrue(cartPage.isCouponMessageDisplayed(), "Expected coupon error message to be displayed");
-        } finally {
+        }, () -> {
             navigateTo("/cart");
             new CartPage(getPage()).clearCart();
-        }
+        });
     }
 }
