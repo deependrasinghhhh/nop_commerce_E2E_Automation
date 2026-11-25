@@ -44,6 +44,11 @@ pipeline {
         stage('Checkout & Toolchain Verification') {
             steps {
                 echo "=== Checkout Repository & Toolchain Verification ==="
+                sh '''
+                    rm -rf target/surefire-reports target/a11y-reports target/allure-results target/site \
+                           evidence/failures/* evidence/traces/* evidence/reports/* \
+                           evidence/surefire-reports/*.dumpstream reports .ci || true
+                '''
                 script {
                     runWithToolchain('java -version && mvn -version')
                 }
@@ -98,8 +103,17 @@ pipeline {
         stage('Playwright Driver Setup') {
             steps {
                 echo "=== Ensuring Playwright Browser Binaries & System Dependencies ==="
-                script {
-                    runWithToolchain("mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args=\"install --with-deps ${params.BROWSER}\"")
+                withEnv(["PW_BROWSER=${params.BROWSER}"]) {
+                    script {
+                        runWithToolchain('''
+                            if [ "$(id -u)" -eq 0 ] || (command -v sudo >/dev/null 2>&1 && sudo -n true 2>/dev/null); then
+                                mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install --with-deps ${PW_BROWSER}"
+                            else
+                                echo "Notice: Running as unprivileged user without passwordless sudo; installing Playwright browser binary only (skipping --with-deps)."
+                                mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install ${PW_BROWSER}"
+                            fi
+                        ''')
+                    }
                 }
             }
         }
@@ -151,10 +165,22 @@ pipeline {
     post {
         always {
             script {
-                echo "=== Running RTM Traceability Verification ==="
-                sh 'python3 scripts/reconcile_rtm.py --verify-only'
+                if (fileExists('target/surefire-reports/testng-results.xml')) {
+                    echo "=== Running RTM Traceability Verification ==="
+                    sh 'python3 scripts/reconcile_rtm.py --verify-only'
+                } else {
+                    echo "Notice: Skipping RTM Traceability Verification because target/surefire-reports/testng-results.xml was not generated in this build."
+                }
 
-                if (params.ENABLE_TREND_HISTORY && fileExists('.ci/allure-history/history')) {
+                if (fileExists('target/surefire-reports/TEST-TestSuite.xml')) {
+                    try {
+                        junit allowEmptyResults: true, testResults: 'target/surefire-reports/TEST-TestSuite.xml'
+                    } catch (Throwable t) {
+                        echo "Notice: JUnit report step skipped or failed: ${t.message}"
+                    }
+                }
+
+                if (params.ENABLE_TREND_HISTORY && fileExists('target/allure-results') && fileExists('.ci/allure-history/history')) {
                     sh '''
                         mkdir -p target/allure-results/history
                         cp -r .ci/allure-history/history/. target/allure-results/history/
@@ -166,36 +192,42 @@ pipeline {
             archiveArtifacts artifacts: 'target/surefire-reports/**/*, target/a11y-reports/**/*, evidence/a11y/**/*, evidence/failures/**/*, evidence/traces/**/*, target/allure-results/**/*, docs/*.md', allowEmptyArchive: true
 
             script {
-                try {
-                    runWithToolchain('mvn allure:report || true')
-                    archiveArtifacts artifacts: 'target/site/allure-maven-plugin/**/*', allowEmptyArchive: true
-                } catch (Throwable t) {
-                    echo "Notice: Maven allure:report generation skipped or failed: ${t.message}"
-                }
+                if (fileExists('target/allure-results')) {
+                    try {
+                        runWithToolchain('mvn allure:report || true')
+                        archiveArtifacts artifacts: 'target/site/allure-maven-plugin/**/*', allowEmptyArchive: true
+                    } catch (Throwable t) {
+                        echo "Notice: Maven allure:report generation skipped or failed: ${t.message}"
+                    }
 
-                boolean pluginHistorySaved = false
-                try {
-                    allure includeProperties: false, jdk: '', results: [[path: 'target/allure-results']]
-                    if (params.ENABLE_TREND_HISTORY) {
+                    boolean pluginHistorySaved = false
+                    try {
+                        allure includeProperties: false, jdk: '', results: [[path: 'target/allure-results']]
+                        if (params.ENABLE_TREND_HISTORY && currentBuild.result != 'ABORTED') {
+                            sh '''
+                                if [ -d "allure-report/history" ]; then
+                                    rm -rf "${JENKINS_HOME}/allure-history/${JOB_NAME}/history"
+                                    mkdir -p "${JENKINS_HOME}/allure-history/${JOB_NAME}"
+                                    cp -r allure-report/history "${JENKINS_HOME}/allure-history/${JOB_NAME}/"
+                                fi
+                            '''
+                            pluginHistorySaved = true
+                        }
+                    } catch (Throwable t) {
+                        echo "Notice: Allure Plugin step skipped or not installed: ${t.message}"
+                    }
+
+                    if (!pluginHistorySaved && params.ENABLE_TREND_HISTORY && currentBuild.result != 'ABORTED') {
                         sh '''
-                            if [ -d "allure-report/history" ]; then
+                            if [ -d "target/site/allure-maven-plugin/history" ]; then
+                                rm -rf "${JENKINS_HOME}/allure-history/${JOB_NAME}/history"
                                 mkdir -p "${JENKINS_HOME}/allure-history/${JOB_NAME}"
-                                cp -r allure-report/history "${JENKINS_HOME}/allure-history/${JOB_NAME}/"
+                                cp -r target/site/allure-maven-plugin/history "${JENKINS_HOME}/allure-history/${JOB_NAME}/"
                             fi
                         '''
-                        pluginHistorySaved = true
                     }
-                } catch (Throwable t) {
-                    echo "Notice: Allure Plugin step skipped or not installed: ${t.message}"
-                }
-
-                if (!pluginHistorySaved && params.ENABLE_TREND_HISTORY) {
-                    sh '''
-                        if [ -d "target/site/allure-maven-plugin/history" ]; then
-                            mkdir -p "${JENKINS_HOME}/allure-history/${JOB_NAME}"
-                            cp -r target/site/allure-maven-plugin/history "${JENKINS_HOME}/allure-history/${JOB_NAME}/"
-                        fi
-                    '''
+                } else {
+                    echo "Notice: Skipping Allure report generation because target/allure-results was not generated in this build."
                 }
             }
         }
